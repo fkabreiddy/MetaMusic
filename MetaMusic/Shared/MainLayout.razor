@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-<MudThemeProvider  IsDarkMode=false Theme="ThemeCustom"/>
+<MudThemeProvider  IsDarkMode=@IsDarkMode Theme="ThemeCustom"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 <PageTitle>MetaMusic</PageTitle>
@@ -42,9 +42,9 @@
  
     <MudItem>
         <MudGrid>
-            <MudItem md="12" sm="12" xs="12" xxl="12" lg="12" xl="12" Style="background-color: white; z-index: 10;">
+            <MudItem md="12" sm="12" xs="12" xxl="12" lg="12" xl="12" Style="@($""" {(IsDarkMode ? "background-color:#000000;" : "background-color:#ffffff;")}; z-index: 10;""")">
 
-                <MudContainer id="navbar" Class="@navbarclass" Style="height: 80px; display: flex; justify-content: space-between; max-width: 100%; gap: 10px;position: fixed; background-color: white; ">
+                <MudContainer id="navbar" Class="@navbarclass" Style="@($""" {(IsDarkMode ? "background-color:#000000;" : "background-color:#ffffff;")}; z-index: 10;height: 80px; display: flex; justify-content: space-between; max-width: 100%; gap: 10px;position: fixed;""")">
                     <div style="display: flex; align-items: center; flex-direction: column;">
                         <MudImage  Src="/meta-logo.png" Style="width: 50px; width: 50px;"></MudImage>
                         <MudText Style="font-size: 10px; font-weight: bold;">M E T A M U S I C</MudText>
@@ -56,11 +56,11 @@
                          <MudMenu    Style="width: auto;" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
 
                              <ActivatorContent>
-                                                         <MudAvatar Style="height: 35px; width: 35px; margin-bottom: 20px; margin-top: 20px; margin-right: 20px; "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="https://th.bing.com/th/id/OIP.UgQzi6yAnGyBFUgYT-H0swHaHa?rs=1&pid=ImgDetMain" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+                                                         <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px; "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="https://th.bing.com/th/id/OIP.UgQzi6yAnGyBFUgYT-H0swHaHa?rs=1&pid=ImgDetMain" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
 
                              </ActivatorContent>
                              <ChildContent>
-                                <MudPaper Outlined="true" Style="z-index: 999999; position: sticky;">
+                                <MudPaper Outlined="true" Style="z-index: 999999; ">
                                     <MudContainer Style="max-height: 50vh; overflow: auto; margin-top: 10px;margin-bottom: 10px; ">
                                         <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Acerca de ti</MudText>
                                         <MudDivider Class="mb-3 mt-3"></MudDivider>
@@ -105,7 +105,14 @@
                                             </div>
 
                                         </MudMenuItem>
-                                        
+                                        <MudMenuItem @onclick="()=>{IsDarkMode = !IsDarkMode;}" Style="border-radius: 10px;">
+                                            <div style="display:flex; justify-content: space-between; align-items: center;">
+                                                <MudText Style="font-size: 12px;   ">Modo @(IsDarkMode ? "Claro" : "Oscuro")</MudText>
+                                                
+                                                <MudIcon   Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.LightMode"></MudIcon>
+                                            </div>
+
+                                        </MudMenuItem>
                                         <MudMenuItem Style="border-radius: 10px;">
                                             <div style="display:flex; justify-content: space-between; align-items: center;">
                                                 <MudText Color="Color.Error" Style="font-size: 12px;   ">Agregar Artista</MudText>
@@ -141,7 +148,17 @@
                      
 
                         <MudText Class="meta-nav-button" Style="font-size: 13px; font-weight: bold; cursor:pointer;">HOME</MudText>
-                        <MudTextField MaxLength="30" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: calc(20vw - 5px);background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                        @if(IsDarkMode)
+                        {
+                            <MudTextField MaxLength="30" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: calc(20vw - 5px);background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                        }
+                        else
+                        {
+                                                    <MudTextField MaxLength="30" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: calc(20vw - 5px);background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+                            
+                        }
                     </div>
 
                 </MudContainer>
@@ -192,7 +209,7 @@
 
 @code{
     private string navbarclass = "navbar-container";
-
+    public bool IsDarkMode { get; set; } = false;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)
@@ -235,12 +252,12 @@
             PaletteDark = new PaletteDark
             {
 
-                Primary = "#FFFFFF",
-                Secondary = "#124559",
-
-                Background = "#fdfdfd",
-
-                Surface = "#fdfdfd",
+                Primary = "#f8f7f4",
+                Secondary = "#f1f2f2",
+                Tertiary = "#164863",
+                Background = "#000000",
+                Error = "#E74646",
+                Surface = "#191919",
 
 
 
