@@ -31,18 +31,18 @@
                   
                         <MudGrid Justify="Justify.Center" Style="height: 310px; display: flex; overflow: auto;   align-items: center">
                            
-                            @for(int i = 0; i <= 3; i++)
+                            @foreach(var album in albumes)
                             {
                                  <MudItem  md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
                                     <MudCard Class="review-card" >
                                         <MudContainer  Style="height: 280px; display: flex; flex-direction: column; gap: 20px;  ">
                                            <div class="review-text-card" >
                                                <div style="display: flex; align-items: center; justify-content: center; ">
-                                                    <MudAvatar Square="true" Rounded="false" Style="border-radius: 10px;height: 100px; width: 100px; margin-bottom: 20px; margin-top: 20px; "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="https://th.bing.com/th/id/R.137da61492fec64e1d3da2307ffb2206?rik=M7gXrneJ%2b%2bVzOA&pid=ImgRaw&r=0" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+                                                    <MudAvatar Square="true" Rounded="false" Style="border-radius: 10px;height: 100px; width: 100px; margin-bottom: 20px; margin-top: 20px; "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.portada" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
 
                                                </div>
-                                                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;  ">Lana del Rey </MudText>
-                                                <MudText  Style="font-size: 12px; font-weight: bold; opacity: 0.7; ">Did you know there's a tunner under ocean blv </MudText>
+                                                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;  ">@album.Autores</MudText>
+                                                <MudText  Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7; ">@album.nombre</MudText>
                                                
                                            </div>
 
@@ -53,10 +53,10 @@
                                            <div style="display: flex; justify-content: space-between;">
                                                <div style="display: flex; gap: 10px; align-items: center;">
                                                    <MudIcon Icon="@Icons.Material.Rounded.Star" Color="Color.Error" Size="Size.Small" Style="width: 12px; height: 12px;"></MudIcon>
-                                                   <MudText  Style="font-size: 10px; font-weight: bold; opacity: 0.7; "> 8 </MudText>
+                                                   <MudText  Style="font-size: 10px; font-weight: bold; opacity: 0.7; "> @album.calificacion </MudText>
                                                </div>
                                                 
-                                                <MudText  Style="font-size: 10px;  "> Alternativo </MudText>
+                                                <MudText  Style="font-size: 10px;  "> @album.genero </MudText>
                                            </div>
                                            
                                         </MudContainer>
@@ -106,5 +106,21 @@
 
 @code{
 
+    public class Album
+    {
+        public string nombre;
+        public string Autores;
+        public int calificacion;
+        public string portada;
+        public string genero;
+    }
+
+    public List<Album> albumes = new List<Album>()
+    {
+        new Album(){nombre = "Did You Know That Theres A Tunnel Under Ocean Blvd", Autores ="Lana del Rey", calificacion = 8, portada = "https://cdn.shopify.com/s/files/1/0588/3455/0945/products/Lana_Del_Rey_-_Did_You_Know_That_There_s_a_Tunnel_Under_Ocean_Blvd_c4d76671-1a12-4c93-b9ba-036b950a84aa_2048x2048.jpg?v=1672923775", genero = "Alternativo"},
+         new Album(){nombre = "To Pimp A Butterfly", Autores ="Kendrick Lamar", calificacion = 10, portada = "https://th.bing.com/th/id/OIP.pJVdxA07ueQA2MSsTIwJcAHaHa?rs=1&pid=ImgDetMain", genero = "Hip Hop"},
+          new Album(){nombre = "Happier Than Ever", Autores ="Billie Eilish", calificacion = 5, portada = "https://th.bing.com/th/id/R.35acaa79ec2e95dd3efa0e581a845970?rik=WFGE7VsZEeLqYw&pid=ImgRaw&r=0", genero = "Alternativo"},
+           new Album(){nombre = "When We All Fall Sleep Where Do We Go", Autores ="Billie Eilish", calificacion = 10, portada = "https://th.bing.com/th/id/OIP.f8ZxLPdWygPzVdhdW5C0tQHaHa?rs=1&pid=ImgDetMain", genero = "Alternativo"},
+    };
     public List<int> lista = new List<int>(){1,2,3,4,5};
 }
