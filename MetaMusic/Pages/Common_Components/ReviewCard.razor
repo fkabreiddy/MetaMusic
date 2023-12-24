@@ -1,0 +1,35 @@
+﻿
+    <MudCard Class="review-card">
+        <MudContainer Style="height: 280px; display: flex; flex-direction: column; gap: 20px;  ">
+            <div class="review-text-card">
+                <div style="display: flex; align-items: center; justify-content: center; ">
+                    <MudAvatar Square="true" Rounded="false" Style="border-radius: 10px;height: 100px; width: 100px; margin-bottom: 20px; margin-top: 20px; "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.portada" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+
+                </div>
+                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;  ">@album.Autores</MudText>
+                    <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7; ">@album.nombre</MudText>
+
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: center; ">
+                    <MudButton Color="Color.Error" Variant="Variant.Text" Style="font-size: 10px;">ver review</MudButton>
+
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <MudIcon Icon="@Icons.Material.Rounded.Star" Color="Color.Error" Size="Size.Small" Style="width: 12px; height: 12px;"></MudIcon>
+                        <MudText Style="font-size: 10px; font-weight: bold; opacity: 0.7; "> @album.calificacion </MudText>
+                    </div>
+
+                    <MudText Style="font-size: 10px; font-weight: bold; opacity: 0.7; "> @album.genero </MudText>
+                </div>
+
+            </MudContainer>
+        </MudCard>
+
+@code {
+    
+
+    [Parameter]
+    public Album album { get; set; } = new Album();
+}

@@ -1,4 +1,14 @@
-﻿<MudPaper>
+﻿<style>
+    .review-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<MudPaper>
     <MudContainer Style="display: flex; flex-direction: column; gap 10px; ">
         <MudContainer Style="height: 30px;display: flex; gap: 10px;padding: 0; margin-top:20px; ">
 
@@ -11,7 +21,7 @@
 
             <MudText Color="Color.Error" Style="font-size: 12px; font-weight:bold; "> Nota Destacada </MudText>
         </MudContainer>
-        <MudContainer Class=" review-text" Style="padding: 0; height: 50px;">
+        <MudContainer Class=" review-text" Style="padding: 0; height: 55px;">
             <MudText Style="font-size: 12px; opacity: 0.7;">
                 Musicalmente, el álbum es diverso y complejo, fusionando elementos de jazz, funk, soul y spoken word con el hip-hop. La producción es rica en capas, con arreglos detallados y colaboraciones con músicos talentosos que contribuyen a la profundidad sonora del proyecto.
             </MudText>
