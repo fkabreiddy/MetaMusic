@@ -95,12 +95,23 @@
        
     </MudGrid>
 </MudItem>
+<BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+    <MudDivider Style="margin-top: 25px; margin-bottom: 25px;  "></MudDivider>
 
-<MudDivider Style="margin-top: 25px; margin-bottom: 25px;  "></MudDivider>
+    <ReviewOfTheMonth></ReviewOfTheMonth>
 
-<ReviewOfTheWeek></ReviewOfTheWeek>
+</BlazorAnimation.Animation>
+<BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+    <MudDivider Style="margin-top: 25px; margin-bottom: 25px;  "></MudDivider>
+    <SongReviewOfTheMonth></SongReviewOfTheMonth>
 
-<MudDivider Style="margin-top: 25px; margin-bottom: 25px;"></MudDivider>
+</BlazorAnimation.Animation>
+
+<BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(3)">
+    <MudDivider Style="margin-top: 25px; margin-bottom: 25px;"></MudDivider>
+
+    <Explora></Explora>
+</BlazorAnimation.Animation>
 
 
 
@@ -118,7 +129,7 @@
     public List<Album> albumes = new List<Album>()
     {
         new Album(){nombre = "Did You Know That Theres A Tunnel Under Ocean Blvd", Autores ="Lana del Rey", calificacion = 8, portada = "https://cdn.shopify.com/s/files/1/0588/3455/0945/products/Lana_Del_Rey_-_Did_You_Know_That_There_s_a_Tunnel_Under_Ocean_Blvd_c4d76671-1a12-4c93-b9ba-036b950a84aa_2048x2048.jpg?v=1672923775", genero = "Alternativo"},
-         new Album(){nombre = "To Pimp A Butterfly", Autores ="Kendrick Lamar", calificacion = 10, portada = "https://th.bing.com/th/id/OIP.pJVdxA07ueQA2MSsTIwJcAHaHa?rs=1&pid=ImgDetMain", genero = "Hip Hop"},
+         new Album(){nombre = "To Pimp A Butterfly", Autores ="Kendrick Lamar", calificacion = 8, portada = "https://th.bing.com/th/id/OIP.pJVdxA07ueQA2MSsTIwJcAHaHa?rs=1&pid=ImgDetMain", genero = "Hip Hop"},
           new Album(){nombre = "Happier Than Ever", Autores ="Billie Eilish", calificacion = 5, portada = "https://th.bing.com/th/id/R.35acaa79ec2e95dd3efa0e581a845970?rik=WFGE7VsZEeLqYw&pid=ImgRaw&r=0", genero = "Alternativo"},
            new Album(){nombre = "When We All Fall Sleep Where Do We Go", Autores ="Billie Eilish", calificacion = 10, portada = "https://th.bing.com/th/id/OIP.f8ZxLPdWygPzVdhdW5C0tQHaHa?rs=1&pid=ImgDetMain", genero = "Alternativo"},
     };

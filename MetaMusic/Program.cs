@@ -1,3 +1,4 @@
+using BlazorAnimation;
 using MetaMusic.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -11,6 +12,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddMudServices();
+builder.Services.Configure<AnimationOptions>(Guid.NewGuid().ToString(), c => { });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
