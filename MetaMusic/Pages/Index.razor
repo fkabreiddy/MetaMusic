@@ -1,9 +1,110 @@
 ﻿@page "/"
+<style>
+    .review-text-card{
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+       
+    }
 
-<PageTitle>Index</PageTitle>
+    .review-card{
+        cursor: pointer;
+    }
 
-<h1>Hello, world!</h1>
+    .review-card:hover{
+            border: thin 1px #E74646;
+        
+    }
+</style>
+<MudItem Style="margin-top: 30px;">
+    <MudGrid Style="display: flex; align-items: center; ">
+        <MudItem md="8" lg="8" xl="8" xxl="8" sm="12" xs="12">
+           
+                <MudContainer Style="height: 390px; width: 100%;display: flex; flex-direction: column; gap: 20px; padding:10px;">
+                    <div style="height: 50px;display: flex; gap: 10px; width: 100%; ">
+                        
+                        <MudText Color="Color.Error" Style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">RECIENTE EN METAMUSIC </MudText>
+                      <MudIcon Icon="@Icons.Material.Rounded.Whatshot" Color="Color.Error" ></MudIcon>
+                    </div>
+                  
+                        <MudGrid Justify="Justify.Center" Style="height: 310px; display: flex; overflow: auto;   align-items: center">
+                           
+                            @for(int i = 0; i <= 3; i++)
+                            {
+                                 <MudItem  md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
+                                    <MudCard Class="review-card" >
+                                        <MudContainer  Style="height: 280px; display: flex; flex-direction: column; gap: 20px;  ">
+                                           <div class="review-text-card" >
+                                               <div style="display: flex; align-items: center; justify-content: center; ">
+                                                    <MudAvatar Square="true" Rounded="false" Style="border-radius: 10px;height: 100px; width: 100px; margin-bottom: 20px; margin-top: 20px; "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="https://th.bing.com/th/id/R.137da61492fec64e1d3da2307ffb2206?rik=M7gXrneJ%2b%2bVzOA&pid=ImgRaw&r=0" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
 
-Welcome to your new app.
+                                               </div>
+                                                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;  ">Lana del Rey </MudText>
+                                                <MudText  Style="font-size: 12px; font-weight: bold; opacity: 0.7; ">Did you know there's a tunner under ocean blv </MudText>
+                                               
+                                           </div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+                                          <div style="display: flex; align-items: center; justify-content: center; ">
+                                                  <MudButton Color="Color.Error" Variant="Variant.Text" Style="font-size: 10px;">ver review</MudButton>
+
+                                           </div>
+                                           <div style="display: flex; justify-content: space-between;">
+                                               <div style="display: flex; gap: 10px; align-items: center;">
+                                                   <MudIcon Icon="@Icons.Material.Rounded.Star" Color="Color.Error" Size="Size.Small" Style="width: 12px; height: 12px;"></MudIcon>
+                                                   <MudText  Style="font-size: 10px; font-weight: bold; opacity: 0.7; "> 8 </MudText>
+                                               </div>
+                                                
+                                                <MudText  Style="font-size: 10px;  "> Alternativo </MudText>
+                                           </div>
+                                           
+                                        </MudContainer>
+                                    </MudCard>
+                                </MudItem>
+                            }
+                               
+                               
+                            
+                        </MudGrid>
+                    
+                </MudContainer>
+            
+        </MudItem>
+        <MudItem md="4" lg="4" xl="4" xxl="4" sm="12" xs="12" Style="margin-top: 45px;">
+            <MudCard >
+
+                <MudContainer Style="height: auto; width: 100%; background-color:#E74646; display: flex; border-radius: 9px; flex-direction: column; gap: 10px;">
+                   
+
+                        <MudText  Style="font-size: 20px; font-weight: bold; margin-bottom: 10px; margin-top: 20px;">HAS UNA PETICION</MudText>
+          
+                    
+
+                        <MudText Style="font-size: 17px; font-weight: bold; color: white; margin-bottom: 10px; ">CONSTANTEMENTE BUSCAMOS NUEVA MUSICA PARA HACER REVIEW. SI TIENES ALGO EN MENTE NO DUDES EN PEDIRLO.</MudText>
+                 
+
+                    <MudLink Underline="Underline.Hover" Color="Color.Surface" Style="font-size: 12px;cursor:pointer; font-weight: bold; color: whitesmoke; margin-bottom: 10px; ">Pedir Nuevo Artista</MudLink>
+                    <MudLink Underline="Underline.Hover" Color="Color.Surface" Style="font-size: 12px;cursor:pointer; font-weight: bold; color: whitesmoke; margin-bottom: 10px; ">Pedir Nuevo Album</MudLink>
+                    <MudLink Underline="Underline.Hover" Color="Color.Surface" Style="font-size: 12px;cursor:pointer; font-weight: bold; color: whitesmoke; margin-bottom: 10px; ">Pedir Nuevo Género Musical</MudLink>
+                </MudContainer>
+               
+                  
+            </MudCard>
+        </MudItem>
+       
+    </MudGrid>
+</MudItem>
+
+<MudDivider Style="margin-top: 25px; margin-bottom: 25px;  "></MudDivider>
+
+<ReviewOfTheWeek></ReviewOfTheWeek>
+
+<MudDivider Style="margin-top: 25px; margin-bottom: 25px;"></MudDivider>
+
+
+
+@code{
+
+    public List<int> lista = new List<int>(){1,2,3,4,5};
+}

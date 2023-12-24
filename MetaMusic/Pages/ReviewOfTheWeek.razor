@@ -1,0 +1,70 @@
+﻿
+<style>
+    .portada-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+    }
+
+    .portada-text mark{
+        background-color:#E74646;
+    }
+
+    .review-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .container {
+        position: relative;
+        text-align: center;
+        
+    }
+</style>
+<MudText Align="Align.Center" Style="font-size: 35px; font-family: SourceSerif4; margin-bottom: 40px;  margin-top: 20px;"><span style="color: #E74646; font-weight: bold;">REVIEW</span> DE LA SEMANA</MudText>
+
+<MudItem >
+    <MudGrid Justify="Justify.Center">
+       
+        <MudItem md="8" lg="8" xxl="8" Class="container" xl="8" sm="12" xs="12" Style="height: 250px; width:100%;">
+
+            <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="https://th.bing.com/th/id/R.31ab9e7f23897b6619476d289b4f95de?rik=3IdxbPAF3mmJcw&riu=http%3a%2f%2fwww.cryptamag.es%2fwp-content%2fuploads%2f2016%2f04%2fKendrick-Lamar-To-Pimp-a-Butterfly-front-cover.jpg&ehk=LXr7v5UZkpziL82yFtx7Nkhaq6SgjS3MaYflyt12Mjg%3d&risl=&pid=ImgRaw&r=0" Style="height:100%;border-radius: 10px; width: 100%;  " />
+                <MudText Class="portada-text" Style="font-size: 25px; font-weight: bold; font-family: SourceSerif4; opacity: 1;" Color="Color.Primary" Align="Align.Center"> <mark>To Pimp A Butterfly - Kendrick Lamar</mark></MudText>
+                
+           
+        </MudItem>
+         <MudItem  md="4" lg="4" xxl="4"Class=" review-text" xl="4" sm="12" xs="12" Style="max-height: 240px; width:100%; ">
+             <div style="display: flex; gap: 7px; align-items: center;">
+                <MudText Color="Color.Error" Style="font-size: 15px; font-weight:bold; "> Por: </MudText>
+                <MudText  Style="font-size: 15px; opacity: 0.7; " Color="Color.Primary"> Jeanna Grant</MudText>
+               
+             </div>
+           
+            <MudText Align="Align.Start" Style="font-size: 10px; opacity: 0.7; " Color="Color.Primary">Hace 2 dias</MudText>
+            <div style="display: flex; gap: 10px; align-items: center; margin-top: 10px;">
+                <MudText Color="Color.Error" Style="font-size: 12px;  opacity: 0.7; ">Calificacion:  </MudText>
+
+               
+                <MudText Color="Color.Error" Style="font-size: 12px; opacity: 0.7; "> 8 </MudText>
+                <MudIcon Icon="@Icons.Material.Rounded.Star" Color="Color.Error" Size="Size.Small" Style="width: 12px; height: 12px;"></MudIcon>
+                <MudChip Size="Size.Small" Color="Color.Error" Style="font-size: 10px; opacity: 0.7;  font-weight: bold; " Text="Hip Hop">  </MudChip>
+            </div>
+           
+             <MudDivider Class="mt-3 mb-3"></MudDivider>
+
+            <MudText Style="font-size: 20px; font-family: SourceSerif4; opacity: 0.7; " Color="Color.Primary" Align="Align.Start"> Musicalmente, el álbum es diverso y complejo, fusionando elementos de jazz, funk, soul y spoken word con el hip-hop. La producción es rica en capas, con arreglos detallados y colaboraciones con músicos talentosos que contribuyen a la profundidad sonora del proyecto.</MudText>
+            <MudButton Style="font-size: 10px;" Color="Color.Error" Variant="Variant.Text">Leer</MudButton>
+
+         </MudItem>
+    </MudGrid>
+</MudItem>
+
+
+@code {
+
+}
