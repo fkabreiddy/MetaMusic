@@ -3,7 +3,7 @@
     <style>
         .track-title {
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -20,13 +20,16 @@
 
 <MudCard Class="track-card">
     <MudContainer Style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
-        <div Style="width: auto;display: flex; gap: 15px; align-items: center; margin-top: 10px; margin-bottom: 10px; " class="track-title">
+        <div Style="width: auto;display: flex; gap: 15px; align-items: center; margin-top: 10px; margin-bottom: 10px; height: 50px;" class="track-title">
             <MudAvatar>
                 <MudImage src="@track.Album.portada"></MudImage>
             </MudAvatar>
             <MudText Style="font-size: 12px; font-weight: bold; ">@track.Titulo</MudText>
         </div>
-      
+      <div style="display: flex; gap: 10px; align-items: center;">
+                <MudText Style="font-size: 12px; font-weight: bold; " Color="Color.Error">@track.Calificacion</MudText>
+                <MudIcon Icon="@Icons.Material.Rounded.ArrowUpward" Style="height: 15px; width: 15px;" Color="Color.Error"></MudIcon>
+      </div>
     </MudContainer>
 </MudCard>
 
