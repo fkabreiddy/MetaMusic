@@ -1,0 +1,134 @@
+﻿@page "/artist"
+
+<MudItem Style="margin-top: 60px;">
+    <MudGrid>
+        <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
+            <MudContainer>
+                <MudGrid Justify="Justify.Center" Style="display: flex; align-items: center;">
+                    <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
+                        <MudContainer Style="display: flex; align-items: center; justify-content: center;">
+                            <MudAvatar Style="height: 200px; width: 200px;">
+                                <MudImage src="https://i.scdn.co/image/ab6761610000e5ebc4902f080d3620b3e6da80c3"></MudImage>
+                            </MudAvatar>
+                        </MudContainer>
+
+
+                    </MudItem>
+                    <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
+                        <MudContainer Style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+
+                            <MudText  Style="font-size: 25px; font-weight: bold"Color="Color.Error">Artista</MudText>
+                            <MudText  Style="font-size: 35px; font-family: SourceSerif4;">“Lorde”</MudText>
+                        </MudContainer>
+
+
+                    </MudItem>
+                </MudGrid>
+                
+
+            </MudContainer>
+            
+
+        </MudItem>
+
+        <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+
+        
+        <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
+
+            <MudGrid Style="display: flex; align-items: center;">
+                <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
+                   
+
+                    <MudContainer Style="display: flex; flex-direction: column; gap: 20px;">
+                        <div style="display: flex; gap: 10px;">
+                            <MudText Style="font-size: 15px; " Color="Color.Error">Tracks</MudText>
+                            <MudText Style="font-size: 15px;">20</MudText>
+                        </div>
+                        <MudDivider></MudDivider>
+                        <div style="display: flex; gap: 10px;">
+                            <MudText Style="font-size: 15px; " Color="Color.Error">Reviews</MudText>
+                            <MudText Style="font-size: 15px; ">2</MudText>
+                        </div>
+                        <MudDivider></MudDivider>
+                        <div style="display: flex; gap: 10px;">
+                            <MudText Style="font-size: 15px; " Color="Color.Error">Calificacion General</MudText>
+                            <MudText Style="font-size: 15px; ">8</MudText>
+                        </div>
+                    </MudContainer>
+                </MudItem>
+
+                <MudItem md="8" lg="8"  xxl="8" xl="8" sm="12" xs="12">
+                    <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 20px;" Color="Color.Error">Tracks Populares</MudText>
+
+                    <MudContainer>
+                        <MudGrid>
+
+
+                            @foreach (var track in Tracks)
+                            {
+                                <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
+                                    <MetaMusic.Pages.Common_Components.TrackComponent track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
+                                </MudItem>
+                            }
+
+
+                        </MudGrid>
+                    </MudContainer>
+                </MudItem>
+
+
+                
+            </MudGrid>
+
+        </MudItem>
+
+
+        <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+
+
+
+        <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12" Style="margin-top: 40px; margin-bottom: 40px;">
+            <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 20px;" Color="Color.Error">Albumes</MudText>
+
+
+            <MudGrid>
+                @foreach(var album in albumesRock)
+                {
+                    <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
+                        <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudItem>
+    </MudGrid>
+</MudItem>
+@code {
+    public static Album album1 { get; set; } = new() { nombre = "Back in Black", Autores = "AC/DC", calificacion = 9, portada = "https://i1.wp.com/www.scienceofnoise.net/wp-content/uploads/2020/07/068660474366a63e1263e53ff370eb50.jpg?fit=1417%2C1414&ssl=1", genero = "Rock" };
+    public static Album album2 { get; set; } = new() { nombre = "The Dark Side of the Moon", Autores = "Pink Floyd", calificacion = 10, portada = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/The_Dark_Side_of_the_Moon_Cover.svg/250px-The_Dark_Side_of_the_Moon_Cover.svg.png", genero = "Rock Progresivo" };
+    public static Album album3 { get; set; } = new() { nombre = "Led Zeppelin IV", Autores = "Led Zeppelin", calificacion = 8, portada = "https://th.bing.com/th/id/R.b015b15e476c92d10a834d523575d3c9?rik=cz%2fuYaRUl%2b6jpQ&riu=http%3a%2f%2fsuperhypeblog.com%2fwp-content%2fuploads%2f2011%2f08%2fled-zep-iv.jpg&ehk=r95%2f6H52El9onRrkRpnrh3Fbkp4SyMtEFbCv%2b%2f%2fKuNQ%3d&risl=&pid=ImgRaw&r=0", genero = "Hard Rock" };
+    public static Album album4 { get; set; } = new() { nombre = "Hotel California", Autores = "Eagles", calificacion = 7, portada = "https://th.bing.com/th/id/R.f0dce5ef10a1edea11201ba88f200440?rik=aiZgzOMddQXJeQ&pid=ImgRaw&r=0", genero = "Rock" };
+    public static List<Album> albumesRock = new List<Album>(){
+        album1,
+        album2,
+        album3,
+        album4,
+    };
+    public static Track track1 = new Track() { Titulo = "Highway to Hell", Duracion = TimeSpan.FromMinutes(3).Add(TimeSpan.FromSeconds(27)), Album = album1, Calificacion = 8, };
+    public static Track track2 = new Track() { Titulo = "Money", Duracion = TimeSpan.FromMinutes(6).Add(TimeSpan.FromSeconds(22)), Album = album2, Calificacion = 10, };
+    public static Track track3 = new Track() { Titulo = "Stairway to Heaven", Duracion = TimeSpan.FromMinutes(8).Add(TimeSpan.FromSeconds(2)), Album = album3, Calificacion = 7, };
+    public static Track track4 = new Track() { Titulo = "Hotel California", Duracion = TimeSpan.FromMinutes(6).Add(TimeSpan.FromSeconds(30)), Album = album4, Calificacion = 9, };
+    public static Track track5 = new Track() { Titulo = "Back in Black", Duracion = TimeSpan.FromMinutes(4).Add(TimeSpan.FromSeconds(15)), Album = album1, Calificacion = 9, };
+    public static Track track6 = new Track() { Titulo = "Comfortably Numb", Duracion = TimeSpan.FromMinutes(6).Add(TimeSpan.FromSeconds(21)), Album = album2, Calificacion = 8, };
+
+    public List<Track> Tracks = new List<Track>(){
+
+        track1,
+        track2,
+        track3,
+        track4,
+        track5,
+        track6,
+    };
+
+}
