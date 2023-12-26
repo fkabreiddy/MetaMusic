@@ -98,13 +98,7 @@
                                             </div>
 
                                         </MudMenuItem>
-                                        <MudMenuItem Style="border-radius: 10px;">
-                                            <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                <MudText Style="font-size: 12px;   ">Más opciones</MudText>
-                                                <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Settings"></MudIcon>
-                                            </div>
-
-                                        </MudMenuItem>
+                                       
                                         <MudMenuItem @onclick="()=>{IsDarkMode = !IsDarkMode;}" Style="border-radius: 10px;">
                                             <div style="display:flex; justify-content: space-between; align-items: center;">
                                                 <MudText Style="font-size: 12px;   ">Modo @(IsDarkMode ? "Claro" : "Oscuro")</MudText>
@@ -209,7 +203,7 @@
 
 @code{
     private string navbarclass = "navbar-container";
-    public bool IsDarkMode { get; set; } = false;
+    public bool IsDarkMode { get; set; } = true ;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)

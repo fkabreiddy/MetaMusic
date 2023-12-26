@@ -71,10 +71,10 @@
                     <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">Tracks Populares</MudText>
 
                     <MudContainer>
-                        <MudGrid>
+                        <MudGrid Justify="Justify.Center">
 
 
-                            @foreach (var track in Tracks)
+                            @foreach (var track in Tracks )
                             {
                                 <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
                                     <MetaMusic.Pages.Common_Components.TrackComponent track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
