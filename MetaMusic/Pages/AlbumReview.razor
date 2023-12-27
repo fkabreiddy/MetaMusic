@@ -18,7 +18,7 @@
                     <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
                         <MudContainer Style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
 
-                            <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">Album Review</MudText>
+                            <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">ALBUM REVIEW</MudText>
                             <MudText Style="font-size: 35px; font-family: SourceSerif4;" Align="Align.Center">“@Albumresponse.nombre” - @Albumresponse.Autores</MudText>
                                 <MudText Style="font-size: 12px;margin-top: 20px; " Color="Color.Error">@Albumresponse.fechalanzamiento?.Substring(0,4)</MudText>
                             <div style="display: flex; gap: 7px; align-items: center; margin-top: 20px;">
@@ -45,14 +45,14 @@
                         <MudContainer Style="display: flex; flex-direction: column; gap: 20px;">
                             <div style="display: flex; gap: 10px; align-items: center;">
                                 <MudIcon Icon="@Icons.Material.Rounded.MusicNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
-                                <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">Tracks</MudText>
+                                <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">TRACKS</MudText>
 
                                 <MudText Style="font-size: 15px;">@Albumresponse.Tracks.Count()</MudText>
                             </div>
                             <MudDivider></MudDivider>
                             <div style="display: flex; gap: 10px; align-items: center;">
                                 <MudIcon Icon="@Icons.Material.Rounded.EditNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
-                                <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">Reviews</MudText>
+                                <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">REVIEWS</MudText>
 
 
                                 <MudText Style="font-size: 15px; ">18k</MudText>
@@ -61,7 +61,7 @@
 
                             <div style="display: flex; gap: 10px; align-items: center;">
                                 <MudIcon Icon="@Icons.Material.Rounded.Star" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
-                                <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">Calificacion General</MudText>
+                                <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">CALIFICACION DE USUARIOS</MudText>
 
                                 <MudText Style="font-size: 15px; ">8</MudText>
                             </div>
@@ -75,7 +75,7 @@
                                     <MudAvatar Color="Color.Error" Size="Size.Large" Variant="Variant.Filled" Style="border-radius: 50%; " Rounded=true>
                                         8
                                     </MudAvatar>
-                                    <MudText Style="font-size: 15px; font-weight: bold">Nota del Autor</MudText>
+                                    <MudText Style="font-size: 15px; font-weight: bold">CALIFICACION DEL AUTOR</MudText>
 
 
                                 </div>
@@ -85,7 +85,7 @@
                                     <MudAvatar Color="Color.Error" Size="Size.Large" Variant="Variant.Filled" Style="border-radius: 50%; " Rounded=true>
                                         10
                                     </MudAvatar>
-                                    <MudText Style="font-size: 15px; font-weight: bold">Nota del Publico</MudText>
+                                    <MudText Style="font-size: 15px; font-weight: bold">CALIFICACION DEL PUBLICO</MudText>
                                     <MudText Style="font-size: 12px;">18k criticas</MudText>
                                 </div>
                             </MudItem>
@@ -107,7 +107,7 @@
                
 
                 <MudItem md="8" lg="8" xxl="8" xl="8" sm="12" xs="12">
-                    <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">Analisis del Autor</MudText>
+                    <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">@songReview.ToUpper()</MudText>
 
 
                     <MudContainer Style="display: flex; flex-direction: column; gap: 20px;">
@@ -129,18 +129,30 @@
 
                     </MudContainer>
                 </MudItem>
-                    <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
-                        <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">Tracks</MudText>
+                <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
+                        <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 10px;" Color="Color.Error">TRACKS</MudText>
+                        <MudText Align="Align.Center" Style="font-size: 13px; margin-bottom: 40px; opacity: 0.5;" Color="Color.Error">scrollea y has click para ver la review de cada track</MudText>
 
-                        <MudContainer>
-                            <MudGrid Justify="Justify.Center">
+                    <MudContainer Style="max-height: 360px; overflow: auto;">
+                        <MudGrid Justify="Justify.Center">
+                              
 
-
-                                @foreach (var track in Albumresponse.Tracks)
+                            @foreach (var track in Albumresponse.Tracks)
                             {
-                                <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
-                                    <MetaMusic.Pages.Common_Components.TrackComponent track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
-                                </MudItem>
+                                
+                                    @if(songReview == track.Titulo)
+                                    {
+                                        <MudIcon Style="width: 15px; height: 15px;" Icon="@Icons.Material.Rounded.ArrowDownward" Color="Color.Error">
+
+                                        </MudIcon>
+                                    }
+                                   
+
+                                    <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12" @onclick="()=>{songReview = track.Titulo;}">
+                                        <MetaMusic.Pages.Common_Components.TrackComponent track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
+                                    </MudItem>
+                                
+                              
                             }
 
 
@@ -148,25 +160,41 @@
                     </MudContainer>
                 </MudItem>
               
+              
             </MudGrid>
             <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
             <MudGrid>
-                <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12" >
-                    <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">Notas</MudText>
+                <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
 
-                    <MudGrid Style="max-height: 380px; overflow: auto;">
-                        @foreach (var track in Albumresponse.Tracks)
+                    <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">CALIFICA ESTE ALBUM</MudText>
+
+                    <MudContainer  Style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
+
+
+                       @foreach(var i in rate)
                         {
 
-                            <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
-                                <MetaMusic.Pages.Common_Components.Nota></MetaMusic.Pages.Common_Components.Nota>
-                            </MudItem>
-
-
+                            @if(i == ratenumber)
+                            { 
+                                <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%; cursor: pointer;" Rounded=true>
+                                    @i
+                                </MudAvatar>
+                            }
+                            else
+                            {
+                                <MudAvatar @onmouseover="()=>{ratenumber = i;}" @onclick="()=>{ratenumber = i;}" Variant="Variant.Outlined" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                    @i
+                                 </MudAvatar>
+                            }
+                            
                         }
 
-                    </MudGrid>
+                        
+                       
+                    </MudContainer>
                 </MudItem>
+              
+                
                 <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
                 <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12" Style="margin-bottom: 60px;">
                     <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">Mas de @Albumresponse.Autores</MudText>
@@ -204,8 +232,8 @@
 
             var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
 
-            var album = await spotify.Albums.Get("0rmhjUgoVa17LZuS8xWQ3v");
-            var tracks = await spotify.Albums.GetTracks("0rmhjUgoVa17LZuS8xWQ3v");
+            var album = await spotify.Albums.Get("7ycBtnsMtyVbbwTfJwRjSP");
+            var tracks = await spotify.Albums.GetTracks("7ycBtnsMtyVbbwTfJwRjSP");
             var albumes = await spotify.Artists.GetAlbums(album.Artists[0].Id);
             var artist = await spotify.Artists.Get(album.Artists[0].Id);
 
@@ -235,11 +263,13 @@
                         albumesrelacionados.Add(new Album() { portada = a.Images[0].Url, Autores = a.Artists[0].Name, genero = Albumresponse.genero, fechalanzamiento = a.ReleaseDate, nombre = a.Name });
                     }
                 }
+
+                songReview = Albumresponse.Tracks[0].Titulo;
                 StateHasChanged();
 
             }
 
-            
+
         }
         catch (Exception e)
         {
@@ -249,11 +279,13 @@
 
     }
 
+    public int ratenumber = 1;
+    public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     public Album Albumresponse = new Album();
     public List<Track> tracksdelalbum = new List<Track>();
     public List<Album> albumesrelacionados = new List<Album>();
+    public string songReview = "Track 1";
 
-   
 
 
 }

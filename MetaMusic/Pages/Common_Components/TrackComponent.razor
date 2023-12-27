@@ -21,14 +21,14 @@
 <MudCard Class="track-card">
     <MudContainer Style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
         <div Style="width: auto;display: flex; gap: 15px; align-items: center; margin-top: 10px; margin-bottom: 10px; height: 50px;" class="track-title">
-            <MudAvatar>
+            <MudAvatar Square=true Style="border-radius: 5px;">
                 <MudImage src="@track.Album.portada"></MudImage>
             </MudAvatar>
             <MudText Style="font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@track.Titulo</MudText>
         </div>
       <div style="display: flex; gap: 10px; align-items: center;">
-                <MudText Style="font-size: 12px; font-weight: bold; " Color="Color.Error">@track.Calificacion</MudText>
-                <MudIcon Icon="@Icons.Material.Rounded.Favorite" Style="height: 15px; width: 15px;cursor: pointer;" Color="Color.Error"></MudIcon>
+                <MudText Style="font-size: 12px; font-weight: bold; " >@track.Calificacion</MudText>
+                <MudIcon Icon="@Icons.Material.Rounded.Favorite" Style="height: 15px; width: 15px;cursor: pointer;" ></MudIcon>
       </div>
     </MudContainer>
 </MudCard>
