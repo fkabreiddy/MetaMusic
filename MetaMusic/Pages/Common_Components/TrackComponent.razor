@@ -24,11 +24,11 @@
             <MudAvatar>
                 <MudImage src="@track.Album.portada"></MudImage>
             </MudAvatar>
-            <MudText Style="font-size: 12px; font-weight: bold; ">@track.Titulo</MudText>
+            <MudText Style="font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@track.Titulo</MudText>
         </div>
       <div style="display: flex; gap: 10px; align-items: center;">
                 <MudText Style="font-size: 12px; font-weight: bold; " Color="Color.Error">@track.Calificacion</MudText>
-                <MudIcon Icon="@Icons.Material.Rounded.ArrowUpward" Style="height: 15px; width: 15px;" Color="Color.Error"></MudIcon>
+                <MudIcon Icon="@Icons.Material.Rounded.Favorite" Style="height: 15px; width: 15px;cursor: pointer;" Color="Color.Error"></MudIcon>
       </div>
     </MudContainer>
 </MudCard>

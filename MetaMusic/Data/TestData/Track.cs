@@ -7,6 +7,8 @@
         public string Titulo { get; set; } = "";
 
         public int Calificacion;
+
+        public int Duracionms { get; set;}
         public Album Album { get; set; } = new Album();
     }
 }

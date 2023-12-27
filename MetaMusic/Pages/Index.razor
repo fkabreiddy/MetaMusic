@@ -92,7 +92,28 @@
 
 @code{
 
-   
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var config = SpotifyClientConfig.CreateDefault();
+
+            var request = new ClientCredentialsRequest("be3b1a5218c449a79a3a21ddfe850a5f", "7cf1d67e3efd4690a1bd43a18903f7dc");
+            var response = await new OAuthClient(config).RequestToken(request);
+
+            var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
+
+            var track = await spotify.Tracks.Get("2MvvoeRt8NcOXWESkxWn3g");
+
+            var trackname = track.Name;
+        }
+        catch(Exception e)
+        {
+            var excepcion = e.InnerException?.Message ?? e.Message;
+            
+        }
+        
+    }
 
     public List<Album> albumes = new List<Album>()
     {

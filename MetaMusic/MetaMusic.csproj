@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="BlazorAnimation" Version="2.2.0" />
     <PackageReference Include="MudBlazor" Version="6.11.2" />
+    <PackageReference Include="SpotifyAPI.Web" Version="7.0.2" />
+    <PackageReference Include="SpotifyAPI.Web.Auth" Version="7.0.2" />
   </ItemGroup>
 
 </Project>
