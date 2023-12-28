@@ -1,0 +1,35 @@
+﻿
+    <div style="display: flex; flex-direction: column;  gap: 20px; align-items: center; justify-content: center;">
+        <MudAvatar Color="Color.Error" Size="Size.Large" Variant="Variant.Filled" Style="border-radius: 50%; " Rounded=true>
+            9
+        </MudAvatar>
+        
+        <div style="display: flex; flex-direction: column;  gap: 20px; align-items: center; justify-content: center;">
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">120</span>  criticas positivas (10 - 7)</MudText>
+                <MudIcon Style="height: 20px; width: 20px;" Color="Color.Error" Icon="@Icons.Material.Rounded.Favorite"></MudIcon>
+            </div>
+            <MudProgressLinear Color="Color.Success" Rounded="true" Size="Size.Small" Value="@(120 *  100 / 180)" />
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">50</span>  criticas neutrales (6 - 4)</MudText>
+                <MudIcon Style="height: 20px; width: 20px;" Color="Color.Error" Icon="@Icons.Material.Rounded.SentimentNeutral"></MudIcon>
+            </div>
+            <MudProgressLinear Color="Color.Warning" Rounded="true" Size="Size.Small" Value="@(50 *  100 / 180)" />
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">10</span>  criticas malas (3 - 1)</MudText>
+                <MudIcon Style="height: 20px; width: 20px;" Color="Color.Error" Icon="@Icons.Material.Rounded.ThumbDown"></MudIcon>
+            </div>
+            <MudProgressLinear Color="Color.Error" Rounded="true" Size="Size.Small" Value="@(10 *  100 / 180)" />
+        </div>
+        
+
+    
+       
+
+       
+    </div>
+
+
+@code {
+
+}
