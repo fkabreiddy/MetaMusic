@@ -10,6 +10,7 @@
             public string portada;
             public string genero;
         public string fechalanzamiento;
+        public string tipo;
         public List<Track> Tracks = new List<Track>();
         
     }

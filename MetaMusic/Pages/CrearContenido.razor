@@ -1,0 +1,212 @@
+﻿@page "/crear-contenido"
+
+<MudItem Style="margin-top: 60px;">
+    <MudGrid Justify="Justify.Center">
+        <MudItem md="8" sm="8" lg="8" xxl="8" xl="8" xs="8">
+            <MudCard>
+
+                <MudContainer Style="height: auto; width: 100%;  display: flex; border-radius: 9px; flex-direction: column; ">
+
+
+                    <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold;  margin-top: 20px; ">ANTES QUE NADA</MudText>
+                    <MudText Align="Align.Center" Style="font-size: 12px; margin-bottom: 10px; margin-top: 15px; ">Ve a <MudLink Style="font-size: 12px; margin-bottom: 10px; margin-top: 15px; " Href="https://open.spotify.com/" Underline="Underline.Always">Spotify.com</MudLink> busca el artista o album que quieras agregar y copia su identificador. En el recuadro de abajo.</MudText>
+
+                    <MudText Align="Align.Center" Style="font-size: 12px; margin-bottom: 10px;  ">El idenificador de un artista / album en Spotify, son los caracteres finales en la url cuando buscas uno. Por ejemplo: "https://open.spotify.com/intl-es/album/<b style="text-decoration: underline;">123456789abcdefg"</b></MudText>
+
+                    <MudDivider></MudDivider>
+                    <MudText Align="Align.Center" Style="font-size: 12px; margin-bottom: 10px;margin-top: 10px; font-weight: bold;  ">Que vas a buscar?</MudText>
+                    <MudChipSet   Mandatory=true Style="margin-bottom: 20px; display: flex; justify-content: center; align-items: center;"   >
+                        
+                        <MudChip  Variant="@( tipodeContenido == "artista" ? Variant.Filled: Variant.Outlined)" Style="font-weight: bold;" @onclick='()=>{tipodeContenido = "artista";}' Text="Artista"></MudChip>
+                        <MudChip  Variant="@( tipodeContenido == "album" ? Variant.Filled: Variant.Outlined)" Style="font-weight: bold;" @onclick='()=>{tipodeContenido = "album";}' Default=true Text="Album / Single"></MudChip>
+                    </MudChipSet>
+
+                    @if(Mensaje != "")
+                    {
+                        <MudText Align="Align.Center" Color="Color.Error" Style="font-size: 12px; font-weight: bold;  margin-top: 20px; ">@Mensaje</MudText>
+                    }
+                    <MudTextField T="string" @bind-Value="url" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="Variant.Text" DisableUnderLine="true" Placeholder='@($"""URl del {tipodeContenido} a buscar""")'></MudTextField>
+
+
+
+
+                    <MudChip  @onclick="async()=>{await BuscarEnSpotify();}" Variant="Variant.Filled" Color="Color.Error" Style="font-size: 12px; margin-bottom: 15px; cursor: pointer;" Text="Buscar"></MudChip>
+
+                </MudContainer>
+
+
+            </MudCard>
+        </MudItem>
+        
+        
+    </MudGrid>
+   <MudItem>
+      
+            @if (tipodeContenidoEncontrado == "artista")
+            {
+                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                     <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+                       <MetaMusic.Pages.Common_Components.CrearArtista newArtista="artistaRequest"></MetaMusic.Pages.Common_Components.CrearArtista>
+                 </BlazorAnimation.Animation>
+               
+            }
+            else
+            {
+                if(Albumresponse.tipo == "single")
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+
+       
+   </MudItem>
+</MudItem>
+
+@code {
+    public bool buscando = false;
+    public Artista artistaRequest = new Artista();
+    public Album Albumresponse = new Album();
+    public string url = "";
+    public string tipodeContenido = "";
+    public string tipodeContenidoEncontrado = "";
+    public string Mensaje;
+    public Track trackActual = new Track();
+
+    public async Task BuscarAlbum()
+    {
+        try
+        {
+
+            var config = SpotifyClientConfig.CreateDefault();
+
+            var request = new ClientCredentialsRequest("be3b1a5218c449a79a3a21ddfe850a5f", "7cf1d67e3efd4690a1bd43a18903f7dc");
+            var response = await new OAuthClient(config).RequestToken(request);
+
+            var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
+
+
+
+
+
+            var album = await spotify.Albums.Get(url);
+
+            var tracks = await spotify.Albums.GetTracks(url);
+            var albumes = await spotify.Artists.GetAlbums(album.Artists[0].Id);
+            var artist = await spotify.Artists.Get(album.Artists[0].Id);
+
+
+            if (album is not null && tracks.Items is not null)
+            {
+                Albumresponse.portada = album.Images[0].Url;
+
+                Albumresponse.tipo = album.Type;
+                Albumresponse.Autores = album.Artists[0].Name;
+
+                if (artist is not null && artist.Genres.Count() >= 1)
+                {
+                    Albumresponse.genero = artist.Genres[0];
+
+                }
+                Albumresponse.nombre = album.Name;
+                Albumresponse.fechalanzamiento = album.ReleaseDate;
+
+                foreach (var track in tracks.Items)
+                {
+                    Albumresponse.Tracks.Add(new Track() { Titulo = track.Name, Duracionms = track.DurationMs, Album = Albumresponse });
+                }
+
+
+                tipodeContenidoEncontrado = "album";
+                StateHasChanged();
+
+            }
+
+
+
+        }
+        catch (APIException e)
+        {
+            Mensaje = "Album o Single no Encontrado";
+        }
+        catch (Exception e)
+        {
+            var excepcion = e.InnerException?.Message ?? e.Message;
+
+        }
+
+    }
+    public async Task BuscarArtista()
+    {
+        try
+        {
+
+            var config = SpotifyClientConfig.CreateDefault();
+
+            var request = new ClientCredentialsRequest("be3b1a5218c449a79a3a21ddfe850a5f", "7cf1d67e3efd4690a1bd43a18903f7dc");
+            var response = await new OAuthClient(config).RequestToken(request);
+
+            var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
+
+
+
+
+
+
+            var artista = await spotify.Artists.Get(url);
+
+
+
+            if (artista is not null )
+            {
+                artistaRequest.Foto = artista.Images[0].Url;
+
+
+                artistaRequest.Nombre = artista.Name;
+
+                if (artista is not null && artista.Genres.Count() >= 1)
+                {
+                    artistaRequest.generosmusicales.Add(artista.Genres[1]);
+                    artistaRequest.generosmusicales.Add(artista.Genres[0]);
+
+                }
+
+
+                tipodeContenidoEncontrado = "artista";
+                StateHasChanged();
+
+            }
+            
+
+
+        }
+        catch (APIException e)
+        {
+            Mensaje = "Artista no Encontrado";
+        }
+        catch (Exception e)
+        {
+            var excepcion = e.InnerException?.Message ?? e.Message;
+
+        }
+    }
+    public async Task BuscarEnSpotify()
+    {
+       
+       
+        tipodeContenidoEncontrado = "";
+        if(tipodeContenido == "artista")
+        {
+            await BuscarArtista();
+
+        }
+        else
+        {
+            await BuscarAlbum();
+        }
+    }
+    
+}

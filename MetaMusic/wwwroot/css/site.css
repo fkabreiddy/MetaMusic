@@ -39,8 +39,8 @@ a, .btn-link {
 }
 
 ::selection {
-    background-color: #FFF5C2; /* Color de fondo del texto seleccionado */
-    color: #333; /* Color del texto seleccionado */
+    background-color: #E74646; /* Color de fondo del texto seleccionado */
+    color: #fdfdfd; /* Color del texto seleccionado */
 }
 
 #blazor-error-ui {

@@ -8,6 +8,7 @@
 
         public int Calificacion;
 
+        public string Critica = string.Empty;
         public int Duracionms { get; set;}
         public Album Album { get; set; } = new Album();
     }

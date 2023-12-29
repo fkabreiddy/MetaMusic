@@ -124,43 +124,13 @@
                                         </MudMenuItem>
                                         <MudMenuItem Style="border-radius: 10px;">
 
-                                            <MudMenu ActivationEvent="MouseEvent.MouseOver" AnchorOrigin="Origin.CenterRight" TransformOrigin="Origin.CenterLeft" Dense>
-                                                <ActivatorContent>
-                                                    <div style="display:flex; justify-content: space-between; align-items: center; gap: 50px; align-items: center; ">
-                                                        <MudText Color="Color.Error" Style="font-size: 12px;   ">Crear Conenido</MudText>
-                                                        <MudIcon Color="Color.Error" Style="height:  12px; width: 12px; " Size="Size.Small" Icon="@Icons.Material.Rounded.ArrowForwardIos"></MudIcon>
+                                           
+                                                <div style="display:flex; justify-content: space-between; align-items: center;border-radius: 9px;">
+                                                    <MudText Color="Color.Error" Style="font-size: 12px;   ">Crear Contenido</MudText>
+                                                <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Add"></MudIcon>
+                                                </div>
 
-                                                    </div>
-                                                </ActivatorContent>
-
-                                                <ChildContent>
-                                                    <MudPaper Outlined="true" Style="z-index: 999999; ">
-                                                        <MudContainer Style="max-height: 80vh; overflow: auto; margin-top: 10px;margin-bottom: 10px; ">
-
-                                                            <MudMenuItem Style="border-radius: 9px;">
-                                                                <div style="display:flex; justify-content: space-between; align-items: center; border-radius: 9px; ">
-                                                                    <MudText Color="Color.Error" Style="font-size: 12px;   ">Agregar Artista</MudText>
-                                                                </div>
-                                                               
-                                                             </MudMenuItem>
-                                                            <MudMenuItem Style="border-radius: 9px;">
-                                                                <div style="display:flex; justify-content: space-between; align-items: center;border-radius: 9px;">
-                                                                    <MudText Color="Color.Error" Style="font-size: 12px;   ">Review de un Single</MudText>
-                                                                </div>
-
-                                                            </MudMenuItem>
-                                                            <MudMenuItem Style="border-radius: 9px;">
-                                                                <div style="display:flex; justify-content: space-between; align-items: center;border-radius: 9px;">
-                                                                    <MudText Color="Color.Error" Style="font-size: 12px;   ">Review de un album</MudText>
-
-                                                                </div>
-
-                                                            </MudMenuItem>
-                                                        </MudContainer>
-                                                     </MudPaper>
-                                                   
-                                                </ChildContent>
-                                            </MudMenu>
+                                          
                                            
 
                                         </MudMenuItem>
@@ -228,7 +198,7 @@
        
     </MudItem>
 
-    <MudTFootRow Style="position: static ; margin-bottom: 0;  display: flex; align-items: center; justify-content: center; width: calc( 100vw - 2px); gap: 10px; background-color: black; height: 60px; margin-top: 30px;">
+    <MudTFootRow Style="@($"""position: static ; margin-bottom: 0;  display: flex; align-items: center; justify-content: center; width: calc( 100vw - 2px); gap: 10px; {(theme.IsDark() ? "background-color: black;" : "background-color: white;")} height: 60px; margin-top: 30px;""")">
         <MudText Align="Align.Center" Style="font-size: 30px; font-weight: bold;" Color="Color.Error">M E T A M U S I C</MudText>
     </MudTFootRow>
 
