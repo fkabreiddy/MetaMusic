@@ -50,7 +50,7 @@
                  </BlazorAnimation.Animation>
                
             }
-            else
+            else if( tipodeContenidoEncontrado == "album" || tipodeContenidoEncontrado == "single")
             {
                 if(Albumresponse.tipo == "single")
                 {
@@ -58,7 +58,9 @@
                 }
                 else
                 {
-
+                    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                        <MetaMusic.Pages.Common_Components.CrearAlbum Albumresponse="Albumresponse"></MetaMusic.Pages.Common_Components.CrearAlbum>
+                    </BlazorAnimation.Animation>
                 }
             }
 

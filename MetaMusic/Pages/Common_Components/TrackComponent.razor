@@ -18,7 +18,7 @@
 
     </style>
 
-<MudCard Class="track-card">
+<MudCard Class="track-card" >
     <MudContainer Style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
         <div Style="width: auto;display: flex; gap: 15px; align-items: center; margin-top: 10px; margin-bottom: 10px; height: 50px;" class="track-title">
             <MudAvatar Square=true Style="border-radius: 5px;">
@@ -28,13 +28,18 @@
         </div>
       <div style="display: flex; gap: 10px; align-items: center;">
                 <MudText Style="font-size: 12px; font-weight: bold; " >@track.Calificacion</MudText>
-                <MudIcon Icon="@Icons.Material.Rounded.Favorite" Style="height: 15px; width: 15px;cursor: pointer;" ></MudIcon>
+
+                <MudIconButton  Color="Color.Error" Disabled=DisableLikeButton Icon="@Icons.Material.Rounded.Favorite" Size="Size.Small" ></MudIconButton>
       </div>
     </MudContainer>
 </MudCard>
 
-@code {
-    [Parameter]
-    public Track track { get; set; } = new Track();
+ @code {
+    [Parameter]  public Track track { get; set; } = new Track();
 
+    [Parameter] public bool DisableLikeButton { get; set; } = false;
+
+
+
+   
 }
