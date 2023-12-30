@@ -86,7 +86,7 @@
                         <MudGrid Style="margin-top: 20px;" Justify="Justify.Center">
                             <MudItem md="6" sm="12" xs="12" xl="6" xxl="6" lg="6">
                                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;gap: 20px;">
-                                    <MudAvatar Color="Color.Error" Size="Size.Large" Variant="Variant.Filled" Style="border-radius: 50%; " Rounded=true>
+                                    <MudAvatar Color="Color.Error" Size="Size.Large" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%; " Rounded=true>
                                         7
                                     </MudAvatar>
                                     <MudText Style="font-size: 15px; font-weight: bold">CALIFICACION DEL AUTOR</MudText>
@@ -95,12 +95,12 @@
                             </MudItem>
                             <MudItem md="6" sm="12" xs="12" xl="6" xxl="6" lg="6">
                                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
-                                    <MudAvatar Color="Color.Error" Size="Size.Large" Variant="Variant.Filled" Style="border-radius: 50%; " Rounded=true>
+                                    <MudAvatar Color="Color.Error" Size="Size.Large" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%; " Rounded=true>
                                         9
                                     </MudAvatar>
                                     <MudText Style="font-size: 15px; font-weight: bold">CALIFICACION DEL PUBLICO</MudText>
                                     <MudText Style="font-size: 12px;"><span style="color: #E74646;">120</span>  CRITICAS</MudText>
-                                    <MudButton Style="font-size: 12px;" @onclick="ShowNotes" Color="Color.Error" Variant="Variant.Outlined">VER CRITICAS</MudButton>
+                                    <MudButton Style="font-size: 12px;" @onclick="ShowNotes" Color="Color.Error" Variant="MudBlazor.Variant.Outlined">VER CRITICAS</MudButton>
                                 </div>
                             </MudItem>
                         </MudGrid>
@@ -189,7 +189,7 @@
                                 @if (i == 1 )
                                 {
                                     <MudTooltip Arrow=true Text="Es Horrible" Color="Color.Error" >
-                                        <MudAvatar  Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -197,7 +197,7 @@
                                 else if (i == 2)
                                 {
                                     <MudTooltip Arrow=true Text="Muy Malo" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -206,7 +206,7 @@
                                 else if (i >= 3 && i <= 4)
                                 {
                                     <MudTooltip Arrow=true Text="Es Malo" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -214,7 +214,7 @@
                                 else if (i >= 5 && i <= 6)
                                 {
                                     <MudTooltip Arrow=true Text="Esta Bien" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -222,7 +222,7 @@
                                 else if (i >= 7 && i <= 8)
                                 {
                                     <MudTooltip Arrow=true Text="Muy Bueno" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -230,7 +230,7 @@
                                 else if (i >= 9 && i < 10)
                                 {
                                     <MudTooltip Arrow=true Text="!Maravilloso!" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -238,7 +238,7 @@
                                 else 
                                 {
                                     <MudTooltip Arrow=true Text="!Es Excelente!" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -249,7 +249,7 @@
                             
                             else
                             {
-                                <MudAvatar @onmouseover="()=>{ratenumber = i;}" @onclick="()=>{ratenumber = i;}" Variant="Variant.Outlined" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                <MudAvatar @onmouseover="()=>{ratenumber = i;}" @onclick="()=>{ratenumber = i;}" Variant="MudBlazor.Variant.Outlined" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                     @i
                                     </MudAvatar>
                             }
@@ -264,7 +264,7 @@
                     </MudContainer>
                     <MudText Align="Align.Center"  Style="font-size: 10px; font-weight: bold; margin-top: 20px; margin-bottom: 20px; opacity: 0.5;">•  •  •  •  •  •  •  •  •  •  •  •</MudText>
                     <MudContainer Style="margin-top: 20px; width: 80%;">
-                        <MudTextField  AutoGrow=true T="string" Immediate=true MaxLength="120" Counter="120" Variant="Variant.Text"  Style="font-size: 15px;" Placeholder="Escribe una nota (opcional)" DisableUnderLine=true  AdornmentIcon="@Icons.Material.Rounded.Send" Adornment="Adornment.End" ></MudTextField>
+                        <MudTextField AutoGrow=true T="string" Immediate=true MaxLength="120" Counter="120" Variant="MudBlazor.Variant.Text" Style="font-size: 15px;" Placeholder="Escribe una nota (opcional)" DisableUnderLine=true AdornmentIcon="@Icons.Material.Rounded.Send" Adornment="Adornment.End"></MudTextField>
                     </MudContainer>
                 </MudItem>
 
@@ -297,7 +297,7 @@
 
     public async Task ShowNotes()
     {
-        var options = new DialogOptions(){ NoHeader = true, CloseButton = false};
+        var options = new MudBlazor.DialogOptions() { NoHeader = true, CloseButton = false };
 
        await dService.ShowAsync<Pages.Common_Components.NotasDialog>("", options);
     }

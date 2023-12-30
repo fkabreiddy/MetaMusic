@@ -8,7 +8,7 @@
                 <MudContainer Style="height: auto; width: 100%;  display: flex; border-radius: 9px; flex-direction: column; ">
 
 
-                    <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold;  margin-top: 20px; ">ANTES QUE NADA</MudText>
+                    <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold;  margin-top: 20px; ">PRIMERO</MudText>
                     <MudText Align="Align.Center" Style="font-size: 12px; margin-bottom: 10px; margin-top: 15px; ">Ve a <MudLink Style="font-size: 12px; margin-bottom: 10px; margin-top: 15px; " Href="https://open.spotify.com/" Underline="Underline.Always">Spotify.com</MudLink> busca el artista o album que quieras agregar y copia su identificador. En el recuadro de abajo.</MudText>
 
                     <MudText Align="Align.Center" Style="font-size: 12px; margin-bottom: 10px;  ">El idenificador de un artista / album en Spotify, son los caracteres finales en la url cuando buscas uno. Por ejemplo: "https://open.spotify.com/intl-es/album/<b style="text-decoration: underline;">123456789abcdefg"</b></MudText>
@@ -17,20 +17,20 @@
                     <MudText Align="Align.Center" Style="font-size: 12px; margin-bottom: 10px;margin-top: 10px; font-weight: bold;  ">Que vas a buscar?</MudText>
                     <MudChipSet   Mandatory=true Style="margin-bottom: 20px; display: flex; justify-content: center; align-items: center;"   >
                         
-                        <MudChip  Variant="@( tipodeContenido == "artista" ? Variant.Filled: Variant.Outlined)" Style="font-weight: bold;" @onclick='()=>{tipodeContenido = "artista";}' Text="Artista"></MudChip>
-                        <MudChip  Variant="@( tipodeContenido == "album" ? Variant.Filled: Variant.Outlined)" Style="font-weight: bold;" @onclick='()=>{tipodeContenido = "album";}' Default=true Text="Album / Single"></MudChip>
+                        <MudChip Variant="@( tipodeContenido == "artista" ? MudBlazor.Variant.Filled: MudBlazor.Variant.Outlined)" Style="font-weight: bold;" @onclick='()=>{tipodeContenido = "artista";}' Text="Artista"></MudChip>
+                        <MudChip Variant="@( tipodeContenido == "album" ? MudBlazor.Variant.Filled: MudBlazor.Variant.Outlined)" Style="font-weight: bold;" @onclick='()=>{tipodeContenido = "album";}' Default=true Text="Album / Single"></MudChip>
                     </MudChipSet>
 
                     @if(Mensaje != "")
                     {
                         <MudText Align="Align.Center" Color="Color.Error" Style="font-size: 12px; font-weight: bold;  margin-top: 20px; ">@Mensaje</MudText>
                     }
-                    <MudTextField T="string" @bind-Value="url" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="Variant.Text" DisableUnderLine="true" Placeholder='@($"""URl del {tipodeContenido} a buscar""")'></MudTextField>
+                    <MudTextField T="string" @bind-Value="url" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='@($"""URl del {tipodeContenido} a buscar""")'></MudTextField>
 
 
 
 
-                    <MudChip  @onclick="async()=>{await BuscarEnSpotify();}" Variant="Variant.Filled" Color="Color.Error" Style="font-size: 12px; margin-bottom: 15px; cursor: pointer;" Text="Buscar"></MudChip>
+                    <MudChip @onclick="async()=>{await BuscarEnSpotify();}" Variant="MudBlazor.Variant.Filled" Disabled="@buscando" Color="Color.Error" Style="font-size: 12px; margin-bottom: 15px; cursor: pointer;"> @(buscando ? "Buscando..." : "Buscar")</MudChip>
 
                 </MudContainer>
 
@@ -73,7 +73,7 @@
     public Artista artistaRequest = new Artista();
     public Album Albumresponse = new Album();
     public string url = "";
-    public string tipodeContenido = "";
+    public string tipodeContenido = "album";
     public string tipodeContenidoEncontrado = "";
     public string Mensaje;
     public Track trackActual = new Track();
@@ -181,7 +181,7 @@
                 StateHasChanged();
 
             }
-            
+
 
 
         }
@@ -197,8 +197,8 @@
     }
     public async Task BuscarEnSpotify()
     {
-       
-       
+        buscando = true;
+
         tipodeContenidoEncontrado = "";
         if(tipodeContenido == "artista")
         {
@@ -209,6 +209,8 @@
         {
             await BuscarAlbum();
         }
+
+        buscando = false;
     }
     
 }

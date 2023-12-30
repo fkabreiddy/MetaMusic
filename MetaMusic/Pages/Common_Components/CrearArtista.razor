@@ -20,7 +20,7 @@
 
 
 
-                                <MudTextField T="string" @bind-Value="newArtista.generosmusicales[0]" Adornment="Adornment.Start" Style="font-size: 12px;color: #E74646 ;  margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="Variant.Text" DisableUnderLine="true" Placeholder='@($"""Genero musical de {newArtista.Nombre}""")'></MudTextField>
+                                <MudTextField T="string" @bind-Value="newArtista.generosmusicales[0]" Adornment="Adornment.Start" Style="font-size: 12px;color: #E74646 ;  margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='@($"""Genero musical de {newArtista.Nombre}""")'></MudTextField>
                             </MudContainer>
 
 
@@ -38,7 +38,7 @@
 
 
             <MudContainer Style="  display: flex; align-items: center; justify-content: center; margin-top: 20px;">
-                <MudChip Variant="Variant.Filled" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " Text="Guardar"></MudChip>
+                <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " Text="Guardar"></MudChip>
             </MudContainer>
 
         <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>

@@ -78,7 +78,7 @@
                                 @if (i == 1)
                                 {
                                     <MudTooltip Arrow=true Text="Es Horrible" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -86,7 +86,7 @@
                                 else if (i == 2)
                                 {
                                     <MudTooltip Arrow=true Text="Muy Malo" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -95,7 +95,7 @@
                                 else if (i >= 3 && i <= 4)
                                 {
                                     <MudTooltip Arrow=true Text="Es Malo" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -103,7 +103,7 @@
                                 else if (i >= 5 && i <= 6)
                                 {
                                     <MudTooltip Arrow=true Text="Esta Bien" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -111,7 +111,7 @@
                                 else if (i >= 7 && i <= 8)
                                 {
                                     <MudTooltip Arrow=true Text="Muy Bueno" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -119,7 +119,7 @@
                                 else if (i >= 9 && i < 10)
                                 {
                                     <MudTooltip Arrow=true Text="!Maravilloso!" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -127,7 +127,7 @@
                                 else
                                 {
                                     <MudTooltip Arrow=true Text="!Es Excelente!" Color="Color.Error">
-                                        <MudAvatar Variant="Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                             @i
                                         </MudAvatar>
                                     </MudTooltip>
@@ -135,7 +135,7 @@
                             }
                             else
                             {
-                                <MudAvatar @onclick="()=>{Albumresponse.calificacion = i;}" Variant="Variant.Outlined" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                <MudAvatar @onclick="()=>{Albumresponse.calificacion = i;}" Variant="MudBlazor.Variant.Outlined" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                     @i
                                 </MudAvatar>
                             }
@@ -169,10 +169,10 @@
 
 
                     <MudContainer Style="display: flex; flex-direction: column; gap: 20px;  ">
-                             <MudTextField T="string" Immediate=true MaxLength="40"  Variant="Variant.Text" Style="font-size: 25px;color:#E74646;  font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Placeholder="Titulo de tu critica" DisableUnderLine=true></MudTextField>
-                        <MudTextField AutoGrow=true T="string" Immediate=true Variant="Variant.Text" Style="font-size: 18px ;margin-top: 20px; margin-bottom: 40px; font-family: SourceSerif4;" Placeholder="Escribe aqui tu critica" DisableUnderLine=true></MudTextField>
+                        <MudTextField T="string" Immediate=true MaxLength="40" Variant="MudBlazor.Variant.Text" Style="font-size: 25px;color:#E74646;  font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Placeholder="Titulo de tu critica" DisableUnderLine=true></MudTextField>
+                        
 
-
+                        <TinyMCE.Blazor.Editor Id="tiny" Conf="@editorConf" JsConfSrc="sample" ApiKey="4zbc8suxwqhnaaiuzacf1yboiucybwh9m9jq4trgc94dy0ab" Text="Empieza a escribir" />
 
                         </MudContainer>
                     </MudItem>
@@ -204,7 +204,7 @@
                     </MudContainer>
                 </MudItem>
                 <MudContainer Style="  display: flex; align-items: center; justify-content: center; margin-top: 20px;">
-                    <MudChip Variant="Variant.Filled" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " Text="Guardar"></MudChip>
+                    <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " Text="Guardar"></MudChip>
                 </MudContainer>
 
                 <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
@@ -224,4 +224,32 @@
     public List<Track> tracksdelalbum = new List<Track>();
     
     public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+    private Dictionary<string, object> editorConf = new Dictionary<string, object>{
+
+
+      {"plugins", "autoresize quickbars image media table hr paste codesample" },
+      {"skin", "snow" },
+    
+     
+        {"icons", "thin"},
+     
+      {"menubar", false },
+      {"toolbar", false },
+      {"content_style", "@import url('https://fonts.googleapis.com/css2?family=Tinos&display=swap'); body { font-family: 'Tinos', serif; font-size: 16pt; color: dimgray;  }img { display: block; margin: 0 auto; max-height: 225px; max-width: 100%;  };" },
+      {"placeholder", "Escribe aqui tu critica" },
+      {"quickbars_selection_toolbar", "bold italic link | h3 | alignleft aligncenter alignright |  blockquote" },
+      {"quickbars_insert_toolbar", "image media table hr codesample autolink bullist numlist" },
+      {"image_class_list", new object[] {
+        new {title = "Responsive", value = "img-responsive" }
+        }},
+        {"image_dimensions", false },
+        
+
+
+
+
+
+
+  };
 }
