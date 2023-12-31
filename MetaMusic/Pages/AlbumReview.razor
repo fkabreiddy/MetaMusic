@@ -21,16 +21,7 @@
                             <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">ALBUM REVIEW</MudText>
                             <MudText Style="font-size: 35px; font-family: SourceSerif4;" Align="Align.Center">“@Albumresponse.nombre” - @Albumresponse.Autores</MudText>
                                 <MudText Style="font-size: 12px;margin-top: 20px; " Color="Color.Error">@Albumresponse.fechalanzamiento?.Substring(0,4)</MudText>
-                            <div style="display: flex; gap: 7px; align-items: center; margin-top: 20px;">
-                                <MudText Color="Color.Error" Style="font-size: 12px; font-weight:bold; "> Por: </MudText>
-                                <MudText Style="font-size: 12px; opacity: 0.7; " Color="Color.Primary"> Jeanna Grant</MudText>
-
-                                <MudTooltip Arrow="true" Text="Reportar" Color="Color.Error">
-                                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Rounded.Flag"></MudIconButton>
-
-                                </MudTooltip>
-
-                            </div>
+                            
                         </MudContainer>
 
 
@@ -121,7 +112,7 @@
                
 
                 <MudItem md="8" lg="8" xxl="8" xl="8" sm="12" xs="12">
-                    <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">@songReview.ToUpper()</MudText>
+                    <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">To Pimp A Butterfly</MudText>
 
 
                     <MudContainer Style="display: flex; flex-direction: column; gap: 20px;">
@@ -138,15 +129,23 @@
 
                            
                         </MudText>
+                            <div style="display: flex; gap: 7px; align-items: center; margin-top: 20px;">
+                                <MudText Color="Color.Error" Style="font-size: 15px; font-weight:bold; font-family: SourceSerif4; "> Por: </MudText>
+                                <MudText Style="font-size: 15px; opacity: 0.7;font-family: SourceSerif4;  " Color="Color.Primary"> Jeanna Grant</MudText>
 
+                                <MudTooltip Arrow="true" Text="Reportar" Color="Color.Error">
+                                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Rounded.Flag"></MudIconButton>
+
+                                </MudTooltip>
+
+                            </div>
                        
 
                     </MudContainer>
                 </MudItem>
   
                 <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
-                        <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 10px;" Color="Color.Error">TRACKS</MudText>
-                        <MudText Align="Align.Center" Style="font-size: 13px; margin-bottom: 10px; opacity: 0.5;" Color="Color.Error">scrollea y has click para ver la review de cada track</MudText>
+                        <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 30px;" Color="Color.Error">TRACKS</MudText>
                         
                     <MudContainer Style="max-height: 360px; overflow: auto; margin-top: 10px;">
                         <MudGrid Justify="Justify.Center">
@@ -157,7 +156,7 @@
                                 
                                   
 
-                                    <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12" @onclick="()=>{songReview = track.Titulo;}">
+                                    <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
                                         <MetaMusic.Pages.Common_Components.TrackComponent track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
                                     </MudItem>
                                 
@@ -249,7 +248,7 @@
                             
                             else
                             {
-                                <MudAvatar @onmouseover="()=>{ratenumber = i;}" @onclick="()=>{ratenumber = i;}" Variant="MudBlazor.Variant.Outlined" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                <MudAvatar @onmouseover="()=>{ratenumber = i;}" @onclick="()=>{ratenumber = i;}" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                     @i
                                     </MudAvatar>
                             }
@@ -351,7 +350,7 @@
                     }
                 }
 
-                songReview = Albumresponse.Tracks[0].Titulo;
+               
                 StateHasChanged();
 
             }
@@ -371,7 +370,7 @@
     public Album Albumresponse = new Album();
     public List<Track> tracksdelalbum = new List<Track>();
     public List<Album> albumesrelacionados = new List<Album>();
-    public string songReview = "Track 1";
+   
 
 
 

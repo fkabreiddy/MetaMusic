@@ -16,11 +16,11 @@
                     <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
                         <MudContainer Style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
 
-                            <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">ALBUM REVIEW</MudText>
+                            <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">SINGLE REVIEW</MudText>
                             <MudText Style="font-size: 35px; font-family: SourceSerif4;" Align="Align.Center">“@Albumresponse.nombre” - @Albumresponse.Autores</MudText>
                                 <MudText Style="font-size: 12px;margin-top: 20px; " Color="Color.Error">@Albumresponse.fechalanzamiento?.Substring(0, 4)</MudText>
                                 
-                            </MudContainer>
+                         </MudContainer>
 
 
                         </MudItem>
@@ -50,9 +50,9 @@
 
                                 <MudText Style="font-size: 15px; ">@Albumresponse.genero</MudText>
                             </div>
-                           
 
-                           
+
+
 
                         </MudContainer>
                     </MudItem>
@@ -63,7 +63,7 @@
                         <MudContainer Style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
 
 
-                        @foreach (var i in rate)
+                            @foreach (var i in rate)
                         {
 
                             @if (i == Albumresponse.calificacion)
@@ -129,7 +129,7 @@
                             }
                             else
                             {
-                                <MudAvatar @onclick="()=>{Albumresponse.calificacion = i;}" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                <MudAvatar @onclick="()=>{Albumresponse.calificacion = i;}" Variant="MudBlazor.Variant.Outlined" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                     @i
                                 </MudAvatar>
                             }
@@ -142,71 +142,46 @@
 
 
                     </MudContainer>
-                    </MudItem>
-                </MudGrid>
-
-
-
-
-
-            </MudItem>
-            <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
-            <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
-
-                <MudGrid>
-
-
-
-
-                    <MudItem md="8" lg="8" xxl="8" xl="8" sm="12" xs="12">
-
-
-
-                         <MudContainer Style="display: flex; flex-direction: column; gap: 20px;  ">
-                            <MudTextField T="string" Immediate=true MaxLength="60" MaxLines="4" AutoGrow=true Variant="MudBlazor.Variant.Text" Style="font-size: 25px;color:#E74646;  font-weight: bold ;margin-top: 20px; margin-bottom: 40px; " Placeholder="Titulo de tu critica" DisableUnderLine=true></MudTextField>
-                        
-
-                            <TinyMCE.Blazor.Editor Id="tiny" Conf="@editorConf" JsConfSrc="sample" ApiKey="4zbc8suxwqhnaaiuzacf1yboiucybwh9m9jq4trgc94dy0ab" Text="Empieza a escribir" />
-                             <div style="display: flex; gap: 7px; align-items: center; margin-top: 20px;">
-                                <MudText Color="Color.Error" Style="font-size: 15px; font-weight:bold; font-family: SourceSerif4; "> Por: </MudText>
-                                <MudText Style="font-size: 15px; opacity: 0.7;font-family: SourceSerif4;  " Color="Color.Primary"> Jeanna Grant</MudText>
-
-                                <MudTooltip Arrow="true" Text="Reportar" Color="Color.Error">
-                                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Rounded.Flag"></MudIconButton>
-
-                                </MudTooltip>
-
-                            </div>
-                        </MudContainer>
-                        
-                    </MudItem>
-
-                <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
-                <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 10px;" Color="Color.Error">TRACKS</MudText>
-                    
-                    <MudContainer Style="max-height: 360px; overflow: auto; margin-top: 10px; ">
-                    
-                    <MudGrid Justify="Justify.Center">
-
-
-                            @foreach (var track in Albumresponse.Tracks)
-                            {
-
-
-
-                                <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12"  >
-                                    
-
-                                    <MetaMusic.Pages.Common_Components.TrackComponent DisableLikeButton="true"   track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
-                                </MudItem>
-
-
-                            }
-
-
-                        </MudGrid>
-                    </MudContainer>
                 </MudItem>
+            </MudGrid>
+
+
+
+
+
+        </MudItem>
+        <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
+        <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
+
+            <MudGrid>
+
+
+
+
+                <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+
+
+
+                    <MudContainer Style="display: flex; flex-direction: column; gap: 20px;  ">
+                        <MudTextField T="string" Immediate=true MaxLength="40" Variant="MudBlazor.Variant.Text" Style="font-size: 25px;color:#E74646;  font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Placeholder="Titulo de tu critica" DisableUnderLine=true></MudTextField>
+
+
+                        <TinyMCE.Blazor.Editor Id="tiny" Conf="@editorConf" JsConfSrc="sample" ApiKey="4zbc8suxwqhnaaiuzacf1yboiucybwh9m9jq4trgc94dy0ab" Text="Empieza a escribir" />
+
+                    </MudContainer>
+                    <div style="display: flex; gap: 7px; align-items: center; margin-top: 20px;">
+                        <MudText Color="Color.Error" Style="font-size: 15px; font-weight:bold; font-family: SourceSerif4; "> Por: </MudText>
+                        <MudText Style="font-size: 15px; opacity: 0.7;font-family: SourceSerif4;  " Color="Color.Primary"> Jeanna Grant</MudText>
+
+                        <MudTooltip Arrow="true" Text="Reportar" Color="Color.Error">
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Rounded.Flag"></MudIconButton>
+
+                        </MudTooltip>
+
+                    </div>
+                </MudItem>
+
+               
                 <MudContainer Style="  display: flex; align-items: center; justify-content: center; margin-top: 20px;">
                     <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " Text="Guardar"></MudChip>
                 </MudContainer>
@@ -215,7 +190,7 @@
 
 
             </MudGrid>
-           
+
 
         </MudItem>
     </MudGrid>
@@ -226,31 +201,29 @@
     [Parameter]
     public Album Albumresponse { get; set; } = new Album();
     public List<Track> tracksdelalbum = new List<Track>();
-    
+
     public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
     private Dictionary<string, object> editorConf = new Dictionary<string, object>{
 
 
-      {"plugins", "autoresize quickbars" },
+      {"plugins", "autoresize quickbars image media table hr paste codesample" },
       {"skin", "snow" },
-     {"statusbar", false },
-     
+
+
         {"icons", "thin"},
-     
+
       {"menubar", false },
       {"toolbar", false },
       {"content_style", "@import url('https://fonts.googleapis.com/css2?family=Tinos&display=swap'); body { font-family: 'Tinos', serif; font-size: 16pt; color: dimgray;  }img { display: block; margin: 0 auto; max-height: 225px; max-width: 100%;  };" },
       {"placeholder", "Escribe aqui tu critica" },
-      {"quickbars_selection_toolbar", "bold | italic | h3 |  blockquote" },
+      {"quickbars_selection_toolbar", "bold italic link | h3 | alignleft aligncenter alignright |  blockquote" },
       {"quickbars_insert_toolbar", "image media table hr codesample autolink bullist numlist" },
       {"image_class_list", new object[] {
         new {title = "Responsive", value = "img-responsive" }
         }},
-         
         {"image_dimensions", false },
 
-        
 
 
 

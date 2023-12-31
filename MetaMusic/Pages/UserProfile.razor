@@ -3,20 +3,20 @@
 
 <MudItem Style="margin-top: 60px;margin-bottom: 60px;">
     <MudGrid >
-        <MudItem md="4" xxl="4" xl="4" lg=4 xs=12 sm="12">
+        <MudItem md="4" xxl="4" xl="4" lg=4 xs=12 sm="12" Style=" border-radius: 10px;">
             <MudContainer Style="display: flex; flex-direction: column; gap:20px; justify-content:center; align-items: center; ">
                 <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">Usuario</MudText>
                 <MudText Style="font-size: 35px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-family: SourceSerif4;">“Breiddy Garcia”</MudText>
                 <MudText Style="font-size: 12px; font-weight: bold" Color="Color.Error">Staff</MudText>
-                <MudAvatar Style="height: 150px; width: 150px;"><MudImage src="https://th.bing.com/th/id/OIP.UgQzi6yAnGyBFUgYT-H0swHaHa?rs=1&pid=ImgDetMain"></MudImage></MudAvatar>
+                <MudAvatar Style="height: 150px; width: 150px;border: dashed 2px;margin: 10px;"><MudImage src="https://th.bing.com/th/id/OIP.UgQzi6yAnGyBFUgYT-H0swHaHa?rs=1&pid=ImgDetMain"></MudImage></MudAvatar>
 
                
 
-                <div style="display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 15px;">
-                    <MudText Style="font-size: 13px; font-weight: bold" Color="Color.Error">Correo</MudText>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 21px; margin-bottom: 15px;">
+                    <MudText Style="font-size: 13px; font-weight: bold" Color="Color.Error">Correo </MudText>
                     <MudText Style="font-size: 15px;white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-family: SourceSerif4;">breiddysubzero@gmail.com</MudText>
-                </div
-
+                </div>
+                <MudChip Variant="MudBlazor.Variant.Filled"  Icon="@Icons.Material.Rounded.NotificationsActive"  Color="Color.Error" Style="font-size: 12px; margin-bottom: 15px; font-weight: bold; cursor: pointer;" Text="Suscribirse"></MudChip>
                  <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
                     <MudText Style="font-size: 13px; font-weight: bold" Color="Color.Error">Biografia</MudText>
                     <MudText Align="Align.Center" Style="font-size: 12px; ">Soy Breiddy Garcia y soy estudiante de programacion y creador de esta app. Metamusic</MudText>
@@ -25,14 +25,14 @@
                 <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
                 <MudCard>
 
-                    <MudContainer Style="height: auto; width: 100%; background-color:#E74646; display: flex; border-radius: 9px; flex-direction: column; ">
+                    <MudContainer Style="height: auto; width: 100%; display: flex; border-radius: 9px; flex-direction: column; ">
 
 
-                        <MudText  Align="Align.Center" Style="font-size: 20px; font-weight: bold; margin-bottom: 10px; margin-top: 20px; color:white;">EDITA TU PERFIL</MudText>
+                        <MudText  Align="Align.Center" Style="font-size: 20px; font-weight: bold; margin-bottom: 10px; margin-top: 20px; ">EDITA TU PERFIL</MudText>
 
-                        <MudTextField MaxLength="30" T="string" Adornment="Adornment.Start" Style="font-size: 12px; color: whitesmoke;  margin-bottom: 10px; border: dashed 1px whitesmoke;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Tu nuevo nombre aqui'></MudTextField>
+                        <MudTextField MaxLength="30" T="string" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Tu nuevo nombre aqui'></MudTextField>
                      
-                        <MudTextField MaxLength="30" T="string" Adornment="Adornment.Start" Style="font-size: 12px; color: whitesmoke;  margin-bottom: 21px; border: dashed 1px whitesmoke;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Url de tu perfil'></MudTextField>
+                        <MudTextField MaxLength="30" T="string" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 21px; border: dashed 1px ;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Url de tu perfil'></MudTextField>
                            
                            
                         <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Surface" Style="font-size: 12px; margin-bottom: 15px; cursor: pointer;" Text="Guardar Cambios"></MudChip>

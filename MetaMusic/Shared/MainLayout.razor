@@ -12,7 +12,7 @@
         }
 
         ::-webkit-scrollbar {
-    width: 2px;
+    width: 1px;
     border-radius: 10px;
 }
 
@@ -68,89 +68,92 @@
                       
 
 
-                         <MudMenu    Style="width: auto;" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+                         <MudMenu   AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter">
 
                              <ActivatorContent>
                                 <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="https://th.bing.com/th/id/OIP.UgQzi6yAnGyBFUgYT-H0swHaHa?rs=1&pid=ImgDetMain" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
 
                              </ActivatorContent>
                              <ChildContent>
-                                <MudPaper Outlined="true" Style="z-index: 999999; ">
-                                    <MudContainer Style="max-height: 80vh; overflow: auto; margin-top: 10px;margin-bottom: 10px; ">
-                                        <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Acerca de ti</MudText>
-                                        <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                        <MudMenuItem Disabled=true Style="border-radius: 10px;">
-                                            <div style="display:flex; justify-content: space-between; align-items: center; gap: 15px;">
-                                                <MudText Style="font-size: 12px; font-weight: bold; opacity: 0.7; " Color="Color.Error">Nombre</MudText>
-                                                <MudText Style="font-size: 12px;   ">Breiddy Garcia</MudText>
-                                            </div>
 
-                                        </MudMenuItem>
+                                <BlazorAnimation.Animation Style="z-index: 999999; position: static;" Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
 
+                                    <MudPaper Outlined="true" Style="z-index: 999999;  ">
+                                        <MudContainer Style="max-height: 80vh; overflow: auto; margin-top: 10px;margin-bottom: 10px;min-width: 220px; ">
 
-                                        <MudMenuItem Disabled=true Style="border-radius: 10px;">
-                                            <div style="display:flex; justify-content: space-between; align-items: center; gap: 15px;">
-                                                <MudText Style="font-size: 12px; font-weight: bold; opacity: 0.7; " Color="Color.Error">Rol</MudText>
-                                                <MudText Style="font-size: 12px;   ">Staff</MudText>
-                                            </div>
-
-                                        </MudMenuItem>
-
-                                        <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                        <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Opciones</MudText>
-                                        <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                        <MudMenuItem Style="border-radius: 10px;">
-                                            <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                <MudText Style="font-size: 12px;   ">Ver perfil</MudText>
-                                                <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Person"></MudIcon>
-                                            </div>
-
-                                        </MudMenuItem>
-                                        <MudMenuItem Style="border-radius: 10px;">
-                                            <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                <MudText Style="font-size: 12px;   ">Notificaciones</MudText>
-                                                <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Notifications"></MudIcon>
-                                            </div>
-
-                                        </MudMenuItem>
-                                       
-                                        <MudMenuItem @onclick="()=>{theme.SetDarkTheme(!IsDarkMode);IsDarkMode = !IsDarkMode; }" Style="border-radius: 10px;">
-                                            <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                <MudText Style="font-size: 12px;   ">Modo @(IsDarkMode ? "Claro" : "Oscuro")</MudText>
-                                                
-                                                <MudIcon   Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.LightMode"></MudIcon>
-                                            </div>
-
-                                        </MudMenuItem>
-                                        <MudMenuItem Style="border-radius: 10px;">
-
-                                           
-                                                <div style="display:flex; justify-content: space-between; align-items: center;border-radius: 9px;">
-                                                    <MudText Color="Color.Error" Style="font-size: 12px;   ">Crear Contenido</MudText>
-                                                <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Add"></MudIcon>
+                                            <MudDivider Class="mb-3 mt-3"></MudDivider>
+                                            <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Opciones</MudText>
+                                            <MudDivider Class="mb-3 mt-3"></MudDivider>
+                                            <MudMenuItem Style="border-radius: 10px;">
+                                                <div style="display:flex; justify-content: space-between; align-items: center;">
+                                                    <MudText Style="font-size: 12px;   ">Ver perfil</MudText>
+                                                    <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Person"></MudIcon>
                                                 </div>
 
-                                          
-                                           
+                                            </MudMenuItem>
+                                            <MudMenuItem Style="border-radius: 10px;">
+                                                <div style="display:flex; justify-content: space-between; align-items: center;">
+                                                    <MudText Style="font-size: 12px;   ">Notificaciones</MudText>
+                                                    <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Notifications"></MudIcon>
+                                                </div>
 
-                                        </MudMenuItem>
-                                       
+                                            </MudMenuItem>
 
-                                        <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                        <MudMenuItem Style="border-radius: 10px; " Class="meta-nav-button">
-                                            <div style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between;">
-                                                <MudText Style="font-size: 12px;   " Class="meta-nav-button">Cerrar Sesion</MudText>
-                                                <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.ArrowBack"></MudIcon>
+                                            <MudMenuItem @onclick="()=>{theme.SetDarkTheme(!IsDarkMode);IsDarkMode = !IsDarkMode; }" Style="border-radius: 10px;">
+                                                <div style="display:flex; justify-content: space-between; align-items: center;">
+                                                    <MudText Style="font-size: 12px;   ">Modo @(IsDarkMode ? "Claro" : "Oscuro")</MudText>
 
-                                            </div>
-                                            
-                                      </MudMenuItem>
+                                                    <MudIcon Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.LightMode"></MudIcon>
+                                                </div>
+
+                                            </MudMenuItem>
+
+                                            <MudDivider Class="mb-3 mt-3"></MudDivider>
+                                            <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Staff Options</MudText>
+                                            <MudDivider Class="mb-3 mt-3"></MudDivider>
+                                            <MudMenuItem Style="border-radius: 10px;">
 
 
-                                    </MudContainer>
-                                   
+                                                <div style="display:flex; justify-content: space-between; align-items: center;border-radius: 9px;">
+                                                    <MudText Color="Color.Error" Style="font-size: 12px;   ">Crear Contenido</MudText>
+                                                    <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Add" @onclick='()=>{navManager.NavigateTo("/crear-contenido");}'></MudIcon>
+                                                </div>
 
-                                </MudPaper>
+
+
+
+                                            </MudMenuItem>
+                                            <MudMenuItem Style="border-radius: 10px;">
+                                                <div style="display:flex; justify-content: space-between; align-items: center;">
+                                                    <MudText Style="font-size: 12px;   ">Peticiones</MudText>
+                                                    <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.NewReleases"></MudIcon>
+                                                </div>
+
+                                            </MudMenuItem>
+                                            <MudMenuItem Style="border-radius: 10px;">
+                                                <div style="display:flex; justify-content: space-between; align-items: center;">
+                                                    <MudText Style="font-size: 12px;   ">Reportes</MudText>
+                                                    <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag"></MudIcon>
+                                                </div>
+
+                                            </MudMenuItem>
+                                            <MudDivider Class="mb-3 mt-3"></MudDivider>
+                                            <MudMenuItem Style="border-radius: 10px; " Class="meta-nav-button">
+                                                <div style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between;">
+                                                    <MudText Style="font-size: 12px;   " Class="meta-nav-button">Cerrar Sesion</MudText>
+                                                    <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.ArrowBack"></MudIcon>
+
+                                                </div>
+
+                                            </MudMenuItem>
+
+
+                                        </MudContainer>
+
+
+                                    </MudPaper>
+                                 </BlazorAnimation.Animation>
+                                
                              </ChildContent>
 
                                                 
@@ -198,9 +201,7 @@
        
     </MudItem>
 
-    <MudTFootRow Style="@($"""position: static ; margin-bottom: 0;  display: flex; align-items: center; justify-content: center; width: calc( 100vw - 2px); gap: 10px; {(theme.IsDark() ? "background-color: black;" : "background-color: white;")} height: 60px; margin-top: 30px;""")">
-        <MudText Align="Align.Center" Style="font-size: 30px; font-weight: bold;" Color="Color.Error">M E T A M U S I C</MudText>
-    </MudTFootRow>
+   
 
 
    
@@ -223,7 +224,7 @@
 
 @code{
     private string navbarclass = "navbar-container";
-    public bool IsDarkMode { get; set; } = true ;
+    public bool IsDarkMode { get; set; } = false ;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)

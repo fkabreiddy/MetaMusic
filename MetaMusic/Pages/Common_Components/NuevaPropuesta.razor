@@ -1,0 +1,23 @@
+﻿<MudCard>
+
+    <MudContainer Style="margin-top: 37px;height: auto; width: 100%; display: flex; border-radius: 9px; flex-direction: column; gap: 10px;">
+
+
+        <MudText Style="font-size: 15px; font-weight: bold;  margin-top: 20px;">HAS UNA PETICION</MudText>
+
+        <MudText Style="font-size: 12px;   opacity: 0.7; ">Ve a <MudLink Style="font-size: 12px;    " Href="https://open.spotify.com/" Underline="Underline.Always">Spotify.com</MudLink> busca el artista o album que quieras agregar y copia su identificador. En el recuadro de abajo.</MudText>
+
+        <MudText Style="font-size: 12px; opacity: 0.7; ">El ID son los caracteres finales en la url cuando buscas un artista, album o cancion en Spotify. Por ejemplo: "https://open.spotify.com/intl-es/album/<b style="text-decoration: underline;">123456789abcdefg"</b></MudText>
+        <MudChipSet Mandatory=true >
+
+            <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "artista" ? MudBlazor.Variant.Filled: MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "artista";}' Text="Artista"></MudChip>
+            <MudChip  SelectedColor="Color.Error" Variant="@( tipodeContenido == "album" ? MudBlazor.Variant.Filled: MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "album";}' Default=true Text="Album / Single"></MudChip>
+        </MudChipSet>
+        <MudTextField MaxLength="30" T="string" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 10px; border: dashed 1px ;  width: 100% ; border-radius:10px; height: 40px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Introduce el ID aqui'></MudTextField>
+    </MudContainer>
+
+
+</MudCard>
+@code {
+    public string tipodeContenido = "album";
+}

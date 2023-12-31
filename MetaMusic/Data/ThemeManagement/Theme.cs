@@ -2,7 +2,7 @@
 {
     public class Theme : ITheme
     {
-        public bool IsDarkTheme = true;
+        public bool IsDarkTheme = false;
 
 
         public void SetDarkTheme(bool isDark)

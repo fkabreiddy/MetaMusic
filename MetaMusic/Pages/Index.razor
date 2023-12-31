@@ -22,68 +22,30 @@
     <MudGrid Style="display: flex; align-items: center; ">
         <MudItem md="8" lg="8" xl="8" xxl="8" sm="12" xs="12">
            
-                <MudContainer Style="height: 390px; width: 100%;display: flex; flex-direction: column; gap: 20px; padding:10px;">
-                    <div style="height: 50px;display: flex; gap: 10px; width: 100%; ">
-                        
-                        <MudText Color="Color.Error" Style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">RECIENTE EN METAMUSIC </MudText>
-                      <MudIcon Icon="@Icons.Material.Rounded.Whatshot" Color="Color.Error" ></MudIcon>
-                    </div>
-                  
-                        <MudGrid Justify="Justify.Center" Style="height: 310px; display: flex; overflow: auto; -ms-scroll-snap-y: proximity;  align-items: center">
-                           
-                            @foreach(var album in albumes)
-                            {
-                                <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6" Style="scroll-snap-align: center;">
-                                     <MetaMusic.Pages.Common_Components.ReviewCard album="album"></MetaMusic.Pages.Common_Components.ReviewCard>
-
-                                 </MudItem>
-                            }
-                               
-                               
-                            
-                        </MudGrid>
-                    
-                </MudContainer>
+               <MetaMusic.Pages.Common_Components.LoMasReciente></MetaMusic.Pages.Common_Components.LoMasReciente>
             
         </MudItem>
         <MudItem md="4" lg="4" xl="4" xxl="4" sm="12" xs="12" Style="margin-top: 45px;">
-            <MudCard >
-
-                <MudContainer Style="height: auto; width: 100%; background-color:#E74646; display: flex; border-radius: 9px; flex-direction: column; gap: 10px;">
-                   
-
-                        <MudText  Style="font-size: 20px; font-weight: bold; margin-bottom: 10px; margin-top: 20px;">HAS UNA PETICION</MudText>
-          
-                    
-
-                        <MudText Style="font-size: 17px; font-weight: bold; color: white; margin-bottom: 10px; ">CONSTANTEMENTE BUSCAMOS NUEVA MUSICA PARA HACER REVIEW. SI TIENES ALGO EN MENTE NO DUDES EN PEDIRLO.</MudText>
-                 
-
-                    <MudLink Underline="Underline.Hover" Color="Color.Surface" Style="font-size: 12px;cursor:pointer; font-weight: bold; color: whitesmoke; margin-bottom: 10px; ">Pedir Nuevo Artista</MudLink>
-                    <MudLink Underline="Underline.Hover" Color="Color.Surface" Style="font-size: 12px;cursor:pointer; font-weight: bold; color: whitesmoke; margin-bottom: 10px; ">Pedir Nuevo Album</MudLink>
-                    <MudLink Underline="Underline.Hover" Color="Color.Surface" Style="font-size: 12px;cursor:pointer; font-weight: bold; color: whitesmoke; margin-bottom: 10px; ">Pedir Nuevo Género Musical</MudLink>
-                </MudContainer>
-               
-                  
-            </MudCard>
+  
+            <MetaMusic.Pages.Common_Components.NuevaPropuesta></MetaMusic.Pages.Common_Components.NuevaPropuesta>
         </MudItem>
        
     </MudGrid>
 </MudItem>
 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-    <MudDivider Style="margin-top: 25px; margin-bottom: 25px;  "></MudDivider>
+    <MudDivider Style="margin-top: 40px; margin-bottom: 40px;  "></MudDivider>
 
     <ReviewOfTheMonth></ReviewOfTheMonth>
 
 </BlazorAnimation.Animation>
 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-    <MudDivider Style="margin-top: 25px; margin-bottom: 25px;  "></MudDivider>
+    <MudDivider Style="margin-top: 40px; margin-bottom: 40px;  "></MudDivider>
     <SongReviewOfTheMonth></SongReviewOfTheMonth>
 
 </BlazorAnimation.Animation>
 
 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(3)">
-    <MudDivider Style="margin-top: 25px; margin-bottom: 25px;"></MudDivider>
+    <MudDivider Style="margin-top: 40px; margin-bottom: 40px;"></MudDivider>
 
     <Explora></Explora>
 </BlazorAnimation.Animation>
