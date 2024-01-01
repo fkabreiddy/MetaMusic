@@ -16,7 +16,7 @@
                     <MudText Style="font-size: 13px; font-weight: bold" Color="Color.Error">Correo </MudText>
                     <MudText Style="font-size: 15px;white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-family: SourceSerif4;">breiddysubzero@gmail.com</MudText>
                 </div>
-                <MudChip Variant="MudBlazor.Variant.Filled"  Icon="@Icons.Material.Rounded.NotificationsActive"  Color="Color.Error" Style="font-size: 12px; margin-bottom: 15px; font-weight: bold; cursor: pointer;" Text="Suscribirse"></MudChip>
+                <MudChip Variant="MudBlazor.Variant.Filled"    Color="Color.Error" Style="font-size: 12px; margin-bottom: 15px; font-weight: bold; cursor: pointer; " Text="Suscribirse"></MudChip>
                  <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
                     <MudText Style="font-size: 13px; font-weight: bold" Color="Color.Error">Biografia</MudText>
                     <MudText Align="Align.Center" Style="font-size: 12px; ">Soy Breiddy Garcia y soy estudiante de programacion y creador de esta app. Metamusic</MudText>
@@ -76,6 +76,28 @@
                                 }
                             </MudGrid>
                          </MudTabPanel>
+                          <MudTabPanel style="@($"""{(view == "Peticiones" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Peticiones";}' Text="Peticiones">
+                             <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Las Peticiones se eliminan cuando se eliminan automaticamente cuando se agregue el contenido.</MudText>
+                            <MudGrid Style="margin-top: 20px;" Spacing="3">
+                                    @foreach (var peticion in peticiones)
+                                    {
+                                         <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                                                                 <MetaMusic.Pages.Common_Components.NuevaPeticion Peticion="peticion"></MetaMusic.Pages.Common_Components.NuevaPeticion>
+
+                                             </MudItem>
+                                    }
+                                </MudGrid>
+                         </MudTabPanel>
+                        <MudTabPanel style="@($"""{(view == "Reportes" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reportes";}' Text="Reportes">
+                            <MudGrid Style="margin-top: 20px;" Spacing="3">
+                                @foreach (var album in albumesRock)
+                                {
+                                    <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
+                                        <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                    </MudItem>
+                                }
+                            </MudGrid>
+                        </MudTabPanel>
 
                     
 
@@ -103,6 +125,8 @@
         album3,
 
     };
+
+    public static Artista artista1 = new Artista() { Foto = "https://th.bing.com/th/id/R.7d9919c0534512958384b626ef4e0bc4?rik=FRxU3HvMAgwmBQ&pid=ImgRaw&r=0", Nombre = "Billie Eilish" };
     public static Track track1 = new Track() { Titulo = "Royals", Duracion = TimeSpan.FromMinutes(3).Add(TimeSpan.FromSeconds(27)), Album = album3, Calificacion = 8, };
     public static Track track2 = new Track() { Titulo = "Green Light", Duracion = TimeSpan.FromMinutes(6).Add(TimeSpan.FromSeconds(22)), Album = album2, Calificacion = 10, };
     public static Track track3 = new Track() { Titulo = "Stoned at the nail salon", Duracion = TimeSpan.FromMinutes(8).Add(TimeSpan.FromSeconds(2)), Album = album1, Calificacion = 7, };
@@ -121,5 +145,10 @@
     };
 
 
-    public string view = "Reviews";
+    public static Peticion peticion1 = new Peticion() { Album = album1 };
+    public static Peticion peticion2 = new Peticion() { Artista = artista1 };
+    public List<Peticion> peticiones = new List<Peticion>() { peticion1, peticion2 };
+
+
+    public string view = "Notas";
 }

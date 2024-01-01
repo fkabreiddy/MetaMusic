@@ -1,0 +1,78 @@
+﻿
+@if(Peticion.Album.nombre != "")
+{
+    <MudCard Style="padding: 10px;">
+        <MudContainer Style="display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+            <MudAvatar Size="Size.Large" Square=true Style="border-radius: 10px;height: 70px; width: 70px;">
+                <MudImage src="@Peticion.Album.portada"></MudImage>
+            </MudAvatar>
+            <div style="display: flex; flex-direction: column; ">
+                <MudText Style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">Nueva Peticion Album</MudText>
+                <MudText Style="font-size: 12px;  opacity: 0.7;">El usuario @@breiddy ha hecho la peticion de anadir el album <b>@Peticion.Album.nombre</b> a nuestro repertorio.</MudText>
+                <div style="display: flex; gap: 10px; align-items: center;  margin-top: 10px; flex-wrap: wrap;">
+
+                    <MudTooltip Arrow=true Color="Color.Error" Text="Propuesto hace 5 dias">
+
+                        <MudChip Style="font-size: 10px; font-weight: bold;" Size="Size.Small">hace 5 d</MudChip>
+                    </MudTooltip>
+
+                    <MudTooltip Arrow=true Color="Color.Error" Text="10 personas han propuesto este album">
+
+                        <MudChip Style="font-size: 10px; font-weight: bold; " Size="Size.Small">10 Acumulaciones</MudChip>
+                    </MudTooltip>
+                   
+                    <MudTooltip Arrow=true Color="Color.Error" Text="Copiar ID del Album">
+                        <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" @onclick='async()=>{ await CopyTextToClipboard("6DmPNcfpkXBVRJsEIJY9tl");}' Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Rounded.CopyAll"></MudIcon>
+
+                    </MudTooltip>
+
+                </div>
+            </div>
+        </MudContainer>
+    </MudCard>
+}
+else
+{
+    <MudCard Style="padding: 10px;">
+        <MudContainer Style="display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+            <MudAvatar Size="Size.Large"  Style="height: 70px; width: 70px;">
+                <MudImage src="@Peticion.Artista.Foto"></MudImage>
+            </MudAvatar>
+            <div style="display: flex; flex-direction: column; ">
+                <MudText Style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">Nueva Peticion Artista</MudText>
+                <MudText Style="font-size: 12px;  opacity: 0.7;">El usuario @@breiddy ha hecho la peticion de anadir el/la artista <b>@Peticion.Artista.Nombre</b> a nuestro repertorio.</MudText>
+                <div style="display: flex; gap: 10px; align-items: center;  margin-top: 10px; flex-wrap: wrap;">
+
+                    <MudTooltip Arrow=true Color="Color.Error" Text="Propuesto hace 5 dias">
+
+                        <MudChip Style="font-size: 10px; font-weight: bold;" Size="Size.Small">hace 5 d</MudChip>
+                    </MudTooltip>
+
+                    <MudTooltip Arrow=true Color="Color.Error" Text="3 personas han propuesto este artista">
+
+                        <MudChip Style="font-size: 10px; font-weight: bold; " Size="Size.Small">3 Acumulaciones</MudChip>
+                    </MudTooltip>
+
+                    <MudTooltip Arrow=true Color="Color.Error" Text="Copiar ID del Artista">
+                        <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" @onclick='async()=>{ await CopyTextToClipboard("6DmPNcfpkXBVRJsEIJY9tl");}' Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Rounded.CopyAll"></MudIcon>
+
+                    </MudTooltip>
+
+                </div>
+            </div>
+        </MudContainer>
+    </MudCard>
+}
+
+
+
+
+@code {
+    [Parameter] public Peticion Peticion { get; set; } = new Peticion();
+    
+
+    private async Task CopyTextToClipboard(string Text)
+    {
+        await JSR.InvokeVoidAsync("clipboardCopy.copyText", Text);
+    }
+}

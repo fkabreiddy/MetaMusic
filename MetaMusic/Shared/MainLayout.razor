@@ -84,7 +84,7 @@
                                             <MudDivider Class="mb-3 mt-3"></MudDivider>
                                             <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Opciones</MudText>
                                             <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                            <MudMenuItem Style="border-radius: 10px;">
+                                            <MudMenuItem @onclick='()=>{navManager.NavigateTo("/user");}' Style="border-radius: 10px;">
                                                 <div style="display:flex; justify-content: space-between; align-items: center;">
                                                     <MudText Style="font-size: 12px;   ">Ver perfil</MudText>
                                                     <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Person"></MudIcon>
@@ -111,12 +111,12 @@
                                             <MudDivider Class="mb-3 mt-3"></MudDivider>
                                             <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Staff Options</MudText>
                                             <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                            <MudMenuItem Style="border-radius: 10px;">
+                                            <MudMenuItem @onclick='()=>{navManager.NavigateTo("/crear-contenido");}' Style="border-radius: 10px;">
 
 
                                                 <div style="display:flex; justify-content: space-between; align-items: center;border-radius: 9px;">
                                                     <MudText Color="Color.Error" Style="font-size: 12px;   ">Crear Contenido</MudText>
-                                                    <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Add" @onclick='()=>{navManager.NavigateTo("/crear-contenido");}'></MudIcon>
+                                                    <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Add" ></MudIcon>
                                                 </div>
 
 
@@ -254,7 +254,7 @@
             {
                 Primary = "#1D1A31",
                 Secondary = "#393E46",
-                Surface = "#FDFDFD ",
+                Surface = "#F9F9F9 ",
                 Background = "#FFFFFF ",
                 Tertiary = "#164863",
                 Error = "#E74646"
