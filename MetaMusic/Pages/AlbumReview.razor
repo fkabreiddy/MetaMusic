@@ -1,296 +1,329 @@
 ﻿@page "/album"
 
-<MudItem Style="margin-top: 60px;">
-    <MudGrid>
-        <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
-            <MudContainer>
-                <MudGrid Justify="Justify.Center" Style="display: flex; align-items: center;">
-                    
-                    <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
-                        <MudContainer Style="display: flex; align-items: center; justify-content: center;">
-                            <MudAvatar Style="height: 200px; width: 200px; border-radius: 7px;" Square=true>
-                                <MudImage src="@Albumresponse.portada"></MudImage>
-                            </MudAvatar>
-                        </MudContainer>
-
-
-                    </MudItem>
-                    <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
-                        <MudContainer Style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
-
-                            <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">ALBUM REVIEW</MudText>
-                            <MudText Style="font-size: 35px; font-family: SourceSerif4;" Align="Align.Center">“@Albumresponse.nombre” - @Albumresponse.Autores</MudText>
-                                <MudText Style="font-size: 12px;margin-top: 20px; " Color="Color.Error">@Albumresponse.fechalanzamiento?.Substring(0,4)</MudText>
-                            
-                        </MudContainer>
-
-
-                    </MudItem>
-                </MudGrid>
-
-
-            </MudContainer>
-        </MudItem>
-        <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
-        <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
-           
+@if(DataCargada)
+{
+    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+        <MudItem Style="margin-top: 60px;">
             <MudGrid>
-                    <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
+                <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
+                    <MudContainer>
+                        <MudGrid Justify="Justify.Center" Style="display: flex; align-items: center;">
+
+                            <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
+                                <MudContainer Style="display: flex; align-items: center; justify-content: center;">
+                                    <MudAvatar Style="height: 200px; width: 200px; border-radius: 7px;" Square=true>
+                                        <MudImage src="@Albumresponse.portada"></MudImage>
+                                    </MudAvatar>
+                                </MudContainer>
 
 
-                        <MudContainer Style="display: flex; flex-direction: column; gap: 20px;">
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <MudIcon Icon="@Icons.Material.Rounded.MusicNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
-                                <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">TRACKS</MudText>
+                            </MudItem>
+                            <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
+                                <MudContainer Style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
 
-                                <MudText Style="font-size: 15px;">@Albumresponse.Tracks.Count()</MudText>
-                            </div>
-                            <MudDivider></MudDivider>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <MudIcon Icon="@Icons.Material.Rounded.Star" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
-                                <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">GENERO MUSICAL</MudText>
+                                    <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">ALBUM REVIEW</MudText>
+                                    <MudText Style="font-size: 35px; font-family: SourceSerif4;" Align="Align.Center">“@Albumresponse.nombre” - @Albumresponse.Autores</MudText>
+                                        <MudText Style="font-size: 12px;margin-top: 20px; font-weight: bold; opacity: 0.7;">@(Albumresponse.fechalanzamiento.Count() >= 4 ? Albumresponse.fechalanzamiento.Substring(0, 4) : "")</MudText>
 
-                                <MudText Style="font-size: 15px; ">@Albumresponse.genero</MudText>
-                            </div>
-                            <MudDivider></MudDivider>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <MudIcon Icon="@Icons.Material.Rounded.EditNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
-                                <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">REVIEWS</MudText>
+                                    </MudContainer>
 
 
-                                <MudText Style="font-size: 15px; ">18k</MudText>
-                            </div>
+                                </MudItem>
+                            </MudGrid>
 
-                            <MudDivider></MudDivider>
 
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <MudIcon Icon="@Icons.Material.Rounded.Star" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
-                                <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">CALIFICACION DE USUARIOS</MudText>
-
-                                <MudText Style="font-size: 15px; ">8</MudText>
-                            </div>
-                           
                         </MudContainer>
                     </MudItem>
+                    <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
+                    <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
 
-                    <MudItem md="8" sm="12" xs="12" xl="8" xxl="8" lg="8">
-                        <MudGrid Style="margin-top: 20px;" Justify="Justify.Center">
-                            <MudItem md="6" sm="12" xs="12" xl="6" xxl="6" lg="6">
-                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;gap: 20px;">
-                                    <MudAvatar Color="Color.Error" Size="Size.Large" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%; " Rounded=true>
-                                        7
-                                    </MudAvatar>
-                                    <MudText Style="font-size: 15px; font-weight: bold">CALIFICACION DEL AUTOR</MudText>
+                        <MudGrid>
+                            <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
 
-                                </div>
+
+                                <MudContainer Style="display: flex; flex-direction: column; gap: 20px;">
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <MudIcon Icon="@Icons.Material.Rounded.MusicNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
+                                        <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">TRACKS</MudText>
+
+                                        <MudText Style="font-size: 15px;">@Albumresponse.Tracks.Count()</MudText>
+                                    </div>
+                                    <MudDivider></MudDivider>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <MudIcon Icon="@Icons.Material.Rounded.Star" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
+                                        <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">GENERO MUSICAL</MudText>
+
+                                        <MudText Style="font-size: 15px; ">@Albumresponse.genero</MudText>
+                                    </div>
+                                    <MudDivider></MudDivider>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <MudIcon Icon="@Icons.Material.Rounded.EditNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
+                                        <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">REVIEWS</MudText>
+
+
+                                        <MudText Style="font-size: 15px; ">18k</MudText>
+                                    </div>
+
+                                    <MudDivider></MudDivider>
+
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <MudIcon Icon="@Icons.Material.Rounded.Star" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
+                                        <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">CALIFICACION DE USUARIOS</MudText>
+
+                                        <MudText Style="font-size: 15px; ">8</MudText>
+                                    </div>
+
+                                </MudContainer>
                             </MudItem>
-                            <MudItem md="6" sm="12" xs="12" xl="6" xxl="6" lg="6">
-                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
-                                    <MudAvatar Color="Color.Error" Size="Size.Large" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%; " Rounded=true>
-                                        9
-                                    </MudAvatar>
-                                    <MudText Style="font-size: 15px; font-weight: bold">CALIFICACION DEL PUBLICO</MudText>
-                                    <MudText Style="font-size: 12px;"><span style="color: #E74646;">120</span>  CRITICAS</MudText>
-                                    <MudButton Style="font-size: 12px;" @onclick="ShowNotes" Color="Color.Error" Variant="MudBlazor.Variant.Outlined">VER CRITICAS</MudButton>
-                                </div>
-                            </MudItem>
-                        </MudGrid>
-                    </MudItem>
-            </MudGrid>
-          
-               
-                   
-            
 
-        </MudItem>
-        <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
-        <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
+                            <MudItem md="8" sm="12" xs="12" xl="8" xxl="8" lg="8">
+                                <MudGrid Style="margin-top: 20px;" Justify="Justify.Center">
+                                    <MudItem md="6" sm="12" xs="12" xl="6" xxl="6" lg="6">
+                                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;gap: 20px;">
+                                            <MudAvatar Color="Color.Error" Size="Size.Large" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%; " Rounded=true>
+                                                7
+                                            </MudAvatar>
+                                            <MudText Style="font-size: 15px; font-weight: bold">CALIFICACION DEL AUTOR</MudText>
 
-            <MudGrid >
-               
-
-               
-
-                <MudItem md="8" lg="8" xxl="8" xl="8" sm="12" xs="12">
-                    <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">To Pimp A Butterfly</MudText>
-
-
-                    <MudContainer Style="display: flex; flex-direction: column; gap: 20px;">
-                        <MudText Style="font-size: 18px; font-family: SourceSerif4; text-align: justify;">
-                            "Ctrl" es el álbum debut de estudio de la cantante y compositora estadounidense SZA, lanzado en 2017. El álbum recibió una aclamación generalizada por parte de la crítica y se destaca por su fusión única de R&B contemporáneo, neo soul y elementos de hip-hop. Aquí hay una breve revisión de algunas de las características destacadas:
-
-                            Exploración de Temas Personales: SZA aborda temas personales y experiencias de vida, desde relaciones tumultuosas hasta la autoaceptación y la búsqueda de identidad. Sus letras son honestas y vulnerables, lo que añade una capa de autenticidad al álbum.
-
-                            Variedad de Estilos Musicales: "Ctrl" presenta una amplia gama de estilos musicales, desde baladas soul hasta canciones más orientadas al hip-hop. La versatilidad de SZA como artista es evidente a lo largo del álbum, lo que lo hace atractivo para una audiencia diversa.
-
-                            Colaboraciones Destacadas: El álbum cuenta con colaboraciones notables, como Travis Scott en "Love Galore" y James Fauntleroy en "Wavy (Interlude)". Estas colaboraciones aportan matices adicionales al sonido general del álbum.
-
-                            Producción Innovadora: La producción de "Ctrl" es innovadora y fresca, con beats contemporáneos que complementan perfectamente la voz distintiva de SZA. La instrumentación creativa y la elección de samples contribuyen a la singularidad del sonido.
-
-                           
-                        </MudText>
-                            <div style="display: flex; gap: 7px; align-items: center; margin-top: 20px;">
-                                <MudText Color="Color.Error" Style="font-size: 15px; font-weight:bold; font-family: SourceSerif4; "> Por: </MudText>
-                                <MudText Style="font-size: 15px; opacity: 0.7;font-family: SourceSerif4;  " Color="Color.Primary"> Jeanna Grant</MudText>
-
-                                <MudTooltip Arrow="true" Text="Reportar" Color="Color.Error">
-                                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Rounded.Flag"></MudIconButton>
-
-                                </MudTooltip>
-
-                            </div>
-                       
-
-                    </MudContainer>
-                </MudItem>
-  
-                <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
-                        <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 30px;" Color="Color.Error">TRACKS</MudText>
-                        
-                    <MudContainer Style="max-height: 360px; overflow: auto; margin-top: 10px;">
-                        <MudGrid Justify="Justify.Center">
-                              
-
-                            @foreach (var track in Albumresponse.Tracks)
-                            {
-                                
-                                  
-
-                                    <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
-                                        <MetaMusic.Pages.Common_Components.TrackComponent track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
+                                        </div>
                                     </MudItem>
-                                
-                              
-                            }
-
-
-                        </MudGrid>
-                    </MudContainer>
-                </MudItem>
-              
-              
-            </MudGrid>
-            <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
-            <MudGrid>
-                <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
-
-                    <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">CALIFICA ESTE ALBUM</MudText>
-
-                    <MudContainer  Style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
-
-
-                       @foreach(var i in rate)
-                       {
-
-                            @if(i == ratenumber)
-                            {
-
-                                @if (i == 1 )
-                                {
-                                    <MudTooltip Arrow=true Text="Es Horrible" Color="Color.Error" >
-                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
-                                            @i
-                                        </MudAvatar>
-                                    </MudTooltip>
-                                }
-                                else if (i == 2)
-                                {
-                                    <MudTooltip Arrow=true Text="Muy Malo" Color="Color.Error">
-                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
-                                            @i
-                                        </MudAvatar>
-                                    </MudTooltip>
-                                }
-                                
-                                else if (i >= 3 && i <= 4)
-                                {
-                                    <MudTooltip Arrow=true Text="Es Malo" Color="Color.Error">
-                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
-                                            @i
-                                        </MudAvatar>
-                                    </MudTooltip>
-                                }
-                                else if (i >= 5 && i <= 6)
-                                {
-                                    <MudTooltip Arrow=true Text="Esta Bien" Color="Color.Error">
-                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
-                                            @i
-                                        </MudAvatar>
-                                    </MudTooltip>
-                                }
-                                else if (i >= 7 && i <= 8)
-                                {
-                                    <MudTooltip Arrow=true Text="Muy Bueno" Color="Color.Error">
-                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
-                                            @i
-                                        </MudAvatar>
-                                    </MudTooltip>
-                                }
-                                else if (i >= 9 && i < 10)
-                                {
-                                    <MudTooltip Arrow=true Text="!Maravilloso!" Color="Color.Error">
-                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
-                                            @i
-                                        </MudAvatar>
-                                    </MudTooltip>
-                                }
-                                else 
-                                {
-                                    <MudTooltip Arrow=true Text="!Es Excelente!" Color="Color.Error">
-                                        <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
-                                            @i
-                                        </MudAvatar>
-                                    </MudTooltip>
-                                }
-                             }
-
-
-                            
-                            else
-                            {
-                                <MudAvatar @onmouseover="()=>{ratenumber = i;}" @onclick="()=>{ratenumber = i;}" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
-                                    @i
-                                    </MudAvatar>
-                            }
-                       }
-                        
-                      
-
-                       
-                       
-                        
-                       
-                    </MudContainer>
-                    <MudText Align="Align.Center"  Style="font-size: 10px; font-weight: bold; margin-top: 20px; margin-bottom: 20px; opacity: 0.5;">•  •  •  •  •  •  •  •  •  •  •  •</MudText>
-                    <MudContainer Style="margin-top: 20px; width: 80%;">
-                        <MudTextField AutoGrow=true T="string" Immediate=true MaxLength="120" Counter="120" Variant="MudBlazor.Variant.Text" Style="font-size: 15px;" Placeholder="Escribe una nota (opcional)" DisableUnderLine=true AdornmentIcon="@Icons.Material.Rounded.Send" Adornment="Adornment.End"></MudTextField>
-                    </MudContainer>
-                </MudItem>
-
-             
-                
-                <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
-                <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12" Style="margin-bottom: 60px;">
-                    <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">MAS DE @Albumresponse.Autores?.ToUpper()</MudText>
-                      
-                    <MudGrid>
-                        @foreach (var album in albumesrelacionados.AsEnumerable().Take(4))
-                        {
-                            <MudItem md="3" lg="3" xxl="3" xl="3" sm="12" xs="12">
-                                <MetaMusic.Pages.Common_Components.ReviewCard album="album"></MetaMusic.Pages.Common_Components.ReviewCard>
-
+                                    <MudItem md="6" sm="12" xs="12" xl="6" xxl="6" lg="6">
+                                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+                                            <MudAvatar Color="Color.Error" Size="Size.Large" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%; " Rounded=true>
+                                                9
+                                            </MudAvatar>
+                                            <MudText Style="font-size: 15px; font-weight: bold">CALIFICACION DEL PUBLICO</MudText>
+                                            <MudText Style="font-size: 12px;"><span style="color: #E74646;">120</span>  CRITICAS</MudText>
+                                            <MudButton Style="font-size: 12px;" @onclick="ShowNotes" Color="Color.Error" Variant="MudBlazor.Variant.Outlined">VER CRITICAS</MudButton>
+                                        </div>
+                                    </MudItem>
+                                </MudGrid>
                             </MudItem>
-                        }
+                        </MudGrid>
+
+
+
+
+
+                    </MudItem>
+                    <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
+                    <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
+
+                        <MudGrid>
+
+
+
+
+                            <MudItem md="8" lg="8" xxl="8" xl="8" sm="12" xs="12">
+                                <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">To Pimp A Butterfly</MudText>
+
+
+                                <MudContainer Style="display: flex; flex-direction: column; gap: 20px;">
+                                    <MudText Style="font-size: 18px; font-family: SourceSerif4; text-align: justify;">
+                                        "Ctrl" es el álbum debut de estudio de la cantante y compositora estadounidense SZA, lanzado en 2017. El álbum recibió una aclamación generalizada por parte de la crítica y se destaca por su fusión única de R&B contemporáneo, neo soul y elementos de hip-hop. Aquí hay una breve revisión de algunas de las características destacadas:
+
+                                        Exploración de Temas Personales: SZA aborda temas personales y experiencias de vida, desde relaciones tumultuosas hasta la autoaceptación y la búsqueda de identidad. Sus letras son honestas y vulnerables, lo que añade una capa de autenticidad al álbum.
+
+                                        Variedad de Estilos Musicales: "Ctrl" presenta una amplia gama de estilos musicales, desde baladas soul hasta canciones más orientadas al hip-hop. La versatilidad de SZA como artista es evidente a lo largo del álbum, lo que lo hace atractivo para una audiencia diversa.
+
+                                        Colaboraciones Destacadas: El álbum cuenta con colaboraciones notables, como Travis Scott en "Love Galore" y James Fauntleroy en "Wavy (Interlude)". Estas colaboraciones aportan matices adicionales al sonido general del álbum.
+
+                                        Producción Innovadora: La producción de "Ctrl" es innovadora y fresca, con beats contemporáneos que complementan perfectamente la voz distintiva de SZA. La instrumentación creativa y la elección de samples contribuyen a la singularidad del sonido.
+
+
+                                    </MudText>
+                                    <div style="display: flex; gap: 7px; align-items: center; margin-top: 20px;">
+                                        <MudText Color="Color.Error" Style="font-size: 15px; font-weight:bold; font-family: SourceSerif4; "> Por: </MudText>
+                                        <MudText Style="font-size: 15px; opacity: 0.7;font-family: SourceSerif4;  " Color="Color.Primary"> Jeanna Grant</MudText>
+
+                                       <MudTooltip Color="Color.Error" Arrow="true" Text="Reportar">
+                                            <MudMenu ListClass="pa-0 mud-elevation-4" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag">
+
+
+                                                <MudPaper Outlined="true" style="padding: 10px; overflow: hidden;">
+
+
+                                                    <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Contenido Ofensivo</MudText></MudMenuItem>
+                                                    <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Critica Imparcial / Hate</MudText></MudMenuItem>
+                                                    <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Error Tipografico</MudText></MudMenuItem>
+
+
+
+
+                                                </MudPaper>
+
+
+
+
+                                            </MudMenu>
+                                       </MudTooltip>
+                                      
+                                    </div>
+
+
+                                </MudContainer>
+                            </MudItem>
+
+                            <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
+                                <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold ;margin-top: 20px; margin-bottom: 30px;" Color="Color.Error">TRACKS</MudText>
+
+                                <MudContainer Style="max-height: 360px; overflow: auto; margin-top: 10px;">
+                                    <MudGrid Justify="Justify.Center">
+
+
+                                        @foreach (var track in Albumresponse.Tracks)
+                                    {
+
+
+
+                                        <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+                                            <MetaMusic.Pages.Common_Components.TrackComponent track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
+                                        </MudItem>
+
+
+                                    }
+
+
+                                </MudGrid>
+                            </MudContainer>
+                        </MudItem>
+
+
                     </MudGrid>
-                    
-                   
+                    <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
+                    <MudGrid>
+                        <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+
+                            <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">CALIFICA ESTE ALBUM</MudText>
+
+                            <MudContainer Style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
+
+
+                                @foreach (var i in rate)
+                                {
+
+                                    @if (i == ratenumber)
+                                    {
+
+                                        @if (i == 1)
+                                        {
+                                            <MudTooltip Arrow=true Text="Es Horrible" Color="Color.Error">
+                                                <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                                    @i
+                                                </MudAvatar>
+                                            </MudTooltip>
+                                        }
+                                        else if (i == 2)
+                                        {
+                                            <MudTooltip Arrow=true Text="Muy Malo" Color="Color.Error">
+                                                <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                                    @i
+                                                </MudAvatar>
+                                            </MudTooltip>
+                                        }
+
+                                        else if (i >= 3 && i <= 4)
+                                        {
+                                            <MudTooltip Arrow=true Text="Es Malo" Color="Color.Error">
+                                                <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                                    @i
+                                                </MudAvatar>
+                                            </MudTooltip>
+                                        }
+                                        else if (i >= 5 && i <= 6)
+                                        {
+                                            <MudTooltip Arrow=true Text="Esta Bien" Color="Color.Error">
+                                                <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                                    @i
+                                                </MudAvatar>
+                                            </MudTooltip>
+                                        }
+                                        else if (i >= 7 && i <= 8)
+                                        {
+                                            <MudTooltip Arrow=true Text="Muy Bueno" Color="Color.Error">
+                                                <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                                    @i
+                                                </MudAvatar>
+                                            </MudTooltip>
+                                        }
+                                        else if (i >= 9 && i < 10)
+                                        {
+                                            <MudTooltip Arrow=true Text="!Maravilloso!" Color="Color.Error">
+                                                <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                                    @i
+                                                </MudAvatar>
+                                            </MudTooltip>
+                                        }
+                                        else
+                                        {
+                                            <MudTooltip Arrow=true Text="!Es Excelente!" Color="Color.Error">
+                                                <MudAvatar Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                                    @i
+                                                </MudAvatar>
+                                            </MudTooltip>
+                                        }
+                                    }
+
+
+
+                                    else
+                                    {
+                                        <MudAvatar @onmouseover="()=>{ratenumber = i;}" @onclick="()=>{ratenumber = i;}" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                            @i
+                                        </MudAvatar>
+                                    }
+                                }
+
+
+
+
+
+
+
+                            </MudContainer>
+                            <MudText Align="Align.Center" Style="font-size: 10px; font-weight: bold; margin-top: 20px; margin-bottom: 20px; opacity: 0.5;">•  •  •  •  •  •  •  •  •  •  •  •</MudText>
+                            <MudContainer Style="margin-top: 20px; width: 80%;">
+                                <MudTextField AutoGrow=true T="string" Immediate=true MaxLength="120" Counter="120" Variant="MudBlazor.Variant.Text" Style="font-size: 15px;" Placeholder="Escribe una nota (opcional)" DisableUnderLine=true AdornmentIcon="@Icons.Material.Rounded.Send" Adornment="Adornment.End"></MudTextField>
+                            </MudContainer>
+                        </MudItem>
+
+
+
+                        <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
+                        <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12" Style="margin-bottom: 60px;">
+                            <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">MAS DE @Albumresponse.Autores?.ToUpper()</MudText>
+
+                                <MudGrid>
+                                    @foreach (var album in albumesrelacionados.AsEnumerable().Take(4))
+                                {
+                                    <MudItem md="3" lg="3" xxl="3" xl="3" sm="12" xs="12">
+                                        <MetaMusic.Pages.Common_Components.ReviewCard album="album"></MetaMusic.Pages.Common_Components.ReviewCard>
+
+                                    </MudItem>
+                                }
+                            </MudGrid>
+
+
+                        </MudItem>
+                    </MudGrid>
+
                 </MudItem>
             </MudGrid>
-          
-        </MudItem>
-    </MudGrid>
 
-</MudItem>
+        </MudItem>
+    </BlazorAnimation.Animation>
+ 
+}
+else
+{
+    <div style="position: relative;">
+         <MudOverlay Visible="true" DarkBackground="@theme.IsDark()" LightBackground="@(!theme.IsDark())" Absolute="true">
+       
+             
+         </MudOverlay>
+    </div>
+}
+
 
 @functions{
 
@@ -304,11 +337,12 @@
 @code {
 
 
-    
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            DataCargada = false;
             var config = SpotifyClientConfig.CreateDefault();
 
             var request = new ClientCredentialsRequest("be3b1a5218c449a79a3a21ddfe850a5f", "7cf1d67e3efd4690a1bd43a18903f7dc");
@@ -316,8 +350,8 @@
 
             var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
 
-            var album = await spotify.Albums.Get("7ycBtnsMtyVbbwTfJwRjSP");
-            var tracks = await spotify.Albums.GetTracks("7ycBtnsMtyVbbwTfJwRjSP");
+            var album = await spotify.Albums.Get("2fYhqwDWXjbpjaIJPEfKFw");
+            var tracks = await spotify.Albums.GetTracks("2fYhqwDWXjbpjaIJPEfKFw");
             var albumes = await spotify.Artists.GetAlbums(album.Artists[0].Id);
             var artist = await spotify.Artists.Get(album.Artists[0].Id);
 
@@ -326,7 +360,7 @@
             {
                 Albumresponse.portada = album.Images[0].Url;
 
-                
+
                 Albumresponse.Autores = album.Artists[0].Name;
 
                 if(artist is not null && artist.Genres.Count() >= 1)
@@ -350,11 +384,11 @@
                     }
                 }
 
-               
+
                 StateHasChanged();
 
             }
-
+            DataCargada = true;
 
         }
         catch (Exception e)
@@ -365,6 +399,7 @@
 
     }
 
+    public bool DataCargada = false;
     public int ratenumber = 1;
     public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     public Album Albumresponse = new Album();

@@ -53,7 +53,7 @@
                
                 
 
-                 <MudTabs Color="Color.Transparent" Rounded="true" HideSlider="true" AlwaysShowScrollButtons="false" MinimumTabWidth="100" Elevation="0" IconColor="Color.Secondary" ScrollIconColor="Color.Secondary" Centered="true" Style="font-size: 10px; width: 100%;  height: 100%; margin-bottom: 15px;margin-top: 30px; padding:0; " SliderColor="Color.Secondary">
+                 <MudTabs  DisableRipple=true Color="Color.Transparent" Rounded="true" HideSlider="true" AlwaysShowScrollButtons="false" MinimumTabWidth="100" Elevation="0" IconColor="Color.Secondary" ScrollIconColor="Color.Secondary" Centered="true" Style="font-size: 10px; width: 100%;  height: 100%; margin-bottom: 15px;margin-top: 30px; padding:0; " SliderColor="Color.Secondary">
     
                     
                         <MudTabPanel style="@($"""{(view == "Notas" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Notas";}' Text="Notas">
@@ -61,7 +61,7 @@
                                 @foreach (var album in albumesRock)
                                 {
                                     <MudItem md="6" lg="6" xl="6" xxl="6" sm="12" xs="12">
-                                        <MetaMusic.Pages.Common_Components.Nota ></MetaMusic.Pages.Common_Components.Nota>
+                                        <MetaMusic.Pages.Common_Components.Nota  ReportButton=false ></MetaMusic.Pages.Common_Components.Nota>
                                     </MudItem>
                                 }
                             </MudGrid>

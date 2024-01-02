@@ -38,10 +38,38 @@
                     <MudText Style="font-size: 12px;font-weight: bold; opacity: 0.7; " Color="Color.Primary">5</MudText>
                 </div>
 
-                <div style="display: flex; gap :8px;align-items: center;">
-                    <MudIcon Icon="@Icons.Material.Rounded.Info" Color="Color.Error" Style="width: 15px; height: 15px;"></MudIcon>
+                @if(ReportButton)
+                {
+                    <MudMenu ListClass="pa-0 mud-elevation-4" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag">
 
-                </div>
+                        <ActivatorContent>
+                            <div style="display: flex; gap :8px;align-items: center;">
+                                <MudIcon Icon="@Icons.Material.Rounded.Info" Color="Color.Error" Style="width: 15px; height: 15px;"></MudIcon>
+
+                            </div>
+                        </ActivatorContent>
+                        <ChildContent>
+                            <MudPaper Outlined="true" style="padding: 10px; overflow: hidden;">
+
+
+                                <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Contenido Ofensivo</MudText></MudMenuItem>
+                                <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Critica Imparcial / Hate</MudText></MudMenuItem>
+
+
+
+
+
+                            </MudPaper>
+                        </ChildContent>
+
+
+
+
+
+                    </MudMenu>
+
+                }
+            
 
                
             </div>
@@ -53,5 +81,5 @@
     </MudContainer>
 </MudPaper>
 @code {
-
+    [Parameter] public bool ReportButton { get; set; } = true;
 }

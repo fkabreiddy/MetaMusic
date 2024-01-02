@@ -1,5 +1,6 @@
 using BlazorAnimation;
 using MetaMusic.Data;
+using MetaMusic.Data.Context;
 using MetaMusic.Data.ThemeManagement;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -15,6 +16,9 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddMudServices();
 builder.Services.Configure<AnimationOptions>(Guid.NewGuid().ToString(), c => { });
 builder.Services.AddScoped<ITheme, Theme>();
+
+builder.Services.AddDbContext<MetaMusicDbContext>();
+builder.Services.AddScoped<IMetaMusicDbContext, MetaMusicDbContext>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
