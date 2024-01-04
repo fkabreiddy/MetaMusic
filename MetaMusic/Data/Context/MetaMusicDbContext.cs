@@ -7,7 +7,7 @@ namespace MetaMusic.Data.Context
     {
         private readonly IConfiguration config;
 
-        public DbSet<Usuario>  Usuarios { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Album> Albumes { get; set; }
 
         public DbSet<Artista> Artistas { get; set; }
@@ -24,6 +24,7 @@ namespace MetaMusic.Data.Context
 
         public DbSet<Notificacion> Notificacions { get; set; }
 
+        public DbSet<Artista_Suscriptor> Artista_Suscriptores { get; set; }
         public DbSet<Reporte> Reportes { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
@@ -57,11 +58,11 @@ namespace MetaMusic.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-                modelBuilder.Entity<Album>()
-           .HasOne(a => a.Review)
-           .WithOne(r => r.Album)
-           .HasForeignKey<Review>(r => r.IdAlbum)
-           .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Album>()
+       .HasOne(a => a.Review)
+       .WithOne(r => r.Album)
+       .HasForeignKey<Review>(r => r.IdAlbum)
+       .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Suscripcion>().HasOne(s => s.Usuario).WithMany(u => u.Suscriptores).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Suscripcion>().HasOne(s => s.Suscriptor).WithMany(u => u.Suscripciones).OnDelete(DeleteBehavior.NoAction);
 
@@ -109,7 +110,7 @@ namespace MetaMusic.Data.Context
             modelBuilder.Entity<Nota>().HasOne(b => b.Album).WithMany(u => u.Notas).OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Review>().HasOne(b => b.Creador).WithMany(u => u.Reviews).OnDelete(DeleteBehavior.NoAction);
-          
+
             modelBuilder.Entity<Rol>().HasMany(b => b.Usuarios).WithOne(u => u.Rol).OnDelete(DeleteBehavior.NoAction);
 
 

@@ -31,7 +31,7 @@ namespace MetaMusic.Data.Entities
         public List<Busqueda> Busquedas { get; set; } = new List<Busqueda>();
         public List<Suscripcion> Suscripciones { get; set; } = new List<Suscripcion>();
         public List<Reporte> Reportes { get; set; } = new List<Reporte>();
-
+        public List<Artista_Suscriptor> Artistas_Suscritos { get; set; } = new List<Artista_Suscriptor>();
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
 
 

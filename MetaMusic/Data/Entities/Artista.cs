@@ -14,6 +14,7 @@ namespace MetaMusic.Data.Entities
 
         public List<Genero_Artista> GenerosMusicales { get; set; } = new List<Genero_Artista>();
 
+        public List<Artista_Suscriptor> Suscriptores { get; set; } = new List<Artista_Suscriptor>();
         public Usuario? Creador { get; set; } = new Usuario();
         public List<Album_Artista> Albumes { get; set; } = new List<Album_Artista>();
     }
