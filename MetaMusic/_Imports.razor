@@ -12,6 +12,7 @@
 @using Data.TestData
 @using SpotifyAPI.Web
 @using MetaMusic.Data.ThemeManagement
+@using MetaMusic.Data.Services
 @using TinyMCE.Blazor
 @using BlazorContentEditable
 @using MetaMusic.Data.Context
@@ -20,3 +21,5 @@
 @inject IDialogService dService
 @inject ITheme theme
 @inject IMetaMusicDbContext dbContext 
+@inject IAsignDataService asignDataService
+@inject IUserDataService userDataService

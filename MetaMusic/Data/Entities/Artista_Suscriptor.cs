@@ -1,4 +1,5 @@
 ﻿using MetaMusic.Data.Context;
+using MetaMusic.Data.Request;
 using System.ComponentModel.DataAnnotations;
 
 namespace MetaMusic.Data.Entities
@@ -12,6 +13,33 @@ namespace MetaMusic.Data.Entities
 
         public Usuario Usuario { get; set; } = new Usuario();
 
-        
+        public static Artista_Suscriptor Crear(Artista_SuscriptorRequest request) => new Artista_Suscriptor()
+        {
+            Id = request.Id,
+            Artista = request.Artista,
+            Usuario = request.Usuario
+            // Agrega otras propiedades si es necesario
+        };
+
+        public bool Modificar(Artista_SuscriptorRequest artistaSuscriptor)
+        {
+            bool modificacion = false;
+
+            if (this.Artista != artistaSuscriptor.Artista)
+            {
+                this.Artista = artistaSuscriptor.Artista;
+                modificacion = true;
+            }
+
+            if (this.Usuario != artistaSuscriptor.Usuario)
+            {
+                this.Usuario = artistaSuscriptor.Usuario;
+                modificacion = true;
+            }
+
+           
+
+            return modificacion;
+        }
     }
 }

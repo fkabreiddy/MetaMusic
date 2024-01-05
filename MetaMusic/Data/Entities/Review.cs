@@ -1,4 +1,6 @@
-﻿using MetaMusic.Data.TestData;
+﻿using MetaMusic.Data.Request;
+using MetaMusic.Data.Responses;
+using MetaMusic.Data.TestData;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,6 +20,69 @@ namespace MetaMusic.Data.Entities
       
         public int IdAlbum { get; set; }
 
-        
+        public static Review Crear(ReviewRequest request) => new Review()
+        {
+            Id = request.Id,
+            Contenido = request.Contenido,
+            Creador = request.Creador,
+            Album = request.Album,
+            Reportes = request.Reportes,
+            IdAlbum = request.IdAlbum
+            // Agrega otras propiedades si es necesario
+        };
+
+        public bool Modificar(ReviewRequest review)
+        {
+            bool modificacion = false;
+
+            if (this.Contenido != review.Contenido)
+            {
+                this.Contenido = review.Contenido;
+                modificacion = true;
+            }
+
+            if (this.Creador != review.Creador)
+            {
+                this.Creador = review.Creador;
+                modificacion = true;
+            }
+
+            if (this.Album != review.Album)
+            {
+                this.Album = review.Album;
+                modificacion = true;
+            }
+
+            if (!Reportes.SequenceEqual(review.Reportes))
+            {
+                Reportes = review.Reportes;
+                modificacion = true;
+            }
+
+            if (this.IdAlbum != review.IdAlbum)
+            {
+                this.IdAlbum = review.IdAlbum;
+                modificacion = true;
+            }
+
+            // Agrega otras comparaciones y actualizaciones si es necesario
+
+            return modificacion;
+        }
+
+        public ReviewResponse ToResponse()
+        {
+            return new ReviewResponse
+            {
+                Id = this.Id,
+                Contenido = this.Contenido,
+                Creador = this.Creador,
+                Album = this.Album,
+                Reportes = this.Reportes,
+                IdAlbum = this.IdAlbum
+                // Agrega otras asignaciones si es necesario
+            };
+        }
+
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MetaMusic.Data.OtherEntities;
+using MetaMusic.Data.Request;
+using MetaMusic.Data.Responses;
+using System.ComponentModel.DataAnnotations;
 
 namespace MetaMusic.Data.Entities
 {
@@ -34,6 +37,194 @@ namespace MetaMusic.Data.Entities
         public List<Artista_Suscriptor> Artistas_Suscritos { get; set; } = new List<Artista_Suscriptor>();
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
 
+        public LoginResponse ToLoginResponse() => new LoginResponse()
+        {
+            Id = this.Id,
+            Nombre = this.Nombre,
+            Correo = this.Correo,
+      
+            Rol = this.Rol,
+           
+            // Agrega otras propiedades si es necesario
+        };
+        public UsuarioResponse ToResponse() => new UsuarioResponse()
+        {
+            Id = this.Id,
+            Nombre = this.Nombre,
+            Correo = this.Correo,
+            FotoDePerfil = this.FotoDePerfil,
+            Biografia = this.Biografia,
+            Rol = this.Rol,
+            Artistas_Creados = this.Artistas_Creados,
+            Albumes_Publicados = this.Albumes_Publicados,
+            Notas_DisLikeadas = this.Notas_DisLikeadas,
+            Notas_Likeadas = this.Notas_Likeadas,
+            Liked_Tracks = this.Liked_Tracks,
+            Reviews = this.Reviews,
+            Notas = this.Notas,
+            Notificaciones_Hechas = this.Notificaciones_Hechas,
+            Notificaciones_Recibidas = this.Notificaciones_Recibidas,
+            Suscriptores = this.Suscriptores,
+            Busquedas = this.Busquedas,
+            Suscripciones = this.Suscripciones,
+            Reportes = this.Reportes,
+            Artistas_Suscritos = this.Artistas_Suscritos,
+            Calificaciones = this.Calificaciones
+            // Agrega otras propiedades si es necesario
+        };
+        public static Usuario Crear(UsuarioRequest request) => new Usuario()
+        {
+            Id = request.Id,
+            Nombre = request.Nombre,
+            Correo = request.Correo,
+            FotoDePerfil = request.FotoDePerfil,
+            Biografia = request.Biografia,
+            Rol = request.Rol,
+            Artistas_Creados = request.Artistas_Creados,
+            Albumes_Publicados = request.Albumes_Publicados,
+            Notas_DisLikeadas = request.Notas_DisLikeadas,
+            Notas_Likeadas = request.Notas_Likeadas,
+            Liked_Tracks = request.Liked_Tracks,
+            Reviews = request.Reviews,
+            Notas = request.Notas,
+            Notificaciones_Hechas = request.Notificaciones_Hechas,
+            Notificaciones_Recibidas = request.Notificaciones_Recibidas,
+            Suscriptores = request.Suscriptores,
+            Busquedas = request.Busquedas,
+            Suscripciones = request.Suscripciones,
+            Reportes = request.Reportes,
+            Artistas_Suscritos = request.Artistas_Suscritos,
+            Calificaciones = request.Calificaciones
+            // Agrega otras propiedades si es necesario
+        };
 
+        public bool Modificar(UsuarioRequest usuarioResponse)
+        {
+            bool modificacion = false;
+
+            if (this.Nombre != usuarioResponse.Nombre)
+            {
+                this.Nombre = usuarioResponse.Nombre;
+                modificacion = true;
+            }
+
+            if (this.Correo != usuarioResponse.Correo)
+            {
+                this.Correo = usuarioResponse.Correo;
+                modificacion = true;
+            }
+
+            if (this.FotoDePerfil != usuarioResponse.FotoDePerfil)
+            {
+                this.FotoDePerfil = usuarioResponse.FotoDePerfil;
+                modificacion = true;
+            }
+
+            if (this.Biografia != usuarioResponse.Biografia)
+            {
+                this.Biografia = usuarioResponse.Biografia;
+                modificacion = true;
+            }
+
+            if (!Rol.Equals(usuarioResponse.Rol))
+            {
+                Rol = usuarioResponse.Rol;
+                modificacion = true;
+            }
+
+            if (!Artistas_Creados.SequenceEqual(usuarioResponse.Artistas_Creados))
+            {
+                Artistas_Creados = usuarioResponse.Artistas_Creados;
+                modificacion = true;
+            }
+
+            if (!Albumes_Publicados.SequenceEqual(usuarioResponse.Albumes_Publicados))
+            {
+                Albumes_Publicados = usuarioResponse.Albumes_Publicados;
+                modificacion = true;
+            }
+
+            if (!Notas_DisLikeadas.SequenceEqual(usuarioResponse.Notas_DisLikeadas))
+            {
+                Notas_DisLikeadas = usuarioResponse.Notas_DisLikeadas;
+                modificacion = true;
+            }
+
+            if (!Notas_Likeadas.SequenceEqual(usuarioResponse.Notas_Likeadas))
+            {
+                Notas_Likeadas = usuarioResponse.Notas_Likeadas;
+                modificacion = true;
+            }
+
+            if (!Liked_Tracks.SequenceEqual(usuarioResponse.Liked_Tracks))
+            {
+                Liked_Tracks = usuarioResponse.Liked_Tracks;
+                modificacion = true;
+            }
+
+            if (!Reviews.SequenceEqual(usuarioResponse.Reviews))
+            {
+                Reviews = usuarioResponse.Reviews;
+                modificacion = true;
+            }
+
+            if (!Notas.SequenceEqual(usuarioResponse.Notas))
+            {
+                Notas = usuarioResponse.Notas;
+                modificacion = true;
+            }
+
+            if (!Notificaciones_Hechas.SequenceEqual(usuarioResponse.Notificaciones_Hechas))
+            {
+                Notificaciones_Hechas = usuarioResponse.Notificaciones_Hechas;
+                modificacion = true;
+            }
+
+            if (!Notificaciones_Recibidas.SequenceEqual(usuarioResponse.Notificaciones_Recibidas))
+            {
+                Notificaciones_Recibidas = usuarioResponse.Notificaciones_Recibidas;
+                modificacion = true;
+            }
+
+            if (!Suscriptores.SequenceEqual(usuarioResponse.Suscriptores))
+            {
+                Suscriptores = usuarioResponse.Suscriptores;
+                modificacion = true;
+            }
+
+            if (!Busquedas.SequenceEqual(usuarioResponse.Busquedas))
+            {
+                Busquedas = usuarioResponse.Busquedas;
+                modificacion = true;
+            }
+
+            if (!Suscripciones.SequenceEqual(usuarioResponse.Suscripciones))
+            {
+                Suscripciones = usuarioResponse.Suscripciones;
+                modificacion = true;
+            }
+
+            if (!Reportes.SequenceEqual(usuarioResponse.Reportes))
+            {
+                Reportes = usuarioResponse.Reportes;
+                modificacion = true;
+            }
+
+            if (!Artistas_Suscritos.SequenceEqual(usuarioResponse.Artistas_Suscritos))
+            {
+                Artistas_Suscritos = usuarioResponse.Artistas_Suscritos;
+                modificacion = true;
+            }
+
+            if (!Calificaciones.SequenceEqual(usuarioResponse.Calificaciones))
+            {
+                Calificaciones = usuarioResponse.Calificaciones;
+                modificacion = true;
+            }
+
+            // Agrega otras comparaciones y actualizaciones si es necesario
+
+            return modificacion;
+        }
     }
 }
