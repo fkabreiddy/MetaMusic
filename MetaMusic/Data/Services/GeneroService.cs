@@ -34,7 +34,7 @@ namespace MetaMusic.Data.Services
                 {
                     Data = generos.Select(G => G.ToResponse()).ToList(),
                     Message = "Exito",
-                    Success = false
+                    Success = true
                 };
 
             }
