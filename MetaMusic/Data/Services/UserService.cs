@@ -13,12 +13,12 @@ namespace MetaMusic.Data.Services
     public class UserService : IUserService
     {
 
-        private readonly ICurrentUserServices currentUserServices;
+        private readonly IGoogleAuthService currentUserServices;
         private readonly IMetaMusicDbContext dbContext;
         private readonly ICustomAuthenticationStateProvider customAuthState;
         private readonly NavigationManager navManager;
 
-        public UserService(NavigationManager navManager, ICustomAuthenticationStateProvider customAuthState, ICurrentUserServices currentUserServices, IMetaMusicDbContext dbContext)
+        public UserService(NavigationManager navManager, ICustomAuthenticationStateProvider customAuthState, IGoogleAuthService currentUserServices, IMetaMusicDbContext dbContext)
         {
             this.currentUserServices = currentUserServices;
             this.dbContext = dbContext;
@@ -29,7 +29,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var user = await dbContext.Usuarios.Include(u => u.Busquedas).Include(u => u.Reportes).FirstOrDefaultAsync(u => u.Correo == email);
+                var user = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == email);
 
 
 
@@ -155,9 +155,9 @@ namespace MetaMusic.Data.Services
             try
             {
 
-                var currentuserRole = await currentUserServices.Rol();
+                var currentuserRole = await currentUserServices.GetCurrentUser();
 
-                if (currentuserRole == "Normal")
+                if (currentuserRole.Data.Rol.Tipo == "Normal")
                     return new Result<bool>()
                     {
 
@@ -209,10 +209,19 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var currentuserId = await currentUserServices.UserId();
-                var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == currentuserId);
+                var currentuser = await currentUserServices.GetCurrentUser();
 
-                if (usuario is null) //si existe el usuario 
+                if (currentuser.Data is null)
+                    return new Result<UsuarioResponse>()
+                    {
+
+                        Success = false,
+                        Message = "No estas Logeado"
+                    };
+
+                var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == currentuser.Data.Id);
+
+                if (usuario is null) //si no existe el usuario 
                     return new Result<UsuarioResponse>()
                     {
 
@@ -231,8 +240,8 @@ namespace MetaMusic.Data.Services
                 return new Result<UsuarioResponse>()
                 {
                     Data = usuario.ToResponse(),
-                    Success = false,
-                    Message = "Hubo un problema a la hora de crear tu cuenta, intenta mas tarde"
+                    Success = true,
+                    Message = "Cambios hechos"
                 };
 
             }
@@ -245,6 +254,87 @@ namespace MetaMusic.Data.Services
                     Success = false,
                     Message = e.InnerException?.Message ?? e.Message
                 };
+            }
+        }
+
+        public async Task<Result<UsuarioResponse>> ConsultarUsuarioActual()
+        {
+            try
+            {
+                var us = await currentUserServices.GetCurrentUser();
+
+                if (us.Data is null)
+                    return new Result<UsuarioResponse>
+                    {
+
+                        Message = "No estas Logeado",
+                        Success = true
+                    };
+                var usuarioactual = await dbContext.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Id == us.Data.Id);
+
+                if (usuarioactual is null)
+                    return new Result<UsuarioResponse>
+                    {
+                        Message = "No estas Registrado",
+                        Success = false
+                    };
+
+                return new Result<UsuarioResponse>
+                {
+                    Data = usuarioactual.ToResponse(),
+                    Message = "UsuarioEncontrado",
+                    Success = true
+                };
+            }
+            catch (Exception e)
+            {
+
+                return new Result<UsuarioResponse>
+                {
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = false
+                };
+
+            }
+        }
+        public async Task<Result<UsuarioResponse>> ConsultarUsuario(string email)
+        {
+            try
+            {
+                var usuarioexistente = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == email);
+
+                if (usuarioexistente is null)
+                    return new Result<UsuarioResponse>
+                    {
+                        Message = "Usuario no encontrado",
+                        Success = false
+                    };
+                var usuario = await dbContext.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Id == usuarioexistente.Id);
+
+
+                if (usuario is null)
+                    return new Result<UsuarioResponse>
+                    {
+                        Message = "Usuario no encontrado",
+                        Success = false
+                    };
+
+                return new Result<UsuarioResponse>
+                {
+                    Data = usuario.ToResponse(),
+                    Message = "UsuarioEncontrado",
+                    Success = true
+                };
+            }
+            catch (Exception e)
+            {
+
+                return new Result<UsuarioResponse>
+                {
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = false
+                };
+
             }
         }
     }

@@ -26,8 +26,8 @@ builder.Services.AddScoped<ITheme, Theme>();
 builder.Services.AddDbContext<MetaMusicDbContext>();
 builder.Services.AddScoped<IMetaMusicDbContext, MetaMusicDbContext>();
 builder.Services.AddScoped<ICustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
-builder.Services.AddScoped<ICurrentUserServices, CurrentUserServices>();
-builder.Services.AddScoped<IUserDataService, UserDataService>();
+builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+
 builder.Services.AddScoped<IAsignDataService, AsignDataService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
@@ -74,8 +74,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<HttpContextAccessor>();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<HttpClient>();
-builder.WebHost.UseStaticWebAssets();
-builder.WebHost.UseUrls("https://localhost:7277/");
+
 //lista de blogs en el cache
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
@@ -94,6 +93,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
@@ -101,6 +102,6 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
+app.MapFallbackToPage("/user/{useremail}","/_Host");
 
 app.Run();

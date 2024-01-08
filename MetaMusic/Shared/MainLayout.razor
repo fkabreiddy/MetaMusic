@@ -64,102 +64,20 @@
                     <div style="display: flex; align-items: center;  gap : 17px;">
 
 
+                      
+
                         <AuthorizeView>
                             <Authorized>
-                                <MudMenu AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter">
 
-                                    <ActivatorContent>
-                                        <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@userDataService.UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+                                @if (UserDataLoaded)
+                                {
+                                    <MetaMusic.Pages.Common_Components.Profile></MetaMusic.Pages.Common_Components.Profile>
+                                }
+                                else
+                                {
+                                    <MudProgressCircular Size="Size.Small" Color="Color.Error" Indeterminate="true"></MudProgressCircular>
+                                }
 
-                                    </ActivatorContent>
-                                    <ChildContent>
-
-                                        <BlazorAnimation.Animation Style="z-index: 999999; position: static;" Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
-
-                                            <MudPaper Outlined="true" Style="z-index: 999999;  ">
-                                                <MudContainer Style="max-height: 80vh; overflow: auto; margin-top: 10px;margin-bottom: 10px;min-width: 220px; ">
-
-                                                    <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                                    <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Opciones</MudText>
-                                                    <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                                    <MudMenuItem @onclick='()=>{navManager.NavigateTo("/user");}' Style="border-radius: 10px;">
-                                                        <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                            <MudText Style="font-size: 12px;   ">Ver perfil</MudText>
-                                                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Person"></MudIcon>
-                                                        </div>
-
-                                                    </MudMenuItem>
-                                                    <MudMenuItem Style="border-radius: 10px;">
-                                                        <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                            <MudText Style="font-size: 12px;   ">Notificaciones</MudText>
-                                                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Notifications"></MudIcon>
-                                                        </div>
-
-                                                    </MudMenuItem>
-
-                                                    <MudMenuItem @onclick="()=>{theme.SetDarkTheme(!IsDarkMode);IsDarkMode = !IsDarkMode; }" Style="border-radius: 10px;">
-                                                        <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                            <MudText Style="font-size: 12px;   ">Modo @(IsDarkMode ? "Claro" : "Oscuro")</MudText>
-
-                                                            <MudIcon Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.LightMode"></MudIcon>
-                                                        </div>
-
-                                                    </MudMenuItem>
-
-                                                    <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                                    <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Staff Options</MudText>
-                                                    <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                                    <MudMenuItem @onclick='()=>{navManager.NavigateTo("/crear-contenido");}' Style="border-radius: 10px;">
-
-
-                                                        <div style="display:flex; justify-content: space-between; align-items: center;border-radius: 9px;">
-                                                            <MudText Color="Color.Error" Style="font-size: 12px;   ">Crear Contenido</MudText>
-                                                            <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Add"></MudIcon>
-                                                        </div>
-
-
-
-
-                                                    </MudMenuItem>
-                                                    <MudMenuItem Style="border-radius: 10px;">
-                                                        <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                            <MudText Style="font-size: 12px;   ">Peticiones</MudText>
-                                                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.NewReleases"></MudIcon>
-                                                        </div>
-
-                                                    </MudMenuItem>
-                                                    <MudMenuItem Style="border-radius: 10px;">
-                                                        <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                            <MudText Style="font-size: 12px;   ">Reportes</MudText>
-                                                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag"></MudIcon>
-                                                        </div>
-
-                                                    </MudMenuItem>
-                                                    <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                                    <MudMenuItem Style="border-radius: 10px; " Class="meta-nav-button">
-                                                        <div style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between;">
-                                                            <MudText Style="font-size: 12px;   " Class="meta-nav-button">Cerrar Sesion</MudText>
-                                                            <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.ArrowBack"></MudIcon>
-
-                                                        </div>
-
-                                                    </MudMenuItem>
-
-
-                                                </MudContainer>
-
-
-                                            </MudPaper>
-                                        </BlazorAnimation.Animation>
-
-                                    </ChildContent>
-
-
-
-
-
-
-                                </MudMenu>
                             </Authorized>
                             <NotAuthorized>
                                 <MudChip Color="Color.Error" Target="_top" Style="font-size: 12px; font-weight: bold;" Href="/google-login" Text="Iniciar Sesion"></MudChip>
@@ -167,8 +85,6 @@
                             </NotAuthorized>
 
                         </AuthorizeView>
-                         
-
                         <MudText Class="meta-nav-button" @onclick='()=>{navManager.NavigateTo("/");}' Style="font-size: 13px; font-weight: bold; cursor:pointer;">HOME</MudText>
 
                         @if(IsDarkMode)
@@ -181,6 +97,15 @@
                                                     <MudTextField MaxLength="30" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
                             
                         }
+                        @if (IsDarkMode)
+                        {
+                            <MudIcon Size="Size.Small" Style="cursor: pointer;" @onclick="()=>{IsDarkMode = !IsDarkMode; theme.SetDarkTheme(IsDarkMode);}" Icon="@Icons.Material.Filled.WbSunny" Color="Color.Error"></MudIcon>
+                        }
+                        else
+                        {
+                            <MudIcon Size="Size.Small" Style="cursor: pointer;" @onclick="()=>{IsDarkMode = !IsDarkMode; theme.SetDarkTheme(IsDarkMode);}" Icon="@Icons.Material.Rounded.NightlightRound" Color="Color.Error"></MudIcon>
+                        }
+                       
                     </div>
 
                 </MudContainer>
@@ -194,7 +119,11 @@
             <MudItem md="12" sm="12" xs="12" xxl="12" lg="12" xl="12" Style="margin-top: 4em; ">
                 <MudContainer >
                   
-                    @Body
+                    @if(UserDataLoaded)
+                    {
+                        @Body
+                    }
+                  
                 </MudContainer>
 
 
@@ -226,18 +155,39 @@
         }
     });
 </script>
-
-@code{
-    private string navbarclass = "navbar-container";
-    public bool IsDarkMode { get; set; } = false ;
+@functions{
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
         {
-             await JSR.InvokeVoidAsync("agregarScrollListener");
+            await JSR.InvokeVoidAsync("agregarScrollListener");
+            var state = await authstate.GetAuthenticationStateAsync();
+            var user = state.User;
+
+            if (user.Identity is null || user.Identity.IsAuthenticated)
+            {
+
+
+
+                UserDataLoaded = true;
+
+                StateHasChanged();
+
+
+            }
+            else
+            {
+                UserDataLoaded = true;
+
+            }
+
         }
-       
     }
+
+
+
+
+
 
     [JSInvokable]
     public void ManejarScroll(int scrollY)
@@ -246,6 +196,52 @@
         navbarclass = (scrollY == 0) ? "navbar-container" : "mostrar";
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+       
+        var state = await authstate.GetAuthenticationStateAsync();
+        var user = state.User;
+
+        if (user.Identity is null || user.Identity.IsAuthenticated)
+        {
+
+
+
+            UserDataLoaded = true;
+
+            StateHasChanged();
+
+
+        }
+        else
+        {
+            UserDataLoaded = true;
+
+        }
+
+    }
+
+    public async Task GetCurrentUser()
+    {
+
+        var r = await userService.ConsultarUsuarioActual();
+        if(r.Success == true && r.Data is not null)
+        {
+            UsuarioActual = r.Data;
+           
+            StateHasChanged();
+        }
+      
+
+
+    }
+}
+@code{
+
+    public bool UserDataLoaded = false;
+
+    private string navbarclass = "navbar-container";
+    public bool IsDarkMode { get; set; } = true ;
     private MudTheme ThemeCustom => new()
      {
 
@@ -318,5 +314,8 @@
             }
 
 
-        };
+    };
+    public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
+
+   
 }

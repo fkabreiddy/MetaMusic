@@ -13,13 +13,12 @@ namespace MetaMusic.Pages.Identity
     public class LogoutModel : PageModel
     {
         private readonly ICustomAuthenticationStateProvider customAuthState;
-        private readonly IUserDataService userDataService;
         public string ReturnUrl { get; private set; }
 
-        public LogoutModel(IUserDataService userDataService,ICustomAuthenticationStateProvider customAuthState)
+        public LogoutModel(ICustomAuthenticationStateProvider customAuthState)
         {
             this.customAuthState = customAuthState;
-            this.userDataService = userDataService;
+            
         }
         public async Task<IActionResult> OnGetAsync(
             string returnUrl = null)
@@ -32,7 +31,7 @@ namespace MetaMusic.Pages.Identity
                     .SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
 
-                await Logout();
+               
             }
             catch (Exception ex)
             {
@@ -42,32 +41,6 @@ namespace MetaMusic.Pages.Identity
             return LocalRedirect("/");
         }
 
-        public async Task<Result> Logout()
-        {
-            try
-            {
-
-
-                userDataService.DelteUserData();
-                await customAuthState.UpdateAuthenticationState(null!);
-               
-
-                return new Result()
-                {
-
-                    Message = "DesLogeo Exitoso",
-                    Success = true
-                };
-            }
-            catch (Exception E)
-            {
-                return new Result()
-                {
-
-                    Message = E.InnerException?.Message ?? E.Message,
-                    Success = false
-                };
-            }
-        }
+       
     }
 }

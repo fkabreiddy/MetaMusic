@@ -1,0 +1,164 @@
+﻿<MudMenu AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter">
+
+    <ActivatorContent>
+        <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+
+    </ActivatorContent>
+    <ChildContent>
+
+        <BlazorAnimation.Animation Style="z-index: 999999; position: static;" Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
+
+            <MudPaper  Style="z-index: 999999;  ">
+                <MudContainer Style="max-height: 80vh; overflow: auto; margin-top: 10px;margin-bottom: 10px;min-width: 220px; ">
+
+                    <MudDivider Class="mb-3 mt-3"></MudDivider>
+                    <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Opciones</MudText>
+                    <MudDivider Class="mb-3 mt-3"></MudDivider>
+                    <MudMenuItem @onclick='()=>{navManager.NavigateTo($"/user/{UsuarioActual.Correo}");}' Style="border-radius: 10px;">
+                        <div style="display:flex; justify-content: space-between; align-items: center;">
+                            <MudText Style="font-size: 12px;   ">Ver perfil</MudText>
+                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Person"></MudIcon>
+                        </div>
+
+                    </MudMenuItem>
+                    <MudMenuItem Style="border-radius: 10px;">
+                        <div style="display:flex; justify-content: space-between; align-items: center;">
+                            <MudText Style="font-size: 12px;   ">Notificaciones</MudText>
+                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Notifications"></MudIcon>
+                        </div>
+
+                    </MudMenuItem>
+
+                    
+
+                    <MudDivider Class="mb-3 mt-3"></MudDivider>
+                    <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Staff Options</MudText>
+                    <MudDivider Class="mb-3 mt-3"></MudDivider>
+                    <MudMenuItem @onclick='()=>{navManager.NavigateTo("/crear-contenido");}' Style="border-radius: 10px;">
+
+
+                        <div style="display:flex; justify-content: space-between; align-items: center;border-radius: 9px;">
+                            <MudText Color="Color.Error" Style="font-size: 12px;   ">Crear Contenido</MudText>
+                            <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Add"></MudIcon>
+                        </div>
+
+
+
+
+                    </MudMenuItem>
+                    <MudMenuItem Style="border-radius: 10px;">
+                        <div style="display:flex; justify-content: space-between; align-items: center;">
+                            <MudText Style="font-size: 12px;   ">Peticiones</MudText>
+                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.NewReleases"></MudIcon>
+                        </div>
+
+                    </MudMenuItem>
+                    <MudMenuItem Style="border-radius: 10px;">
+                        <div style="display:flex; justify-content: space-between; align-items: center;">
+                            <MudText Style="font-size: 12px;   ">Reportes</MudText>
+                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag"></MudIcon>
+                        </div>
+
+                    </MudMenuItem>
+                    <MudDivider Class="mb-3 mt-3"></MudDivider>
+                    <MudMenuItem Style="border-radius: 10px; " Class="meta-nav-button">
+                        <div style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between;">
+                            <MudLink Href="/google-log-out" Target="_top" Underline="Underline.None" Style="font-size: 12px;   " Class="meta-nav-button">Cerrar Sesion</MudLink>
+                            <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.ArrowBack"></MudIcon>
+
+                        </div>
+
+                    </MudMenuItem>
+
+
+                </MudContainer>
+
+
+            </MudPaper>
+        </BlazorAnimation.Animation>
+
+    </ChildContent>
+
+
+
+
+
+
+</MudMenu>
+@functions{
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await authstate.GetAuthenticationStateAsync();
+        var user = state.User;
+
+        if (user.Identity is null || user.Identity.IsAuthenticated)
+        {
+
+            await GetCurrentUser();
+
+
+
+            UserDataLoaded = true;
+            StateHasChanged();
+
+
+
+
+
+        }
+        else
+        {
+            UserDataLoaded = true;
+            StateHasChanged();
+        }
+
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var state = await authstate.GetAuthenticationStateAsync();
+            var user = state.User;
+
+            if (user.Identity is null || user.Identity.IsAuthenticated)
+            {
+
+                await GetCurrentUser();
+
+
+
+                UserDataLoaded = true;
+                StateHasChanged();
+
+
+
+
+
+            }
+            else
+            {
+                UserDataLoaded = true;
+                StateHasChanged();
+            }
+        }
+    }
+    public async Task GetCurrentUser()
+    {
+
+        var r = await userService.ConsultarUsuarioActual();
+        if (r.Success == true && r.Data is not null)
+        {
+            UsuarioActual = r.Data;
+
+            StateHasChanged();
+        }
+
+
+
+    }
+}
+@code {
+    public bool UserDataLoaded = false;
+    public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
+    
+}

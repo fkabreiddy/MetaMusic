@@ -12,14 +12,23 @@
 @using Data.TestData
 @using SpotifyAPI.Web
 @using MetaMusic.Data.ThemeManagement
+
+@using MetaMusic.Data.Responses
+@using MetaMusic.Data.Request
+
+@inject AuthenticationStateProvider authstate
+@inject NavigationManager navManager
+@inject IHttpContextAccessor _httpContextAccessor
+@inject HttpClient Http
 @using MetaMusic.Data.Services
 @using TinyMCE.Blazor
 @using BlazorContentEditable
 @using MetaMusic.Data.Context
 @inject IJSRuntime JSR
-@inject NavigationManager navManager
+
 @inject IDialogService dService
 @inject ITheme theme
 @inject IMetaMusicDbContext dbContext 
-@inject IAsignDataService asignDataService
-@inject IUserDataService userDataService
+@inject IGoogleAuthService googleService
+
+@inject IUserService userService

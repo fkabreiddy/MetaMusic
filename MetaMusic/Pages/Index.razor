@@ -27,7 +27,7 @@
         </MudItem>
         <MudItem md="4" lg="4" xl="4" xxl="4" sm="12" xs="12" Style="margin-top: 45px;">
   
-            <MetaMusic.Pages.Common_Components.NuevaPropuesta></MetaMusic.Pages.Common_Components.NuevaPropuesta>
+            <MetaMusic.Pages.Common_Components.NuevaPropuesta UserIsAuthenticated="@IsAuthenticated"></MetaMusic.Pages.Common_Components.NuevaPropuesta>
         </MudItem>
        
     </MudGrid>
@@ -49,15 +49,35 @@
 
     <Explora></Explora>
 </BlazorAnimation.Animation>
+@functions{
+    public async Task VerifyUserAuth(){
+        var state = await authstate.GetAuthenticationStateAsync();
+        var user = state.User;
+        if (user.Identity is null || user.Identity.IsAuthenticated)
+        {
 
 
 
-@code{
+            IsAuthenticated = true;
 
+            StateHasChanged();
+
+
+        }
+        else
+        {
+            IsAuthenticated = false;
+
+        }
+    }
+}
+ @code{
+    public bool IsAuthenticated = false;
     protected override async Task OnInitializedAsync()
     {
         try
         {
+
             var config = SpotifyClientConfig.CreateDefault();
 
             var request = new ClientCredentialsRequest("be3b1a5218c449a79a3a21ddfe850a5f", "7cf1d67e3efd4690a1bd43a18903f7dc");
@@ -68,6 +88,7 @@
             var track = await spotify.Tracks.Get("2MvvoeRt8NcOXWESkxWn3g");
 
             var trackname = track.Name;
+            await VerifyUserAuth();
         }
         catch(Exception e)
         {

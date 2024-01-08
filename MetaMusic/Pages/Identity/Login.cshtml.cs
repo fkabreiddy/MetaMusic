@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using MetaMusic.Data.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,12 @@ namespace MetaMusic.Pages.Identity
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
+        private readonly IAsignDataService asingData;
+
+        public LoginModel(IAsignDataService asingData)
+        {
+            this.asingData = asingData;
+        }
         public IActionResult OnGetAsync(string returnUrl = null)
         {
             string provider = "Google";
@@ -34,12 +41,16 @@ namespace MetaMusic.Pages.Identity
                     IsPersistent = true,
                     RedirectUri = this.Request.Host.Value
                 };
+
                 await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(GoogleUser),
-                authProperties);
+                new ClaimsPrincipal(GoogleUser));
+               
+                
             }
-            return LocalRedirect("/asing-data");
+
+            await asingData.AsignData();
+            return LocalRedirect("/");
         }
     }
 }

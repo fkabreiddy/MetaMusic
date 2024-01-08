@@ -1,30 +1,28 @@
-﻿using MetaMusic.Data.Request;
-using MetaMusic.Data.Services;
-using MetaMusic.Pages;
+﻿using MetaMusic.Data.Context;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 using System.Security.Claims;
 
 namespace MetaMusic.Data.Services
 {
     public class AsignDataService : IAsignDataService
     {
-
         private readonly IHttpContextAccessor Context;
         private readonly IUserService userServices;
         private readonly NavigationManager navigationManager;
-        private readonly IUserDataService userDataService;
-        public AsignDataService(IUserDataService userDataService,IHttpContextAccessor Context, IUserService userServices, NavigationManager navigationManager)
-        {
 
+        private readonly IMetaMusicDbContext dbContext;
+
+        public AsignDataService(IMetaMusicDbContext dbContext, IHttpContextAccessor Context, IUserService userServices, NavigationManager navigationManager)
+        {
+            this.dbContext = dbContext;
             this.Context = Context;
             this.userServices = userServices;
             this.navigationManager = navigationManager;
-           
-            this.userDataService = userDataService;
+
+
         }
 
-        public async Task AsignarDatos()
+        public async Task AsignData()
         {
             try
             {
@@ -38,11 +36,11 @@ namespace MetaMusic.Data.Services
 
                 var email =
                   Context.HttpContext?.User
-                  .FindFirst(ClaimTypes.Email);
+                  .FindFirst(ClaimTypes.Email)?.Value;
 
                 if (email != null)
                 {
-                    Gmail = email.Value;
+                    Gmail = email;
                 }
                 else
                 {
@@ -51,10 +49,10 @@ namespace MetaMusic.Data.Services
 
                 var givenName =
                     Context.HttpContext?.User
-                    .FindFirst(ClaimTypes.GivenName);
+                    .FindFirst(ClaimTypes.GivenName)?.Value;
                 if (givenName != null)
                 {
-                    GivenName = givenName.Value;
+                    GivenName = givenName;
                 }
                 else
                 {
@@ -64,10 +62,10 @@ namespace MetaMusic.Data.Services
                 // Try to get the Surname
                 var surname =
                     Context.HttpContext?.User
-                    .FindFirst(ClaimTypes.Surname);
+                    .FindFirst(ClaimTypes.Surname)?.Value;
                 if (surname != null)
                 {
-                    Surname = surname.Value;
+                    Surname = surname;
                 }
                 else
                 {
@@ -92,21 +90,21 @@ namespace MetaMusic.Data.Services
                     var r = await userServices.Login(Gmail);
                     if (r.Success == false)
                     {
-                      var creacion =   await userServices.Crear(Gmail, avatar ?? "", givenName + " " + surname);
+                        var creacion = await userServices.Crear(Gmail, avatar ?? "", givenName + " " + surname);
 
-                        if(creacion.Success && creacion.Data is not null)
+                        if (creacion.Success && creacion.Data is not null)
                         {
-                            userDataService.UpdateUserData(creacion.Data);
+
                             navigationManager.NavigateTo("/", true);
 
                         }
                     }
                     else if (r.Data is not null && r.Success == true)
                     {
-                        
-                            navigationManager.NavigateTo("/");
-                        
-                       
+
+                        navigationManager.NavigateTo("/");
+
+
                     }
                 }
                 else
@@ -120,10 +118,6 @@ namespace MetaMusic.Data.Services
                 Console.WriteLine(ex.Message);
             }
 
-
-
         }
-
-       
     }
 }
