@@ -62,22 +62,26 @@ else
                                     <MudTextField @bind-Value="Usuario.FotoDePerfil" T="string" Adornment="Adornment.Start" Style="font-size: 12px;    border: dashed 1px ;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Url de tu perfil'></MudTextField>
 
                                     <MudTextField @bind-Value="Usuario.Biografia" MaxLength="100" T="string" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 21px; border: dashed 1px ;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Biografia'></MudTextField>
-                                    @if(GuardandoCambios)
-                                    {
-                                       <div style="display: flex; justify-content: center; align-items: center;">
-                                                                                   <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Error"></MudProgressCircular>
+                                   
+                                     <div style="display: flex; justify-content: center; align-items: center;">
+                                            <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Surface" @onclick="ModificarUsuario" Style="font-size: 12px; margin-bottom: 15px; cursor: pointer;">
+                                                @if(GuardandoCambios)
+                                                {
+                                                        
+                                                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Error"></MudProgressCircular>
 
-                                       </div>
+                                                   
 
-                                    }
-                                    else
+                                                }
+                                                else
+                                                {
+                                                    <MudText Style="font-size: 12px;  cursor: pointer;">Guardar Cambios</MudText>
 
-                                    {
-                                        <div style="display: flex; justify-content: center; align-items: center;">
-                                            <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Surface" @onclick="ModificarUsuario" Style="font-size: 12px; margin-bottom: 15px; cursor: pointer;" Text="Guardar Cambios"></MudChip>
+                                                }
+                                            </MudChip>
 
                                         </div>
-                                    }
+                                    
 
                                 </MudContainer>
 

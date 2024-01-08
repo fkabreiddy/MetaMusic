@@ -1,4 +1,5 @@
-﻿<MudItem Style="margin-top: 60px;">
+﻿@using MetaMusic.Data.Entities
+<MudItem Style="margin-top: 60px;">
     <MudGrid>
         <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
             <MudContainer>
@@ -6,7 +7,7 @@
                     <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
                         <MudContainer Style="display: flex; align-items: center; justify-content: center;">
                             <MudAvatar Style="height: 250px; width: 250px;">
-                                <MudImage src="@newArtista.Foto"></MudImage>
+                                <MudImage src="@newArtista.Foto_Perfil"></MudImage>
                             </MudAvatar>
                         </MudContainer>
 
@@ -22,9 +23,9 @@
 
                          <MudText Style="font-size: 12px; opacity: 0.7; margin-bottom: 15px; margin-top: 15px;">Elije el genero musical que maneja @newArtista.Nombre</MudText>
                                 <MudChipSet MultiSelection=true Mandatory=true Style="margin-bottom: 20px; margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; ">
-                                 @foreach (var genero in generosMusicales)
+                                @foreach (var genero in generosMusicales)
                                 {
-                                    <MudChip Variant="MudBlazor.Variant.Outlined" Color="@( newArtista.generosmusicales.Contains(genero)  ? MudBlazor.Color.Error : MudBlazor.Color.Inherit)" Style="font-size: 12px; border: dashed 1px;" @onclick='()=>{AsignarQuitarGenero(genero);}' Text="@genero"></MudChip>
+                                    <MudChip Variant="MudBlazor.Variant.Outlined" Color="@( newArtista.GenerosMusicales.Any(r => r.Genero.Id == genero.Id)  ? MudBlazor.Color.Error : MudBlazor.Color.Inherit)" Style="font-size: 12px; border: dashed 1px;" @onclick='()=>{AsignarQuitarGenero(genero);}' Text="@genero.Nombre"></MudChip>
 
                                 }
                           </MudChipSet>
@@ -47,7 +48,7 @@
 
 
             <MudContainer Style="  display: flex; align-items: center; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
-                <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " Text="Guardar Artista"></MudChip>
+                <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Crear();}" Text="Guardar Artista"></MudChip>
                                 <MudChip Variant="MudBlazor.Variant.Outlined"  Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo("/crear-contenido", true);}' Text="Cancelar"></MudChip>
 
             </MudContainer>
@@ -60,65 +61,54 @@
        
     </MudGrid>
 </MudItem>
-@code {
-
-
-    [Parameter]
-
-    public Artista newArtista { get; set; } = new Artista();
-
-    public void AsignarQuitarGenero(string genero)
+@functions{
+    public async Task Crear()
     {
-        if (newArtista.generosmusicales.Contains(genero))
+        var r = await artistaService.CrearArtista(newArtista);
+
+        if(r.Success == true && r.Data is not null)
         {
-            
-            newArtista.generosmusicales.Remove(genero); 
+           
+        }
+    }
+    public async Task GetGeneros()
+    {
+        var r = await generoService.GetGeneros();
+
+        if(r.Data is not null && r.Success == true)
+        {
+            generosMusicales = r.Data;
+            StateHasChanged();
+        }
+    }
+}
+@code {
+    public List<GeneroResponse> generosMusicales = new List<GeneroResponse>();
+    protected override  async Task OnInitializedAsync()
+    {
+        await GetGeneros();
+        StateHasChanged();
+    }
+    [Parameter]
+    public ArtistaRequest newArtista { get; set; } = new ArtistaRequest();
+
+    public void AsignarQuitarGenero(GeneroResponse genero)
+    {
+        if (newArtista.GenerosMusicales.Any(r => r.Genero.Id == genero.Id))
+        {
+            var g = newArtista.GenerosMusicales.FirstOrDefault(r => r.Genero.Id == genero.Id);
+
+            newArtista.GenerosMusicales.Remove(g); 
         }
         else
         {
-            if (newArtista.generosmusicales.Count() >= 2)
+            if (newArtista.GenerosMusicales.Count() >= 2)
             {
-                newArtista.generosmusicales.Remove(newArtista.generosmusicales[0]);
+                newArtista.GenerosMusicales.Remove(newArtista.GenerosMusicales[0]);
             }
-            newArtista.generosmusicales.Add(genero);
+            newArtista.GenerosMusicales.Add(new Genero_Artista(){Genero = genero.ToBaseClass()});
         }
     }
-    List<string> generosMusicales = new List<string>
-        {
-            "Rock",
-            "Pop",
-            "Hip-Hop",
-            "R&B",
-            "Jazz",
-            "Blues",
-            "Reggae",
-            "Country",
-            "Electronic",
-            "Classical",
-            "Folk",
-            "Indie",
-            "Metal",
-            "Punk",
-            "Soul",
-            "Funk",
-            "Disco",
-            "Rap",
-
-            "Alternative",
-
-            "Latin",
-
-            
-            "House",
-
-
-            "Trap",
-            "Reggaeton",
-            "Salsa",
-
-            "K-Pop",
-
-            // Puedes agregar más géneros según sea necesario
-    };
+   
     
 }

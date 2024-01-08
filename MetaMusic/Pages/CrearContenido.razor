@@ -88,7 +88,7 @@
 
 @code {
     public bool buscando = false;
-    public Artista artistaRequest = new Artista();
+    public ArtistaRequest artistaRequest = new ArtistaRequest();
     public Album Albumresponse = new Album();
     public Track TrackResponse = new Track();
     public string url = "";
@@ -124,29 +124,29 @@
             if (album is not null && tracks.Items is not null)
             {
 
-               
-                    Albumresponse.portada = album.Images[0].Url;
 
-                    Albumresponse.tipo = album.Type;
-                    Albumresponse.Autores = album.Artists[0].Name;
+                Albumresponse.portada = album.Images[0].Url;
 
-                    if (artist is not null && artist.Genres.Count() >= 1)
-                    {
-                        Albumresponse.genero = artist.Genres[0];
+                Albumresponse.tipo = album.Type;
+                Albumresponse.Autores = album.Artists[0].Name;
 
-                    }
-                    Albumresponse.nombre = album.Name;
-                    Albumresponse.fechalanzamiento = album.ReleaseDate;
+                if (artist is not null && artist.Genres.Count() >= 1)
+                {
+                    Albumresponse.genero = artist.Genres[0];
 
-                    foreach (var track in tracks.Items)
-                    {
-                        Albumresponse.Tracks.Add(new Track() { Titulo = track.Name, Duracionms = track.DurationMs, Album = Albumresponse });
-                    }
+                }
+                Albumresponse.nombre = album.Name;
+                Albumresponse.fechalanzamiento = album.ReleaseDate;
+
+                foreach (var track in tracks.Items)
+                {
+                    Albumresponse.Tracks.Add(new Track() { Titulo = track.Name, Duracionms = track.DurationMs, Album = Albumresponse });
+                }
 
 
-                    tipodeContenidoEncontrado = "album";
-                    StateHasChanged();
-               
+                tipodeContenidoEncontrado = "album";
+                StateHasChanged();
+
 
 
             }
@@ -166,49 +166,28 @@
 
     }
 
+    public async Task GetArtist()
+    {
+        var x = await spotifyService.GetArtista(url);
+
+        if(x.Success == true && x.Data is not null)
+        {
+            artistaRequest = x.Data.ToRequest();
+        }
+        else
+        {
+            Mensaje = "Artista no Encontrado";
+        }
+    }
 
     public async Task BuscarArtista()
     {
         try
         {
 
-            var config = SpotifyClientConfig.CreateDefault();
-
-            var request = new ClientCredentialsRequest("be3b1a5218c449a79a3a21ddfe850a5f", "7cf1d67e3efd4690a1bd43a18903f7dc");
-            var response = await new OAuthClient(config).RequestToken(request);
-
-            var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
 
 
-
-
-
-
-            var artista = await spotify.Artists.Get(url);
-
-
-
-            if (artista is not null )
-            {
-                artistaRequest.Foto = artista.Images[0].Url;
-
-
-                artistaRequest.Nombre = artista.Name;
-
-                if (artista is not null && artista.Genres.Count() >= 1)
-                {
-                    artistaRequest.generosmusicales.Add(artista.Genres[1]);
-                    artistaRequest.generosmusicales.Add(artista.Genres[0]);
-
-                }
-
-
-                tipodeContenidoEncontrado = "artista";
-                StateHasChanged();
-
-            }
-
-
+            await GetArtist();
 
         }
         catch (APIException e)
@@ -228,8 +207,7 @@
         tipodeContenidoEncontrado = "";
         if(tipodeContenido == "artista")
         {
-            await BuscarArtista();
-
+            await GetArtist();
         }
         else
         {
