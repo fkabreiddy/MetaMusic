@@ -96,8 +96,25 @@ namespace MetaMusic.Data.Services
                     request.Biografia = $"Mi nombre es {GivenName}";
                     request.Correo = Gmail;
                     request.Nombre = GivenName + " "+ Surname;
-                    request.CorreoNormalizado = Gmail.Normalize();
-                    var r = await userServices.Login(request);
+                    request.FotoDePerfil = Avatar;
+                    string Normalizar( string cadena)
+                    {
+                        // Encuentra la posición del primer arroba
+                        int indiceArroba = cadena.IndexOf('@');
+
+                        if (indiceArroba != -1) // Verifica si se encontró el arroba
+                        {
+                            // Extrae la subcadena hasta el arroba
+                            return cadena.Substring(0, indiceArroba);
+                        }
+                        else
+                        {
+                            // Si no se encontró el arroba, devuelve la cadena completa
+                            return cadena;
+                        }
+                    }
+                    request.CorreoNormalizado = Normalizar(Gmail);
+                   var r = await userServices.Login(request);
                     
                 }
                 else

@@ -33,34 +33,48 @@ namespace MetaMusic.Data.Services
             {
                 var user = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == request.Correo);
 
+                if(user is not null)
+                    return new Result<UsuarioResponse>()
+                    {
+                        Data = user.ToResponse(),
+                        Message = "Logeo Exitoso",
+                        Success = true
+                    };
 
-
-                if (user is null)
-                {
+               
                     var creacion = await Crear(request);
 
                     if (creacion.Success && creacion.Data is not null)
                     {
 
                         navManager.NavigateTo("/", true);
+                            return new Result<UsuarioResponse>()
+                            {
+                                Data = creacion.Data,
+                                Message = "Creacion Exitoso",
+                                Success = true
+                            };
 
                     }
                     else
                     {
                         await Logout();
+                        return new Result<UsuarioResponse>()
+                        {
+                               
+                                Message = "Error en la creacion del usuario",
+                                Success = false
+                        };
+                        
                     }
-                }
+
+               
 
 
 
 
 
-                return new Result<UsuarioResponse>()
-                {
-                    Data = user.ToResponse(),
-                    Message = "Logeo Exitoso",
-                    Success = true
-                };
+                
 
             }
             catch (Exception e)
@@ -315,12 +329,16 @@ namespace MetaMusic.Data.Services
             {
                 var usuarioexistente = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.CorreoNormalizado == email);
 
+               
+
                 if (usuarioexistente is null)
                     return new Result<UsuarioResponse>
                     {
                         Message = "Usuario no encontrado",
                         Success = false
                     };
+
+               
                 var usuario = await dbContext.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Id == usuarioexistente.Id);
 
 
