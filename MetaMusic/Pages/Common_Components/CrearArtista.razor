@@ -21,7 +21,7 @@
 
 
 
-                         <MudText Style="font-size: 12px; opacity: 0.7; margin-bottom: 15px; margin-top: 15px;">Elije el genero musical que maneja @newArtista.Nombre</MudText>
+                         <MudText Style="font-size: 12px; opacity: 0.7; margin-bottom: 15px; margin-top: 15px;">Elije el genero musical que maneja @newArtista.Nombre. Selecciona 2.</MudText>
                                 <MudChipSet MultiSelection=true Mandatory=true Style="margin-bottom: 20px; margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; ">
                                 @foreach (var genero in generosMusicales)
                                 {
@@ -48,8 +48,17 @@
 
 
             <MudContainer Style="  display: flex; align-items: center; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
-                <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Crear();}" Text="Guardar Artista"></MudChip>
-                                <MudChip Variant="MudBlazor.Variant.Outlined"  Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo("/crear-contenido", true);}' Text="Cancelar"></MudChip>
+                <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Crear();}"  Disabled=@(newArtista.GenerosMusicales.Count() <= 1)>
+                    @if(CreandoArtista)
+                    {
+                        <MudProgressCircular Size="Size.Small"></MudProgressCircular>
+                    }
+                    else
+                    {
+                        <MudText Style="font-size: 13px;font-weight: bold;">GuardarArtista</MudText>
+                    }
+                </MudChip>
+                <MudChip Variant="MudBlazor.Variant.Outlined"  Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo("/crear-contenido", true);}' Text="Cancelar"></MudChip>
 
             </MudContainer>
 
@@ -64,11 +73,14 @@
 @functions{
     public async Task Crear()
     {
+        CreandoArtista = true;
         var r = await artistaService.CrearArtista(newArtista);
 
         if(r.Success == true && r.Data is not null)
         {
-           
+            CreandoArtista = false;
+            Task.Delay(2000);
+            navManager.NavigateTo("/crear-contenido", true);
         }
     }
     public async Task GetGeneros()
@@ -81,24 +93,18 @@
             StateHasChanged();
         }
     }
-}
-@code {
-    public List<GeneroResponse> generosMusicales = new List<GeneroResponse>();
-    protected override  async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         await GetGeneros();
         StateHasChanged();
     }
-    [Parameter]
-    public ArtistaRequest newArtista { get; set; } = new ArtistaRequest();
-
     public void AsignarQuitarGenero(GeneroResponse genero)
     {
         if (newArtista.GenerosMusicales.Any(r => r.Genero.Id == genero.Id))
         {
             var g = newArtista.GenerosMusicales.FirstOrDefault(r => r.Genero.Id == genero.Id);
 
-            newArtista.GenerosMusicales.Remove(g); 
+            newArtista.GenerosMusicales.Remove(g);
         }
         else
         {
@@ -106,9 +112,17 @@
             {
                 newArtista.GenerosMusicales.Remove(newArtista.GenerosMusicales[0]);
             }
-            newArtista.GenerosMusicales.Add(new Genero_Artista(){Genero = genero.ToBaseClass()});
+            newArtista.GenerosMusicales.Add(new Genero_Artista() { Genero = genero.ToBaseClass() });
         }
     }
+}
+@code {
+    public List<GeneroResponse> generosMusicales = new List<GeneroResponse>();
+
+    [Parameter]
+    public ArtistaRequest newArtista { get; set; } = new ArtistaRequest();
+    public bool CreandoArtista = false;
+
    
     
 }

@@ -7,15 +7,16 @@ namespace MetaMusic.Data.Request
         public int Id { get; set; }
 
         public string Nombre { get; set; } = null!;
-        public string Correo { get; set; } = null!;
+        public string Correo { get; set; } = "";
 
+        public string CorreoNormalizado { get; set; } = "";
         public string FotoDePerfil { get; set; } = null!;
 
         public string Biografia { get; set; } = null!;
         public Rol Rol { get; set; } = new Rol();
 
         public List<Artista> Artistas_Creados { get; set; } = new List<Artista>();
-
+        public List<Peticion> Peticiones { get; set; } = new List<Peticion>();
         public List<Album> Albumes_Publicados { get; set; } = new List<Album>();
 
         public List<Usuario_Dislike_Nota> Notas_DisLikeadas { get; set; } = new List<Usuario_Dislike_Nota>();

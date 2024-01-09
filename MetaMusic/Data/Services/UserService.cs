@@ -1,4 +1,4 @@
-﻿using MetaMusic.Authentication;
+﻿
 using MetaMusic.Data.Context;
 using MetaMusic.Data.Entities;
 using MetaMusic.Data.OtherEntities;
@@ -7,6 +7,7 @@ using MetaMusic.Data.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
+using static MudBlazor.CategoryTypes;
 
 namespace MetaMusic.Data.Services
 {
@@ -15,34 +16,45 @@ namespace MetaMusic.Data.Services
 
         private readonly IGoogleAuthService currentUserServices;
         private readonly IMetaMusicDbContext dbContext;
-        private readonly ICustomAuthenticationStateProvider customAuthState;
+
+
         private readonly NavigationManager navManager;
 
-        public UserService(NavigationManager navManager, ICustomAuthenticationStateProvider customAuthState, IGoogleAuthService currentUserServices, IMetaMusicDbContext dbContext)
+        public UserService(NavigationManager navManager, IGoogleAuthService currentUserServices, IMetaMusicDbContext dbContext)
         {
             this.currentUserServices = currentUserServices;
             this.dbContext = dbContext;
-            this.customAuthState = customAuthState;
+
             this.navManager = navManager;
         }
-        public async Task<Result<UsuarioResponse>> Login(string email)
+        public async Task<Result<UsuarioResponse>> Login(UsuarioRequest request)
         {
             try
             {
-                var user = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == email);
+                var user = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == request.Correo);
 
 
 
                 if (user is null)
-                    return new Result<UsuarioResponse>()
+                {
+                    var creacion = await Crear(request);
+
+                    if (creacion.Success && creacion.Data is not null)
                     {
-                        Message = "El usuario No existe",
-                        Success = false,
 
-                    };
+                        navManager.NavigateTo("/", true);
+
+                    }
+                    else
+                    {
+                        await Logout();
+                    }
+                }
 
 
-                await customAuthState.UpdateAuthenticationState(user.ToLoginResponse());
+
+
+
                 return new Result<UsuarioResponse>()
                 {
                     Data = user.ToResponse(),
@@ -68,8 +80,8 @@ namespace MetaMusic.Data.Services
             try
             {
 
-                await customAuthState.UpdateAuthenticationState(null!);
-                navManager.NavigateTo("Pages/Identity/Logout", true);
+
+                navManager.NavigateTo("/google-log-out", true);
 
                 return new Result()
                 {
@@ -89,11 +101,11 @@ namespace MetaMusic.Data.Services
             }
         }
 
-        public async Task<Result<UsuarioResponse>> Crear(string email, string fotoperfil, string nombre)
+        public async Task<Result<UsuarioResponse>> Crear(UsuarioRequest request)
         {
             try
             {
-                var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == email);
+                var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == request.Correo);
 
                 if (usuario is not null) //si existe el usuario 
                     return new Result<UsuarioResponse>()
@@ -113,12 +125,12 @@ namespace MetaMusic.Data.Services
                         Message = "Hubo un problema a la hora de crear tu cuenta, intenta mas tarde"
                     };
 
-                await dbContext.Usuarios.AddAsync(Usuario.Crear(new UsuarioRequest() { Biografia = $"Mi nombre es {nombre}", Correo = email, Nombre = nombre, FotoDePerfil = fotoperfil, Rol = rol }));
+                await dbContext.Usuarios.AddAsync(Usuario.Crear(request));
 
                 await dbContext.SaveChangesAsync();
 
 
-                var usuarioresponse = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == email);
+                var usuarioresponse = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == request.Correo);
 
                 if (usuarioresponse is null) //problema creando el usuario
                     return new Result<UsuarioResponse>()
@@ -128,7 +140,7 @@ namespace MetaMusic.Data.Services
                         Message = "Tuvimos un porblema creando tu usuario, intenta mas tarde"
                     };
 
-                await Login(email);
+
                 return new Result<UsuarioResponse>()
                 {
                     Data = usuarioresponse.ToResponse(),
@@ -301,7 +313,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var usuarioexistente = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == email);
+                var usuarioexistente = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.CorreoNormalizado == email);
 
                 if (usuarioexistente is null)
                     return new Result<UsuarioResponse>

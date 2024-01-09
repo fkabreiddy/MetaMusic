@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MetaMusic.Migrations
 {
     [DbContext(typeof(MetaMusicDbContext))]
-    [Migration("20240102232341_InitialCreate")]
+    [Migration("20240109061432_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -106,6 +106,29 @@ namespace MetaMusic.Migrations
                     b.HasIndex("CreadorId");
 
                     b.ToTable("Artistas");
+                });
+
+            modelBuilder.Entity("MetaMusic.Data.Entities.Artista_Suscriptor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArtistaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArtistaId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Artista_Suscriptores");
                 });
 
             modelBuilder.Entity("MetaMusic.Data.Entities.Busqueda", b =>
@@ -258,6 +281,40 @@ namespace MetaMusic.Migrations
                     b.ToTable("Notificacions");
                 });
 
+            modelBuilder.Entity("MetaMusic.Data.Entities.Peticion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Acumulaciones")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AlbumId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArtistaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UltimaPeticionFecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AlbumId");
+
+                    b.HasIndex("ArtistaId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Peticiones");
+                });
+
             modelBuilder.Entity("MetaMusic.Data.Entities.Reporte", b =>
                 {
                     b.Property<int>("Id")
@@ -400,6 +457,10 @@ namespace MetaMusic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CorreoNormalizado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FotoDePerfil")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -524,6 +585,25 @@ namespace MetaMusic.Migrations
                     b.Navigation("Creador");
                 });
 
+            modelBuilder.Entity("MetaMusic.Data.Entities.Artista_Suscriptor", b =>
+                {
+                    b.HasOne("MetaMusic.Data.Entities.Artista", "Artista")
+                        .WithMany("Suscriptores")
+                        .HasForeignKey("ArtistaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
+                        .WithMany("Artistas_Suscritos")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Artista");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("MetaMusic.Data.Entities.Busqueda", b =>
                 {
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
@@ -557,7 +637,8 @@ namespace MetaMusic.Migrations
                 {
                     b.HasOne("MetaMusic.Data.Entities.Artista", "Artista")
                         .WithMany("GenerosMusicales")
-                        .HasForeignKey("ArtistaId");
+                        .HasForeignKey("ArtistaId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MetaMusic.Data.Entities.Genero", "Genero")
                         .WithMany("Artistas")
@@ -610,6 +691,32 @@ namespace MetaMusic.Migrations
                     b.Navigation("UserFrom");
 
                     b.Navigation("UserTo");
+                });
+
+            modelBuilder.Entity("MetaMusic.Data.Entities.Peticion", b =>
+                {
+                    b.HasOne("MetaMusic.Data.Entities.Album", "Album")
+                        .WithMany("Peticiones")
+                        .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MetaMusic.Data.Entities.Artista", "Artista")
+                        .WithMany("Peticiones")
+                        .HasForeignKey("ArtistaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
+                        .WithMany("Peticiones")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Album");
+
+                    b.Navigation("Artista");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MetaMusic.Data.Entities.Reporte", b =>
@@ -755,6 +862,8 @@ namespace MetaMusic.Migrations
 
                     b.Navigation("Notificaciones");
 
+                    b.Navigation("Peticiones");
+
                     b.Navigation("Review")
                         .IsRequired();
 
@@ -766,6 +875,10 @@ namespace MetaMusic.Migrations
                     b.Navigation("Albumes");
 
                     b.Navigation("GenerosMusicales");
+
+                    b.Navigation("Peticiones");
+
+                    b.Navigation("Suscriptores");
                 });
 
             modelBuilder.Entity("MetaMusic.Data.Entities.Genero", b =>
@@ -803,6 +916,8 @@ namespace MetaMusic.Migrations
 
                     b.Navigation("Artistas_Creados");
 
+                    b.Navigation("Artistas_Suscritos");
+
                     b.Navigation("Busquedas");
 
                     b.Navigation("Calificaciones");
@@ -818,6 +933,8 @@ namespace MetaMusic.Migrations
                     b.Navigation("Notificaciones_Hechas");
 
                     b.Navigation("Notificaciones_Recibidas");
+
+                    b.Navigation("Peticiones");
 
                     b.Navigation("Reportes");
 

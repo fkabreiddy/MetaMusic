@@ -10,7 +10,7 @@ namespace MetaMusic.Data.Request
         public string Nombre { get; set; } = null!;
 
         public string SpotifyId { get; set; } = null!;
-
+        public List<Peticion> Peticiones { get; set; } = new List<Peticion>();
         public List<Genero_Artista> GenerosMusicales { get; set; } = new List<Genero_Artista>();
 
         public List<Artista_Suscriptor> Suscriptores { get; set; } = new List<Artista_Suscriptor>();

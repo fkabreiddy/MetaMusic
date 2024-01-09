@@ -1,6 +1,6 @@
 ﻿using MetaMusic.Data.Request;
 using MetaMusic.Data.Responses;
-using MetaMusic.Data.TestData;
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,7 +14,7 @@ namespace MetaMusic.Data.Entities
         public string Contenido { get; set; } = null!;
 
         public Usuario? Creador { get; set; } = new Usuario();
-        public Album Album { get; set; } = new Album();
+        public Album Album { get; set; } 
         public List<Reporte> Reportes { get; set; } = new List<Reporte>();
 
       

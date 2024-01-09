@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
@@ -12,45 +14,63 @@ namespace MetaMusic.Pages.Identity
     public class LoginModel : PageModel
     {
         private readonly IAsignDataService asingData;
+        private readonly NavigationManager navManager;
 
-        public LoginModel(IAsignDataService asingData)
+        public LoginModel(IAsignDataService asingData, NavigationManager navManager)
         {
             this.asingData = asingData;
+            this.navManager = navManager;
         }
         public IActionResult OnGetAsync(string returnUrl = null)
         {
-            string provider = "Google";
-            // Request a redirect to the external login provider.
-            var authenticationProperties = new AuthenticationProperties
+            try
             {
-                RedirectUri = Url.Page("./Login",
-                pageHandler: "Callback",
-                values: new { returnUrl }),
-            };
-            return new ChallengeResult(provider, authenticationProperties);
-        }
-        public async Task<IActionResult> OnGetCallbackAsync(
-            string returnUrl = null, string remoteError = null)
-        {
-            // Get the information about the user from the external login provider
-            var GoogleUser = this.User.Identities.FirstOrDefault();
-            if (GoogleUser.IsAuthenticated)
-            {
-                var authProperties = new AuthenticationProperties
+                string provider = "Google";
+                // Request a redirect to the external login provider.
+                var authenticationProperties = new AuthenticationProperties
                 {
-                    IsPersistent = true,
-                    RedirectUri = this.Request.Host.Value
+                    RedirectUri = Url.Page("./Login",
+                    pageHandler: "Callback",
+                    values: new { returnUrl }),
                 };
-
-                await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(GoogleUser));
-               
-                
+                return new ChallengeResult(provider, authenticationProperties);
             }
+            catch
+            {
 
-            await asingData.AsignData();
-            return LocalRedirect("/");
+                return LocalRedirect("/login-error");
+            }
+           
+        }
+        public async Task<IActionResult> OnGetCallbackAsync( string returnUrl = null, string remoteError = null)
+        {
+            try
+            {
+                var GoogleUser = this.User.Identities.FirstOrDefault();
+                if (GoogleUser.IsAuthenticated)
+                {
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        RedirectUri = this.Request.Host.Value
+                    };
+
+                    await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(GoogleUser));
+
+
+                }
+
+                await asingData.AsignData();
+                return LocalRedirect("/");
+            }
+            catch
+            {
+                return LocalRedirect("/login-error");
+            }
+            // Get the information about the user from the external login provider
+          
         }
     }
 }

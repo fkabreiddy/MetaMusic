@@ -34,7 +34,26 @@ namespace MetaMusic.Data.Services
 
                 generos = request.GenerosMusicales.ToList();
 
+               var usuarioactual = await googleAuthService.GetCurrentUser();
 
+                if(usuarioactual.Data is null)
+                    return new Result<ArtistaResponse>()
+                    {
+                        Message = "No estas registado",
+                        Success = false
+                    };
+
+
+                var creador = await dbContext.Usuarios.Include(U => U.Rol).FirstOrDefaultAsync(u => u.Id == usuarioactual.Data.Id);
+
+                if (creador is null || creador.Rol.Tipo != "Staff")
+                    return new Result<ArtistaResponse>()
+                    {
+                        Message = "No estas autorizado para agregar contenido",
+                        Success = false
+                    };
+
+                request.Creador = creador;
                 request.GenerosMusicales.Clear();
                 var newArtist = Artista.Crear(request);
                 await dbContext.Artistas.AddAsync(newArtist);
@@ -46,7 +65,7 @@ namespace MetaMusic.Data.Services
                 {
                     foreach (var genero in generos)
                     {
-                        var genre = await dbContext.Generos.FirstOrDefaultAsync(g => g.Id == genero.Id);
+                        var genre = await dbContext.Generos.FirstOrDefaultAsync(g => g.Id == genero.Genero.Id);
 
                         if (genre is not null)
                             dbContext.Genero_Artistas.Add(new Genero_Artista() { Artista = artist, Genero = genre });

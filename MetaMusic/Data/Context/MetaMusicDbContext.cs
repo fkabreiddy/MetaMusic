@@ -34,7 +34,7 @@ namespace MetaMusic.Data.Context
         public DbSet<Suscripcion> Suscripciones { get; set; }
 
         public DbSet<Track> Tracks { get; set; }
-
+        public DbSet<Peticion> Peticiones { get; set; }
         public DbSet<Usuario_Dislike_Nota> Usuario_Dislike_Notas { get; set; }
 
         public DbSet<Usuario_Like_Nota> Usuario_Like_Notas { get; set; }
@@ -83,6 +83,10 @@ namespace MetaMusic.Data.Context
             modelBuilder.Entity<Reporte>().HasOne(b => b.Nota).WithMany(u => u.Reportes).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Reporte>().HasOne(b => b.Review).WithMany(u => u.Reportes).OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Usuario>().HasMany(b => b.Peticiones).WithOne(u => u.Usuario).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Artista>().HasMany(b => b.Peticiones).WithOne(u => u.Artista).OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Album>().HasMany(b => b.Peticiones).WithOne(u => u.Album).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Usuario_Like_Nota>().HasOne(x => x.Usuario).WithMany(u => u.Notas_Likeadas).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Usuario_Like_Nota>().HasOne(x => x.Nota).WithMany(u => u.Usuarios_Liked).OnDelete(DeleteBehavior.NoAction);
@@ -106,7 +110,7 @@ namespace MetaMusic.Data.Context
 
 
 
-
+            modelBuilder.Entity<Artista>().HasMany(a => a.GenerosMusicales).WithOne(g => g.Artista).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Nota>().HasOne(b => b.Album).WithMany(u => u.Notas).OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Review>().HasOne(b => b.Creador).WithMany(u => u.Reviews).OnDelete(DeleteBehavior.NoAction);

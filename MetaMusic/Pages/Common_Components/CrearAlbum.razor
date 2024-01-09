@@ -7,7 +7,7 @@
                     <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
                         <MudContainer Style="display: flex; align-items: center; justify-content: center;">
                             <MudAvatar Style="height: 200px; width: 200px; border-radius: 7px;" Square=true>
-                                <MudImage src="@Albumresponse.portada"></MudImage>
+                                <MudImage src="@Albumresponse.Portada"></MudImage>
                             </MudAvatar>
                         </MudContainer>
 
@@ -17,8 +17,33 @@
                         <MudContainer Style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
 
                             <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">ALBUM REVIEW</MudText>
-                            <MudText Style="font-size: 35px; font-family: SourceSerif4;" Align="Align.Center">“@Albumresponse.nombre” - @Albumresponse.Autores</MudText>
-                                <MudText Style="font-size: 12px;margin-top: 20px; " Color="Color.Error">@Albumresponse.fechalanzamiento?.Substring(0, 4)</MudText>
+                            <MudText Style="font-size: 35px; font-family: SourceSerif4;" Align="Align.Center">“@Albumresponse.Nombre”
+                                @if (Albumresponse.Artistas.Count() >= 3)
+                                {
+
+                                    <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7; " Color="Color.Error">Varios Artistas</MudText>
+
+                                }
+                                else if (Albumresponse.Artistas.Count() == 1)
+                                {
+                                    <MudText Style="font-size: 35px; font-family: SourceSerif4;" Align="Align.Center">@Albumresponse.Artistas[0].Artista?.Nombre </MudText>
+
+                                }
+                                else
+                                {
+                                    foreach (var artista in Albumresponse.Artistas)
+                                    {
+                                        if (artista != Albumresponse.Artistas[Albumresponse.Artistas.Count()])
+                                        {
+                                            <MudText Style="font-size: 35px; font-family: SourceSerif4;" Align="Align.Center">@Albumresponse.Artistas[0].Artista?.Nombre,  </MudText>
+
+                                        }
+
+
+                                    }
+                                }
+                            </MudText>
+                                <MudText Style="font-size: 12px;margin-top: 20px; " Color="Color.Error">@Albumresponse.Fecha_Publicacion?.Substring(0, 4)</MudText>
                                 
                             </MudContainer>
 
@@ -48,7 +73,15 @@
                                 <MudIcon Icon="@Icons.Material.Rounded.Star" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
                                 <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">GENERO MUSICAL</MudText>
 
-                                <MudText Style="font-size: 15px; ">@Albumresponse.genero</MudText>
+                                    @if (Albumresponse.Artistas.Count() == 1)
+                                {
+                                    <MudText Style="font-size: 15px; ">@Albumresponse.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre / >@Albumresponse.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre </MudText>
+                                }
+                                else
+                                {
+                                    <MudText Style="font-size: 15px; ">Varios</MudText>
+
+                                }
                             </div>
                            
 
@@ -66,7 +99,7 @@
                         @foreach (var i in rate)
                         {
 
-                            @if (i == Albumresponse.calificacion)
+                            @if (i == newCalificacion.Numero)
                             {
 
                                 @if (i == 1)
@@ -129,7 +162,7 @@
                             }
                             else
                             {
-                                <MudAvatar @onclick="()=>{Albumresponse.calificacion = i;}" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
+                                <MudAvatar @onclick="()=>{newCalificacion.Numero = i;}" Variant="MudBlazor.Variant.Filled" Style="border-radius: 50%;cursor: pointer; " Rounded=true>
                                     @i
                                 </MudAvatar>
                             }
@@ -226,7 +259,8 @@
     [Parameter]
     public Album Albumresponse { get; set; } = new Album();
     public List<Track> tracksdelalbum = new List<Track>();
-    
+    public CalificacionRequest newCalificacion = new CalificacionRequest();
+
     public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
     private Dictionary<string, object> editorConf = new Dictionary<string, object>{

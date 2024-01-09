@@ -2,8 +2,9 @@
 {
     public class Theme : ITheme
     {
-        public bool IsDarkTheme = false;
+        public bool IsDarkTheme { get; set; } = true;
 
+       
 
         public void SetDarkTheme(bool isDark)
         {

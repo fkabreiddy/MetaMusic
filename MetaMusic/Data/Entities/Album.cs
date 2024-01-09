@@ -18,12 +18,12 @@ namespace MetaMusic.Data.Entities
         public DateTime Fecha_Publicacion_Formateada;
 
         public DateTime Fecha_Agregado;
-
+        public List<Peticion> Peticiones { get; set; } = new List<Peticion>();
         public string Portada { get; set; } = null!;
 
         public List<Album_Artista> Artistas { get; set; } = new List<Album_Artista>();
 
-        public Review Review { get; set; } = new Review();
+        public Review Review { get; set; }
 
         public Usuario? Creador { get; set; } = new Usuario();
 
@@ -51,7 +51,8 @@ namespace MetaMusic.Data.Entities
             Calificaciones = request.Calificaciones,
             Notas = request.Notas,
             Tracks = request.Tracks,
-            Notificaciones = request.Notificaciones
+            Notificaciones = request.Notificaciones,
+            Peticiones = request.Peticiones
 
         };
 
@@ -70,7 +71,8 @@ namespace MetaMusic.Data.Entities
             Calificaciones = this.Calificaciones,
             Notas = this.Notas,
             Tracks = this.Tracks,
-            Notificaciones = this.Notificaciones
+            Notificaciones = this.Notificaciones,
+            Peticiones = this.Peticiones
 
         };
 
@@ -113,7 +115,11 @@ namespace MetaMusic.Data.Entities
                 Portada = album.Portada;
                 modificacion = true;
             }
-
+            if (this.Peticiones != album.Peticiones)
+            {
+                Peticiones = album.Peticiones;
+                modificacion = true;
+            }
             if (!Artistas.SequenceEqual(album.Artistas))
             {
                 Artistas = album.Artistas;

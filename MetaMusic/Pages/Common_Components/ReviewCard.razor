@@ -13,13 +13,35 @@
 
             <div class="review-text-card">
                 <div style="display: flex; align-items: center; justify-content: center; ">
-                    <MudAvatar Square="true" Rounded="false" Style="border-radius: 10px;height: 150px; width: 150px; margin-bottom: 20px; margin-top: 20px; "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.portada" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+                    <MudAvatar Square="true" Rounded="false" Style="border-radius: 10px;height: 150px; width: 150px; margin-bottom: 20px; margin-top: 20px; "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
 
                 </div>
-                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;  ">@album.nombre</MudText>
+                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;  ">@album.Nombre</MudText>
 
             </div>
-             <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7; " Color="Color.Error">@album.Autores</MudText>
+            @if(album.Artistas.Count() >= 3)
+            {
+             <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7; " Color="Color.Error">Varios Artistas</MudText>
+
+            }
+            else if(album.Artistas.Count() == 1)
+            {
+                             <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7; " Color="Color.Error">@album.Artistas[0].Artista.Nombre</MudText>
+
+            }
+            else
+            {
+                foreach(var artista in album.Artistas)
+                {
+                    if(artista != album.Artistas[album.Artistas.Count()])
+                    {
+                                           <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7; " Color="Color.Error">@artista.Artista.Nombre, </MudText>
+
+                    }
+                    
+
+                }
+            }
                
                 
 
@@ -30,5 +52,5 @@
     
 
     [Parameter]
-    public Album album { get; set; } = new Album();
+    public AlbumResponse album { get; set; } = new AlbumResponse();
 }

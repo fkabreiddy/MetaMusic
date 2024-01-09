@@ -1,4 +1,4 @@
-﻿@page "/artist"
+﻿@page "/artist/{spotifyid}"
 
 <MudItem Style="margin-top: 60px;">
     <MudGrid>
@@ -8,7 +8,7 @@
                     <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
                         <MudContainer Style="display: flex; align-items: center; justify-content: center;">
                             <MudAvatar Style="height: 200px; width: 200px;">
-                                <MudImage src="https://i.scdn.co/image/ab6761610000e5ebc4902f080d3620b3e6da80c3"></MudImage>
+                                <MudImage src="@Artista.Foto_Perfil"></MudImage>
                             </MudAvatar>
                         </MudContainer>
 
@@ -18,8 +18,19 @@
                         <MudContainer Style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
 
                             <MudText  Style="font-size: 25px; font-weight: bold"Color="Color.Error">ARTISTA</MudText>
-                            <MudText  Style="font-size: 35px; font-family: SourceSerif4;">“Lorde”</MudText>
-                            <MudText Style="font-size: 12px;margin-top: 20px; " Color="Color.Error">Musica Alternativa / Electro Pop</MudText>
+                            <MudText  Style="font-size: 35px; font-family: SourceSerif4;">“@Artista.Nombre”</MudText>
+                             @if(Artista.GenerosMusicales.Count()>= 2)
+                             {
+                                    <MudText Style="font-size: 12px;margin-top: 20px; " Color="Color.Error">
+
+                               
+                                         @Artista.GenerosMusicales[0].Genero?.Nombre / @Artista.GenerosMusicales[0].Genero?.Nombre
+                                
+                               
+                                
+                                     </MudText>
+                             }
+                            
                             <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="font-size: 12px;margin-top: 20px; margin-bottom: 15px; font-weight: bold; cursor: pointer; " Text="Suscribirse"></MudChip>
 
                         </MudContainer>
@@ -47,8 +58,8 @@
                         <div style="display: flex; gap: 10px; align-items: center;">
                             <MudIcon Icon="@Icons.Material.Rounded.MusicNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
                             <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">TRACKS</MudText>
-                           
-                            <MudText Style="font-size: 15px;">20</MudText>
+                        
+                            <MudText Style="font-size: 15px;">@Artista.GetAllTracksCount()</MudText>
                         </div>
                         <MudDivider></MudDivider>
                         <div style="display: flex; gap: 10px; align-items: center;">
@@ -56,7 +67,7 @@
                             <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">REVIEWS</MudText>
 
                            
-                            <MudText Style="font-size: 15px; ">3</MudText>
+                            <MudText Style="font-size: 15px; ">@Artista.Albumes.Count()</MudText>
                         </div>
                         <MudDivider></MudDivider>
 
@@ -99,7 +110,7 @@
 
 
             <MudGrid>
-                @foreach(var album in albumesRock)
+                @foreach(var album in albumes)
                 {
                     <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
                         <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
@@ -109,34 +120,21 @@
         </MudItem>
     </MudGrid>
 </MudItem>
+
+@functions{
+
+    public async Task GetTracks(AlbumResponse Album){
+
+    }
+
+  
+}
 @code {
 
+    [Parameter] public string spotifyid { get; set; }
+    public ArtistaResponse Artista = new ArtistaResponse();
+    public List<AlbumResponse> albumes = new List<AlbumResponse>();
+    public List<Track> Tracks = new List<Track>();
 
-    public static Album album1 { get; set; } = new() { nombre = "Solar Power", Autores = "Lorde", calificacion = 6, portada = "https://i.scdn.co/image/ab67616d0000b27336615a0a60523dd62135ab3a", genero = "Alternativo" };
-    public static Album album2 { get; set; } = new() { nombre = "Melodrama", Autores = "Lorde", calificacion = 10, portada = "https://i.scdn.co/image/ab67616d0000b273f8553e18a11209d4becd0336", genero = "Alternativo" };
-    public static Album album3 { get; set; } = new() { nombre = "Pure Heroine", Autores = "Lorde", calificacion = 8, portada = "https://i.scdn.co/image/ab67616d0000b273187331e276c898d39764cc98", genero = "Alternativo" };
-    
-    public static List<Album> albumesRock = new List<Album>(){
-        album1,
-        album2,
-        album3,
-       
-    };
-    public static Track track1 = new Track() { Titulo = "Royals", Duracion = TimeSpan.FromMinutes(3).Add(TimeSpan.FromSeconds(27)), Album = album3, Calificacion = 8, };
-    public static Track track2 = new Track() { Titulo = "Green Light", Duracion = TimeSpan.FromMinutes(6).Add(TimeSpan.FromSeconds(22)), Album = album2, Calificacion = 10, };
-    public static Track track3 = new Track() { Titulo = "Stoned at the nail salon", Duracion = TimeSpan.FromMinutes(8).Add(TimeSpan.FromSeconds(2)), Album = album1, Calificacion = 7, };
-    public static Track track4 = new Track() { Titulo = "Tennis Court", Duracion = TimeSpan.FromMinutes(6).Add(TimeSpan.FromSeconds(30)), Album = album3, Calificacion = 9, };
-    public static Track track5 = new Track() { Titulo = "The Louvre", Duracion = TimeSpan.FromMinutes(4).Add(TimeSpan.FromSeconds(15)), Album = album2, Calificacion = 9, };
-    public static Track track6 = new Track() { Titulo = "Hard Feelings", Duracion = TimeSpan.FromMinutes(6).Add(TimeSpan.FromSeconds(21)), Album = album2, Calificacion = 8, };
-
-    public List<Track> Tracks = new List<Track>(){
-
-        track1,
-        track2,
-        track3,
-        track4,
-        track5,
-        track6,
-    };
 
 }

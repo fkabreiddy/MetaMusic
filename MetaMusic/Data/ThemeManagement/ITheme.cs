@@ -2,7 +2,9 @@
 {
     public interface ITheme
     {
-        void SetDarkTheme(bool isDark);
+        bool IsDarkTheme { get; set; }
+
         bool IsDark();
+        void SetDarkTheme(bool isDark);
     }
 }

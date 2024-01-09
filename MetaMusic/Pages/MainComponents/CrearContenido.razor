@@ -167,23 +167,14 @@
             {
 
 
-                Albumresponse.portada = album.Images[0].Url;
+                Albumresponse.Portada = album.Images[0].Url;
 
-                Albumresponse.tipo = album.Type;
-                Albumresponse.Autores = album.Artists[0].Name;
+              
+               
 
-                if (artist is not null && artist.Genres.Count() >= 1)
-                {
-                    Albumresponse.genero = artist.Genres[0];
+               
 
-                }
-                Albumresponse.nombre = album.Name;
-                Albumresponse.fechalanzamiento = album.ReleaseDate;
-
-                foreach (var track in tracks.Items)
-                {
-                    Albumresponse.Tracks.Add(new Track() { Titulo = track.Name, Duracionms = track.DurationMs, Album = Albumresponse });
-                }
+                
 
 
                 tipodeContenidoEncontrado = "album";

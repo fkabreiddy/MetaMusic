@@ -12,8 +12,9 @@ namespace MetaMusic.Data.Entities
         public int Id { get; set; }
 
         public string Nombre { get; set; } = null!;
-        public string Correo { get; set; } = null!;
+        public string Correo { get; set; } = "";
 
+        public string CorreoNormalizado { get; set; } = "";
         public string FotoDePerfil { get; set; } = null!;
 
         public string Biografia { get; set; } = null!;
@@ -37,6 +38,7 @@ namespace MetaMusic.Data.Entities
         public List<Artista_Suscriptor> Artistas_Suscritos { get; set; } = new List<Artista_Suscriptor>();
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
 
+        public List<Peticion> Peticiones { get; set; } = new List<Peticion>();
         public LoginResponse ToLoginResponse() => new LoginResponse()
         {
             Id = this.Id,
@@ -69,7 +71,10 @@ namespace MetaMusic.Data.Entities
             Suscripciones = this.Suscripciones,
             Reportes = this.Reportes,
             Artistas_Suscritos = this.Artistas_Suscritos,
-            Calificaciones = this.Calificaciones
+            Calificaciones = this.Calificaciones,
+            Peticiones = this.Peticiones,
+            CorreoNormalizado = this.CorreoNormalizado
+           
             // Agrega otras propiedades si es necesario
         };
         public static Usuario Crear(UsuarioRequest request) => new Usuario()
@@ -94,7 +99,10 @@ namespace MetaMusic.Data.Entities
             Suscripciones = request.Suscripciones,
             Reportes = request.Reportes,
             Artistas_Suscritos = request.Artistas_Suscritos,
-            Calificaciones = request.Calificaciones
+            Calificaciones = request.Calificaciones,
+            Peticiones = request.Peticiones,
+            CorreoNormalizado = request.CorreoNormalizado
+            
             // Agrega otras propiedades si es necesario
         };
 
@@ -107,13 +115,17 @@ namespace MetaMusic.Data.Entities
                 this.Nombre = usuarioResponse.Nombre;
                 modificacion = true;
             }
-
+           
             if (this.Correo != usuarioResponse.Correo)
             {
                 this.Correo = usuarioResponse.Correo;
                 modificacion = true;
             }
-
+            if (this.CorreoNormalizado != usuarioResponse.CorreoNormalizado)
+            {
+                this.CorreoNormalizado = usuarioResponse.CorreoNormalizado;
+                modificacion = true;
+            }
             if (this.FotoDePerfil != usuarioResponse.FotoDePerfil)
             {
                 this.FotoDePerfil = usuarioResponse.FotoDePerfil;
@@ -137,7 +149,11 @@ namespace MetaMusic.Data.Entities
                 Artistas_Creados = usuarioResponse.Artistas_Creados;
                 modificacion = true;
             }
-
+            if (this.Peticiones != usuarioResponse.Peticiones)
+            {
+                Peticiones = usuarioResponse.Peticiones;
+                modificacion = true;
+            }
             if (!Albumes_Publicados.SequenceEqual(usuarioResponse.Albumes_Publicados))
             {
                 Albumes_Publicados = usuarioResponse.Albumes_Publicados;

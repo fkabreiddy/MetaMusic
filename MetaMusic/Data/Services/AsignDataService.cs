@@ -1,4 +1,5 @@
 ﻿using MetaMusic.Data.Context;
+using MetaMusic.Data.Request;
 using Microsoft.AspNetCore.Components;
 using System.Security.Claims;
 
@@ -12,12 +13,14 @@ namespace MetaMusic.Data.Services
 
         private readonly IMetaMusicDbContext dbContext;
 
-        public AsignDataService(IMetaMusicDbContext dbContext, IHttpContextAccessor Context, IUserService userServices, NavigationManager navigationManager)
+        public AsignDataService( IMetaMusicDbContext dbContext, IHttpContextAccessor Context, IUserService userServices, NavigationManager navigationManager)
         {
             this.dbContext = dbContext;
             this.Context = Context;
             this.userServices = userServices;
             this.navigationManager = navigationManager;
+
+          
 
 
         }
@@ -85,31 +88,22 @@ namespace MetaMusic.Data.Services
                     Avatar = "";
                 }
 
+
+                UsuarioRequest request = new UsuarioRequest();
                 if (Gmail != "" && Gmail is not null)
                 {
-                    var r = await userServices.Login(Gmail);
-                    if (r.Success == false)
-                    {
-                        var creacion = await userServices.Crear(Gmail, avatar ?? "", givenName + " " + surname);
 
-                        if (creacion.Success && creacion.Data is not null)
-                        {
-
-                            navigationManager.NavigateTo("/", true);
-
-                        }
-                    }
-                    else if (r.Data is not null && r.Success == true)
-                    {
-
-                        navigationManager.NavigateTo("/");
-
-
-                    }
+                    request.Biografia = $"Mi nombre es {GivenName}";
+                    request.Correo = Gmail;
+                    request.Nombre = GivenName + " "+ Surname;
+                    request.CorreoNormalizado = Gmail.Normalize();
+                    var r = await userServices.Login(request);
+                    
                 }
                 else
                 {
-                    navigationManager.NavigateTo("/", true);
+
+                    await userServices.Logout();
                 }
 
             }
