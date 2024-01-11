@@ -120,7 +120,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var artista = await dbContext.Artistas.FirstOrDefaultAsync(a => a.SpotifyId == spotifyId);
+                var artista = await dbContext.Artistas.Include(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Include(a => a.Suscriptores).ThenInclude(s => s.Usuario).FirstOrDefaultAsync(a => a.SpotifyId == spotifyId);
 
                 if (artista is null)
                     return new Result<ArtistaResponse>() { Message = "No existe el Artista", Success = false };
@@ -132,6 +132,114 @@ namespace MetaMusic.Data.Services
             catch (Exception e)
             {
                 return new Result<ArtistaResponse>() { Success = false, Message = e.InnerException?.Message ?? e.Message };
+            }
+        }
+
+        public async Task<Result<ArtistaResponse>> Suscribirse(ArtistaResponse artista)
+        {
+            try
+            {
+                var usuarioactual = await googleAuthService.GetCurrentUser();
+
+                if (usuarioactual.Data is null)
+                    return new Result<ArtistaResponse>() { Success = false, Message = "No te puedes suscribir por que no estas logeado" };
+
+                var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == usuarioactual.Data.Id);
+
+                if (usuario is null)
+                    return new Result<ArtistaResponse>()
+                    {
+                        Success = false,
+                        Message = "No estas registrado"
+                    };
+
+                var ar = await dbContext.Artistas.FirstOrDefaultAsync(a => a.Id == artista.Id);
+
+                if (ar is null)
+                    return new Result<ArtistaResponse>()
+                    {
+                        Success = false,
+                        Message = "El artista no existe"
+                    };
+
+
+                await dbContext.Artista_Suscriptores.AddAsync(new Artista_Suscriptor() { Artista = ar, Usuario = usuario });
+
+                await dbContext.SaveChangesAsync();
+
+                return new Result<ArtistaResponse>()
+                {
+                    Data = ar.ToResponse(),
+                    Success = true,
+                    Message = "Registro exitoso"
+                };
+
+            }
+            catch (Exception e)
+            {
+                return new Result<ArtistaResponse>()
+                {
+                    Success = false,
+                    Message = e.InnerException?.Message ?? e.Message
+                };
+
+            }
+        }
+        public async Task<Result<ArtistaResponse>> DesSuscribirse(ArtistaResponse artista)
+        {
+            try
+            {
+                var usuarioactual = await googleAuthService.GetCurrentUser();
+
+                if (usuarioactual.Data is null)
+                    return new Result<ArtistaResponse>() { Success = false, Message = "No te puedes suscribir por que no estas logeado" };
+
+                var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == usuarioactual.Data.Id);
+
+                if (usuario is null)
+                    return new Result<ArtistaResponse>()
+                    {
+                        Success = false,
+                        Message = "No estas registrado"
+                    };
+
+                var relacion = await dbContext.Artista_Suscriptores.FirstOrDefaultAsync(a => a.Artista.Id == artista.Id && a.Usuario.Id == usuario.Id);
+
+                if (relacion is null)
+                    return new Result<ArtistaResponse>()
+                    {
+                        Success = false,
+                        Message = "El artista no existe"
+                    };
+                var ar = await dbContext.Artistas.FirstOrDefaultAsync(a => a.Id == artista.Id);
+
+                dbContext.Artista_Suscriptores.Remove(relacion);
+
+                await dbContext.SaveChangesAsync();
+
+
+                if (ar is null)
+                    return new Result<ArtistaResponse>()
+                    {
+                        Success = false,
+                        Message = "El artista no existe"
+                    };
+                return new Result<ArtistaResponse>()
+                {
+                    Data = ar.ToResponse(),
+                    Success = true,
+                    Message = "Registro exitoso"
+                };
+
+            }
+            catch (Exception e)
+            {
+                return new Result<ArtistaResponse>()
+                {
+                    Success = false,
+                    Message = e.InnerException?.Message ?? e.Message
+                };
+
             }
         }
         public async Task<Result<ArtistaResponse>> ModificarArtista(ArtistaRequest request)

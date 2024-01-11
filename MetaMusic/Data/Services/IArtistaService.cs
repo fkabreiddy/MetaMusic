@@ -9,7 +9,9 @@ namespace MetaMusic.Data.Services
         Task<Result<ArtistaResponse>> ConsultarArtista(string spotifyId);
         Task<Result<List<ArtistaResponse>>> ConsultarTodosLosArtistas();
         Task<Result<ArtistaResponse>> CrearArtista(ArtistaRequest request);
+        Task<Result<ArtistaResponse>> DesSuscribirse(ArtistaResponse artista);
         Task<Result<ArtistaResponse>> Eliminar(ArtistaRequest request);
         Task<Result<ArtistaResponse>> ModificarArtista(ArtistaRequest request);
+        Task<Result<ArtistaResponse>> Suscribirse(ArtistaResponse artista);
     }
 }

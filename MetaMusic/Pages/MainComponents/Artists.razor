@@ -1,141 +1,324 @@
 ﻿@page "/artist/{spotifyid}"
 
-<MudItem Style="margin-top: 60px;">
-    <MudGrid>
-        <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
-            <MudContainer>
-                <MudGrid Justify="Justify.Center" Style="display: flex; align-items: center;">
-                    <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
-                        <MudContainer Style="display: flex; align-items: center; justify-content: center;">
-                            <MudAvatar Style="height: 200px; width: 200px;">
-                                <MudImage src="@Artista.Foto_Perfil"></MudImage>
-                            </MudAvatar>
-                        </MudContainer>
+@if(DataLoaded == false)
+{
+
+    
+        <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
 
 
-                    </MudItem>
-                    <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
-                        <MudContainer Style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
-
-                            <MudText  Style="font-size: 25px; font-weight: bold"Color="Color.Error">ARTISTA</MudText>
-                            <MudText  Style="font-size: 35px; font-family: SourceSerif4;">“@Artista.Nombre”</MudText>
-                             @if(Artista.GenerosMusicales.Count()>= 2)
-                             {
-                                    <MudText Style="font-size: 12px;margin-top: 20px; " Color="Color.Error">
-
-                               
-                                         @Artista.GenerosMusicales[0].Genero?.Nombre / @Artista.GenerosMusicales[0].Genero?.Nombre
-                                
-                               
-                                
-                                     </MudText>
-                             }
-                            
-                            <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="font-size: 12px;margin-top: 20px; margin-bottom: 15px; font-weight: bold; cursor: pointer; " Text="Suscribirse"></MudChip>
-
-                        </MudContainer>
-
-
-                    </MudItem>
-                </MudGrid>
-                
-
-            </MudContainer>
-            
-
-        </MudItem>
-
-        <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
-
-        
-        <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
-
-            <MudGrid Style="display: flex; align-items: center;">
-                <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
-                   
-
-                    <MudContainer Style="display: flex; flex-direction: column; gap: 20px;">
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <MudIcon Icon="@Icons.Material.Rounded.MusicNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
-                            <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">TRACKS</MudText>
-                        
-                            <MudText Style="font-size: 15px;">@Artista.GetAllTracksCount()</MudText>
-                        </div>
-                        <MudDivider></MudDivider>
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <MudIcon Icon="@Icons.Material.Rounded.EditNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
-                            <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">REVIEWS</MudText>
-
-                           
-                            <MudText Style="font-size: 15px; ">@Artista.Albumes.Count()</MudText>
-                        </div>
-                        <MudDivider></MudDivider>
-
-                        
-                    </MudContainer>
-                </MudItem>
-
-                <MudItem md="8" lg="8"  xxl="8" xl="8" sm="12" xs="12">
-                    <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">TRACKS POPULARES</MudText>
-
-                    <MudContainer>
-                        <MudGrid Justify="Justify.Center">
-
-
-                            @foreach (var track in Tracks )
-                            {
-                                <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
-                                    <MetaMusic.Pages.Common_Components.TrackComponent track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
-                                </MudItem>
-                            }
-
-
-                        </MudGrid>
-                    </MudContainer>
-                </MudItem>
-
-
-                
-            </MudGrid>
-
-        </MudItem>
-
-
-        <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
-
-
-
-        <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12" Style="margin-top: 40px; margin-bottom: 40px;">
-            <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">REVIEWS</MudText>
-
-
-            <MudGrid>
-                @foreach(var album in albumes)
+            <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+                @if (theme.IsDark())
                 {
-                    <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
-                        <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
-                    </MudItem>
+                      <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
                 }
+                else
+                {
+
+                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                }
+           
+                <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true ></MudProgressLinear>
+           
+
+            </MudItem>
+        </div>
+
+  
+
+}
+else
+{
+
+    if(ArtistsFound == false)
+    {
+                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                        <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                             <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                                @if (theme.IsDark())
+                                {
+                                    <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                                }
+                                else
+                                {
+
+                                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                                }
+
+                                <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold">No pudimos encontrar el Artista</MudText>
+                                 <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7;">Puede que sea error nuestro o que el artista no exista. Si consideras que es lo primero, recarga la pagina.</MudText>
+                                 <MudTooltip Arrow="true" Color="Color.Error" Text="Intentar Denuevo">
+                                         <MudIconButton Color="Color.Error" Icon="@Icons.Material.Rounded.Update" Size="Size.Small" @onclick='()=>{navManager.NavigateTo($"/user/{spotifyid}", true) ;}'></MudIconButton>
+
+                                 </MudTooltip>
+
+                            </MudItem>
+                        </div>
+        </BlazorAnimation.Animation>
+    }
+    else
+    {
+        <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
+
+            <MudText Style="font-size: 20px; font-weight: bold;">ARTISTA</MudText>
+            <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
+
+
+
+
+
+        </div>
+        <MudItem Style="margin-top: 60px;">
+            <MudGrid>
+                <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
+                    <MudContainer>
+                        <MudGrid Justify="Justify.Center" Style="display: flex; align-items: center;">
+                            <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
+                                <MudContainer Style="display: flex; align-items: center; justify-content: center;">
+                                    <MudAvatar Style="height: 200px; width: 200px;">
+                                        <MudImage src="@Artista.Foto_Perfil"></MudImage>
+                                    </MudAvatar>
+                                </MudContainer>
+
+
+                            </MudItem>
+                            <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
+                                <MudContainer Style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+
+
+                                    <MudText Style="font-size: 35px; font-family: SourceSerif4;">“@Artista.Nombre”</MudText>
+                                        @if (Artista.GenerosMusicales.Count() >= 2)
+                                    {
+                                        <MudText Style="font-size: 12px;margin-top: 20px; font-weight: bold; " Color="Color.Error">
+
+
+                                            @Artista.GenerosMusicales[0].Genero?.Nombre / @Artista.GenerosMusicales[1].Genero?.Nombre
+
+
+
+                                        </MudText>
+                                        <MudText Style="font-size: 10px;margin-top: 20px;margin-bottom: 10px; font-weight: bold; ">
+
+
+                                            @Artista.Suscriptores.Count() Suscriptores
+
+
+
+                                        </MudText>
+                                    }
+
+                                    <AuthorizeView>
+                                        <Authorized>
+
+                                            @if (Artista.Suscriptores.Any(r => r.Usuario.Id == UserId))
+                                            {
+                                                <MudChip @onclick="async ()=>{await DeSuscribirse(Artista);}" Style="font-size: 12px;  width: 50%; font-weight: bold;cursor: pointer; margin-left: -5px;" Variant="Variant.Filled">
+                                                    @if (suscribiendo)
+                                                    {
+                                                        <MudProgressCircular Style="width: 20px; height: 20px" Color="Color.Error" Indeterminate=true></MudProgressCircular>
+                                                    }
+                                                    else
+                                                    {
+                                                        @("Suscrito")
+                                                    }
+
+                                                </MudChip>
+                                            }
+                                            else
+                                            {
+                                                <MudChip @onclick="async ()=>{await Suscribirse(Artista);}" Style="font-size: 12px;  border: dashed 1px red; width: 50%; font-weight: bold;cursor: pointer; margin-left: -5px;" Variant="Variant.Text" Color="Color.Error">
+                                                    @if (suscribiendo)
+                                                    {
+                                                        <MudProgressCircular Style="width: 20px; height: 20px" Color="Color.Error" Indeterminate=true></MudProgressCircular>
+                                                    }
+                                                    else
+                                                    {
+                                                        @("Suscribirse")
+                                                    }
+
+                                                </MudChip>
+                                            }
+
+
+                                        </Authorized>
+                                    </AuthorizeView>
+
+                                </MudContainer>
+
+
+                            </MudItem>
+                        </MudGrid>
+
+
+                    </MudContainer>
+
+
+                </MudItem>
+
+                <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+
+
+                <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
+
+                    <MudGrid Style="display: flex; align-items: center;">
+                        <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
+
+
+                            <MudContainer Style="display: flex; flex-direction: column; gap: 20px;">
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <MudIcon Icon="@Icons.Material.Rounded.MusicNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
+                                    <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">TRACKS</MudText>
+
+                                    <MudText Style="font-size: 15px;">@Artista.GetAllTracksCount()</MudText>
+                                    </div>
+                                    <MudDivider></MudDivider>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <MudIcon Icon="@Icons.Material.Rounded.EditNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
+                                        <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">REVIEWS</MudText>
+
+
+                                        <MudText Style="font-size: 15px; ">@Artista.Albumes.Count()</MudText>
+                                    </div>
+                                    <MudDivider></MudDivider>
+
+
+                                </MudContainer>
+                            </MudItem>
+
+                            <MudItem md="8" lg="8" xxl="8" xl="8" sm="12" xs="12">
+                                <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">TRACKS POPULARES</MudText>
+
+                                <MudContainer>
+                                    <MudGrid Justify="Justify.Center">
+
+
+                                        @foreach (var track in Tracks)
+                                    {
+                                        <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
+                                            <MetaMusic.Pages.Common_Components.TrackComponent track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
+                                        </MudItem>
+                                    }
+
+
+                                </MudGrid>
+                            </MudContainer>
+                        </MudItem>
+
+
+
+                    </MudGrid>
+
+                </MudItem>
+
+
+                <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+
+
+
+                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12" Style="margin-top: 40px; margin-bottom: 40px;">
+                    <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">REVIEWS</MudText>
+
+
+                    <MudGrid>
+                        @foreach (var album in albumes)
+                        {
+                            <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
+                                <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                </MudItem>
             </MudGrid>
         </MudItem>
-    </MudGrid>
-</MudItem>
+    }
+}
+
 
 @functions{
-    protected override async Task OnParametersSetAsync()
+
+    public async Task Suscribirse(ArtistaResponse artista)
     {
-        await GetArtista();
-    }
+        suscribiendo = true;
+        var x = await artistaService.Suscribirse(artista);
 
-    public async Task GetArtista(){
-
-        var r = await artistaService.ConsultarArtista(spotifyid);
-
-        if(r.Success)
+        if (x.Data is not null)
         {
-            Artista = r.Data ?? new ArtistaResponse();
+            Artista = x.Data;
             StateHasChanged();
         }
+        suscribiendo = false;
+    }
+
+    public async Task DeSuscribirse(ArtistaResponse artista)
+    {
+        suscribiendo = true;
+        var x = await artistaService.DesSuscribirse(artista);
+
+        if (x.Data is not null)
+        {
+            Artista = x.Data;
+            StateHasChanged();
+        }
+        suscribiendo = false;
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+      
+        DataLoaded = false;
+        if(UserId == 0)
+        {
+             await GetCurrentUser();  
+            DataLoaded = true;
+        }
+        if(Artista.Id == 0)
+        {
+
+            await GetArtista();
+            DataLoaded = true;
+        }
+        
+        
+       
+           
+       
+        
+    }
+    
+    
+    public async Task GetArtista(){
+
+        
+        ArtistsFound = false;
+        
+        var r = await artistaService.ConsultarArtista(spotifyid);
+
+        if(r.Success && r.Data is not null)
+        {
+            Artista = r.Data;
+             ArtistsFound = true;
+            StateHasChanged();
+        }
+    }
+    public async Task GetCurrentUser()
+    {
+        
+        var x = await googleService.GetCurrentUser();
+
+
+
+        if (x.Data is not null)
+        {
+            UserId = x.Data.Id;
+           
+            StateHasChanged();
+
+        }
+
+
+
+
     }
   
 }
@@ -145,6 +328,10 @@
     public ArtistaResponse Artista = new ArtistaResponse();
     public List<AlbumResponse> albumes = new List<AlbumResponse>();
     public List<Track> Tracks = new List<Track>();
+    public int UserId { get; set; }
+    public bool suscribiendo = false;
+    public bool DataLoaded = false;
+    public bool ArtistsFound = false;
 
 
 }
