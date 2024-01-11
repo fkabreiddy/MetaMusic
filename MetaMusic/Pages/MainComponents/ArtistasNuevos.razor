@@ -1,0 +1,48 @@
+﻿<div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
+
+    <MudText Style="font-size: 20px; font-weight: bold;">ARTISTAS NUEVOS</MudText>
+    <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
+
+
+
+
+
+</div>
+<MudGrid Spacing="2"  >
+    @foreach(var artista in Artistas.AsEnumerable().Take(3))
+    {
+        <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="12" Style="margin-top: 30px;">
+           <MetaMusic.Pages.Common_Components.ArtistaCard Artista="artista"></MetaMusic.Pages.Common_Components.ArtistaCard>
+        </MudItem>
+    }
+    <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
+
+        <MudLink Style="opacity: 0.7; font-size: 12px; margin-top: 20px; font-weight: bold; cursor: pointer;" Underline="Underline.Hover"> VER TODO</MudLink>
+
+
+
+
+
+    </div>
+</MudGrid>
+@functions{
+    protected override async Task OnInitializedAsync()
+    {
+        await GetArtistas();
+    }
+    public async Task GetArtistas()
+    {
+        var r = await artistaService.ConsultarTodosLosArtistas();
+
+        if(r.Data is not null)
+        {
+            Artistas = r.Data;
+            StateHasChanged();
+        }
+    }
+}
+@code {
+    public List<int> prueba = new List<int>() { 1, 2, 3 };
+    
+    public List<ArtistaResponse> Artistas = new List<ArtistaResponse>();
+}

@@ -82,7 +82,7 @@
                                     </ActivatorContent>
                                     <ChildContent>
 
-                                        <BlazorAnimation.Animation Style="z-index: 999999; position: fixed;" Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
+                                        <BlazorAnimation.Animation Style="z-index: 999999; position: static;" Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
 
                                             <MudPaper Outlined="true" Style="z-index: 999999;  ">
                                                 <MudContainer Style="max-height: 80vh; overflow: auto; margin-top: 10px;margin-bottom: 10px;min-width: 220px; ">
@@ -246,13 +246,17 @@
     {
         if (firstRender)
         {
-            await JSR.InvokeVoidAsync("agregarScrollListener");
            
+            await JSR.InvokeVoidAsync("agregarScrollListener");
+
 
         }
     }
+
     protected override async Task OnInitializedAsync()
     {
+         UserDataLoaded = false;
+         UserIsAuthorized = false;
         var state = await authstate.GetAuthenticationStateAsync();
         var user = state.User;
 
@@ -262,9 +266,9 @@
             await GetCurrentUser();
 
 
-
+             UserIsAuthorized = true;
             UserDataLoaded = true;
-            StateHasChanged();
+
 
 
 
@@ -274,11 +278,9 @@
         else
         {
             UserDataLoaded = true;
-            StateHasChanged();
+
         }
-
     }
-
     public async Task GetCurrentUser()
     {
 
@@ -289,10 +291,7 @@
 
             StateHasChanged();
         }
-        else
-        {
-            await userService.Logout();
-        }
+        
 
 
 
@@ -311,7 +310,7 @@
 }
 @code{
 
-    public bool UserDataLoaded = true;
+    public bool UserDataLoaded = false;
     public bool UserIsAuthorized = false;
     private string navbarclass = "navbar-container";
     public bool IsDarkMode { get; set; } = true ;

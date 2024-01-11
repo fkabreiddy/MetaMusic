@@ -16,15 +16,15 @@ namespace MetaMusic.Data.Services
 
         private readonly IGoogleAuthService currentUserServices;
         private readonly IMetaMusicDbContext dbContext;
-
+        private readonly ICurrentUser currentUser;
 
         private readonly NavigationManager navManager;
 
-        public UserService(NavigationManager navManager, IGoogleAuthService currentUserServices, IMetaMusicDbContext dbContext)
+        public UserService(ICurrentUser currentUser,NavigationManager navManager, IGoogleAuthService currentUserServices, IMetaMusicDbContext dbContext)
         {
             this.currentUserServices = currentUserServices;
             this.dbContext = dbContext;
-
+            this.currentUser = currentUser;
             this.navManager = navManager;
         }
         public async Task<Result<UsuarioResponse>> Login(UsuarioRequest request)
@@ -34,12 +34,16 @@ namespace MetaMusic.Data.Services
                 var user = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == request.Correo);
 
                 if(user is not null)
+                {
+                   
                     return new Result<UsuarioResponse>()
                     {
                         Data = user.ToResponse(),
                         Message = "Logeo Exitoso",
                         Success = true
                     };
+                }
+                    
 
                
                     var creacion = await Crear(request);
@@ -47,6 +51,7 @@ namespace MetaMusic.Data.Services
                     if (creacion.Success && creacion.Data is not null)
                     {
 
+                     
                         navManager.NavigateTo("/", true);
                             return new Result<UsuarioResponse>()
                             {

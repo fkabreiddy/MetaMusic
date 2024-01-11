@@ -3,7 +3,9 @@ using MetaMusic.Data.Entities;
 using MetaMusic.Data.OtherEntities;
 using MetaMusic.Data.Request;
 using MetaMusic.Data.Responses;
+using MetaMusic.Pages.MainComponents;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace MetaMusic.Data.Services
 {
@@ -34,9 +36,9 @@ namespace MetaMusic.Data.Services
 
                 generos = request.GenerosMusicales.ToList();
 
-               var usuarioactual = await googleAuthService.GetCurrentUser();
+                var usuarioactual = await googleAuthService.GetCurrentUser();
 
-                if(usuarioactual.Data is null)
+                if (usuarioactual.Data is null)
                     return new Result<ArtistaResponse>()
                     {
                         Message = "No estas registado",
@@ -93,5 +95,87 @@ namespace MetaMusic.Data.Services
                 };
             }
         }
+        public async Task<Result<List<ArtistaResponse>>> ConsultarTodosLosArtistas()
+        {
+            try
+            {
+
+                var artistas = await dbContext.Artistas.Include(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Include(a => a.Suscriptores).ToListAsync();
+
+
+                if (artistas is null)
+                {
+                    return new Result<List<ArtistaResponse>>() { Message = "No hay Artistas", Success = false };
+
+                }
+
+                return new Result<List<ArtistaResponse>>() { Data = artistas.Select(a => a.ToResponse()).ToList(), Success = true };
+            }
+            catch (Exception e)
+            {
+                return new Result<List<ArtistaResponse>>() { Message = e.InnerException?.Message ?? e.Message, Success = false };
+            }
+        }
+        public async Task<Result<ArtistaResponse>> ConsultarArtista(string spotifyId)
+        {
+            try
+            {
+                var artista = await dbContext.Artistas.FirstOrDefaultAsync(a => a.SpotifyId == spotifyId);
+
+                if (artista is null)
+                    return new Result<ArtistaResponse>() { Message = "No existe el Artista", Success = false };
+
+
+                return new Result<ArtistaResponse>() { Success = true, Data = artista.ToResponse() };
+
+            }
+            catch (Exception e)
+            {
+                return new Result<ArtistaResponse>() { Success = false, Message = e.InnerException?.Message ?? e.Message };
+            }
+        }
+        public async Task<Result<ArtistaResponse>> ModificarArtista(ArtistaRequest request)
+        {
+            try
+            {
+                var artista = await dbContext.Artistas.FirstOrDefaultAsync(a => a.SpotifyId == request.SpotifyId);
+
+                if (artista is null)
+                    return new Result<ArtistaResponse>() { Message = "No existe el Artista", Success = false };
+
+                artista.Modificar(request);
+
+                await dbContext.SaveChangesAsync();
+
+                return new Result<ArtistaResponse>() { Success = true, Data = artista.ToResponse() };
+
+            }
+            catch (Exception e)
+            {
+                return new Result<ArtistaResponse>() { Success = false, Message = e.InnerException?.Message ?? e.Message };
+            }
+        }
+        public async Task<Result<ArtistaResponse>> Eliminar(ArtistaRequest request)
+        {
+            try
+            {
+                var artista = await dbContext.Artistas.FirstOrDefaultAsync(a => a.SpotifyId == request.SpotifyId);
+
+                if (artista is null)
+                    return new Result<ArtistaResponse>() { Message = "No existe el Artista", Success = false };
+
+                dbContext.Artistas.Remove(artista);
+
+                await dbContext.SaveChangesAsync();
+
+                return new Result<ArtistaResponse>() { Success = true, Message = "Se elimino el artista" };
+
+            }
+            catch (Exception e)
+            {
+                return new Result<ArtistaResponse>() { Success = false, Message = e.InnerException?.Message ?? e.Message };
+            }
+        }
+
     }
 }

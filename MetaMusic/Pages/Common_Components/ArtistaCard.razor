@@ -1,0 +1,18 @@
+﻿<MudGrid Style="display: flex; align-items: center; justify-content: center;">
+    <MudItem md="4" sm="4" xl="4" xxl="4" xs="4" lg="4">
+        <MudAvatar Style="height: 120px; width: 120px;">
+            <MudImage src="@Artista.Foto_Perfil"></MudImage>
+        </MudAvatar>
+    </MudItem>
+    <MudItem md="8" sm="8" xl="8" xxl="8" xs="8" lg="8">
+        <MudContainer Style="display: flex; flex-direction: column;">
+            <MudText Style="font-size: 15px; font-weight: bold;">@Artista.Nombre <MudText Style="font-size: 10px; font-weight: bold;" Color="Color.Error">@Artista.GenerosMusicales[0].Genero?.Nombre / @Artista.GenerosMusicales[1].Genero?.Nombre </MudText></MudText>
+                <MudText Style="font-size: 10px; margin-top: 10px; margin-bottom: 10px;">@Artista.Suscriptores.Count() Suscriptores  </MudText>
+            <MudChip Style="font-size: 10px;  border: dashed 1px red; width: 50%; font-weight: bold;cursor: pointer; margin-left: -5px;" Size="Size.Small" Variant="Variant.Text" Color="Color.Error" >Suscribirse</MudChip>
+        </MudContainer>
+    </MudItem>
+</MudGrid>
+
+@code {
+    [Parameter] public ArtistaResponse Artista { get; set; } = new ArtistaResponse();
+}

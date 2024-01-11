@@ -239,58 +239,63 @@ else
             await JSR.InvokeVoidAsync("scrollHaciaInicio");
         }
     }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    
+    protected override async Task OnParametersSetAsync()
     {
-        if(firstRender)
-        {
 
-            await GetCurrentUser();
+
+        if(Usuario.Id == 0)
+        {
             await GetUser();
-            userDataLoaded = true;
-
-            StateHasChanged();
         }
+       
+            
+
+           
+        
+       
+
+
+
 
 
 
     }
 
-
-    public async Task GetCurrentUser()
-    {
-
-        var r = await userService.ConsultarUsuarioActual();
-        if (r.Success == true && r.Data is not null)
-        {
-
-            UsuarioActual = r.Data;
-
-            StateHasChanged();
-        }
-
-
-
-    }
     public async Task GetUser()
     {
-
+        
+        UsuarioNoEncontrado = true;
         var r = await userService.ConsultarUsuario(useremail);
         if (r.Success == true && r.Data is not null)
         {
 
             Usuario = r.Data;
             UsuarioNoEncontrado = false;
-            StateHasChanged();
+           
+            
+           
         }
+        else
+        {
+            UsuarioNoEncontrado = true;
+        }
+        var x = await userService.ConsultarUsuarioActual();
 
-
+            if(x.Success && x.Data is not null)
+            {
+                UsuarioActual = x.Data;
+               
+            }
+        userDataLoaded = true;
+        StateHasChanged();
 
     }
 
   
 }
 @code {
-    [Parameter] public string useremail { get; set; } = "";
+    [Parameter] public string useremail { get; set; }
     public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
     public UsuarioResponse Usuario { get; set; } = new UsuarioResponse();
     public bool userDataLoaded = false;

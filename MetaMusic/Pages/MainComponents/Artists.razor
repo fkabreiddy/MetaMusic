@@ -122,11 +122,21 @@
 </MudItem>
 
 @functions{
-
-    public async Task GetTracks(AlbumResponse Album){
-
+    protected override async Task OnParametersSetAsync()
+    {
+        await GetArtista();
     }
 
+    public async Task GetArtista(){
+
+        var r = await artistaService.ConsultarArtista(spotifyid);
+
+        if(r.Success)
+        {
+            Artista = r.Data ?? new ArtistaResponse();
+            StateHasChanged();
+        }
+    }
   
 }
 @code {

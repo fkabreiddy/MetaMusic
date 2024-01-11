@@ -38,6 +38,7 @@ namespace MetaMusic.Data.Responses
             Id = this.Id,
             Nombre = this.Nombre,
             Correo = this.Correo,
+            CorreoNormalizado = this.CorreoNormalizado,
             FotoDePerfil = this.FotoDePerfil,
             Biografia = this.Biografia,
             Rol = this.Rol,
