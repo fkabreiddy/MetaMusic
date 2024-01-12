@@ -69,7 +69,7 @@ namespace MetaMusic.Pages.Identity
             {
                 return LocalRedirect("/login-error");
             }
-            // Get the information about the user from the external login provider
+            
           
         }
     }

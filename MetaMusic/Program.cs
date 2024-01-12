@@ -77,7 +77,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<HttpContextAccessor>();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<HttpClient>();
-
+builder.WebHost.UseStaticWebAssets();
+builder.WebHost.UseUrls("https://localhost:7277/");
 //lista de blogs en el cache
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
