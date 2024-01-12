@@ -1,4 +1,16 @@
 ﻿@page "/album"
+<style>
+   .calification-card {
+        border: solid 2px black;
+        cursor: pointer;
+        transition: border 0.3s ease; /* Agregar una transición para suavizar el cambio */
+    }
+
+     .calification-card:hover {
+            border: dashed 2px red;
+            animation: pulse 0.5s ease; /* Aplicar la animación definida */
+        }
+</style>
 
 @if(DataCargada)
 {
@@ -27,13 +39,19 @@
                     <MudText Style="font-size: 12px; margin-top: 15px;  " Align="Align.Center"><b>2023</b></MudText>
                 </MudItem>
               
-                <MudItem md="4" lg="4" xxl="4" Class="container" xl="4" sm="12" xs="12" Style=" display: flex; align-items: center; align-items: center; justify-content: center; gap: 50px;">
+                <MudItem md="4" lg="4" xxl="4" Class="container" xl="4" sm="12" xs="12" Style=" display: flex; flex-direction: column; align-items: center; align-items: center; justify-content: center; gap: 15px;">
 
                     <MudAvatar Square=true Rounded=false Style="height: 250px; width: 250px;">
                         <MudImage src="https://media.pitchfork.com/photos/641c76f8717af22dc39c1ea2/1:1/w_320,c_limit/Lana-Del-Rey.jpg" />
                     </MudAvatar>
+                    <div class="d-flex" style="gap: 10px; align-items: center;">
+                        <MudLink @onclick='()=>{navManager.NavigateTo("/user/breiddysubzero");}' Style="opacity: 0.7;font-size: 15px; font-style: italic; font-family: SourceSerif4; cursor: pointer;">Por: Breiddy Garcia  </MudLink>
+                        <MudText Style="font-size: 15px; opacity: 0.7; cursor: pointer;">•</MudText>
 
+                        <MudText Style="font-size: 12px;  opacity: 0.7;  cursor: pointer;">Hace 10 dias.</MudText>
 
+                    </div>
+                    
 
 
                 </MudItem>
@@ -46,22 +64,34 @@
           </div>
 
          
-           <MudContainer Style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; margin-top: 50px;">
-            
-                 <MudGrid Justify="Justify.Center">
-                    <MudItem md="4" lg="4" xxl="4" Class="container" xl="4" sm="12" xs="12" Style="display: flex; flex-direction: column; align-items: center; justify-content: center; ">
-                            <MudText Style="font-size: 12px; opacity: 0.7;">Por: Breiddy Garcia</MudText>
 
-                     </MudItem>
-                    <MudItem md="4" lg="4" xxl="4" Class="container" xl="4" sm="12" xs="12" Style="display: flex; flex-direction: column; align-items: center; justify-content: center; ">
-                            <MudText Style="font-size: 12px; opacity: 0.7;">Review hecha: 5 de Marzo 2023</MudText>
+          <div>
+                <MudItem Style="margin-top: 70px;">
+                    <MudGrid Justify="Justify.Center" Style="display: flex; align-items: first baseline;">
+                        <MudItem Style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;" md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
+
+                            <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+                                <MudAvatar Class="calification-card" Size="Size.Large"  Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
+                                    8
+                                </MudAvatar>
+                                <MudText Style="font-size: 12px;  font-weight: bold; opacity: 0.8;  " Color="Color.Secondary">CALIFICACION DEL REVIEWER</MudText>
+                            </MudCard>
 
                         </MudItem>
-                 </MudGrid>
-            
-          
-                 
-           </MudContainer>
+                        <MudItem Style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;" md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
+
+                            <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+                                <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
+                                    10
+                                </MudAvatar>
+                                <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8;   " Color="Color.Secondary">CALIFICACIONES DEL PUBLICO </MudText>
+
+                            </MudCard>
+                            <MudChip @onclick="ShowNotes"  Style="font-size: 13px;  border: dashed 1px red; cursor: pointer;" Variant="Variant.Text" Color="Color.Error">Ver 120 reviews</MudChip>
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+          </div>
           
 
         </MudItem>

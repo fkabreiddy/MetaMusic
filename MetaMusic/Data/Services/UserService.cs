@@ -6,6 +6,9 @@ using MetaMusic.Data.Request;
 using MetaMusic.Data.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using static MudBlazor.CategoryTypes;
 
@@ -52,7 +55,7 @@ namespace MetaMusic.Data.Services
                     {
 
                      
-                        navManager.NavigateTo("/", true);
+                       
                             return new Result<UsuarioResponse>()
                             {
                                 Data = creacion.Data,
@@ -63,7 +66,7 @@ namespace MetaMusic.Data.Services
                     }
                     else
                     {
-                        await Logout();
+                        
                         return new Result<UsuarioResponse>()
                         {
                                
@@ -99,6 +102,8 @@ namespace MetaMusic.Data.Services
             try
             {
 
+               
+                
 
                 navManager.NavigateTo("/google-log-out", true);
 

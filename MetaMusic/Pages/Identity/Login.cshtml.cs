@@ -55,6 +55,7 @@ namespace MetaMusic.Pages.Identity
                         RedirectUri = this.Request.Host.Value
                     };
 
+                    
                     await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(GoogleUser));
@@ -62,8 +63,17 @@ namespace MetaMusic.Pages.Identity
 
                 }
 
-                await asingData.AsignData();
-                return LocalRedirect("/");
+               var r =  await asingData.AsignData();
+
+                if(r == true)
+                {
+                    return LocalRedirect("/");
+                }
+                else
+                {
+                    return LocalRedirect("/google-log-out");
+                }
+                
             }
             catch
             {

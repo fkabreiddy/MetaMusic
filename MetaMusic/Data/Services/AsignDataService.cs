@@ -10,22 +10,23 @@ namespace MetaMusic.Data.Services
         private readonly IHttpContextAccessor Context;
         private readonly IUserService userServices;
         private readonly NavigationManager navigationManager;
-
+        private readonly IGoogleAuthService authService;
         private readonly IMetaMusicDbContext dbContext;
 
-        public AsignDataService( IMetaMusicDbContext dbContext, IHttpContextAccessor Context, IUserService userServices, NavigationManager navigationManager)
+        public AsignDataService(IGoogleAuthService authService, IMetaMusicDbContext dbContext, IHttpContextAccessor Context, IUserService userServices, NavigationManager navigationManager)
         {
             this.dbContext = dbContext;
             this.Context = Context;
             this.userServices = userServices;
             this.navigationManager = navigationManager;
+            this.authService = authService;
 
           
 
 
         }
 
-        public async Task AsignData()
+        public async Task<bool> AsignData()
         {
             try
             {
@@ -115,18 +116,27 @@ namespace MetaMusic.Data.Services
                     }
                     request.CorreoNormalizado = Normalizar(Gmail);
                    var r = await userServices.Login(request);
-                    
+
+                    if(r.Success)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                   
                 }
                 else
                 {
 
-                    await userServices.Logout();
+                    return false;
                 }
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                return false;
             }
 
         }
