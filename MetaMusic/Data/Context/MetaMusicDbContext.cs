@@ -78,7 +78,11 @@ namespace MetaMusic.Data.Context
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             modelBuilder.Entity<Notificacion>().HasOne(b => b.Album).WithMany(u => u.Notificaciones).OnDelete(DeleteBehavior.NoAction);
-
+            modelBuilder.Entity<Album>().HasOne(b => b.Review).WithOne(u => u.Album).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Review>().HasOne(b => b.Album).WithOne(u => u.Review).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Album>().HasMany(b => b.Calificaciones).WithOne(u => u.Album).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Album>().HasMany(b => b.Artistas).WithOne(u => u.Album).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Calificacion>().HasOne(b => b.Album).WithMany(u => u.Calificaciones).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Reporte>().HasOne(b => b.Usuario).WithMany(u => u.Reportes).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Reporte>().HasOne(b => b.Nota).WithMany(u => u.Reportes).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Reporte>().HasOne(b => b.Review).WithMany(u => u.Reportes).OnDelete(DeleteBehavior.NoAction);

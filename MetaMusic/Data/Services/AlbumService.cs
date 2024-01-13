@@ -82,5 +82,43 @@ namespace MetaMusic.Data.Services
                 };
             }
         }
+
+        public async Task<Result<AlbumResponse>> ConsultarUno(string spotifyId)
+        {
+            try
+            {
+                var album1 = await dbContext.Albumes.FirstOrDefaultAsync(a => a.IdSpotify == a.IdSpotify);
+
+                if (album1 is null)
+                    return new Result<AlbumResponse>()
+                    { Message = "Album no encotrado", Success = false };
+
+                var album = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).FirstOrDefaultAsync(a => a.Id == album1.Id);
+
+                return new Result<AlbumResponse>() { Message = "Success", Success = true, Data = album.ToResponse() };
+
+            }
+            catch (Exception e)
+            {
+
+                return new Result<AlbumResponse>()
+                { Message = e.InnerException?.Message ?? e.Message, Success = false };
+            }
+        }
+
+        //public async Task<Result<List<AlbumResponse>>> Consultar(string filtro)
+        //{
+
+        //}
+
+        //public async Task<Result<List<AlbumResponse>>> ConsultarPorGenero(GeneroResponse Genero)
+        //{
+
+        //}
+
+        //public async Task<Result<List<AlbumResponse>>> ConsultarTodos(GeneroResponse Genero)
+        //{
+
+        //}
     }
 }

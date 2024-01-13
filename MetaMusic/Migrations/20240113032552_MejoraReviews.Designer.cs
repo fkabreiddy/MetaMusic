@@ -4,6 +4,7 @@ using MetaMusic.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MetaMusic.Migrations
 {
     [DbContext(typeof(MetaMusicDbContext))]
-    partial class MetaMusicDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240113032552_MejoraReviews")]
+    partial class MejoraReviews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -564,7 +567,7 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Album", "Album")
                         .WithMany("Artistas")
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("MetaMusic.Data.Entities.Artista", "Artista")
                         .WithMany("Albumes")
@@ -620,8 +623,7 @@ namespace MetaMusic.Migrations
                 {
                     b.HasOne("MetaMusic.Data.Entities.Album", "Album")
                         .WithMany("Calificaciones")
-                        .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("AlbumId");
 
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
                         .WithMany("Calificaciones")
@@ -754,7 +756,7 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Album", "Album")
                         .WithOne("Review")
                         .HasForeignKey("MetaMusic.Data.Entities.Review", "IdAlbum")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Album");

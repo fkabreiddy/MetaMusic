@@ -138,7 +138,7 @@ namespace MetaMusic.Data.Services
                 {
                     Data = albumARetornar,
                     Message = "Album Encontrado",
-                    Success = false
+                    Success = true
                 };
             }
             catch (APIException e)

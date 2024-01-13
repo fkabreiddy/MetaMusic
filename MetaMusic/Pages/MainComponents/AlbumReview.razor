@@ -1,4 +1,4 @@
-﻿@page "/album"
+﻿@page "/album/{albumid}"
 <style>
    .calification-card {
         border: solid 2px black;
@@ -14,114 +14,169 @@
 
 @if(DataCargada)
 {
-    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-        <MudItem Style="margin-top: 60px;">
-            <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
-
-                <MudText Style="font-size: 20px; font-weight: bold;">ALBUM REVIEW</MudText>
-                <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
+    if(!AlbumFound)
+    {
+                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                        <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
 
 
+                             <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                                @if (theme.IsDark())
+                                {
+                                    <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                                }
+                                else
+                                {
+
+                                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                                }
+
+                                <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold">No pudimos encontrar el album</MudText>
+                                 <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7;">Puede que sea error nuestro o que el album no exista. Si consideras que es lo primero, recarga la pagina.</MudText>
+                                 <MudTooltip Arrow="true" Color="Color.Error" Text="Intentar Denuevo">
+                                         <MudIconButton Color="Color.Error" Icon="@Icons.Material.Rounded.Update" Size="Size.Small" @onclick='()=>{navManager.NavigateTo($"/album/{albumid}", true) ;}'></MudIconButton>
+
+                                 </MudTooltip>
+
+                            </MudItem>
+                        </div>
+                </BlazorAnimation.Animation>
+    }
+    else
+    {
+        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+            <MudItem Style="margin-top: 60px;">
+                <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
+
+                    <MudText Style="font-size: 20px; font-weight: bold;">ALBUM REVIEW</MudText>
+                    <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
 
 
 
-            </div>
-            <MudGrid Justify="Justify.Center" Style="margin-top: 60px; display: flex; align-items: center; align-items: center; justify-content: center; gap: 20px;">
 
 
-                <MudItem md="5" lg="5" xxl="5" xl="5" sm="12" xs="12">
+                </div>
+                <MudGrid Justify="Justify.Center" Style="margin-top: 60px; display: flex; align-items: center; align-items: center; justify-content: center; gap: 20px;">
 
 
-                    <MudText Color="Color.Error" Style="font-size: 12px; font-weight: bold; margin-top: 15px;  " Align="Align.Center">Alternativo</MudText>
-                    <MudText Style="font-size: 50px; font-family: SourceSerif4;  " Align="Align.Center">“Chemtrails over the Country Club”</MudText>
-
-                    <MudText Style="font-size: 30px; font-family: SourceSerif4;  " Align="Align.Center">Lana del Rey</MudText>
-                    <MudText Style="font-size: 12px; margin-top: 15px;  " Align="Align.Center"><b>2021</b></MudText>
-                </MudItem>
-              
-                <MudItem md="4" lg="4" xxl="4" Class="container" xl="4" sm="12" xs="12" Style=" display: flex; flex-direction: column; align-items: center; align-items: center; justify-content: center; gap: 15px;">
-
-                    <MudAvatar Square=true Rounded=false Style="height: 250px; width: 250px;">
-                        <MudImage src="https://th.bing.com/th/id/OIP.xtn172ZWpqOM57p4tCf0xQHaHd?rs=1&pid=ImgDetMain" />
-                    </MudAvatar>
-                    <div class="d-flex" style="gap: 10px; align-items: center;">
-                        <MudLink @onclick='()=>{navManager.NavigateTo("/user/breiddysubzero");}' Style="opacity: 0.7;font-size: 15px; font-style: italic; font-family: SourceSerif4; cursor: pointer;">Por: Breiddy Garcia  </MudLink>
-                        <MudText Style="font-size: 15px; opacity: 0.7; cursor: pointer;">•</MudText>
-
-                        <MudText Style="font-size: 12px;  opacity: 0.7;  cursor: pointer;">Hace 10 dias.</MudText>
-
-                    </div>
-                    
+                    <MudItem md="5" lg="5" xxl="5" xl="5" sm="12" xs="12">
 
 
-                </MudItem>
+                        <MudText Color="Color.Error" Style="font-size: 12px; font-weight: bold; margin-top: 15px;  " Align="Align.Center">
 
-
-            </MudGrid>
-          <div style="display:flex; align-items: center; justify-content: center;margin-top: 20px; margin-bottom: 20px;">
-                <MudDivider DividerType="DividerType.Middle" Style=" width: 50%; "></MudDivider>
-
-          </div>
-
-         
-
-          <div>
-                <MudItem Style="margin-top: 70px;">
-                    <MudGrid Justify="Justify.Center" Style="display: flex; align-items: first baseline;">
-                        <MudItem Style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;" md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
-
-                            <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
-                                <MudAvatar Class="calification-card" Size="Size.Large"  Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
-                                    8
-                                </MudAvatar>
-                                <MudText Style="font-size: 12px;  font-weight: bold; opacity: 0.8;  " Color="Color.Secondary">CALIFICACION DEL REVIEWER</MudText>
-                            </MudCard>
-
-                        </MudItem>
-                        <MudItem Style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;" md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
-
-                            <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
-                                <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
-                                    10
-                                </MudAvatar>
-                                <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8;   " Color="Color.Secondary">CALIFICACIONES DEL PUBLICO </MudText>
-
-                            </MudCard>
-                            <MudChip @onclick="ShowNotes"  Style="font-size: 13px;  border: dashed 1px red; cursor: pointer;" Variant="Variant.Text" Color="Color.Error">Ver 120 reviews</MudChip>
-                        </MudItem>
-                    </MudGrid>
-                </MudItem>
-          </div>
-            <div style="display:flex; align-items: center; justify-content: center;margin-top: 20px; margin-bottom: 20px;">
-                <MudDivider DividerType="DividerType.Middle" Style=" width: 50%; "></MudDivider>
-
-            </div>
-            <MudContainer >
-                <MudGrid Justify="Justify.SpaceBetween" Spacing="2" Style="margin-top: 60px; ">
-                    <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;">
-                        <MudText Style="font-family: SourceSerif4; font-size: 20px;  ">“Chemtrails over the Country Club: Un Viaje Melancólico a Través del Estilo Único de Lana Del Rey”</MudText>
-                        <MudText Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  ">
-                            Estilo Característico de Lana:
-                            La inconfundible voz de Lana Del Rey impregna cada pista, llevándonos a un viaje melódico que combina dream pop, indie pop y destellos de rock clásico. Su estilo distintivo se mantiene fiel, transportándonos a su universo musical único.
-
-                           
-                            La producción magistral crea una atmósfera cautivadora. Los arreglos instrumentales y la cuidadosa selección de sonidos complementan a la perfección la narrativa lírica, sumergiendo al oyente en una experiencia musical inmersiva.
-
-                          
-                            "Chemtrails" nos invita a explorar temas personales a través de las líricas poéticas de Lana. La artista se sumerge en la introspección, ofreciendo una visión más íntima de su mundo interior. Las historias que cuenta son, al mismo tiempo, universalmente relatables y profundamente personales.
-
-                           
-                            La melancolía impregna cada nota, creando una experiencia emotiva. Las letras evocadoras y la entrega apasionada de Lana generan una conexión emocional única con el oyente, llevándonos a un viaje a través de paisajes sonoros nostálgicos.
-
-                           
-                            "Chemtrails over the Country Club" no solo es un álbum, sino un testimonio de la maestría artística de Lana Del Rey. Con su estilo distintivo y narrativa rica, el álbum es un viaje que explora la intimidad, la melancolía y la conexión humana a través de la música.
-
-                            Este análisis busca capturar la esencia del álbum, pero la apreciación musical es subjetiva. Se recomienda explorar "Chemtrails over the Country Club" por uno mismo para una experiencia completa.
+                            @if(Albumresponse.Artistas.Count() >= 2)
+                            {
+                                @(Albumresponse.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + Albumresponse.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)
+                            }
+                            else
+                            {
+                                 @(Albumresponse.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + Albumresponse.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre)
+                            }
                         </MudText>
-                    </MudItem>
-                    <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12" Style="@($""" {(vermas ? "max-height: auto; " : "max-height: 400px;"  )} display: flex; flex-direction: column; gap: 20px; overflow: hidden; position: sticky; top:0; """)">
+                        <MudText Style="font-size: 50px; font-family: SourceSerif4;  " Align="Align.Center">“@Albumresponse.Nombre”</MudText>
 
-                        
+                        @if (Albumresponse.Artistas.Count() >= 3)
+                        {
+                            <MudText Style="font-size: 30px; font-family: SourceSerif4;  " Align="Align.Center">Varios Artistas</MudText>
+                        }
+                        else if ((Albumresponse.Artistas.Count() == 2))
+                        {
+                            <MudText Style="font-size: 30px; font-family: SourceSerif4;  " Align="Align.Center">@Albumresponse.Artistas[0].Artista?.Nombre, @Albumresponse.Artistas[1].Artista?.Nombre </MudText>
+
+                        }
+                        else
+                        {
+                            <MudText Style="font-size: 30px; font-family: SourceSerif4;  " Align="Align.Center">@Albumresponse.Artistas[0].Artista?.Nombre</MudText>
+
+                        }
+
+                       
+                       
+                    </MudItem>
+
+                    <MudItem md="4" lg="4" xxl="4" Class="container" xl="4" sm="12" xs="12" Style=" display: flex; flex-direction: column; align-items: center; align-items: center; justify-content: center; gap: 15px;">
+
+                        <MudAvatar Square=true Rounded=false Style="height: 250px; width: 250px;">
+                            <MudImage src="https://th.bing.com/th/id/OIP.xtn172ZWpqOM57p4tCf0xQHaHd?rs=1&pid=ImgDetMain" />
+                        </MudAvatar>
+                        <div class="d-flex" style="gap: 10px; align-items: center;">
+                            <MudLink @onclick='()=>{navManager.NavigateTo($"/user/{Albumresponse.Creador?.CorreoNormalizado}");}' Style="opacity: 0.7;font-size: 15px; font-style: italic; font-family: SourceSerif4; cursor: pointer;">Por: @Albumresponse.Creador?.Nombre  </MudLink>
+                            <MudText Style="font-size: 15px; opacity: 0.7; cursor: pointer;">•</MudText>
+
+                            <MudText Style="font-size: 12px;  opacity: 0.7;  cursor: pointer;">Hace 10 dias.</MudText>
+
+                        </div>
+
+
+
+                    </MudItem>
+
+
+                </MudGrid>
+                <div style="display:flex; align-items: center; justify-content: center;margin-top: 20px; margin-bottom: 20px;">
+                    <MudDivider DividerType="DividerType.Middle" Style=" width: 50%; "></MudDivider>
+
+                </div>
+
+
+
+                <div>
+                    <MudItem Style="margin-top: 70px;">
+                        <MudGrid Justify="Justify.Center" Style="display: flex; align-items: first baseline;">
+                            <MudItem Style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;" md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
+
+                                <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+                                    <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
+                                        @Albumresponse.Calificaciones.FirstOrDefault(c => c.Usuario?.Id == Albumresponse.Creador?.Id).Numero
+                                    </MudAvatar>
+                                    <MudText Style="font-size: 12px;  font-weight: bold; opacity: 0.8;  " Color="Color.Secondary">CALIFICACION DEL REVIEWER</MudText>
+                                </MudCard>
+
+                            </MudItem>
+                            <MudItem Style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;" md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
+
+                                <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+                                    <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
+                                        10
+                                    </MudAvatar>
+                                    <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8;   " Color="Color.Secondary">CALIFICACIONES DEL PUBLICO </MudText>
+
+                                </MudCard>
+                                <MudChip @onclick="ShowNotes" Style="font-size: 13px;  border: dashed 1px red; cursor: pointer;" Variant="Variant.Text" Color="Color.Error">Ver @Albumresponse.Calificaciones.Count() reviews</MudChip>
+                            </MudItem>
+                        </MudGrid>
+                    </MudItem>
+                </div>
+                <div style="display:flex; align-items: center; justify-content: center;margin-top: 20px; margin-bottom: 20px;">
+                    <MudDivider DividerType="DividerType.Middle" Style=" width: 50%; "></MudDivider>
+
+                </div>
+                <MudContainer>
+                    <MudGrid Justify="Justify.SpaceBetween" Spacing="2" Style="margin-top: 60px; ">
+                        <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;">
+                            <MudText Style="font-family: SourceSerif4; font-size: 20px;  ">“Chemtrails over the Country Club: Un Viaje Melancólico a Través del Estilo Único de Lana Del Rey”</MudText>
+                            <MudText Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  ">
+                                Estilo Característico de Lana:
+                                La inconfundible voz de Lana Del Rey impregna cada pista, llevándonos a un viaje melódico que combina dream pop, indie pop y destellos de rock clásico. Su estilo distintivo se mantiene fiel, transportándonos a su universo musical único.
+
+
+                                La producción magistral crea una atmósfera cautivadora. Los arreglos instrumentales y la cuidadosa selección de sonidos complementan a la perfección la narrativa lírica, sumergiendo al oyente en una experiencia musical inmersiva.
+
+
+                                "Chemtrails" nos invita a explorar temas personales a través de las líricas poéticas de Lana. La artista se sumerge en la introspección, ofreciendo una visión más íntima de su mundo interior. Las historias que cuenta son, al mismo tiempo, universalmente relatables y profundamente personales.
+
+
+                                La melancolía impregna cada nota, creando una experiencia emotiva. Las letras evocadoras y la entrega apasionada de Lana generan una conexión emocional única con el oyente, llevándonos a un viaje a través de paisajes sonoros nostálgicos.
+
+
+                                "Chemtrails over the Country Club" no solo es un álbum, sino un testimonio de la maestría artística de Lana Del Rey. Con su estilo distintivo y narrativa rica, el álbum es un viaje que explora la intimidad, la melancolía y la conexión humana a través de la música.
+
+                                Este análisis busca capturar la esencia del álbum, pero la apreciación musical es subjetiva. Se recomienda explorar "Chemtrails over the Country Club" por uno mismo para una experiencia completa.
+                            </MudText>
+                        </MudItem>
+                        <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12" Style="@($""" {(vermas ? "max-height: auto; " : "max-height: 400px;"  )} display: flex; flex-direction: column; gap: 20px; overflow: hidden; position: sticky; top:0; """)">
+
+
                             <div style="display: flex; gap: 20px;align-items: center; justify-content: center;   top: 0;">
                                 <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8; " Align="Align.Center" Color="Color.Secondary">11 TRACKS </MudText>
                                 <MudText @onclick="()=>{vermas = !vermas;}" Style="font-size: 10px; cursor: pointer;" Color="Color.Error">
@@ -130,59 +185,75 @@
                             </div>
 
                             <MudGrid>
-                                @foreach (var track in tracks)
+                                @foreach (var track in Albumresponse.Tracks)
                                 {
                                     <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
-                                        <MetaMusic.Pages.Common_Components.TrackComponent></MetaMusic.Pages.Common_Components.TrackComponent>
+                                        <MetaMusic.Pages.Common_Components.TrackComponent track="track"></MetaMusic.Pages.Common_Components.TrackComponent>
 
                                     </MudItem>
                                 }
 
                             </MudGrid>
 
-                           
-                        
-                            
-                       
-                       
-                     
 
-                    </MudItem>
 
-                </MudGrid>
 
-            </MudContainer>
-            <div style="display:flex; align-items: center; justify-content: center;margin-top: 50px; margin-bottom: 50px;">
-                <MudDivider DividerType="DividerType.Middle" Style=" width: 50%; "></MudDivider>
 
-            </div>
-            <MudText Style="font-size: 20px; font-weight: bold;  opacity: 0.8; margin-top: 30px; margin-bottom: 30px;" Align="Align.Center" Color="Color.Secondary">CALIFICA ESTE ALBUM </MudText>
-            <MudContainer Style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 25px; ">
-              
-                @foreach (var numero in rate)
-                {
-                    <MudAvatar @onclick="()=>{ratenumber = numero;}" Variant=" Variant.Outlined" Style="@($"""{(numero == ratenumber ? "border: dashed 2px red;" : "")}height: 50px; width: 50px; cursor: pointer;""")">
-                        @numero
-                    </MudAvatar>
 
-                }
-                <MudContainer Style="margin-top: 20px; width: 80%;">
-                    <MudTextField AutoGrow=true T="string" Immediate=true MaxLength="120" Counter="120" Variant="MudBlazor.Variant.Text" Style="font-size: 15px;" Placeholder="Escribe una nota (opcional)" DisableUnderLine=true AdornmentIcon="@Icons.Material.Rounded.Send" Adornment="Adornment.End"></MudTextField>
+
+
+                        </MudItem>
+
+                    </MudGrid>
+
                 </MudContainer>
-            </MudContainer>
-            
-        </MudItem>
-       
-    </BlazorAnimation.Animation>
- 
+                <div style="display:flex; align-items: center; justify-content: center;margin-top: 50px; margin-bottom: 50px;">
+                    <MudDivider DividerType="DividerType.Middle" Style=" width: 50%; "></MudDivider>
+
+                </div>
+                <MudText Style="font-size: 20px; font-weight: bold;  opacity: 0.8; margin-top: 30px; margin-bottom: 30px;" Align="Align.Center" Color="Color.Secondary">CALIFICA ESTE ALBUM </MudText>
+                <MudContainer Style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 25px; ">
+
+                    @foreach (var numero in rate)
+                    {
+                        <MudAvatar @onclick="()=>{ratenumber = numero;}" Variant=" Variant.Outlined" Style="@($"""{(numero == ratenumber ? "border: dashed 2px red;" : "")}height: 50px; width: 50px; cursor: pointer;""")">
+                            @numero
+                        </MudAvatar>
+
+                    }
+                    <MudContainer Style="margin-top: 20px; width: 80%;">
+                        <MudTextField AutoGrow=true T="string" Immediate=true MaxLength="120" Counter="120" Variant="MudBlazor.Variant.Text" Style="font-size: 15px;" Placeholder="Escribe una nota (opcional)" DisableUnderLine=true AdornmentIcon="@Icons.Material.Rounded.Send" Adornment="Adornment.End"></MudTextField>
+                    </MudContainer>
+                </MudContainer>
+
+            </MudItem>
+
+        </BlazorAnimation.Animation>
+
+    }
+    
 }
 else
 {
-    <div style="position: relative;">
-         <MudOverlay Visible="true" DarkBackground="@theme.IsDark()" LightBackground="@(!theme.IsDark())" Absolute="true">
-       
-             
-         </MudOverlay>
+
+    <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+        <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+            @if (theme.IsDark())
+            {
+                <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+            }
+            else
+            {
+
+                <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+            }
+
+            <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+
+
+        </MudItem>
     </div>
 }
 
@@ -195,50 +266,41 @@ else
 
        await dService.ShowAsync<Pages.Common_Components.NotasDialog>("", options);
     }
+    public async Task GetAlbum()
+    {
+        AlbumFound = false;
+        DataCargada = false;
+        var x = await albumService.ConsultarUno(albumid);
+
+        if (x.Success == true && x.Data is not null)
+        {
+            Albumresponse = x.Data;
+            DataCargada = true;
+            AlbumFound = true;
+        }
+    }
 }
+
+
 @code {
 
 
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        try
-        {
-            DataCargada = false;
-            var config = SpotifyClientConfig.CreateDefault();
-
-            var request = new ClientCredentialsRequest("be3b1a5218c449a79a3a21ddfe850a5f", "7cf1d67e3efd4690a1bd43a18903f7dc");
-            var response = await new OAuthClient(config).RequestToken(request);
-
-            var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
-
-            var album = await spotify.Albums.Get("2fYhqwDWXjbpjaIJPEfKFw");
-            var tracks = await spotify.Albums.GetTracks("2fYhqwDWXjbpjaIJPEfKFw");
-            var albumes = await spotify.Artists.GetAlbums(album.Artists[0].Id);
-            var artist = await spotify.Artists.Get(album.Artists[0].Id);
-
-
-
-            DataCargada = true;
-
-        }
-        catch (Exception e)
-        {
-            var excepcion = e.InnerException?.Message ?? e.Message;
-
-        }
+        await GetAlbum();
 
     }
-
+    [Parameter] public string albumid { get; set; } = "";
     public List<AlbumResponse> albumesrealciondos = new List<AlbumResponse>();
     public bool DataCargada = false;
     public int ratenumber = 1;
     public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    public List<int> tracks = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11 };
+   
     public AlbumResponse Albumresponse = new AlbumResponse();
     public List<Track> tracksdelalbum = new List<Track>();
     public bool vermas = false;
-
+    public bool AlbumFound = false;
 
 
 

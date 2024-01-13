@@ -20,7 +20,7 @@ namespace MetaMusic.Data.Responses
 
         public List<Album_Artista> Artistas { get; set; } = new List<Album_Artista>();
 
-        public Review Review { get; set; } = new Review();
+        public Review? Review { get; set; } = new Review();
         public List<Peticion> Peticiones { get; set; } = new List<Peticion>();
         public Usuario? Creador { get; set; } = new Usuario();
 

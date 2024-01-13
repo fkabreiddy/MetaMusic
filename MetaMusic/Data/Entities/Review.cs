@@ -13,8 +13,9 @@ namespace MetaMusic.Data.Entities
 
         public string Contenido { get; set; } = null!;
 
+        public string Titulo { get; set; } = null!;
         public Usuario? Creador { get; set; } = new Usuario();
-        public Album Album { get; set; } 
+        public Album? Album { get; set; } 
         public List<Reporte> Reportes { get; set; } = new List<Reporte>();
 
       
@@ -27,7 +28,8 @@ namespace MetaMusic.Data.Entities
             Creador = request.Creador,
             Album = request.Album,
             Reportes = request.Reportes,
-            IdAlbum = request.IdAlbum
+            IdAlbum = request.IdAlbum,
+            Titulo = request.Titulo
             // Agrega otras propiedades si es necesario
         };
 
@@ -38,6 +40,12 @@ namespace MetaMusic.Data.Entities
             if (this.Contenido != review.Contenido)
             {
                 this.Contenido = review.Contenido;
+                modificacion = true;
+            }
+
+            if (this.Titulo != review.Titulo)
+            {
+                this.Titulo = review.Titulo;
                 modificacion = true;
             }
 
@@ -79,7 +87,8 @@ namespace MetaMusic.Data.Entities
                 Creador = this.Creador,
                 Album = this.Album,
                 Reportes = this.Reportes,
-                IdAlbum = this.IdAlbum
+                IdAlbum = this.IdAlbum,
+                Titulo = this.Titulo
                 // Agrega otras asignaciones si es necesario
             };
         }

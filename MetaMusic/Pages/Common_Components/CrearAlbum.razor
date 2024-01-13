@@ -27,6 +27,11 @@
                        <MudText Style="font-size: 30px; font-family: SourceSerif4;  " Align="Align.Center">@Request.Artistas[0].Artista?.Nombre, @Request.Artistas[1].Artista?.Nombre </MudText>
         
                     }
+                    else 
+                    {
+                        <MudText Style="font-size: 30px; font-family: SourceSerif4;  " Align="Align.Center">@Request.Artistas[0].Artista?.Nombre</MudText>
+
+                    }
 
                     @if (@Request.Fecha_Publicacion.Length >= 4)
                     {
@@ -40,14 +45,7 @@
                     <MudAvatar Square=true Rounded=false Style="height: 250px; width: 250px;">
                         <MudImage src="@Request.Portada" />
                     </MudAvatar>
-                    <div class="d-flex" style="gap: 10px; align-items: center;">
-                        <MudLink @onclick='()=>{navManager.NavigateTo($"/user/{Request.Creador.CorreoNormalizado}");}' Style="opacity: 0.7;font-size: 15px; font-style: italic; font-family: SourceSerif4; cursor: pointer;">Por: Request.Creador.Nombre  </MudLink>
-                        <MudText Style="font-size: 15px; opacity: 0.7; cursor: pointer;">•</MudText>
-
-                        <MudText Style="font-size: 12px;  opacity: 0.7;  cursor: pointer;">Hace 10 dias.</MudText>
-
-                    </div>
-
+                    
 
 
                 </MudItem>
@@ -63,7 +61,7 @@
            
                 @foreach (var numero in rate)
                 {
-                    <MudAvatar @onclick="()=>{newCalificacion.Numero = numero;}" Variant=" Variant.Outlined" Style="@($"""{(numero == ratenumber ? "border: dashed 2px red;" : "")}height: 50px; width: 50px; cursor: pointer;""")">
+                    <MudAvatar @onclick="()=>{newCalificacion.Numero = numero;}" Variant=" Variant.Outlined" Style="@($"""{(newCalificacion.Numero == numero ? "border: dashed 2px red;" : "")}height: 50px; width: 50px; cursor: pointer;""")">
                         @numero
                     </MudAvatar>
 
@@ -75,9 +73,9 @@
         <MudContainer>
             <MudGrid Justify="Justify.SpaceBetween" Spacing="2" Style="margin-top: 60px; ">
                 <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;">
-                    
-                        <MudTextField AutoGrow=true T="string" Immediate=true MaxLength="100" Counter="100" Variant="MudBlazor.Variant.Text" Style="font-size: 20px; font-family: SourceSerif4; font-size: 20px; " Placeholder="Titulo de la review" DisableUnderLine=true ></MudTextField>
-                    <MudTextField @bind-Value="newReview.Contenido" AutoGrow=true T="string" Immediate=true  Variant="MudBlazor.Variant.Text" Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  " Placeholder="Cuerpo de la critica" DisableUnderLine=true></MudTextField>
+
+                    <MudTextField AutoGrow=true T="string" @bind-Value="newReview.Titulo" Immediate=true MaxLength="100" Counter="100" Variant="MudBlazor.Variant.Text" Style="font-size: 20px; font-family: SourceSerif4; font-size: 20px; " Placeholder="Titulo de la review (Obligatorio)" DisableUnderLine=true></MudTextField>
+                    <MudTextField @bind-Value="newReview.Contenido" AutoGrow=true T="string" MaxLength="1500" Counter="1500" Immediate=true Variant="MudBlazor.Variant.Text" Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  " Placeholder="Cuerpo de la critica (Obligatorio)" DisableUnderLine=true></MudTextField>
                 
                    
 
@@ -87,7 +85,7 @@
 
 
                     <div style="display: flex; gap: 20px;align-items: center; justify-content: center;   top: 0;">
-                        <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8; " Align="Align.Center" Color="Color.Secondary">@Request.Tracks.Count() </MudText>
+                        <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8; " Align="Align.Center" Color="Color.Secondary">@Request.Tracks.Count() TRACKS </MudText>
                         <MudText @onclick="()=>{vermas = !vermas;}" Style="font-size: 10px; cursor: pointer;" Color="Color.Error">
                             @(vermas ? "Ver Menos" : "Ver Mas")
                         </MudText>
@@ -115,7 +113,7 @@
 
             </MudGrid>
             <div style="margin-top: 60px; display: flex; justify-content: center;">
-                 <MudChip Style="font-size: 12px;" @onclick="async ()=>{await Crear();}" Color="Color.Error">Crear Review</MudChip>
+                 <MudChip Style="font-size: 12px;" Disabled="@(string.IsNullOrEmpty(newReview.Titulo) || string.IsNullOrEmpty(newReview.Contenido) )" @onclick="async ()=>{await Crear();}" Color="Color.Error">Crear Review</MudChip>
 
             </div>
         </MudContainer>
@@ -130,18 +128,17 @@
 
         if(r.Success == true && r.Data  is not null)
         {
-            navManager.NavigateTo("/album");
+            navManager.NavigateTo($"/album/{r.Data.IdSpotify}");
         }
     }
 }
 @code {
-    [Parameter]
-    public MetaMusic.Data.Request.AlbumRequest Request { get; set; } = new MetaMusic.Data.Request.AlbumRequest();
+    [Parameter] public MetaMusic.Data.Request.AlbumRequest Request { get; set; } = new MetaMusic.Data.Request.AlbumRequest();
     public ReviewRequest newReview = new ReviewRequest();
     
     public CalificacionRequest newCalificacion = new CalificacionRequest();
-    public int ratenumber = 1;
-    public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    public int ratenumber = 0;
+    public List<int> rate = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     
     public bool vermas = false;
  

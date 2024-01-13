@@ -23,7 +23,7 @@ namespace MetaMusic.Data.Entities
 
         public List<Album_Artista> Artistas { get; set; } = new List<Album_Artista>();
 
-        public Review Review { get; set; }
+        public Review? Review { get; set; } = new Review();
 
         public Usuario? Creador { get; set; } = new Usuario();
 
