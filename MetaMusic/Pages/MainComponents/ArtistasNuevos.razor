@@ -9,7 +9,7 @@
 
 </div>
 <MudGrid Spacing="2"  >
-    @foreach(var artista in Artistas.AsEnumerable().Take(3))
+    @foreach(var artista in Artistas.OrderByDescending(a => a.Id).AsEnumerable().Take(3))
     {
         <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="12" Style="margin-top: 30px;">
            <MetaMusic.Pages.Common_Components.ArtistaCard Artista="artista" UserId="currentuser_id"></MetaMusic.Pages.Common_Components.ArtistaCard>

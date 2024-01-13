@@ -34,6 +34,7 @@ builder.Services.AddScoped<ISpotifyService, SpotifyService>();
 builder.Services.AddScoped<IGeneroService, GeneroService>();
 builder.Services.AddScoped<IArtistaService, ArtistaService>();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+builder.Services.AddScoped<IAlbumService, AlbumService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSignalR();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();

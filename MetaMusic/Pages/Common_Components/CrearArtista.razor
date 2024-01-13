@@ -79,7 +79,7 @@
         if(r.Success == true && r.Data is not null)
         {
             CreandoArtista = false;
-            Task.Delay(2000);
+            
             navManager.NavigateTo("/crear-contenido", true);
         }
     }
@@ -100,9 +100,9 @@
     }
     public void AsignarQuitarGenero(GeneroResponse genero)
     {
-        if (newArtista.GenerosMusicales.Any(r => r.Genero.Id == genero.Id))
+        if (newArtista.GenerosMusicales.Any(r => r.Genero?.Id == genero.Id))
         {
-            var g = newArtista.GenerosMusicales.FirstOrDefault(r => r.Genero.Id == genero.Id);
+            var g = newArtista.GenerosMusicales.FirstOrDefault(r => r.Genero?.Id == genero.Id);
 
             newArtista.GenerosMusicales.Remove(g);
         }

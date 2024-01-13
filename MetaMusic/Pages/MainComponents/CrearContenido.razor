@@ -118,7 +118,7 @@
     public UsuarioResponse UsuarioActual = new UsuarioResponse();
     public bool buscando = false;
     public ArtistaRequest artistaRequest = new ArtistaRequest();
-    public Album Albumresponse = new Album();
+    public MetaMusic.Data.Request.AlbumRequest AlbumRequest = new MetaMusic.Data.Request.AlbumRequest();
     public Track TrackResponse = new Track();
     public string url = "";
     public string tipodeContenido = "album";
@@ -135,7 +135,7 @@
         }
         else
         {
-             Autorizado = true;            
+            Autorizado = true;            
         }
         StateHasChanged();
     }
@@ -155,34 +155,9 @@
 
 
 
-            var album = await spotify.Albums.Get(url);
-
-            var tracks = await spotify.Albums.GetTracks(url);
-            var albumes = await spotify.Artists.GetAlbums(album.Artists[0].Id);
-            var artist = await spotify.Artists.Get(album.Artists[0].Id);
 
 
 
-            if (album is not null && tracks.Items is not null)
-            {
-
-
-                Albumresponse.Portada = album.Images[0].Url;
-
-              
-               
-
-               
-
-                
-
-
-                tipodeContenidoEncontrado = "album";
-                StateHasChanged();
-
-
-
-            }
 
 
 
@@ -199,6 +174,20 @@
 
     }
 
+    public async Task GetAlbum()
+    {
+        var x = await spotifyService.GetAlbum(url);
+
+        if (x.Success == true && x.Data is not null)
+        {
+            AlbumRequest = x.Data;
+            tipodeContenidoEncontrado = "album";
+        }
+        else
+        {
+            Mensaje = "Album no Encontrado";
+        }
+    }
     public async Task GetArtist()
     {
         var x = await spotifyService.GetArtista(url);

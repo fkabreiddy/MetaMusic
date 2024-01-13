@@ -5,7 +5,7 @@ namespace MetaMusic.Data.Services
 {
     public interface ISpotifyService
     {
-        Task<Result<AlbumResponse>> GetAlbum(string albumId);
+        Task<Result<MetaMusic.Data.Request.AlbumRequest>> GetAlbum(string albumId);
         Task<Result<ArtistaResponse>> GetArtista(string artistsId);
     }
 }

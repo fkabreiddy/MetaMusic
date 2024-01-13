@@ -3,14 +3,19 @@ using MetaMusic.Data.OtherEntities;
 using MetaMusic.Data.Entities;
 using MetaMusic.Data.Responses;
 using SpotifyAPI.Web;
+using Microsoft.EntityFrameworkCore;
+using MetaMusic.Pages.MainComponents;
 
 namespace MetaMusic.Data.Services
 {
     public class SpotifyService : ISpotifyService
     {
 
-
-
+        private readonly IMetaMusicDbContext dbContext;
+        public SpotifyService(IMetaMusicDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
         public async Task<Result<ArtistaResponse>> GetArtista(string artistsId)
         {
             try
@@ -60,7 +65,7 @@ namespace MetaMusic.Data.Services
 
             }
         }
-        public async Task<Result<AlbumResponse>> GetAlbum(string albumId)
+        public async Task<Result<MetaMusic.Data.Request.AlbumRequest>> GetAlbum(string albumId)
         {
             try
             {
@@ -72,51 +77,64 @@ namespace MetaMusic.Data.Services
                 var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
 
                 var album = await spotify.Albums.Get(albumId);
-                AlbumResponse albumARetornar = new AlbumResponse();
+                MetaMusic.Data.Request.AlbumRequest albumARetornar = new MetaMusic.Data.Request.AlbumRequest();
                 List<string> artistsIds = new List<string>();
 
 
 
                 if (album is null)
-                    return new Result<AlbumResponse>()
+                    return new Result<MetaMusic.Data.Request.AlbumRequest>()
                     {
-                        Message = "No se encontro el artista",
+                        Message = "No se encontro el album",
                         Success = false
                     };
 
                 if (album.Artists.Count() >= 1)
                 {
+                   
                     foreach (var artist in album.Artists)
                     {
-                        Album_Artista relacion = new Album_Artista();
-                        relacion.Artista = new Artista();
-                        relacion.Artista.SpotifyId = artist.Id;
-                        albumARetornar.Artistas.Add(relacion);
+
+                        var ar = await dbContext.Artistas.FirstOrDefaultAsync(a => a.SpotifyId == artist.Id);
+
+                        if (ar is null)
+                            return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                            { Message = $"Uno de los artistas que estan en este album no se encuentran registrados. El o la artista es {artist.Name} "};
+
+                        albumARetornar.Artistas.Add(new Album_Artista() { Artista = ar});
+
+                        
+
                     }
+
+
                 }
 
-                if (album.ReleaseDate != null)
-                    albumARetornar.Fecha_Publicacion = album.ReleaseDate;
+                
+               albumARetornar.Fecha_Publicacion = album.ReleaseDate ?? "Indefinida";
 
-                if (album.Images.Count() >= 1)
-                    albumARetornar.Portada = album.Images[0].Url;
+                
+              albumARetornar.Portada = album.Images[0].Url ?? "";
 
-                if (album.Id != null)
-                    albumARetornar.IdSpotify = album.Id;
+                if (album.Id == null)
+                        return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                        { Message = $"No pudimos recuperar informacion importante del album. Este album no puede ser creado" };
 
-                if (album.Name != null)
-                    albumARetornar.Nombre = album.Name;
+                albumARetornar.IdSpotify = album.Id;
 
-                if (album.Tracks != null)
+               
+               albumARetornar.Nombre = album.Name ?? "Indefinido";
+
+                if (album.Tracks != null && album.Tracks.Items is not null)
                     if (album.Tracks.Items.Count() >= 1)
                     {
                         foreach (var track in album.Tracks.Items)
                         {
-                            albumARetornar.Tracks.Add(new Track() { Titulo = track.Name });
+                            albumARetornar.Tracks.Add(new Track() { Titulo = track.Name, Album = new Album(){Portada = album.Images[0].Url } });
                         }
                     }
 
-                return new Result<AlbumResponse>()
+                return new Result<MetaMusic.Data.Request.AlbumRequest>()
                 {
                     Data = albumARetornar,
                     Message = "Album Encontrado",
@@ -125,7 +143,7 @@ namespace MetaMusic.Data.Services
             }
             catch (APIException e)
             {
-                return new Result<AlbumResponse>()
+                return new Result<MetaMusic.Data.Request.AlbumRequest>()
                 {
                     Message = "No se encontro el artista",
                     Success = false
