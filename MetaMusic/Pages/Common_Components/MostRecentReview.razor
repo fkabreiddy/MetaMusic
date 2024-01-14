@@ -1,19 +1,56 @@
-﻿<MudGrid Justify="Justify.Center" Style="display: flex; align-items: last baseline; ">
+﻿<MudGrid Justify="Justify.Center" Style="display: flex; align-items: last baseline; " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'>
     <MudItem md="12" sm="12" xs="12" xxl="12" lg="12" Style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center;">
-        <MudAvatar Square="true" Rounded="false" Style="height: 220px; width: 220px;   "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="https://th.bing.com/th/id/OIP.XrX0yrGGWWG_dXYg95mr-AHaHa?rs=1&pid=ImgDetMain" Style="height:100%; width: 100%;   " /></MudAvatar>
+        <MudAvatar Square="true" Rounded="false" Style="height: 220px; width: 220px;   "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
     </MudItem>
     <MudItem md="12" sm="12" xs="12" xxl="12" lg="12">
         <MudContainer Style="display: flex; flex-direction: column; gap: 10px; align-items: center; width: 60%; justify-content: center;">
-            <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error">R&B</MudText>
-            <MudText Align="Align.Center" Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4;">“CTRL” - SZA</MudText>
+
+
+            @if (album.Artistas.Count() >= 2)
+            {
+                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
+            }
+            else
+            {
+                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error">
+                    @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre)
+                </MudText>
+
+            }
+            
+            <MudText Align="Align.Center" Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4;">“@album.Nombre”
+                
+                @if (album.Artistas.Count() >= 3)
+                {
+                   @( "Varios Artistas")
+                }
+                else if ((album.Artistas.Count() == 2))
+                {
+                    <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+                        <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[0].Artista?.Nombre}");}' Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4; ">@album.Artistas[0].Artista?.Nombre</MudLink>
+                            <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[1].Artista?.Nombre}");}' Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4;">@album.Artistas[1].Artista?.Nombre</MudLink>
+                        </div>
+
+                }
+                else
+                {
+                    <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+                        <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[0].Artista?.SpotifyId}");}' Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4;">@album.Artistas[0].Artista?.Nombre</MudLink>
+
+                        </div>
+
+                }
+               
+                
+            </MudText>
                      
-            <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Despues de su album debut, SZA nos ha traido un hermoso album R&B con una produccion incrible.</MudText>
-            <MudText Align="Align.Center" Style="font-size: 10px; margin-top: 10px; "><b>Por:</b> Breiddy Garcia</MudText>
+            <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">@album.Review.Titulo</MudText>
+            <MudText Align="Align.Center" Style="font-size: 10px; margin-top: 10px; "><b>Reviewer:</b> @album.Review.Creador.Nombre</MudText>
         </MudContainer>
     </MudItem>
   
 </MudGrid>
 
 @code {
-
+    [Parameter] public AlbumResponse album { get; set; } = new AlbumResponse();
 }

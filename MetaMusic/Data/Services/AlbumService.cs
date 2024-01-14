@@ -6,6 +6,7 @@ using MetaMusic.Data.Responses;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq.Dynamic.Core;
 
 namespace MetaMusic.Data.Services
 {
@@ -89,7 +90,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var album1 = await dbContext.Albumes.FirstOrDefaultAsync(a => a.IdSpotify == a.IdSpotify);
+                var album1 = await dbContext.Albumes.FirstOrDefaultAsync(a => a.IdSpotify == spotifyId);
 
                 if (album1 is null)
                     return new Result<AlbumResponse>()
@@ -218,9 +219,26 @@ namespace MetaMusic.Data.Services
 
         //}
 
-        //public async Task<Result<List<AlbumResponse>>> ConsultarTodos(GeneroResponse Genero)
-        //{
+        public async Task<Result<List<AlbumResponse>>> ConsultarRecientes()
+        {
+            try
+            {
+                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Take(3).ToListAsync();
 
-        //}
+                if (albumes is null)
+                    return new Result<List<AlbumResponse>>()
+                    { Message = "Album no encotrado", Success = false };
+
+
+                return new Result<List<AlbumResponse>>() { Message = "Success", Success = true, Data = albumes.Select(a => a.ToResponse()).ToList() };
+
+            }
+            catch (Exception e)
+            {
+
+                return new Result<List<AlbumResponse>>()
+                { Message = e.InnerException?.Message ?? e.Message, Success = false };
+            }
+        }
     }
 }

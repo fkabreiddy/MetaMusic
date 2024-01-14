@@ -3,19 +3,55 @@
        
         <MudItem md="7" sm="7" xs="7" xxl="7" lg="7">
             <MudContainer   Style="display: flex; flex-direction: column; gap: 10px;">
-               <MudText Style="font-size: 12px; font-weight: bold;" Color="Color.Error">R&B</MudText>
-            <MudText Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4;">“CTRL” - SZA</MudText>
+              
+            @if (album.Artistas.Count() >= 2)
+            {
+                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
+            }
+            else
+            {
+                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error">
+                    @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre)
+                </MudText>
+
+            }
+            
+            <MudText Align="Align.Center" Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4;">“@album.Nombre”
+                
+                @if (album.Artistas.Count() >= 3)
+                {
+                   @( "Varios Artistas")
+                }
+                else if ((album.Artistas.Count() == 2))
+                {
+                    <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+                        <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[0].Artista?.Nombre}");}' Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4; ">@album.Artistas[0].Artista?.Nombre</MudLink>
+                            <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[1].Artista?.Nombre}");}' Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4;">@album.Artistas[1].Artista?.Nombre</MudLink>
+                        </div>
+
+                }
+                else
+                {
+                    <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+                        <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[0].Artista?.SpotifyId}");}' Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4;">@album.Artistas[0].Artista?.Nombre</MudLink>
+
+                        </div>
+
+                }
+               
+                
+            </MudText>
              
-               <MudText Style="font-size: 12px; opacity: 0.7;">Despues de su album debut, SZA nos ha traido un hermoso album R&B con una produccion incrible.</MudText>
-            <MudText Style="font-size: 10px; margin-top: 10px; "><b>Por:</b> Breiddy Garcia</MudText>
+               <MudText Style="font-size: 12px; opacity: 0.7;">@album.Review.Titulo</MudText>
+            <MudText Style="font-size: 10px; margin-top: 10px; "><b>Reviewer:</b> @album.Creador.Nombre</MudText>
             </MudContainer>
         </MudItem>
         <MudItem md="4" xxl="4" lg="4" >
-        <MudAvatar Square="true" Rounded="false" Style="height: 150px; width: 150px;   "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="https://th.bing.com/th/id/OIP.XrX0yrGGWWG_dXYg95mr-AHaHa?rs=1&pid=ImgDetMain" Style="height:100%; width: 100%;   " /></MudAvatar>
+        <MudAvatar Square="true" Rounded="false" Style="height: 150px; width: 150px;   "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
         </MudItem>
     </MudGrid>
 
 
 @code {
-
+    [Parameter] public AlbumResponse album { get; set; } = new AlbumResponse();
 }

@@ -12,5 +12,7 @@ namespace MetaMusic.Data.Services
         Task<Result<Track>> DisLikeTrack(Track track);
         Task<Result<List<Track>>> GetTrackData(AlbumResponse album);
         Task<Result<Track>> LikeTrack(Track track);
+
+        Task<Result<List<AlbumResponse>>> ConsultarRecientes();
     }
 }

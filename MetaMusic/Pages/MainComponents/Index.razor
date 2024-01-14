@@ -19,18 +19,17 @@
     }
 </style>
 <MudItem Style="margin-top: 30px;">
-    <MudGrid Style="display: flex; align-items: first baseline; " >
-       
-         
-                
-                <MetaMusic.Pages.Common_Components.LoMasReciente></MetaMusic.Pages.Common_Components.LoMasReciente>
-            
-      
-            
+
+    @if (recentAlbumsLoaded)
+    {
+        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+            <MetaMusic.Pages.Common_Components.LoMasReciente albumes="@albumesrecientes"></MetaMusic.Pages.Common_Components.LoMasReciente>
+
+        </BlazorAnimation.Animation>
+    }
+   
     
-       
-       
-    </MudGrid>
+    
 </MudItem>
 
 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
@@ -42,10 +41,25 @@
 
 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(2)">
     <MudDivider Style="margin-top: 40px; margin-bottom: 40px;"></MudDivider>
+     @if (recentAlbumsLoaded)
+    {
+        <ArtistasNuevos></ArtistasNuevos>
+    }
 
-    <ArtistasNuevos></ArtistasNuevos>
 </BlazorAnimation.Animation>
 @functions{
+
+    public async Task GetRecentAlbums()
+    {
+        recentAlbumsLoaded = false;
+        var r = await albumService.ConsultarRecientes();
+
+        if(r.Data is not null)
+        {
+            albumesrecientes = r.Data;
+            recentAlbumsLoaded = true;
+        }
+    }
     public async Task VerifyUserAuth(){
         var state = await authstate.GetAuthenticationStateAsync();
         var user = state.User;
@@ -74,16 +88,7 @@
         try
         {
 
-            var config = SpotifyClientConfig.CreateDefault();
-
-            var request = new ClientCredentialsRequest("be3b1a5218c449a79a3a21ddfe850a5f", "7cf1d67e3efd4690a1bd43a18903f7dc");
-            var response = await new OAuthClient(config).RequestToken(request);
-
-            var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
-
-            var track = await spotify.Tracks.Get("2MvvoeRt8NcOXWESkxWn3g");
-
-            var trackname = track.Name;
+            await GetRecentAlbums();
             await VerifyUserAuth();
         }
         catch(Exception e)
@@ -94,10 +99,8 @@
 
     }
 
-   
-    public List<Album> albumes = new List<Album>()
-    {
-       
-    };
+    public bool recentAlbumsLoaded = false;
+    public List<AlbumResponse> albumesrecientes = new List<AlbumResponse>();
+
 
 }
