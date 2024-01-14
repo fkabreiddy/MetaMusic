@@ -27,19 +27,51 @@
             <MudText Style="font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@track.Titulo</MudText>
         </div>
       <div style="display: flex; gap: 10px; align-items: center;">
-                <MudText Style="font-size: 12px; font-weight: bold; " >0</MudText>
+                <MudText Style="font-size: 12px; font-weight: bold; " >@track.Usuarios_Liked.Count()</MudText>
 
-                <MudIconButton  Color="Color.Error" Disabled=DisableLikeButton Icon="@Icons.Material.Rounded.Favorite"  Size="Size.Small" ></MudIconButton>
+                @if(track.Usuarios_Liked.Any(c => c.Usuario?.Id == currentuser.Id))
+                {
+                    <MudIconButton Color="Color.Error" @onclick="async()=>{await DislikeTrack();}" Disabled=DisableLikeButton Icon="@Icons.Material.Rounded.Favorite" Size="Size.Small"></MudIconButton>
+
+                }
+                else
+                {
+                <MudIconButton Color="Color.Error" @onclick="async()=>{await LikeTrack();}" Disabled=DisableLikeButton Icon="@Icons.Material.Rounded.FavoriteBorder" Size="Size.Small"></MudIconButton>
+
+                }
       </div>
     </MudContainer>
 </MudCard>
 
- @code {
+@functions{
+
+    public async Task LikeTrack()
+    {
+        var x = await albumService.LikeTrack(track);
+
+        if(x.Success && x.Data is not null)
+        {
+            track = x.Data;
+            StateHasChanged();
+        }
+    }
+    public async Task DislikeTrack()
+    {
+        var x = await albumService.DisLikeTrack(track);
+
+        if (x.Success && x.Data is not null)
+        {
+            track = x.Data;
+            StateHasChanged();
+        }
+    }
+}
+    @code {
     [Parameter]  public Track track { get; set; } = new Track();
 
     [Parameter] public bool DisableLikeButton { get; set; } = false;
 
-
+    [Parameter] public UsuarioResponse currentuser { get; set; } = new UsuarioResponse();
 
    
 }

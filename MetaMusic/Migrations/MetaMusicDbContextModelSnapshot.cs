@@ -33,9 +33,22 @@ namespace MetaMusic.Migrations
                     b.Property<int?>("CreadorId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Fecha_Agregado")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Fecha_Publicacion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Fecha_Publicacion_Formateada")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("IdSpotify")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Modificado")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Nombre")
                         .IsRequired()

@@ -179,7 +179,8 @@
         }
         else
         {
-            Mensaje = "Album no Encontrado";
+            await MessageBoxOk("Error", $"{x.Message}", "Ok");
+           
         }
     }
     public async Task GetArtist()
@@ -193,6 +194,7 @@
         }
         else
         {
+              await MessageBoxOk("Error", $"{x.Message}", "Ok");
             Mensaje = "Artista no Encontrado";
         }
     }
@@ -210,9 +212,11 @@
         catch (APIException e)
         {
             Mensaje = "Artista no Encontrado";
+           
         }
         catch (Exception e)
         {
+            await MessageBoxOk("Error Inesperado", "Hubo un error con su solicitud. Intente Luego.", "Ok");
             var excepcion = e.InnerException?.Message ?? e.Message;
 
         }
@@ -233,5 +237,28 @@
 
         buscando = false;
     }
+
+    private async Task<bool?> MessageBox(string Titulo, string Descripcion, string si, string no)
+    {
+        bool? result = await dService.ShowMessageBox(
+            Titulo,
+            Descripcion,
+            yesText: si, cancelText: no);
+        StateHasChanged();
+        return result;
+
+    }
+    private async Task<bool?> MessageBoxOk(string Titulo, string Descripcion, string si)
+    {
+        bool? result = await dService.ShowMessageBox(
+            Titulo,
+            Descripcion,
+            yesText: si);
+        StateHasChanged();
+        return result;
+
+    }
+
+
     
 }

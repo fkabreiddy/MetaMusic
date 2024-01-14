@@ -1,4 +1,4 @@
-﻿namespace Diurnal_Post.Data.Classes
+﻿namespace MetaMusic.Data.OtherEntities
 {
     public class RelativeNumber
     {

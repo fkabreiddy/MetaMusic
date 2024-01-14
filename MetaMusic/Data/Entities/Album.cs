@@ -1,6 +1,7 @@
 ﻿using MetaMusic.Data.Request;
 using MetaMusic.Data.Responses;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MetaMusic.Data.Entities
 {
@@ -13,11 +14,15 @@ namespace MetaMusic.Data.Entities
 
         public string IdSpotify { get; set; } = null!;
 
-        public string Fecha_Publicacion = null!;
+        public string Fecha_Publicacion { get; set; } = null!;
 
-        public DateTime Fecha_Publicacion_Formateada;
+        public bool Modificado { get; set; } = false;
 
-        public DateTime Fecha_Agregado;
+
+        public DateTime? Fecha_Publicacion_Formateada { get; set; }
+
+        [AllowNull]
+        public DateTime Fecha_Agregado { get; set; } 
         public List<Peticion> Peticiones { get; set; } = new List<Peticion>();
         public string Portada { get; set; } = null!;
 
@@ -63,7 +68,7 @@ namespace MetaMusic.Data.Entities
             IdSpotify = this.IdSpotify,
             Fecha_Publicacion = this.Fecha_Publicacion,
             Fecha_Publicacion_Formateada = this.Fecha_Publicacion_Formateada, // Asegúrate de manejar la conversión correctamente
-            Fecha_Agregado = DateTime.Now, // Puedes establecer la fecha actual o manejarla según tus necesidades
+            Fecha_Agregado = this.Fecha_Agregado, // Puedes establecer la fecha actual o manejarla según tus necesidades
             Portada = this.Portada,
             Artistas = this.Artistas,
             Review = this.Review,

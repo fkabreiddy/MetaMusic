@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MetaMusic.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,6 +68,10 @@ namespace MetaMusic.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdSpotify = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fecha_Publicacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Modificado = table.Column<bool>(type: "bit", nullable: false),
+                    Fecha_Publicacion_Formateada = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Fecha_Agregado = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Portada = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreadorId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -151,7 +155,7 @@ namespace MetaMusic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AlbumId = table.Column<int>(type: "int", nullable: false),
+                    AlbumId = table.Column<int>(type: "int", nullable: true),
                     UsuarioId = table.Column<int>(type: "int", nullable: true),
                     Numero = table.Column<int>(type: "int", nullable: false)
                 },
@@ -162,8 +166,7 @@ namespace MetaMusic.Migrations
                         name: "FK_Calificaciones_Albumes_AlbumId",
                         column: x => x.AlbumId,
                         principalTable: "Albumes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Calificaciones_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
@@ -235,6 +238,7 @@ namespace MetaMusic.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Contenido = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreadorId = table.Column<int>(type: "int", nullable: true),
                     IdAlbum = table.Column<int>(type: "int", nullable: false)
                 },
@@ -245,8 +249,7 @@ namespace MetaMusic.Migrations
                         name: "FK_Reviews_Albumes_IdAlbum",
                         column: x => x.IdAlbum,
                         principalTable: "Albumes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Reviews_Usuarios_CreadorId",
                         column: x => x.CreadorId,
@@ -290,7 +293,8 @@ namespace MetaMusic.Migrations
                         name: "FK_Album_Artista_Albumes_AlbumId",
                         column: x => x.AlbumId,
                         principalTable: "Albumes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Album_Artista_Artistas_ArtistaId",
                         column: x => x.ArtistaId,

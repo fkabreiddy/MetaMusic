@@ -1,9 +1,9 @@
-﻿namespace Diurnal_Post.Data.Classes
+﻿namespace MetaMusic.Data.OtherEntities
 {
-    public class RelativeDatetime
+    public static class RelativeDatetime
     {
 
-        public string FechaRelativa(DateTime fecha)
+        public static string FechaRelativa(this DateTime fecha)
         {
             // Obtener la fecha actual
             DateTime fechaActual = DateTime.Now;

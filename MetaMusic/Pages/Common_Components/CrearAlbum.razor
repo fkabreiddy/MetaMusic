@@ -35,7 +35,7 @@
 
                     @if (@Request.Fecha_Publicacion.Length >= 4)
                     {
-                       <MudText Style="font-size: 12px; margin-top: 15px;  " Align="Align.Center"><b>@Request.Fecha_Publicacion.Substring(0,4)</b></MudText>
+                       <MudText Style="font-size: 12px; margin-top: 25px; font-weight: bold;  " Align="Align.Center"><b>@Request.Fecha_Publicacion.Substring(0,4)</b></MudText>
 
                     }
                 </MudItem>
@@ -81,7 +81,7 @@
 
                    
                 </MudItem>
-                <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12" Style="@($""" {(vermas ? "max-height: auto; " : "max-height: 400px;"  )} display: flex; flex-direction: column; gap: 20px; overflow: hidden; position: sticky; top:0; """)">
+                <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12" Style="@($""" {(vermas ? "max-height: auto; " : "max-height: 400px;"  )} display: flex; flex-direction: column; gap: 20px; overflow: hidden; """)">
 
 
                     <div style="display: flex; gap: 20px;align-items: center; justify-content: center;   top: 0;">
@@ -130,16 +130,32 @@
         {
             navManager.NavigateTo($"/album/{r.Data.IdSpotify}");
         }
+        else
+        {
+            await MessageBoxOk("Error", $"{r.Message}", "Ok");
+        }
     }
 }
 @code {
     [Parameter] public MetaMusic.Data.Request.AlbumRequest Request { get; set; } = new MetaMusic.Data.Request.AlbumRequest();
     public ReviewRequest newReview = new ReviewRequest();
     
+    
+
     public CalificacionRequest newCalificacion = new CalificacionRequest();
     public int ratenumber = 0;
     public List<int> rate = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     
     public bool vermas = false;
  
+    private async Task<bool?> MessageBoxOk(string Titulo, string Descripcion, string si)
+    {
+        bool? result = await dService.ShowMessageBox(
+            Titulo,
+            Descripcion,
+            yesText: si);
+        StateHasChanged();
+        return result;
+
+    }
 }

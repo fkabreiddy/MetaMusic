@@ -12,10 +12,9 @@ namespace MetaMusic.Data.Request
 
         public string Fecha_Publicacion = null!;
 
-        public DateTime Fecha_Publicacion_Formateada;
+        public DateTime? Fecha_Publicacion_Formateada { get; set; }
 
-        public DateTime Fecha_Agregado;
-
+        public DateTime Fecha_Agregado { get; set; }
         public string Portada { get; set; } = null!;
 
         public List<Album_Artista> Artistas { get; set; } = new List<Album_Artista>();

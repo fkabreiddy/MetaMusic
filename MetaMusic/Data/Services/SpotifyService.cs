@@ -28,11 +28,23 @@ namespace MetaMusic.Data.Services
                 var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
 
                 var artist = await spotify.Artists.Get(artistsId);
+
+
+                
                 ArtistaResponse artistaARetornar = new ArtistaResponse();
                 if (artist is null)
                     return new Result<ArtistaResponse>()
                     {
                         Message = "No se encontro el artista",
+                        Success = false
+                    };
+
+
+                var existe = await dbContext.Artistas.FirstOrDefaultAsync(a => a.SpotifyId == artist.Id);
+                if (existe is not null)
+                    return new Result<ArtistaResponse>()
+                    {
+                        Message = "Este artista ya esta en nuestra plataforma. Intenta con otro",
                         Success = false
                     };
 
@@ -61,9 +73,7 @@ namespace MetaMusic.Data.Services
                     Success = false
                 };
             }
-            {
-
-            }
+          
         }
         public async Task<Result<MetaMusic.Data.Request.AlbumRequest>> GetAlbum(string albumId)
         {
@@ -89,6 +99,15 @@ namespace MetaMusic.Data.Services
                         Success = false
                     };
 
+                var existe = await dbContext.Albumes.FirstOrDefaultAsync(a => a.IdSpotify ==  album.Id);
+                if(existe is not null)
+                    return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                    {
+                        Message = "El album que quieres registrar ya existe",
+                        Success = false
+                    };
+
+
                 if (album.Artists.Count() >= 1)
                 {
                    
@@ -99,7 +118,7 @@ namespace MetaMusic.Data.Services
 
                         if (ar is null)
                             return new Result<MetaMusic.Data.Request.AlbumRequest>()
-                            { Message = $"Uno de los artistas que estan en este album no se encuentran registrados. El o la artista es {artist.Name} "};
+                            { Message = $"""Uno de los artistas que estan en este album no se encuentran registrados. El id del artista es "{artist.Id}" y el nombre es "{artist.Name}"."""};
 
                         albumARetornar.Artistas.Add(new Album_Artista() { Artista = ar});
 

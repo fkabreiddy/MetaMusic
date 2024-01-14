@@ -12,9 +12,9 @@ namespace MetaMusic.Data.Responses
 
         public string Fecha_Publicacion = null!;
 
-        public DateTime Fecha_Publicacion_Formateada;
+        public DateTime? Fecha_Publicacion_Formateada { get; set; }
 
-        public DateTime Fecha_Agregado;
+        public DateTime Fecha_Agregado { get; set; } 
 
         public string Portada { get; set; } = null!;
 

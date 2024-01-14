@@ -51,7 +51,7 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.SnackbarVariant = Variant.Text;
     config.SnackbarConfiguration.BackgroundBlurred = true;
     config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.TopCenter;
-
+   
 
 
 });

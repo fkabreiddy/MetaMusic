@@ -90,20 +90,23 @@
 
                         }
 
-                       
+                       @if(Albumresponse.Fecha_Publicacion.Length >= 4)
+                       {
+                            <MudText Align="Align.Center" Style="font-size: 12px;  opacity: 0.7;  margin-top: 25px; font-weight: bold;">@Albumresponse.Fecha_Publicacion.Substring(0,4)</MudText>
+                       }
                        
                     </MudItem>
 
                     <MudItem md="4" lg="4" xxl="4" Class="container" xl="4" sm="12" xs="12" Style=" display: flex; flex-direction: column; align-items: center; align-items: center; justify-content: center; gap: 15px;">
 
                         <MudAvatar Square=true Rounded=false Style="height: 250px; width: 250px;">
-                            <MudImage src="https://th.bing.com/th/id/OIP.xtn172ZWpqOM57p4tCf0xQHaHd?rs=1&pid=ImgDetMain" />
+                            <MudImage src="@Albumresponse.Portada" />
                         </MudAvatar>
                         <div class="d-flex" style="gap: 10px; align-items: center;">
-                            <MudLink @onclick='()=>{navManager.NavigateTo($"/user/{Albumresponse.Creador?.CorreoNormalizado}");}' Style="opacity: 0.7;font-size: 15px; font-style: italic; font-family: SourceSerif4; cursor: pointer;">Por: @Albumresponse.Creador?.Nombre  </MudLink>
-                            <MudText Style="font-size: 15px; opacity: 0.7; cursor: pointer;">•</MudText>
+                            <MudLink @onclick='()=>{navManager.NavigateTo($"/user/{Albumresponse.Creador?.CorreoNormalizado}");}' Style="opacity: 0.7;font-size: 12px; font-style: italic; font-family: SourceSerif4; cursor: pointer;">Reviwer: @Albumresponse.Creador?.Nombre  </MudLink>
+                            <MudText Style="font-size: 10px; opacity: 0.7; cursor: pointer;">•</MudText>
 
-                            <MudText Style="font-size: 12px;  opacity: 0.7;  cursor: pointer;">Hace 10 dias.</MudText>
+                            <MudText Style="font-size: 10px;  opacity: 0.7;  cursor: pointer;">@Albumresponse.Fecha_Agregado.FechaRelativa()</MudText>
 
                         </div>
 
@@ -137,12 +140,44 @@
 
                                 <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
                                     <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
-                                        10
+
+                                        @{
+                                            double promedio = 0;
+                                            if(AlbumFound)
+                                            {
+                                                var calificaciones = Albumresponse.Calificaciones.Where(c => c.Usuario?.Id != Albumresponse.Creador?.Id);
+
+                                                if (calificaciones is not null && calificaciones.Count() >= 1)
+                                                    promedio = calificaciones.Average(c => c.Numero);
+                                            
+                                            }
+                                          
+                                        }
+                                        @if (Albumresponse.Calificaciones.Where(c => c.Usuario?.Id != Albumresponse.Creador?.Id).Count() <= 0)
+                                        {
+                                            @("N/A");
+
+                                        }
+                                        else
+                                        {
+                                            @promedio 
+                                        }
+                                        
                                     </MudAvatar>
                                     <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8;   " Color="Color.Secondary">CALIFICACIONES DEL PUBLICO </MudText>
 
                                 </MudCard>
-                                <MudChip @onclick="ShowNotes" Style="font-size: 13px;  border: dashed 1px red; cursor: pointer;" Variant="Variant.Text" Color="Color.Error">Ver @Albumresponse.Calificaciones.Count() reviews</MudChip>
+
+                                @if(Albumresponse.Calificaciones.Where(c => c.Usuario?.Id != Albumresponse.Creador?.Id).Count() >= 1)
+                                {
+                                    <MudChip @onclick="ShowNotes" Style="font-size: 13px;  border: dashed 1px red; cursor: pointer;" Variant="Variant.Text" Color="Color.Error">Ver @Albumresponse.Calificaciones.Where(c => c.Usuario.Id != Albumresponse.Creador.Id).Count() reviews</MudChip>
+
+                                }
+                                else
+                                {
+                                    <MudChip Style="font-size: 13px;  border: dashed 1px red; cursor: pointer;" Variant="Variant.Text" Color="Color.Error">No hay reviews</MudChip>
+                                
+                                }
                             </MudItem>
                         </MudGrid>
                     </MudItem>
@@ -154,24 +189,9 @@
                 <MudContainer>
                     <MudGrid Justify="Justify.SpaceBetween" Spacing="2" Style="margin-top: 60px; ">
                         <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;">
-                            <MudText Style="font-family: SourceSerif4; font-size: 20px;  ">“Chemtrails over the Country Club: Un Viaje Melancólico a Través del Estilo Único de Lana Del Rey”</MudText>
+                            <MudText Style="font-family: SourceSerif4; font-size: 20px;  ">“@Albumresponse.Review.Titulo”</MudText>
                             <MudText Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  ">
-                                Estilo Característico de Lana:
-                                La inconfundible voz de Lana Del Rey impregna cada pista, llevándonos a un viaje melódico que combina dream pop, indie pop y destellos de rock clásico. Su estilo distintivo se mantiene fiel, transportándonos a su universo musical único.
-
-
-                                La producción magistral crea una atmósfera cautivadora. Los arreglos instrumentales y la cuidadosa selección de sonidos complementan a la perfección la narrativa lírica, sumergiendo al oyente en una experiencia musical inmersiva.
-
-
-                                "Chemtrails" nos invita a explorar temas personales a través de las líricas poéticas de Lana. La artista se sumerge en la introspección, ofreciendo una visión más íntima de su mundo interior. Las historias que cuenta son, al mismo tiempo, universalmente relatables y profundamente personales.
-
-
-                                La melancolía impregna cada nota, creando una experiencia emotiva. Las letras evocadoras y la entrega apasionada de Lana generan una conexión emocional única con el oyente, llevándonos a un viaje a través de paisajes sonoros nostálgicos.
-
-
-                                "Chemtrails over the Country Club" no solo es un álbum, sino un testimonio de la maestría artística de Lana Del Rey. Con su estilo distintivo y narrativa rica, el álbum es un viaje que explora la intimidad, la melancolía y la conexión humana a través de la música.
-
-                                Este análisis busca capturar la esencia del álbum, pero la apreciación musical es subjetiva. Se recomienda explorar "Chemtrails over the Country Club" por uno mismo para una experiencia completa.
+                                @Albumresponse.Review?.Contenido
                             </MudText>
                         </MudItem>
                         <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12" Style="@($""" {(vermas ? "max-height: auto; " : "max-height: 400px;"  )} display: flex; flex-direction: column; gap: 20px; overflow: hidden; position: sticky; top:0; """)">
@@ -184,16 +204,73 @@
                                 </MudText>
                             </div>
 
-                            <MudGrid>
-                                @foreach (var track in Albumresponse.Tracks)
-                                {
-                                    <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
-                                        <MetaMusic.Pages.Common_Components.TrackComponent track="track"></MetaMusic.Pages.Common_Components.TrackComponent>
+                            @if(tracksloaded)
+                            {
+                                
+                                <AuthorizeView>
+                                    <Authorized>
+                                        <MudGrid>
+                                            @foreach (var track in tracksdelalbum)
+                                            {
+                                                <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+                                                    <MetaMusic.Pages.Common_Components.TrackComponent currentuser="@UsuarioActual" track="track"></MetaMusic.Pages.Common_Components.TrackComponent>
 
-                                    </MudItem>
-                                }
+                                                </MudItem>
+                                            }
 
-                            </MudGrid>
+                                        </MudGrid>
+                                    </Authorized>
+                                    <NotAuthorized>
+                                        <MudGrid>
+                                            @foreach (var track in tracksdelalbum)
+                                            {
+                                                <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+                                                    <MetaMusic.Pages.Common_Components.TrackComponent DisableLikeButton=true track="track"></MetaMusic.Pages.Common_Components.TrackComponent>
+
+                                                </MudItem>
+                                            }
+
+                                        </MudGrid>
+                                    </NotAuthorized>
+
+                                </AuthorizeView>
+
+                            }
+                            else
+                            {
+
+                                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                    <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                                        <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                                            
+
+                                                @if(tracksloading)
+                                                {
+                                                    <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold">Cargando Tracks</MudText>
+                                                    <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+
+                                                }
+                                                else
+                                                {
+                                                    <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold">Cargar Tracks</MudText>
+
+
+                                                    <MudTooltip Arrow="true" Color="Color.Error" Text="Cargar">
+                                                        <MudIconButton Color="Color.Error" Icon="@Icons.Material.Rounded.Update" Size="Size.Small" @onclick='async ()=>{await GetTracks();}'></MudIconButton>
+
+                                                    </MudTooltip>
+                                                }
+                                          
+                                           
+
+                                        </MudItem>
+                                    </div>
+                                </BlazorAnimation.Animation>
+                            }
+
+                          
 
 
 
@@ -264,7 +341,23 @@ else
     {
         var options = new MudBlazor.DialogOptions() { NoHeader = true, CloseButton = false };
 
-       await dService.ShowAsync<Pages.Common_Components.NotasDialog>("", options);
+        await dService.ShowAsync<Pages.Common_Components.NotasDialog>("", options);
+    }
+
+    public async Task GetCurrentUser()
+    {
+
+        var r = await userService.ConsultarUsuarioActual();
+        if (r.Success == true && r.Data is not null)
+        {
+            UsuarioActual = r.Data;
+
+            StateHasChanged();
+        }
+
+
+
+
     }
     public async Task GetAlbum()
     {
@@ -279,29 +372,62 @@ else
             AlbumFound = true;
         }
     }
+
+    public async Task GetTracks()
+    {
+        tracksloading = true;
+        var x = await albumService.GetTrackData(Albumresponse);
+
+        if(x.Data is not null)
+        {
+            tracksdelalbum = x.Data;
+            tracksloading = false;
+            tracksloaded = true;
+            StateHasChanged();
+        }
+        else
+        {
+            tracksloading = false;
+            await MessageBoxOk("Error", "Hubo un error al cargar los tracks. Intenta denuevo", "Ok");
+        }
+
+
+    }
 }
 
 
 @code {
 
 
-
     protected override async Task OnParametersSetAsync()
     {
+        await GetCurrentUser();
         await GetAlbum();
-
+        
     }
     [Parameter] public string albumid { get; set; } = "";
     public List<AlbumResponse> albumesrealciondos = new List<AlbumResponse>();
     public bool DataCargada = false;
     public int ratenumber = 1;
     public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-   
+    public UsuarioResponse UsuarioActual = new UsuarioResponse();
     public AlbumResponse Albumresponse = new AlbumResponse();
     public List<Track> tracksdelalbum = new List<Track>();
     public bool vermas = false;
     public bool AlbumFound = false;
 
+    public bool tracksloaded = false;
+    public bool tracksloading = false;
 
+    private async Task<bool?> MessageBoxOk(string Titulo, string Descripcion, string si)
+    {
+        bool? result = await dService.ShowMessageBox(
+            Titulo,
+            Descripcion,
+            yesText: si);
+        StateHasChanged();
+        return result;
+
+    }
 
 }
