@@ -2,22 +2,49 @@
 
     <MudText Style="font-size: 20px; font-weight: bold;">ARTISTAS NUEVOS</MudText>
     <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
+    @if(vertodo)
+    {
+        <MudLink Style="opacity: 0.7; font-size: 12px; margin-top: 10px; font-weight: bold; cursor: pointer;" @onclick="()=>{vertodo = false;vista = 4;}" Underline="Underline.Hover"> VER MENOS</MudLink>
+
+    }
+    else
+    {
+        <MudLink Style="opacity: 0.7; font-size: 12px; margin-top: 10px; font-weight: bold; cursor: pointer;" @onclick="()=>{vertodo = true;  vista = Artistas.Count();}" Underline="Underline.Hover"> VER MAS</MudLink>
+
+    }
 
 
 
 
 
 </div>
-<MudGrid Spacing="2"  >
-    @foreach(var artista in Artistas.OrderByDescending(a => a.Id).AsEnumerable().Take(4))
+<MudContainer Style="display: flex; justify-content: center; width: 50vw;">
+    @if (theme.IsDark())
     {
-          <MudItem   md="4" lg="3" xl="3" xxl="3" sm="6" xs="12" Style="margin-top: 30px;">
-           <MetaMusic.Pages.Common_Components.ArtistaCard Artista="artista" UserId="currentuser_id"></MetaMusic.Pages.Common_Components.ArtistaCard>
-        </MudItem>
+        <MudTextField   @bind-Value="filtro_artista"  MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+    }
+    else
+    {
+        <MudTextField @bind-Value="filtro_artista" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+    }
+
+</MudContainer>
+<MudGrid Spacing="2"  >
+    @foreach(var artista in Artistas.OrderByDescending(a => a.Id).AsEnumerable().Take(vista))
+    {
+      
+            <MudItem md="4" lg="3" xl="3" xxl="3" sm="6" xs="12" Style="margin-top: 30px;">
+                  <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                         <MetaMusic.Pages.Common_Components.ArtistaCard Artista="artista" UserId="currentuser_id"></MetaMusic.Pages.Common_Components.ArtistaCard>
+                   </BlazorAnimation.Animation>
+            </MudItem>
+   
+        
     }
     <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
 
-        <MudLink Style="opacity: 0.7; font-size: 12px; margin-top: 20px; font-weight: bold; cursor: pointer;" Underline="Underline.Hover"> VER TODO</MudLink>
 
 
 
@@ -60,7 +87,9 @@
     }
 }
 @code {
-    public List<int> prueba = new List<int>() { 1, 2, 3 };
+    public bool vertodo = false;
+    public string filtro_artista = "";
     public int currentuser_id;
     public List<ArtistaResponse> Artistas = new List<ArtistaResponse>();
+    public int vista = 4;
 }

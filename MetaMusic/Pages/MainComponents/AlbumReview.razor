@@ -255,8 +255,8 @@
                 </div>
                 
                 <MudContainer>
-                    <MudGrid Justify="Justify.SpaceBetween" Spacing="2" Style="margin-top: 60px; display: flex; ">
-                        <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;">
+                    <MudGrid Justify="Justify.SpaceAround" Spacing="2" Style="margin-top: 60px; ">
+                        <MudItem md="5" lg="5" xxl="5" xl="5" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;">
                             <MudText Style="font-family: SourceSerif4; font-size: 20px;  ">“@Albumresponse.Review.Titulo”</MudText>
                                 <MudText Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  ">
                                     @Albumresponse.Review?.Contenido
@@ -264,12 +264,24 @@
                         </MudItem>
                         <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
 
-                            <MudContainer Style="@($""" {(vermas ? "max-height: auto; " : "max-height: 400px;"  )} display: flex; flex-direction: column; gap: 20px; overflow: hidden;  position: sticky; top:0; """)">
-                                <div style="display: flex; gap: 20px;align-items: center; justify-content: center;  ">
+                            <MudContainer Style="display: flex; flex-direction: column; gap: 20px; overflow: hidden; height: auto; position: sticky; top: 100px;)">
+                                <div style="display: flex; gap: 20px;align-items: center; justify-content: center; height: auto; ">
                                     <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8; " Align="Align.Center" Color="Color.Secondary">@Albumresponse.Tracks.Count() TRACKS </MudText>
-                                    <MudText @onclick="()=>{vermas = !vermas;}" Style="font-size: 10px; cursor: pointer;" Color="Color.Error">
-                                        @(vermas ? "Ver Menos" : "Ver Mas")
-                                    </MudText>
+                                   
+                                    @if(vermas)
+                                    {
+                                          <MudText @onclick="()=>{vermas = !vermas;}" Style="font-size: 10px; cursor: pointer;" Color="Color.Error">
+                                                VER MENOS
+                                          </MudText>                                    
+                                    }
+                                    else
+                                    {
+                                          <MudText @onclick="()=>{vermas = !vermas;}" Style="font-size: 10px; cursor: pointer;" Color="Color.Error">
+                                                VER MAS
+                                          </MudText>      
+                                    }
+                                    
+                                  
                                 </div>
 
                                 @if (tracksloaded)
@@ -278,13 +290,36 @@
                                     <AuthorizeView>
                                         <Authorized>
                                             <MudGrid>
-                                                @foreach (var track in tracksdelalbum)
-                                                {
-                                                    <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
-                                                        <MetaMusic.Pages.Common_Components.TrackComponent currentuser="@UsuarioActual" track="track"></MetaMusic.Pages.Common_Components.TrackComponent>
 
-                                                    </MudItem>
-                                                }
+                                                 @if(vermas)
+                                                 {
+                                                      @foreach (var track in tracksdelalbum.AsEnumerable().Take(tracksdelalbum.Count()))
+                                                        {
+                                                            <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+
+                                                             <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                                    <MetaMusic.Pages.Common_Components.TrackComponent currentuser="@UsuarioActual" track="track"></MetaMusic.Pages.Common_Components.TrackComponent>
+
+                                                             </BlazorAnimation.Animation>
+
+                                                            </MudItem>
+                                                        }
+                                                 }
+                                                 else
+                                                 {
+                                                     @foreach (var track in tracksdelalbum.AsEnumerable().Take(vista))
+                                                        {
+                                                            <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+
+                                                             <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                                    <MetaMusic.Pages.Common_Components.TrackComponent currentuser="@UsuarioActual" track="track"></MetaMusic.Pages.Common_Components.TrackComponent>
+
+                                                             </BlazorAnimation.Animation>
+
+                                                            </MudItem>
+                                                        }
+                                                 }
+                                               
 
                                             </MudGrid>
                                         </Authorized>
@@ -293,7 +328,11 @@
                                                 @foreach (var track in tracksdelalbum)
                                                 {
                                                     <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
-                                                        <MetaMusic.Pages.Common_Components.TrackComponent DisableLikeButton=true track="track"></MetaMusic.Pages.Common_Components.TrackComponent>
+                                                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                            <MetaMusic.Pages.Common_Components.TrackComponent DisableLikeButton=true track="track"></MetaMusic.Pages.Common_Components.TrackComponent>
+
+                                                            </BlazorAnimation.Animation>
+
 
                                                     </MudItem>
                                                 }
@@ -545,7 +584,7 @@ else
         List<Track> tracksdelalbum = new List<Track>();
         await GetCurrentUser();
         await GetAlbum();
-        
+
     }
     [Parameter] public string albumid { get; set; } = "";
     public List<AlbumResponse> albumesrealciondos = new List<AlbumResponse>();
@@ -560,8 +599,8 @@ else
 
     public bool tracksloaded = false;
     public bool tracksloading = false;
-      public bool BorrandoReview = false;
+    public bool BorrandoReview = false;
+    public int vista = 4;
 
-   
 
 }

@@ -174,8 +174,22 @@ else
                                 @if (Usuario.Id == UsuarioActual.Id && Usuario.Rol.Tipo == "Staff")
                                         {
                                             <MudTabPanel style="@($"""{(view == "Reviews" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reviews";}' Text="Reviews">
+                                                <MudContainer Style="display: flex; justify-content: center; width: 90%;">
+                                                    @if (theme.IsDark())
+                                                    {
+                                                        <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                                                    }
+
+                                                </MudContainer>
+                                                
                                                 <MudGrid Style="margin-top: 20px;">
-                                                    @foreach (var review in reviews)
+                                                    @foreach (var review in reviews.Where(r => r.Nombre.ToLower().Contains(filtro_review.ToLower())))
                                                     {
                                                         @if(cargandoreviews)
                                                         {
@@ -258,7 +272,16 @@ else
 
                                 <MudTabPanel style="@($"""{(view == "Siguiendo" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Siguiendo";}' Text="Siguiendo">
                                     <MudContainer Style="display: flex; justify-content: center; width: 90%;">
-                                        <MudTextField @bind-Value="filtro_artista" Immediate="true" MaxLength="30" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 100% ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+                                        @if (theme.IsDark())
+                                        {
+                                            <MudTextField @bind-Value="filtro_artista" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                                        }
+                                        else
+                                        {
+                                            <MudTextField @bind-Value="filtro_artista" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                                        }
 
                                     </MudContainer>
                                     <MudGrid Style="margin-top: 20px;" Spacing="2">
@@ -431,7 +454,7 @@ else
     public List<ArtistaResponse> suscripciones { get; set; } = new List<ArtistaResponse>();
 
     public string filtro_artista = "";
-
+    public string filtro_review = "";
     public static List<AlbumResponse> albumesRock = new List<AlbumResponse>(){
 
 

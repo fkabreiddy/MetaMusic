@@ -74,7 +74,7 @@
                         <AuthorizeView>
                             <Authorized>
 
-                                <MudMenu ListClass="menu" AnchorOrigin="Origin.BottomLeft"  TransformOrigin="Origin.TopCenter">
+                                <MudMenu  AnchorOrigin="Origin.BottomLeft"  TransformOrigin="Origin.TopCenter">
 
                                     <ActivatorContent>
                                         <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
@@ -82,10 +82,11 @@
                                     </ActivatorContent>
                                     <ChildContent>
 
-                                        <BlazorAnimation.Animation Style="z-index: 999999; position: static; " Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
+                                        <MudPaper Style="border-radius: 10px;" Outlined=true>
+                                            <BlazorAnimation.Animation Style="z-index: 999999; position: static; border-radius: 10px;  " Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
 
 
-                                            <MudContainer Style="max-height: 80vh; overflow: auto; margin-top: 10px;margin-bottom: 10px;min-width: 220px; border-radius: 10px; ">
+                                                <MudContainer Style="max-height: 80vh; overflow: auto; margin-top: 10px;margin-bottom: 10px;min-width: 220px; border-radius: 10px; ">
 
 
                                                     <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Opciones</MudText>
@@ -153,8 +154,10 @@
                                                 </MudContainer>
 
 
-                                           
-                                        </BlazorAnimation.Animation>
+
+                                            </BlazorAnimation.Animation>
+                                        </MudPaper>
+                                      
 
                                     </ChildContent>
 

@@ -18,7 +18,7 @@
 
             @if (album.Artistas.Count() >= 2)
             {
-                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
+                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; " Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
             }
             else
             {
@@ -28,7 +28,7 @@
 
             }
 
-            <MudText Align="Align.Center" Style="font-size: 14px; font-weight: bold; font-family: SourceSerif4;">
+            <MudText Align="Align.Center" Style="font-size: 14px; font-weight: bold; font-family: SourceSerif4; ">
                 “@album.Nombre”
 
                 @if (album.Artistas.Count() >= 3)
@@ -38,15 +38,15 @@
                 else if ((album.Artistas.Count() == 2))
                 {
                     <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;">
-                        <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[0].Artista?.Nombre}");}' Style="font-size: 14px; font-weight: bold; font-family: SourceSerif4; ">@album.Artistas[0].Artista?.Nombre</MudLink>
-                            <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[1].Artista?.Nombre}");}' Style="font-size: 14px; font-weight: bold; font-family: SourceSerif4;">@album.Artistas[1].Artista?.Nombre</MudLink>
+                        <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[0].Artista?.Nombre}");}' Style="font-size: 14px; font-weight: bold; font-family: SourceSerif4; opacity: 0.7;">@album.Artistas[0].Artista?.Nombre</MudLink>
+                            <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[1].Artista?.Nombre}");}' Style="font-size: 14px; font-weight: bold; font-family: SourceSerif4; opacity: 0.7;">@album.Artistas[1].Artista?.Nombre</MudLink>
                         </div>
 
                 }
                 else
                 {
                     <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;">
-                        <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[0].Artista?.SpotifyId}");}' Style="font-size: 14px; font-weight: bold; font-family: SourceSerif4;">@album.Artistas[0].Artista?.Nombre</MudLink>
+                        <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[0].Artista?.SpotifyId}");}' Style="font-size: 14px; font-weight: bold; font-family: SourceSerif4;opacity: 0.7;">@album.Artistas[0].Artista?.Nombre</MudLink>
 
                         </div>
 
