@@ -108,21 +108,21 @@ namespace MetaMusic.Data.Services
                 { Message = e.InnerException?.Message ?? e.Message, Success = false };
             }
         }
-        public async Task<Result<Track>> LikeTrack(Track track)
+        public async Task<Result<Usuario_Like_Track>> LikeTrack(Track track)
         {
             try
             {
                 var currentuser = await googleAuth.GetCurrentUser();
 
                 if (currentuser is null)
-                    return new Result<Track>()
+                    return new Result<Usuario_Like_Track>()
                     { Message = "No estas logeado", Success = false };
 
                 var tr = await dbContext.Tracks.FirstOrDefaultAsync(a => a.Id == track.Id);
                 var user = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == currentuser.Data.Id);
 
                 if (currentuser is null)
-                    return new Result<Track>()
+                    return new Result<Usuario_Like_Track>()
                     { Message = "No estas logeado", Success = false };
 
                 var interaccion = new Usuario_Like_Track() { Track = tr, Usuario = user };
@@ -130,55 +130,53 @@ namespace MetaMusic.Data.Services
                 await dbContext.Usuario_Like_Tracks.AddAsync(interaccion);
                 await dbContext.SaveChangesAsync();
 
-                var trackadevolver = await dbContext.Tracks.Include(t => t.Usuarios_Liked).ThenInclude(x =>x.Usuario).FirstOrDefaultAsync(t => t.Id == track.Id);
 
-                return new Result<Track>() { Message = "Success", Success = true, Data = trackadevolver };
+                return new Result<Usuario_Like_Track>() { Message = "Success", Success = true,  };
 
             }
             catch (Exception e)
             {
 
-                return new Result<Track>()
+                return new Result<Usuario_Like_Track>()
                 { Message = e.InnerException?.Message ?? e.Message, Success = false };
             }
         }
 
-        public async Task<Result<Track>> DisLikeTrack(Track track)
+        public async Task<Result<Usuario_Like_Track>> DisLikeTrack(Track track)
         {
             try
             {
                 var currentuser = await googleAuth.GetCurrentUser();
 
                 if (currentuser is null)
-                    return new Result<Track>()
+                    return new Result<Usuario_Like_Track>()
                     { Message = "No estas logeado", Success = false };
 
 
                 var user = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == currentuser.Data.Id);
 
                 if (currentuser is null)
-                    return new Result<Track>()
+                    return new Result<Usuario_Like_Track>()
                     { Message = "No estas logeado", Success = false };
 
                 var interaccion = await dbContext.Usuario_Like_Tracks.FirstOrDefaultAsync(u => u.Usuario.Id == user.Id && u.Track.Id == track.Id);
 
 
                 if (interaccion is null)
-                    return new Result<Track>()
+                    return new Result<Usuario_Like_Track>()
                     { Message = "Error", Success = false };
 
                 dbContext.Usuario_Like_Tracks.Remove(interaccion);
                 await dbContext.SaveChangesAsync();
 
-                var trackadevolver = await dbContext.Tracks.Include(t => t.Usuarios_Liked).ThenInclude(x => x.Usuario).FirstOrDefaultAsync(t => t.Id == track.Id);
 
-                return new Result<Track>() { Message = "Success", Success = true, Data = trackadevolver };
+                return new Result<Usuario_Like_Track>() { Message = "Success", Success = true };
 
             }
             catch (Exception e)
             {
 
-                return new Result<Track>()
+                return new Result<Usuario_Like_Track>()
                 { Message = e.InnerException?.Message ?? e.Message, Success = false };
             }
         }
@@ -214,16 +212,72 @@ namespace MetaMusic.Data.Services
 
         //}
 
-        //public async Task<Result<List<AlbumResponse>>> ConsultarPorGenero(GeneroResponse Genero)
-        //{
+       public async Task<Result<bool>> Eliminar(AlbumResponse response)
+       {
+            try
+            {
+                var album1 = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Id == response.Id);
 
-        //}
+                if (album1 is null)
+                    return new Result<bool>()
+                    { Message = "Album no encotrado", Success = false };
+
+                var notas = await dbContext.Notas.Where(n => n.Album.Id == response.Id).ToListAsync();
+
+                if (notas is not null)
+                {
+                    dbContext.Notas.RemoveRange(notas);
+                   
+                }
+
+                var calificaciones = await dbContext.Calificaciones.Where(n => n.Album.Id == response.Id).ToListAsync();
+                if (calificaciones is not null)
+                {
+                    dbContext.Calificaciones.RemoveRange(calificaciones);
+                   
+                }
+
+
+                dbContext.Albumes.Remove(album1);
+                 await dbContext.SaveChangesAsync();
+                return new Result<bool>() { Message = "Success", Success = true, Data = true };
+
+            }
+            catch (Exception e)
+            {
+
+                return new Result<bool>()
+                { Message = e.InnerException?.Message ?? e.Message, Success = false };
+            }
+        }
 
         public async Task<Result<List<AlbumResponse>>> ConsultarRecientes()
         {
             try
             {
                 var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Take(3).ToListAsync();
+
+                if (albumes is null)
+                    return new Result<List<AlbumResponse>>()
+                    { Message = "Album no encotrado", Success = false };
+
+
+                return new Result<List<AlbumResponse>>() { Message = "Success", Success = true, Data = albumes.Select(a => a.ToResponse()).ToList() };
+
+            }
+            catch (Exception e)
+            {
+
+                return new Result<List<AlbumResponse>>()
+                { Message = e.InnerException?.Message ?? e.Message, Success = false };
+            }
+        }
+
+        public async Task<Result<List<AlbumResponse>>> ConsultarMisAlbumes(UsuarioResponse user)
+        {
+            try
+            {
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Creador.Id == user.Id).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()

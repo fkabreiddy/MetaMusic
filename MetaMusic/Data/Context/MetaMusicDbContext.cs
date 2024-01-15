@@ -30,7 +30,7 @@ namespace MetaMusic.Data.Context
         public DbSet<Review> Reviews { get; set; }
 
         public DbSet<Rol> Roles { get; set; }
-
+        public DbSet<Borrador> Borradores { get; set; }
         public DbSet<Suscripcion> Suscripciones { get; set; }
 
         public DbSet<Track> Tracks { get; set; }
@@ -66,6 +66,7 @@ namespace MetaMusic.Data.Context
             modelBuilder.Entity<Suscripcion>().HasOne(s => s.Usuario).WithMany(u => u.Suscriptores).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Suscripcion>().HasOne(s => s.Suscriptor).WithMany(u => u.Suscripciones).OnDelete(DeleteBehavior.NoAction);
 
+        
             modelBuilder.Entity<Album_Artista>().HasOne(x => x.Artista).WithMany(a => a.Albumes).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Album_Artista>().HasOne(x => x.Album).WithMany(u => u.Artistas).OnDelete(DeleteBehavior.NoAction);
 
@@ -79,7 +80,7 @@ namespace MetaMusic.Data.Context
 
             modelBuilder.Entity<Notificacion>().HasOne(b => b.Album).WithMany(u => u.Notificaciones).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Album>().HasOne(b => b.Review).WithOne(u => u.Album).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Review>().HasOne(b => b.Album).WithOne(u => u.Review).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Review>().HasOne(b => b.Album).WithOne(u => u.Review).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Album>().HasMany(b => b.Calificaciones).WithOne(u => u.Album).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Album>().HasMany(b => b.Artistas).WithOne(u => u.Album).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Calificacion>().HasOne(b => b.Album).WithMany(u => u.Calificaciones).OnDelete(DeleteBehavior.NoAction);
@@ -92,6 +93,12 @@ namespace MetaMusic.Data.Context
 
             modelBuilder.Entity<Album>().HasMany(b => b.Peticiones).WithOne(u => u.Album).OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Usuario>().HasMany(x => x.Borradores).WithOne(u => u.Usuario).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Album>().HasMany(x => x.Borradores).WithOne(u => u.Album).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Borrador>().HasOne(u => u.Album).WithMany(x => x.Borradores).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Borrador>().HasOne(u => u.Usuario).WithMany(x => x.Borradores).OnDelete(DeleteBehavior.Cascade);
+
+
             modelBuilder.Entity<Usuario_Like_Nota>().HasOne(x => x.Usuario).WithMany(u => u.Notas_Likeadas).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Usuario_Like_Nota>().HasOne(x => x.Nota).WithMany(u => u.Usuarios_Liked).OnDelete(DeleteBehavior.NoAction);
 
@@ -101,9 +108,13 @@ namespace MetaMusic.Data.Context
             modelBuilder.Entity<Busqueda>().HasOne(b => b.Usuario).WithMany(u => u.Busquedas).OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Calificacion>().HasOne(b => b.Usuario).WithMany(u => u.Calificaciones).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Track>().HasMany(b => b.Usuarios_Liked).WithOne(u => u.Track).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Usuario>().HasMany(b => b.Liked_Tracks).WithOne(u => u.Usuario).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Nota>().HasOne(b => b.Creador).WithMany(u => u.Notas).OnDelete(DeleteBehavior.NoAction);
-
+            modelBuilder.Entity<Nota>().HasMany(b => b.Usuarios_DisLiked).WithOne(u => u.Nota).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Nota>().HasMany(b => b.Usuarios_Liked).WithOne(u => u.Nota).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Nota>().HasMany(b => b.Reportes).WithOne(u => u.Nota).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Nota>().HasOne(b => b.Album).WithMany(u => u.Notas).OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Usuario>().HasMany(b => b.Artistas_Creados).WithOne(u => u.Creador).OnDelete(DeleteBehavior.NoAction);

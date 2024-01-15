@@ -13,5 +13,7 @@ namespace MetaMusic.Data.Services
         Task<Result<ArtistaResponse>> Eliminar(ArtistaRequest request);
         Task<Result<ArtistaResponse>> ModificarArtista(ArtistaRequest request);
         Task<Result<ArtistaResponse>> Suscribirse(ArtistaResponse artista);
+
+        Task<Result<List<ArtistaResponse>>> ArtstasSuscrito(UsuarioResponse usuario);
     }
 }

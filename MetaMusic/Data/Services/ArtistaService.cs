@@ -284,6 +284,27 @@ namespace MetaMusic.Data.Services
                 return new Result<ArtistaResponse>() { Success = false, Message = e.InnerException?.Message ?? e.Message };
             }
         }
+        public async Task<Result<List<ArtistaResponse>>> ArtstasSuscrito(UsuarioResponse usuario)
+        {
+            try
+            {
+               
+                var artistas = await dbContext.Artistas.Include(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Include(a => a.Suscriptores).Where(a => a.Suscriptores.Any(r => r.Usuario.Id == usuario.Id)).ToListAsync();
+
+
+                if (artistas is null)
+                {
+                    return new Result<List<ArtistaResponse>>() { Message = "No hay Artistas", Success = false };
+
+                }
+
+                return new Result<List<ArtistaResponse>>() { Data = artistas.Select(a => a.ToResponse()).ToList(), Success = true };
+            }
+            catch (Exception e)
+            {
+                return new Result<List<ArtistaResponse>>() { Message = e.InnerException?.Message ?? e.Message, Success = false };
+            }
+        }
 
     }
 }

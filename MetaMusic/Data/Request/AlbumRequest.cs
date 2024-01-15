@@ -29,5 +29,8 @@ namespace MetaMusic.Data.Request
         public List<Track> Tracks { get; set; } = new List<Track>();
 
         public List<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
+
+        public List<Borrador> Borradores { get; set; } = new List<Borrador>();
+
     }
 }

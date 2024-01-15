@@ -74,7 +74,7 @@
                         <AuthorizeView>
                             <Authorized>
 
-                                <MudMenu AnchorOrigin="Origin.BottomLeft"  TransformOrigin="Origin.TopCenter">
+                                <MudMenu ListClass="menu" AnchorOrigin="Origin.BottomLeft"  TransformOrigin="Origin.TopCenter">
 
                                     <ActivatorContent>
                                         <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
@@ -82,10 +82,10 @@
                                     </ActivatorContent>
                                     <ChildContent>
 
-                                        <BlazorAnimation.Animation Style="z-index: 999999; position: static;" Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
+                                        <BlazorAnimation.Animation Style="z-index: 999999; position: static; " Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
 
-                                            <MudPaper Outlined="true" Style="z-index: 999999;  ">
-                                                <MudContainer Style="max-height: 80vh; overflow: auto; margin-top: 10px;margin-bottom: 10px;min-width: 220px; ">
+
+                                            <MudContainer Style="max-height: 80vh; overflow: auto; margin-top: 10px;margin-bottom: 10px;min-width: 220px; border-radius: 10px; ">
 
 
                                                     <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Opciones</MudText>
@@ -153,7 +153,7 @@
                                                 </MudContainer>
 
 
-                                            </MudPaper>
+                                           
                                         </BlazorAnimation.Animation>
 
                                     </ChildContent>
@@ -327,7 +327,7 @@
             {
                 Primary = "#1D1A31",
                 Secondary = "#393E46",
-                Surface = "#F9F9F9 ",
+                Surface = "#FFFFFF ",
                 Background = "#FFFFFF ",
                 Tertiary = "#164863",
                 Error = "#E74646"

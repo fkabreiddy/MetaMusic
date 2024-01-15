@@ -140,17 +140,43 @@ else
 
                             <MudTabs DisableRipple=true Color="Color.Transparent" Rounded="true" HideSlider="true" AlwaysShowScrollButtons="false" MinimumTabWidth="100" Elevation="0" IconColor="Color.Secondary" ScrollIconColor="Color.Secondary" Centered="true" Style="font-size: 10px; width: 100%;  height: 100%; margin-bottom: 15px;margin-top: 30px; padding:0; " SliderColor="Color.Secondary">
 
-                                <AuthorizeView>
-                                    <Authorized>
-                                        @if (Usuario.Id == UsuarioActual.Id && Usuario.Rol.Tipo == "Staff")
+                              
+                                @if (Usuario.Id == UsuarioActual.Id && Usuario.Rol.Tipo == "Staff")
                                         {
                                             <MudTabPanel style="@($"""{(view == "Reviews" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reviews";}' Text="Reviews">
                                                 <MudGrid Style="margin-top: 20px;">
-                                                    @foreach (var album in albumesRock)
+                                                    @foreach (var review in reviews)
                                                     {
-                                                        <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
-                                                            <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
-                                                        </MudItem>
+                                                        @if(cargandoreviews)
+                                                        {
+
+                                                            <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                                                                <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+                                                                    @if (theme.IsDark())
+                                                                    {
+                                                                        <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                                    }
+
+                                                                    <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+
+
+                                                                </MudItem>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudItem md="4" lg="4" xl="4" xxl="3" sm="6" xs="6">
+                                                                <MetaMusic.Pages.Common_Components.ReviewCard album="review"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                                            </MudItem>
+                                                        }
+                                                       
                                                     }
                                                 </MudGrid>
                                             </MudTabPanel>
@@ -176,10 +202,28 @@ else
                                                     }
                                                 </MudGrid>
                                             </MudTabPanel>
-
+                                              <MudTabPanel style="@($"""{(view == "Opciones Staff" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Opciones Staff";}' Text="Opciones Staff">
+                                                <MudGrid Style="margin-top: 20px;" Spacing="3">
+                                                    @foreach (var album in albumesRock)
+                                                    {
+                                                        <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
+                                                            <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                                        </MudItem>
+                                                    }
+                                                </MudGrid>
+                                            </MudTabPanel>
+                                            <MudTabPanel style="@($"""{(view == "Borradores" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Borradores";}' Text="Borradores">
+                                                <MudGrid Style="margin-top: 20px;" Spacing="3">
+                                                    @foreach (var album in albumesRock)
+                                                    {
+                                                        <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
+                                                            <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                                        </MudItem>
+                                                    }
+                                                </MudGrid>
+                                            </MudTabPanel>
                                         }
-                                    </Authorized>
-                                </AuthorizeView>
+                                  
                                 <MudTabPanel style="@($"""{(view == "Notas" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Notas";}' Text="Notas">
                                     <MudGrid Style="margin-top: 20px;">
                                         @foreach (var album in albumesRock)
@@ -192,13 +236,41 @@ else
                                 </MudTabPanel>
 
                                 <MudTabPanel style="@($"""{(view == "Siguiendo" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Siguiendo";}' Text="Siguiendo">
-                                    <MudGrid Style="margin-top: 20px;">
-                                        @foreach (var album in albumesRock)
+                                    <MudGrid Style="margin-top: 20px;" Spacing="2">
+
+                                        @if(cargandosuscripciones)
                                         {
-                                            <MudItem md="6" lg="6" xl="6" xxl="6" sm="12" xs="12">
-                                                <MetaMusic.Pages.Common_Components.Nota ReportButton=false></MetaMusic.Pages.Common_Components.Nota>
-                                            </MudItem>
+
+                                            <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                                                <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+                                                    @if (theme.IsDark())
+                                                    {
+                                                        <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                    }
+
+                                                    <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+
+
+                                                </MudItem>
+                                            </div>
                                         }
+                                        else
+                                        {
+                                            @foreach (var artista in suscripciones)
+                                            {
+                                                <MudItem md="4" lg="4" xl="3" xxl="3" sm="6" xs="12" Style="margin-top: 30px;">
+                                                  <MetaMusic.Pages.Common_Components.ArtistaCard Artista="artista" VisibleSuscribeButton="@(UsuarioActual.Id == Usuario.Id)"  UserId="@UsuarioActual.Id"></MetaMusic.Pages.Common_Components.ArtistaCard>
+                                                </MudItem>
+                                            }                                        
+                                        }
+                                        
                                     </MudGrid>
                                 </MudTabPanel>
 
@@ -239,7 +311,7 @@ else
             await JSR.InvokeVoidAsync("scrollHaciaInicio");
         }
     }
-    
+
     protected override async Task OnParametersSetAsync()
     {
 
@@ -247,13 +319,15 @@ else
         if(Usuario.Id == 0)
         {
             await GetUser();
+            await GetRecentAlbums(Usuario);
+            await ConsultarSuscripciones(Usuario);
         }
-       
-            
 
-           
-        
-       
+
+
+
+
+
 
 
 
@@ -264,13 +338,14 @@ else
 
     public async Task GetUser()
     {
-        
+
         UsuarioNoEncontrado = true;
         var r = await userService.ConsultarUsuario(useremail);
         if (r.Success == true && r.Data is not null)
         {
 
             Usuario = r.Data;
+           
             UsuarioNoEncontrado = false;
            
             
@@ -282,38 +357,61 @@ else
         }
         var x = await userService.ConsultarUsuarioActual();
 
-            if(x.Success && x.Data is not null)
-            {
-                UsuarioActual = x.Data;
+        if(x.Success && x.Data is not null)
+        {
+            UsuarioActual = x.Data;
                
-            }
+        }
         userDataLoaded = true;
         StateHasChanged();
 
     }
 
-  
+    public async Task GetRecentAlbums(UsuarioResponse user)
+    {
+        cargandoreviews = true;
+        var r = await albumService.ConsultarMisAlbumes(user);
+
+        if (r.Data is not null)
+        {
+            reviews = r.Data;
+            cargandoreviews = false;
+        }
+    }
+
+    public async Task ConsultarSuscripciones(UsuarioResponse user)
+    {
+        cargandosuscripciones = true;
+         var r = await artistaService.ArtstasSuscrito(user);
+
+        if (r.Data is not null)
+        {
+            suscripciones = r.Data;
+            cargandosuscripciones = false;
+        }
+    }
 }
 @code {
     [Parameter] public string useremail { get; set; }
     public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
     public UsuarioResponse Usuario { get; set; } = new UsuarioResponse();
+    public List<AlbumResponse> reviews { get; set; } = new List<AlbumResponse>();
     public bool userDataLoaded = false;
     public bool GuardandoCambios = false;
     public bool UsuarioNoEncontrado = true;
+    public List<ArtistaResponse> suscripciones { get; set; } = new List<ArtistaResponse>();
 
 
 
-   
     public static List<AlbumResponse> albumesRock = new List<AlbumResponse>(){
-       
+
 
     };
 
-  
+
     public List<Track> Tracks = new List<Track>(){
 
-       
+
     };
 
 
@@ -321,6 +419,7 @@ else
     public static Peticion peticion2 = new Peticion() { };
     public List<Peticion> peticiones = new List<Peticion>() { peticion1, peticion2 };
 
-
+    public bool cargandoreviews = true;
+      public bool cargandosuscripciones = true;
     public string view = "Notas";
 }

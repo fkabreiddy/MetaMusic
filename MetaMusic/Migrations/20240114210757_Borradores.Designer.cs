@@ -4,6 +4,7 @@ using MetaMusic.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MetaMusic.Migrations
 {
     [DbContext(typeof(MetaMusicDbContext))]
-    partial class MetaMusicDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240114210757_Borradores")]
+    partial class Borradores
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -812,7 +815,7 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Album", "Album")
                         .WithOne("Review")
                         .HasForeignKey("MetaMusic.Data.Entities.Review", "IdAlbum")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Album");
@@ -898,12 +901,12 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Track", "Track")
                         .WithMany("Usuarios_Liked")
                         .HasForeignKey("TrackId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
                         .WithMany("Liked_Tracks")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Track");
 

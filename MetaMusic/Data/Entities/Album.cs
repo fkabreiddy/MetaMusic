@@ -39,7 +39,7 @@ namespace MetaMusic.Data.Entities
 
         public List<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
 
-
+        public List<Borrador> Borradores { get; set; } = new List<Borrador>();
 
         public static Album Crear(AlbumRequest request) => new Album()
         {
@@ -57,7 +57,8 @@ namespace MetaMusic.Data.Entities
             Notas = request.Notas,
             Tracks = request.Tracks,
             Notificaciones = request.Notificaciones,
-            Peticiones = request.Peticiones
+            Peticiones = request.Peticiones,
+            Borradores = request.Borradores
 
         };
 
@@ -77,7 +78,8 @@ namespace MetaMusic.Data.Entities
             Notas = this.Notas,
             Tracks = this.Tracks,
             Notificaciones = this.Notificaciones,
-            Peticiones = this.Peticiones
+            Peticiones = this.Peticiones,
+            Borradores = this.Borradores
 
         };
 
@@ -96,7 +98,11 @@ namespace MetaMusic.Data.Entities
                 IdSpotify = album.IdSpotify;
                 modificacion = true;
             }
-
+            if (this.Borradores != album.Borradores)
+            {
+                Borradores = album.Borradores;
+                modificacion = true;
+            }
             if (this.Fecha_Publicacion != album.Fecha_Publicacion)
             {
                 Fecha_Publicacion = album.Fecha_Publicacion;

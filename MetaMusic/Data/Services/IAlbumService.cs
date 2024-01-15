@@ -9,10 +9,12 @@ namespace MetaMusic.Data.Services
     {
         Task<Result<AlbumResponse>> ConsultarUno(string spotifyId);
         Task<Result<AlbumResponse>> Crear(AlbumRequest request, CalificacionRequest calificacion, ReviewRequest review);
-        Task<Result<Track>> DisLikeTrack(Track track);
+        Task<Result<Usuario_Like_Track>> DisLikeTrack(Track track);
         Task<Result<List<Track>>> GetTrackData(AlbumResponse album);
-        Task<Result<Track>> LikeTrack(Track track);
+        Task<Result<Usuario_Like_Track>> LikeTrack(Track track);
 
         Task<Result<List<AlbumResponse>>> ConsultarRecientes();
+        Task<Result<List<AlbumResponse>>> ConsultarMisAlbumes(UsuarioResponse user);
+        Task<Result<bool>> Eliminar(AlbumResponse response);
     }
 }

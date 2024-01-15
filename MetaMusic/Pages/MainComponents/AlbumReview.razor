@@ -10,6 +10,12 @@
             border: dashed 2px red;
             animation: pulse 0.5s ease; /* Aplicar la animación definida */
         }
+
+        .menu{
+        box-shadow: -3px 0px 24px -15px rgba(0,0,0,0.59);
+        -webkit-box-shadow: -3px 0px 24px -15px rgba(0,0,0,0.59);
+        -moz-box-shadow: -3px 0px 24px -15px rgba(0,0,0,0.59);
+        }
 </style>
 
 @if(DataCargada)
@@ -114,6 +120,61 @@
 
                             <MudText Style="font-size: 10px;  opacity: 0.7;  cursor: pointer;">@Albumresponse.Fecha_Agregado.FechaRelativa()</MudText>
 
+
+                                <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Info">
+
+
+                                    <MudPaper Class="" Outlined="true" style="padding: 10px; overflow: hidden;">
+
+                                          @if(Albumresponse.Creador?.Id == UsuarioActual.Id)
+                                          {
+                                               <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Editar Review</MudText></MudMenuItem>
+                                            <MudMenuItem Style="border-radius: 10px;">
+                                              <div Style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 20px;">
+                                                <MudText Style="font-size: 10px;">Ver Album en Spotify</MudText>
+                                                <MudAvatar Style="width: 25px; height: 25px;">
+                                                    <MudImage src="@Albumresponse.Portada"></MudImage>
+                                                </MudAvatar>
+                                               </div> 
+                                            </MudMenuItem>
+                                            <MudDivider></MudDivider>
+
+                                             <MudTooltip  Text="No podras eliminar la review si ya paso 1 dia de su crecion." Arrow="true" Color="Color.Error">
+                                                                                             <MudMenuItem  Style="border-radius: 10px;"><MudText Style="font-size: 10px;   " @onclick="async()=>{await DeleteReview();}" Color="Color.Error">Eliminar Review</MudText></MudMenuItem>
+
+
+                                             </MudTooltip>
+
+
+                                          }
+                                          else
+                                          {
+
+                                           
+                                               <MudMenuItem Style="border-radius: 10px;">
+                                                  <div Style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 20px;">
+                                                    <MudText Style="font-size: 10px;">Ver Album en Spotify</MudText>
+                                                    <MudAvatar Style="width: 25px; height: 25px;">
+                                                        <MudImage src="@Albumresponse.Portada"></MudImage>
+                                                    </MudAvatar>
+                                                   </div> 
+                                                </MudMenuItem>
+
+                                                <MudDivider></MudDivider>
+                                            <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;  opacity: 0.7;" Color="Color.Error">Reportar Review</MudText></MudMenuItem>
+
+
+                                          }
+
+                                       
+
+                                    </MudPaper>
+
+
+
+
+                                </MudMenu>
+                            
                         </div>
 
 
@@ -136,7 +197,7 @@
 
                                 <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
                                     <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
-                                        @Albumresponse.Calificaciones.FirstOrDefault(c => c.Usuario?.Id == Albumresponse.Creador?.Id).Numero
+                                        @Albumresponse.Calificaciones?.FirstOrDefault(c => c.Usuario?.Id == Albumresponse.Creador?.Id).Numero 
                                     </MudAvatar>
                                     <MudText Style="font-size: 12px;  font-weight: bold; opacity: 0.8;  " Color="Color.Secondary">CALIFICACION DEL REVIEWER</MudText>
                                 </MudCard>
@@ -193,11 +254,12 @@
 
                 </div>
                 
+                <MudContainer>
                     <MudGrid Justify="Justify.SpaceBetween" Spacing="2" Style="margin-top: 60px; display: flex; ">
                         <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;">
                             <MudText Style="font-family: SourceSerif4; font-size: 20px;  ">“@Albumresponse.Review.Titulo”</MudText>
-                            <MudText Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  ">
-                                @Albumresponse.Review?.Contenido
+                                <MudText Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  ">
+                                    @Albumresponse.Review?.Contenido
                             </MudText>
                         </MudItem>
                         <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
@@ -278,8 +340,8 @@
 
                             </MudContainer>
 
-                           
-                          
+
+
 
 
 
@@ -291,6 +353,8 @@
                         </MudItem>
 
                     </MudGrid>
+                </MudContainer>
+                  
 
               
                 <div style="display:flex; align-items: center; justify-content: center;margin-top: 50px; margin-bottom: 50px;">
@@ -319,6 +383,29 @@
     }
     
 }
+else if(BorrandoReview)
+{
+
+    <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+        <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+            @if (theme.IsDark())
+            {
+                <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+            }
+            else
+            {
+
+                <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+            }
+            <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold; margin-top: 15px; margin-bottom: 15px;">Borrando</MudText>
+            <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+
+
+        </MudItem>
+    </div>
+}
 else
 {
 
@@ -346,6 +433,27 @@ else
 
 @functions{
 
+    public async Task DeleteReview()
+    {
+        var desicion = await MessageBox("Deseas Review", "¿Realmente deseas borrar la review? Esta acción no se puede desahacer.", "Si", "No" );
+
+        if(desicion == true)
+        {
+            BorrandoReview = true;
+            var r = await albumService.Eliminar(Albumresponse);
+
+            if(r.Success)
+            {
+                await MessageBoxOk("Exito", "La review ha sido borrada exitosamente.", "Ok");
+                navManager.NavigateTo("/");
+            }
+            else
+            {
+                BorrandoReview = false;
+                 await MessageBoxOk("Error", $"{r.Message}", "Ok");
+            }
+        }
+    }
     public async Task ShowNotes()
     {
         var options = new MudBlazor.DialogOptions() { NoHeader = true, CloseButton = false };
@@ -403,6 +511,28 @@ else
 
 
     }
+
+    private async Task<bool?> MessageBoxOk(string Titulo, string Descripcion, string si)
+    {
+        bool? result = await dService.ShowMessageBox(
+            Titulo,
+            Descripcion,
+            yesText: si);
+        StateHasChanged();
+        return result;
+
+    }
+
+    private async Task<bool?> MessageBox(string Titulo, string Descripcion, string si, string No)
+    {
+        bool? result = await dService.ShowMessageBox(
+            Titulo,
+            Descripcion,
+            yesText: si, noText: No);
+        StateHasChanged();
+        return result;
+
+    }
 }
 
 
@@ -430,16 +560,8 @@ else
 
     public bool tracksloaded = false;
     public bool tracksloading = false;
+      public bool BorrandoReview = false;
 
-    private async Task<bool?> MessageBoxOk(string Titulo, string Descripcion, string si)
-    {
-        bool? result = await dService.ShowMessageBox(
-            Titulo,
-            Descripcion,
-            yesText: si);
-        StateHasChanged();
-        return result;
-
-    }
+   
 
 }

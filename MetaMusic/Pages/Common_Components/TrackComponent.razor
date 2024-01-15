@@ -1,22 +1,6 @@
 ﻿
 
-    <style>
-        .track-title {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .track-card {
-            cursor: pointer;
-        }
-         .track-card:hover{
-            color: #E74646;
-        }
-
-    </style>
+   
 
 <MudCard Class="track-card" >
     <MudContainer Style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
@@ -27,9 +11,9 @@
             <MudText Style="font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@track.Titulo</MudText>
         </div>
       <div style="display: flex; gap: 10px; align-items: center;">
-                <MudText Style="font-size: 12px; font-weight: bold; " >@track.Usuarios_Liked.Count()</MudText>
+                <MudText Style="font-size: 12px; font-weight: bold; " >@track.Likes</MudText>
 
-                @if(track.Usuarios_Liked.Any(c => c.Usuario?.Id == currentuser.Id))
+                @if(userliked)
                 {
                     <MudIconButton Color="Color.Error" @onclick="async()=>{await DislikeTrack();}" Disabled=DisableLikeButton Icon="@Icons.Material.Rounded.Favorite" Size="Size.Small"></MudIconButton>
 
@@ -44,14 +28,17 @@
 </MudCard>
 
 @functions{
-
+    protected override void OnInitialized()
+    {
+        userliked = track.Usuarios_Liked.Any(c => c.Usuario?.Id == currentuser.Id);
+    }
     public async Task LikeTrack()
     {
         var x = await albumService.LikeTrack(track);
 
-        if(x.Success && x.Data is not null)
+        if(x.Success )
         {
-            track = x.Data;
+            userliked = true;
             StateHasChanged();
         }
     }
@@ -59,9 +46,9 @@
     {
         var x = await albumService.DisLikeTrack(track);
 
-        if (x.Success && x.Data is not null)
+        if (x.Success)
         {
-            track = x.Data;
+            userliked = false;
             StateHasChanged();
         }
     }
@@ -73,5 +60,7 @@
 
     [Parameter] public UsuarioResponse currentuser { get; set; } = new UsuarioResponse();
 
-   
+    public Usuario_Like_Track interaccion { get; set; } = new Usuario_Like_Track();
+
+    public bool userliked;
 }

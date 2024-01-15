@@ -32,5 +32,8 @@ namespace MetaMusic.Data.Request
         public List<Reporte> Reportes { get; set; } = new List<Reporte>();
         public List<Artista_Suscriptor> Artistas_Suscritos { get; set; } = new List<Artista_Suscriptor>();
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
+
+        public List<Borrador> Borradores { get; set; } = new List<Borrador>();
+
     }
 }

@@ -1,4 +1,15 @@
 ﻿
+<style>
+
+    .portada{
+        transition: transform 0.3s ease-out;
+        cursor: pointer;
+    }
+
+    .portada:hover {
+            transform: scale(1.05);
+    }
+</style>
     <MudGrid Justify="Justify.Center" Style="display: flex; align-items: last baseline; " >
        
         <MudItem md="7" sm="7" xs="7" xxl="7" lg="7">
@@ -47,7 +58,7 @@
             </MudContainer>
         </MudItem>
         <MudItem md="4" xxl="4" lg="4" >
-        <MudAvatar Square="true" Rounded="false" Style="height: 150px; width: 150px;   "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+            <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 150px; width: 150px;   " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
         </MudItem>
     </MudGrid>
 
