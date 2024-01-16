@@ -32,17 +32,22 @@
 
 </MudContainer>
 <MudGrid Spacing="2"  >
-    @foreach(var artista in Artistas.OrderByDescending(a => a.Id).AsEnumerable().Take(vista))
+
+    @if(Artistas.Count()>=1)
     {
-      
+        @foreach (var artista in Artistas.OrderByDescending(a => a.Id).AsEnumerable().Take(vista))
+        {
+
             <MudItem md="4" lg="3" xl="3" xxl="3" sm="6" xs="12" Style="margin-top: 30px;">
-                  <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-                         <MetaMusic.Pages.Common_Components.ArtistaCard Artista="artista" UserId="currentuser_id"></MetaMusic.Pages.Common_Components.ArtistaCard>
-                   </BlazorAnimation.Animation>
+                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                    <MetaMusic.Pages.Common_Components.ArtistaCard Artista="artista" UserId="currentuser_id"></MetaMusic.Pages.Common_Components.ArtistaCard>
+                </BlazorAnimation.Animation>
             </MudItem>
-   
-        
+
+
+        }
     }
+   
     <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
 
 

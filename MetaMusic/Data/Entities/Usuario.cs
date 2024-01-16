@@ -31,9 +31,8 @@ namespace MetaMusic.Data.Entities
         public List<Nota> Notas { get; set; } = new List<Nota>();
         public List<Notificacion> Notificaciones_Hechas { get; set; } = new List<Notificacion>();
         public List<Notificacion> Notificaciones_Recibidas { get; set; } = new List<Notificacion>();
-        public List<Suscripcion> Suscriptores { get; set; } = new List<Suscripcion>();
         public List<Busqueda> Busquedas { get; set; } = new List<Busqueda>();
-        public List<Suscripcion> Suscripciones { get; set; } = new List<Suscripcion>();
+
         public List<Reporte> Reportes { get; set; } = new List<Reporte>();
         public List<Artista_Suscriptor> Artistas_Suscritos { get; set; } = new List<Artista_Suscriptor>();
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
@@ -67,9 +66,8 @@ namespace MetaMusic.Data.Entities
             Notas = this.Notas,
             Notificaciones_Hechas = this.Notificaciones_Hechas,
             Notificaciones_Recibidas = this.Notificaciones_Recibidas,
-            Suscriptores = this.Suscriptores,
             Busquedas = this.Busquedas,
-            Suscripciones = this.Suscripciones,
+         
             Reportes = this.Reportes,
             Artistas_Suscritos = this.Artistas_Suscritos,
             Calificaciones = this.Calificaciones,
@@ -96,9 +94,8 @@ namespace MetaMusic.Data.Entities
             Notas = request.Notas,
             Notificaciones_Hechas = request.Notificaciones_Hechas,
             Notificaciones_Recibidas = request.Notificaciones_Recibidas,
-            Suscriptores = request.Suscriptores,
             Busquedas = request.Busquedas,
-            Suscripciones = request.Suscripciones,
+          
             Reportes = request.Reportes,
             Artistas_Suscritos = request.Artistas_Suscritos,
             Calificaciones = request.Calificaciones,
@@ -205,11 +202,6 @@ namespace MetaMusic.Data.Entities
                 modificacion = true;
             }
 
-            if (!Suscriptores.SequenceEqual(usuarioResponse.Suscriptores))
-            {
-                Suscriptores = usuarioResponse.Suscriptores;
-                modificacion = true;
-            }
 
             if (!Busquedas.SequenceEqual(usuarioResponse.Busquedas))
             {
@@ -217,11 +209,7 @@ namespace MetaMusic.Data.Entities
                 modificacion = true;
             }
 
-            if (!Suscripciones.SequenceEqual(usuarioResponse.Suscripciones))
-            {
-                Suscripciones = usuarioResponse.Suscripciones;
-                modificacion = true;
-            }
+
 
             if (!Reportes.SequenceEqual(usuarioResponse.Reportes))
             {

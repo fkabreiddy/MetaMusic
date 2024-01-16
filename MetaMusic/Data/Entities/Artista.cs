@@ -9,13 +9,17 @@ namespace MetaMusic.Data.Entities
         [Key]
         public int Id { get; set; }
 
+        
         public string Foto_Perfil { get; set; } = null!;
+
+        [StringLength(50)]
         public string Nombre { get; set; } = null!;
 
+        [StringLength(50)]
         public string SpotifyId { get; set; } = null!;
 
+        
         public List<Genero_Artista> GenerosMusicales { get; set; } = new List<Genero_Artista>();
-        public List<Peticion> Peticiones { get; set; } = new List<Peticion>();
         public List<Artista_Suscriptor> Suscriptores { get; set; } = new List<Artista_Suscriptor>();
         public Usuario? Creador { get; set; } = new Usuario();
         public List<Album_Artista> Albumes { get; set; } = new List<Album_Artista>();
@@ -30,7 +34,6 @@ namespace MetaMusic.Data.Entities
             Suscriptores = this.Suscriptores,
             Creador = this.Creador,
             Albumes = this.Albumes,
-            Peticiones = this.Peticiones
         };
         public static Artista Crear(ArtistaRequest request) => new Artista()
         {
@@ -42,7 +45,6 @@ namespace MetaMusic.Data.Entities
             Suscriptores = request.Suscriptores,
             Creador = request.Creador,
             Albumes = request.Albumes,
-            Peticiones = request.Peticiones
             // Agrega otras propiedades si es necesario
         };
 
@@ -61,11 +63,7 @@ namespace MetaMusic.Data.Entities
                 this.Nombre = artista.Nombre;
                 modificacion = true;
             }
-            if (this.Peticiones != artista.Peticiones)
-            {
-                Peticiones = artista.Peticiones;
-                modificacion = true;
-            }
+          
             if (this.SpotifyId != artista.SpotifyId)
             {
                 this.SpotifyId = artista.SpotifyId;

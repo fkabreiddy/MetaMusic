@@ -72,12 +72,24 @@
                       
 
                         <AuthorizeView>
+
+
                             <Authorized>
 
-                                <MudMenu  AnchorOrigin="Origin.BottomLeft"  TransformOrigin="Origin.TopCenter">
+                                 @if(gettingUserData)
+                                {
+                                    <MudProgressCircular Indeterminate=true Color="Color.Error"></MudProgressCircular>
+                                }
+                                else
+                                {
+                                     <MudMenu  AnchorOrigin="Origin.BottomLeft"  TransformOrigin="Origin.TopCenter">
 
                                     <ActivatorContent>
-                                        <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+
+                                       
+                                            <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+
+                                        
 
                                     </ActivatorContent>
                                     <ChildContent>
@@ -166,7 +178,9 @@
 
 
 
-                                </MudMenu>
+                                </MudMenu>                                    
+                                }
+                               
                                
                             </Authorized>
                             <NotAuthorized>
@@ -249,7 +263,7 @@
     {
         if (firstRender)
         {
-           
+
             await JSR.InvokeVoidAsync("agregarScrollListener");
 
 
@@ -258,8 +272,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-         UserDataLoaded = false;
-         UserIsAuthorized = false;
+        UserDataLoaded = false;
+        UserIsAuthorized = false;
         var state = await authstate.GetAuthenticationStateAsync();
         var user = state.User;
 
@@ -269,7 +283,7 @@
             await GetCurrentUser();
 
 
-             UserIsAuthorized = true;
+            UserIsAuthorized = true;
             UserDataLoaded = true;
 
 
@@ -286,12 +300,12 @@
     }
     public async Task GetCurrentUser()
     {
-
+        gettingUserData = true;
         var r = await userService.ConsultarUsuarioActual();
         if (r.Success == true && r.Data is not null)
         {
             UsuarioActual = r.Data;
-
+            gettingUserData = false;
             StateHasChanged();
         }
         
@@ -313,6 +327,7 @@
 }
 @code{
 
+    public bool gettingUserData = false;
     public bool UserDataLoaded = false;
     public bool UserIsAuthorized = false;
     private string navbarclass = "navbar-container";

@@ -17,7 +17,7 @@ namespace MetaMusic.Data.Context
         DbSet<Reporte> Reportes { get; set; }
         DbSet<Review> Reviews { get; set; }
         DbSet<Rol> Roles { get; set; }
-        DbSet<Suscripcion> Suscripciones { get; set; }
+
         DbSet<Track> Tracks { get; set; }
         DbSet<Usuario_Dislike_Nota> Usuario_Dislike_Notas { get; set; }
         DbSet<Usuario_Like_Nota> Usuario_Like_Notas { get; set; }

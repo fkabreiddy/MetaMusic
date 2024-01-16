@@ -10,12 +10,17 @@ namespace MetaMusic.Data.Entities
         [Key]
         public int Id { get; set; }
 
-        //si es false se trata de un borrador
+        
         public bool Publicado { get; set; } = true;
+
+
+        [StringLength(50)]
         public  string Nombre { get; set; } = null!;
 
+        [StringLength(50)]
         public string IdSpotify { get; set; } = null!;
 
+        [StringLength(25)]
         public string Fecha_Publicacion { get; set; } = null!;
 
         public bool Modificado { get; set; } = false;
@@ -23,9 +28,10 @@ namespace MetaMusic.Data.Entities
 
         public DateTime? Fecha_Publicacion_Formateada { get; set; }
 
-        [AllowNull]
+
         public DateTime Fecha_Agregado { get; set; } 
-        public List<Peticion> Peticiones { get; set; } = new List<Peticion>();
+
+        public DateTime? FechaModificado { get; set; }
         public string Portada { get; set; } = null!;
 
         public List<Album_Artista> Artistas { get; set; } = new List<Album_Artista>();
@@ -36,13 +42,15 @@ namespace MetaMusic.Data.Entities
 
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
 
+        
+        public double Calificacion_Creador { get; set; } = 0.0;
         public List<Nota> Notas { get; set; } = new List<Nota>();
         public List<Track> Tracks { get; set; } = new List<Track>();
 
         public List<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
 
         //si el album es un borrador se verifica que existe el album ya publicado
-        public bool YaExiste { get; set; } = false;
+
 
         public static Album Crear(AlbumRequest request) => new Album()
         {
@@ -60,9 +68,8 @@ namespace MetaMusic.Data.Entities
             Notas = request.Notas,
             Tracks = request.Tracks,
             Notificaciones = request.Notificaciones,
-            Peticiones = request.Peticiones,
-            YaExiste = request.YaExiste,
-            Publicado = request.Publicado
+            Calificacion_Creador = request.Calificacion_Creador,
+            Publicado = true
 
         };
 
@@ -82,8 +89,9 @@ namespace MetaMusic.Data.Entities
             Notas = this.Notas,
             Tracks = this.Tracks,
             Notificaciones = this.Notificaciones,
-            Peticiones = this.Peticiones,
-            YaExiste = this.YaExiste,
+            Calificacion_Creador = this.Calificacion_Creador,
+
+            FechaModificado = this.FechaModificado,
             Publicado = this.Publicado
 
         };
@@ -97,20 +105,22 @@ namespace MetaMusic.Data.Entities
                 Nombre = album.Nombre;
                 modificacion = true;
             }
-
+          
             if (this.IdSpotify != album.IdSpotify)
             {
                 IdSpotify = album.IdSpotify;
                 modificacion = true;
             }
-            if (this.YaExiste != album.YaExiste)
-            {
-                YaExiste = album.YaExiste;
-                modificacion = true;
-            }
+
             if (this.Publicado != album.Publicado)
             {
                 Publicado = album.Publicado;
+                modificacion = true;
+            }
+
+            if (this.Calificacion_Creador != album.Calificacion_Creador)
+            {
+                Calificacion_Creador = album.Calificacion_Creador;
                 modificacion = true;
             }
             if (this.Fecha_Publicacion != album.Fecha_Publicacion)
@@ -136,11 +146,7 @@ namespace MetaMusic.Data.Entities
                 Portada = album.Portada;
                 modificacion = true;
             }
-            if (this.Peticiones != album.Peticiones)
-            {
-                Peticiones = album.Peticiones;
-                modificacion = true;
-            }
+          
             if (!Artistas.SequenceEqual(album.Artistas))
             {
                 Artistas = album.Artistas;
@@ -183,6 +189,7 @@ namespace MetaMusic.Data.Entities
                 modificacion = true;
             }
 
+            FechaModificado = DateTime.Now;
             return modificacion;
         }
     }

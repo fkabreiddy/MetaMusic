@@ -13,37 +13,69 @@
    
     <MudGrid Justify="Justify.Center ">
 
-        <MudItem md="6" sm="12" xl="6" lg="6" xxl="6" xs="12" >
-            <MostRecentReview album="@albumes[0]"></MostRecentReview>
-        </MudItem>
+        @if(albumes.Count() >= 1)
+        {
+            <MudItem md="6" sm="12" xl="6" lg="6" xxl="6" xs="12">
+                <MostRecentReview album="@albumes[0]"></MostRecentReview>
+            </MudItem>
+
+            
+            
+            <MudItem md="6" sm="12" xl="6" lg="6" xxl="6" xs="12" Style="display: flex; flex-direction: column; gap; 20px; position: sticky;">
+                @foreach (var album in albumes.Skip(1))
+                {
+                    <MudItem md="12" sm="12" xl="12" lg="12" xxl="12" xs="12">
+                        <RecentReview_Card album="album"></RecentReview_Card>
+
+                        <MudContainer>
+                            <MudDivider DividerType="DividerType.Middle" Class="mt-5 mb-5"></MudDivider>
+                        </MudContainer>
+                    </MudItem>
+                }
+
+            </MudItem>
+        }
+        else
+        {
+            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                    <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+                        @if (theme.IsDark())
+                        {
+                            <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                        }
+                        else
+                        {
+
+                            <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                        }
+
+                        <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+
+
+                    </MudItem>
+                </div>
+            </BlazorAnimation.Animation>
+        }
+
 
         
 
-        <MudItem md="6" sm="12" xl="6" lg="6" xxl="6" xs="12" Style="display: flex; flex-direction: column; gap; 20px; position: sticky;">
-            @foreach (var album in albumes.Skip(1))
-            {
-                <MudItem md="12" sm="12" xl="12" lg="12" xxl="12" xs="12">
-                    <RecentReview_Card album="album"></RecentReview_Card>
-
-                    <MudContainer >
-                        <MudDivider DividerType="DividerType.Middle" Class="mt-5 mb-5"></MudDivider>
-                    </MudContainer>
-                </MudItem>
-            }
-         
-        </MudItem>
-        <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
-
-            <MudLink Style="opacity: 0.7; font-size: 12px; margin-top: 20px; font-weight: bold; cursor: pointer;" Underline="Underline.Hover"> VER TODO</MudLink>
-          
-
-
-
-
-        </div>
+     
+       
 
     </MudGrid>
+    <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
 
+        <MudLink Style="opacity: 0.7; font-size: 12px; margin-top: 20px; font-weight: bold; cursor: pointer;" Underline="Underline.Hover"> VER TODO</MudLink>
+
+
+
+
+
+    </div>
 </MudContainer>
 @code {
     [Parameter] public List<AlbumResponse> albumes { get; set; } = new List<AlbumResponse>();

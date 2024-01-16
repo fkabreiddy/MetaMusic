@@ -13,7 +13,7 @@ namespace MetaMusic.Data.Entities
 
         public string Contenido { get; set; } = null!;
 
-        public Usuario Usuario { get; set; } = new Usuario();
+        public Usuario? Usuario { get; set; } = new Usuario();
 
         public Review? Review { get; set; } = new Review();
         public Nota? Nota { get; set; } = new Nota();

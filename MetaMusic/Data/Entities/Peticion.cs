@@ -7,8 +7,11 @@ namespace MetaMusic.Data.Entities
     {
         public int Id { get; set; }
         public Usuario Usuario { get; set; } = new Usuario();
-        public Album? Album { get; set; } = new Album();
-        public Artista Artista { get; set; } = new Artista();
+
+        public string? ArtistaNombre { get; set; }
+        public string? AlbumNombre { get; set; }
+        public string? ArtistaSpotifyId { get; set; }
+        public string? AlbumSpotifyId { get; set; }
 
         public int Acumulaciones { get; set; } = 0;
         
@@ -19,18 +22,24 @@ namespace MetaMusic.Data.Entities
             Acumulaciones = this.Acumulaciones,
             Id = this.Id,
             Usuario = this.Usuario,
-            Album = this.Album,
-            Artista = this.Artista,
+          
+            AlbumNombre = this.AlbumNombre,
+            ArtistaSpotifyId = this.ArtistaSpotifyId,
+            AlbumSpotifyId = this.AlbumSpotifyId,
+            ArtistaNombre = this.ArtistaNombre,
             UltimaPeticionFecha = this.UltimaPeticionFecha
         };
         public static Peticion Crear(PeticionRequest request) => new Peticion()
         {
             Id = request.Id,
             Usuario = request.Usuario,
-            Album = request.Album,
+            AlbumNombre = request.AlbumNombre,
+            ArtistaSpotifyId = request.ArtistaSpotifyId,
+            AlbumSpotifyId = request.AlbumSpotifyId,
+            ArtistaNombre = request.ArtistaNombre,
             Acumulaciones = request.Acumulaciones,
             UltimaPeticionFecha = DateTime.Now,
-            Artista = request.Artista
+           
         };
 
         public void Aumentar()

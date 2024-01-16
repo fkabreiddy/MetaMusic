@@ -53,24 +53,18 @@ namespace MetaMusic.Data.Services
                     };
 
 
-                var borradores = await dbContext.Albumes.Where(b => b.IdSpotify == request.IdSpotify && b.Publicado == false).ToListAsync();
+               
 
 
-                if (borradores is not null)
-                {
-                    foreach (var borrador in borradores)
-                    {
-                        borrador.YaExiste = true;
-                    }
-                }
+               
                 calificacion.Usuario = userUser;
-                request.Calificaciones.Add(Calificacion.Crear(calificacion));
+                request.Calificacion_Creador = calificacion.Numero;
                 review.Creador = userUser;
                 request.Review = Review.Crear(review);
-                request.Fecha_Publicacion_Formateada = DateTime.ParseExact(request.Fecha_Publicacion, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
                 request.Creador = userUser;
-                request.Publicado = true;
-                request.Fecha_Agregado = DateTime.Now;
+   
+      
 
                 var newalbum = Album.Crear(request);
                 await dbContext.Albumes.AddAsync(newalbum);

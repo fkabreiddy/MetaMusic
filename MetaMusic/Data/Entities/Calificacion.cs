@@ -13,7 +13,7 @@ namespace MetaMusic.Data.Entities
         public Usuario? Usuario { get; set; } = new Usuario();
 
 
-        public int Numero { get; set; }
+        public double Numero { get; set; } = 0.0;
 
         public static Calificacion Crear(CalificacionRequest request) => new Calificacion()
         {
