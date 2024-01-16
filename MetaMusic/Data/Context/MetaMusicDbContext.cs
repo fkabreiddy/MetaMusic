@@ -30,7 +30,7 @@ namespace MetaMusic.Data.Context
         public DbSet<Review> Reviews { get; set; }
 
         public DbSet<Rol> Roles { get; set; }
-        public DbSet<Borrador> Borradores { get; set; }
+        
         public DbSet<Suscripcion> Suscripciones { get; set; }
 
         public DbSet<Track> Tracks { get; set; }
@@ -93,10 +93,6 @@ namespace MetaMusic.Data.Context
 
             modelBuilder.Entity<Album>().HasMany(b => b.Peticiones).WithOne(u => u.Album).OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Usuario>().HasMany(x => x.Borradores).WithOne(u => u.Usuario).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Album>().HasMany(x => x.Borradores).WithOne(u => u.Album).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Borrador>().HasOne(u => u.Album).WithMany(x => x.Borradores).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Borrador>().HasOne(u => u.Usuario).WithMany(x => x.Borradores).OnDelete(DeleteBehavior.Cascade);
 
 
             modelBuilder.Entity<Usuario_Like_Nota>().HasOne(x => x.Usuario).WithMany(u => u.Notas_Likeadas).OnDelete(DeleteBehavior.NoAction);

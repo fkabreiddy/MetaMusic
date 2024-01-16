@@ -23,7 +23,7 @@ namespace MetaMusic.Data.Context
         DbSet<Usuario_Like_Nota> Usuario_Like_Notas { get; set; }
         DbSet<Usuario_Like_Track> Usuario_Like_Tracks { get; set; }
         DbSet<Usuario> Usuarios { get; set; }
-        DbSet<Borrador> Borradores { get; set; }
+     
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

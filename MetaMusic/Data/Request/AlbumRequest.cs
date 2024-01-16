@@ -5,7 +5,7 @@ namespace MetaMusic.Data.Request
     public class AlbumRequest
     {
         public int Id { get; set; }
-
+        public bool Publicado { get; set; } = true;
         public string Nombre { get; set; } = null!;
 
         public string IdSpotify { get; set; } = null!;
@@ -30,7 +30,9 @@ namespace MetaMusic.Data.Request
 
         public List<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
 
-        public List<Borrador> Borradores { get; set; } = new List<Borrador>();
+        public bool YaExiste { get; set; } = false;
+
+        
 
     }
 }

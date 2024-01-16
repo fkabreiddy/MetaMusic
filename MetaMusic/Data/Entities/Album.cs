@@ -10,6 +10,8 @@ namespace MetaMusic.Data.Entities
         [Key]
         public int Id { get; set; }
 
+        //si es false se trata de un borrador
+        public bool Publicado { get; set; } = true;
         public  string Nombre { get; set; } = null!;
 
         public string IdSpotify { get; set; } = null!;
@@ -39,7 +41,8 @@ namespace MetaMusic.Data.Entities
 
         public List<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
 
-        public List<Borrador> Borradores { get; set; } = new List<Borrador>();
+        //si el album es un borrador se verifica que existe el album ya publicado
+        public bool YaExiste { get; set; } = false;
 
         public static Album Crear(AlbumRequest request) => new Album()
         {
@@ -58,7 +61,8 @@ namespace MetaMusic.Data.Entities
             Tracks = request.Tracks,
             Notificaciones = request.Notificaciones,
             Peticiones = request.Peticiones,
-            Borradores = request.Borradores
+            YaExiste = request.YaExiste,
+            Publicado = request.Publicado
 
         };
 
@@ -79,7 +83,8 @@ namespace MetaMusic.Data.Entities
             Tracks = this.Tracks,
             Notificaciones = this.Notificaciones,
             Peticiones = this.Peticiones,
-            Borradores = this.Borradores
+            YaExiste = this.YaExiste,
+            Publicado = this.Publicado
 
         };
 
@@ -98,9 +103,14 @@ namespace MetaMusic.Data.Entities
                 IdSpotify = album.IdSpotify;
                 modificacion = true;
             }
-            if (this.Borradores != album.Borradores)
+            if (this.YaExiste != album.YaExiste)
             {
-                Borradores = album.Borradores;
+                YaExiste = album.YaExiste;
+                modificacion = true;
+            }
+            if (this.Publicado != album.Publicado)
+            {
+                Publicado = album.Publicado;
                 modificacion = true;
             }
             if (this.Fecha_Publicacion != album.Fecha_Publicacion)

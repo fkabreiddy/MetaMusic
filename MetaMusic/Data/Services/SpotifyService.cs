@@ -99,7 +99,7 @@ namespace MetaMusic.Data.Services
                         Success = false
                     };
 
-                var existe = await dbContext.Albumes.FirstOrDefaultAsync(a => a.IdSpotify ==  album.Id);
+                var existe = await dbContext.Albumes.FirstOrDefaultAsync(a => a.IdSpotify ==  album.Id && a.Publicado == true);
                 if(existe is not null)
                     return new Result<MetaMusic.Data.Request.AlbumRequest>()
                     {

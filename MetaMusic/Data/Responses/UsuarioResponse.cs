@@ -34,7 +34,7 @@ namespace MetaMusic.Data.Responses
         public List<Artista_Suscriptor> Artistas_Suscritos { get; set; } = new List<Artista_Suscriptor>();
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
 
-        public List<Borrador> Borradores { get; set; } = new List<Borrador>();
+
 
         public UsuarioRequest ToRequest() => new UsuarioRequest()
         {
@@ -60,7 +60,7 @@ namespace MetaMusic.Data.Responses
             Reportes = this.Reportes,
             Artistas_Suscritos = this.Artistas_Suscritos,
             Calificaciones = this.Calificaciones,
-            Borradores = this.Borradores
+           
             // Agrega otras propiedades si es necesario
         };
 

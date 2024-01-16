@@ -7,7 +7,7 @@ namespace MetaMusic.Data.Responses
         public int Id { get; set; }
 
         public string Nombre { get; set; } = null!;
-
+        public bool Publicado { get; set; } = true;
         public string IdSpotify { get; set; } = null!;
 
         public string Fecha_Publicacion = null!;
@@ -31,7 +31,7 @@ namespace MetaMusic.Data.Responses
 
         public List<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
 
-        public List<Borrador> Borradores { get; set; } = new List<Borrador>();
+        public bool YaExiste { get; set; } = false;
 
     }
 }

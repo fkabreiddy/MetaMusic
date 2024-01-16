@@ -37,7 +37,7 @@ namespace MetaMusic.Data.Entities
         public List<Reporte> Reportes { get; set; } = new List<Reporte>();
         public List<Artista_Suscriptor> Artistas_Suscritos { get; set; } = new List<Artista_Suscriptor>();
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
-        public List<Borrador> Borradores { get; set; } = new List<Borrador>();
+        
 
         public List<Peticion> Peticiones { get; set; } = new List<Peticion>();
         public LoginResponse ToLoginResponse() => new LoginResponse()
@@ -75,7 +75,7 @@ namespace MetaMusic.Data.Entities
             Calificaciones = this.Calificaciones,
             Peticiones = this.Peticiones,
             CorreoNormalizado = this.CorreoNormalizado,
-            Borradores = this.Borradores
+           
 
             // Agrega otras propiedades si es necesario
         };
@@ -104,7 +104,7 @@ namespace MetaMusic.Data.Entities
             Calificaciones = request.Calificaciones,
             Peticiones = request.Peticiones,
             CorreoNormalizado = request.CorreoNormalizado,
-              Borradores = request.Borradores
+            
 
             // Agrega otras propiedades si es necesario
         };
@@ -118,11 +118,7 @@ namespace MetaMusic.Data.Entities
                 this.Nombre = usuarioResponse.Nombre;
                 modificacion = true;
             }
-            if (this.Borradores != usuarioResponse.Borradores)
-            {
-                this.Borradores = usuarioResponse.Borradores;
-                modificacion = true;
-            }
+          
             if (this.Correo != usuarioResponse.Correo)
             {
                 this.Correo = usuarioResponse.Correo;

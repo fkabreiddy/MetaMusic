@@ -1,7 +1,7 @@
 ﻿@page "/album/{albumid}"
 <style>
    .calification-card {
-        border: solid 2px black;
+        border: solid 2px whitesmoke;
         cursor: pointer;
         transition: border 0.3s ease; /* Agregar una transición para suavizar el cambio */
     }
@@ -140,7 +140,7 @@
                                             <MudDivider></MudDivider>
 
                                              <MudTooltip  Text="No podras eliminar la review si ya paso 1 dia de su crecion." Arrow="true" Color="Color.Error">
-                                                                                             <MudMenuItem  Style="border-radius: 10px;"><MudText Style="font-size: 10px;   " @onclick="async()=>{await DeleteReview();}" Color="Color.Error">Eliminar Review</MudText></MudMenuItem>
+                                                                                             <MudMenuItem  Style="border-radius: 10px;" Disabled="@(DateTime.Now.Subtract(@Albumresponse.Fecha_Agregado).Days >= 1)"><MudText Style="font-size: 10px;   " @onclick="async()=>{await DeleteReview();}" Color="Color.Error">Eliminar Review</MudText></MudMenuItem>
 
 
                                              </MudTooltip>
