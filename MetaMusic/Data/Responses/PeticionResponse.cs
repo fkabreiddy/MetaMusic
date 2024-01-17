@@ -1,4 +1,5 @@
 ﻿using MetaMusic.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace MetaMusic.Data.Responses
 {
@@ -12,6 +13,10 @@ namespace MetaMusic.Data.Responses
         public string? AlbumSpotifyId { get; set; }
         public int Acumulaciones { get; set; } = 0;
 
+        public string? ArtistaFoto { get; set; }
+
+
+        public string? AlbumPortada { get; set; }
         public DateTime UltimaPeticionFecha { get; set; }
     }
 }

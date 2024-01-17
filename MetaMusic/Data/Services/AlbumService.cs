@@ -202,6 +202,10 @@ namespace MetaMusic.Data.Services
                 var tr = await dbContext.Tracks.FirstOrDefaultAsync(a => a.Id == track.Id);
                 var user = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == currentuser.Data.Id);
 
+                if(tr is null)
+                    return new Result<Usuario_Like_Track>()
+                    { Message = "No existe el track", Success = false };
+
                 if (currentuser is null)
                     return new Result<Usuario_Like_Track>()
                     { Message = "No estas logeado", Success = false };
@@ -209,6 +213,8 @@ namespace MetaMusic.Data.Services
                 var interaccion = new Usuario_Like_Track() { Track = tr, Usuario = user };
 
                 await dbContext.Usuario_Like_Tracks.AddAsync(interaccion);
+
+                tr.Cantidad_Likes += 1;
                 await dbContext.SaveChangesAsync();
 
 
@@ -240,6 +246,11 @@ namespace MetaMusic.Data.Services
                     return new Result<Usuario_Like_Track>()
                     { Message = "No estas logeado", Success = false };
 
+                var tr = await dbContext.Tracks.FirstOrDefaultAsync(a => a.Id == track.Id);
+                if (tr is null)
+                    return new Result<Usuario_Like_Track>()
+                    { Message = "No existe el track", Success = false };
+
                 var interaccion = await dbContext.Usuario_Like_Tracks.FirstOrDefaultAsync(u => u.Usuario.Id == user.Id && u.Track.Id == track.Id);
 
 
@@ -248,6 +259,7 @@ namespace MetaMusic.Data.Services
                     { Message = "Error", Success = false };
 
                 dbContext.Usuario_Like_Tracks.Remove(interaccion);
+                tr.Cantidad_Likes -= 1;
                 await dbContext.SaveChangesAsync();
 
 

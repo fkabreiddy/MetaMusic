@@ -11,24 +11,26 @@ namespace MetaMusic.Data.Entities
         [Key]
         public int Id { get; set; }
 
+        [StringLength(3000)]
         public string Contenido { get; set; } = null!;
 
+
+        [StringLength(100)]
         public string Titulo { get; set; } = null!;
         public Usuario? Creador { get; set; } = new Usuario();
-        public Album? Album { get; set; } 
-        public List<Reporte> Reportes { get; set; } = new List<Reporte>();
 
-      
-        public int IdAlbum { get; set; }
+        [ForeignKey("Album")]
+        public int AlbumId { get; set; }
+        public List<Reporte> Reportes { get; set; } = new List<Reporte>();
 
         public static Review Crear(ReviewRequest request) => new Review()
         {
             Id = request.Id,
             Contenido = request.Contenido,
             Creador = request.Creador,
-            Album = request.Album,
+            AlbumId = request.AlbumId,
             Reportes = request.Reportes,
-            IdAlbum = request.IdAlbum,
+           
             Titulo = request.Titulo
             // Agrega otras propiedades si es necesario
         };
@@ -55,11 +57,7 @@ namespace MetaMusic.Data.Entities
                 modificacion = true;
             }
 
-            if (this.Album != review.Album)
-            {
-                this.Album = review.Album;
-                modificacion = true;
-            }
+      
 
             if (!Reportes.SequenceEqual(review.Reportes))
             {
@@ -67,11 +65,7 @@ namespace MetaMusic.Data.Entities
                 modificacion = true;
             }
 
-            if (this.IdAlbum != review.IdAlbum)
-            {
-                this.IdAlbum = review.IdAlbum;
-                modificacion = true;
-            }
+          
 
             // Agrega otras comparaciones y actualizaciones si es necesario
 
@@ -85,9 +79,9 @@ namespace MetaMusic.Data.Entities
                 Id = this.Id,
                 Contenido = this.Contenido,
                 Creador = this.Creador,
-                Album = this.Album,
+                AlbumId = this.AlbumId,
                 Reportes = this.Reportes,
-                IdAlbum = this.IdAlbum,
+              
                 Titulo = this.Titulo
                 // Agrega otras asignaciones si es necesario
             };

@@ -12,7 +12,7 @@ namespace MetaMusic.Data.Responses
         public Album? Album { get; set; } = new Album();
         public List<Reporte> Reportes { get; set; } = new List<Reporte>();
 
+        public int AlbumId { get; set; }
 
-        public int IdAlbum { get; set; }
     }
 }

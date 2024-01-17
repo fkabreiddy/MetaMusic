@@ -8,6 +8,9 @@ namespace MetaMusic.Data.Entities
     {
         [Key] public int Id { get; set; }
 
+
+
+        [StringLength(50)]
         public string Contenido { get; set; } = null!;
 
         public Usuario? Usuario { get; set; } = new Usuario();

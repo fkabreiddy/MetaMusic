@@ -56,7 +56,6 @@ namespace MetaMusic.Data.Services
                 request.Calificaciones.Add(Calificacion.Crear(calificacion));
                 review.Creador = userUser;
                 request.Review = Review.Crear(review);
-                request.Fecha_Publicacion_Formateada = DateTime.ParseExact(request.Fecha_Publicacion, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                 request.Creador = userUser;
                 request.Publicado = false;
                 request.Fecha_Agregado = DateTime.Now;

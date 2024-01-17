@@ -1,14 +1,14 @@
 ﻿
-@if(Peticion.Album.Nombre != "")
+@if(Peticion.AlbumNombre != "")
 {
     <MudCard Style="padding: 10px;">
         <MudContainer Style="display: flex; align-items: center; justify-content: space-between; gap: 20px;">
             <MudAvatar Size="Size.Large" Square=true Style="border-radius: 10px;height: 70px; width: 70px;">
-                <MudImage src="@Peticion.Album.Portada"></MudImage>
+                <MudImage src="@Peticion.AlbumPortada"></MudImage>
             </MudAvatar>
             <div style="display: flex; flex-direction: column; ">
                 <MudText Style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">Nueva Peticion Album</MudText>
-                <MudText Style="font-size: 12px;  opacity: 0.7;">El usuario @@breiddy ha hecho la peticion de anadir el album <b>@Peticion.Album.Nombre</b> a nuestro repertorio.</MudText>
+                <MudText Style="font-size: 12px;  opacity: 0.7;">El usuario @@breiddy ha hecho la peticion de anadir el album <b>@Peticion.AlbumNombre</b> a nuestro repertorio.</MudText>
                 <div style="display: flex; gap: 10px; align-items: center;  margin-top: 10px; flex-wrap: wrap;">
 
                     <MudTooltip Arrow=true Color="Color.Error" Text="Propuesto hace 5 dias">
@@ -36,11 +36,11 @@ else
     <MudCard Style="padding: 10px;">
         <MudContainer Style="display: flex; align-items: center; justify-content: space-between; gap: 20px;">
             <MudAvatar Size="Size.Large"  Style="height: 70px; width: 70px;">
-                <MudImage src="@Peticion.Artista.Foto_Perfil"></MudImage>
+                <MudImage src="@Peticion.ArtistaFoto"></MudImage>
             </MudAvatar>
             <div style="display: flex; flex-direction: column; ">
                 <MudText Style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">Nueva Peticion Artista</MudText>
-                <MudText Style="font-size: 12px;  opacity: 0.7;">El usuario @@breiddy ha hecho la peticion de anadir el/la artista <b>@Peticion.Artista.Nombre</b> a nuestro repertorio.</MudText>
+                <MudText Style="font-size: 12px;  opacity: 0.7;">El usuario @@breiddy ha hecho la peticion de anadir el/la artista <b>@Peticion.ArtistaNombre</b> a nuestro repertorio.</MudText>
                 <div style="display: flex; gap: 10px; align-items: center;  margin-top: 10px; flex-wrap: wrap;">
 
                     <MudTooltip Arrow=true Color="Color.Error" Text="Propuesto hace 5 dias">

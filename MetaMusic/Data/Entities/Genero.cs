@@ -9,6 +9,7 @@ namespace MetaMusic.Data.Entities
         [Key]
         public int Id { get; set; }
 
+        [StringLength(20)]
         public string Nombre { get; set; } = null!;
 
         public List<Genero_Artista> Artistas { get; set; } = new List<Genero_Artista>();

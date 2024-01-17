@@ -13,6 +13,6 @@ namespace MetaMusic.Data.Request
         public List<Reporte> Reportes { get; set; } = new List<Reporte>();
 
         public string Titulo { get; set; } = null!;
-        public int IdAlbum { get; set; }
+        public int AlbumId { get; set; }
     }
 }

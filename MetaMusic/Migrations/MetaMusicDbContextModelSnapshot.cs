@@ -30,38 +30,44 @@ namespace MetaMusic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double>("Calificacion_Creador")
+                        .HasColumnType("float");
+
                     b.Property<int?>("CreadorId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("FechaModificado")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Fecha_Agregado")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Fecha_Publicacion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<DateTime?>("Fecha_Publicacion_Formateada")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("IdSpotify")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("Modificado")
                         .HasColumnType("bit");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Portada")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Publicado")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("YaExiste")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -111,11 +117,13 @@ namespace MetaMusic.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("SpotifyId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -157,9 +165,10 @@ namespace MetaMusic.Migrations
 
                     b.Property<string>("Contenido")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -180,8 +189,8 @@ namespace MetaMusic.Migrations
                     b.Property<int?>("AlbumId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Numero")
-                        .HasColumnType("int");
+                    b.Property<double>("Numero")
+                        .HasColumnType("float");
 
                     b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
@@ -205,7 +214,8 @@ namespace MetaMusic.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -243,14 +253,21 @@ namespace MetaMusic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AlbumId")
+                    b.Property<int?>("AlbumId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Cantidad_Dislikes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Cantidad_Likes")
                         .HasColumnType("int");
 
                     b.Property<string>("Contenido")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("CreadorId")
+                    b.Property<int?>("CreadorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Fecha_Creacion")
@@ -276,9 +293,13 @@ namespace MetaMusic.Migrations
                     b.Property<int?>("AlbumId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Fecha_Creacion")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("UserFromId")
                         .HasColumnType("int");
@@ -308,11 +329,29 @@ namespace MetaMusic.Migrations
                     b.Property<int>("Acumulaciones")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AlbumId")
-                        .HasColumnType("int");
+                    b.Property<string>("AlbumNombre")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("ArtistaId")
-                        .HasColumnType("int");
+                    b.Property<string>("AlbumPortada")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("AlbumSpotifyId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ArtistaFoto")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ArtistaNombre")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ArtistaSpotifyId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("UltimaPeticionFecha")
                         .HasColumnType("datetime2");
@@ -321,10 +360,6 @@ namespace MetaMusic.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AlbumId");
-
-                    b.HasIndex("ArtistaId");
 
                     b.HasIndex("UsuarioId");
 
@@ -341,7 +376,11 @@ namespace MetaMusic.Migrations
 
                     b.Property<string>("Contenido")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<DateTime>("Fecha_Creacion")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("NotaId")
                         .HasColumnType("int");
@@ -351,9 +390,10 @@ namespace MetaMusic.Migrations
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -375,26 +415,28 @@ namespace MetaMusic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AlbumId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Contenido")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
 
                     b.Property<int?>("CreadorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdAlbum")
-                        .HasColumnType("int");
-
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreadorId");
-
-                    b.HasIndex("IdAlbum")
+                    b.HasIndex("AlbumId")
                         .IsUnique();
+
+                    b.HasIndex("CreadorId");
 
                     b.ToTable("Reviews");
                 });
@@ -416,29 +458,6 @@ namespace MetaMusic.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("MetaMusic.Data.Entities.Suscripcion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("SuscriptorId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SuscriptorId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("Suscripciones");
-                });
-
             modelBuilder.Entity("MetaMusic.Data.Entities.Track", b =>
                 {
                     b.Property<int>("Id")
@@ -448,6 +467,9 @@ namespace MetaMusic.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AlbumId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Cantidad_Likes")
                         .HasColumnType("int");
 
                     b.Property<string>("Titulo")
@@ -489,7 +511,7 @@ namespace MetaMusic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RolId")
+                    b.Property<int?>("RolId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -573,7 +595,7 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Creador")
                         .WithMany("Albumes_Publicados")
                         .HasForeignKey("CreadorId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Creador");
                 });
@@ -588,7 +610,7 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Artista", "Artista")
                         .WithMany("Albumes")
                         .HasForeignKey("ArtistaId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Album");
 
@@ -600,7 +622,7 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Creador")
                         .WithMany("Artistas_Creados")
                         .HasForeignKey("CreadorId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Creador");
                 });
@@ -629,8 +651,7 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
                         .WithMany("Busquedas")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Usuario");
                 });
@@ -640,12 +661,12 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Album", "Album")
                         .WithMany("Calificaciones")
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
                         .WithMany("Calificaciones")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Album");
 
@@ -661,7 +682,8 @@ namespace MetaMusic.Migrations
 
                     b.HasOne("MetaMusic.Data.Entities.Genero", "Genero")
                         .WithMany("Artistas")
-                        .HasForeignKey("GeneroId");
+                        .HasForeignKey("GeneroId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Artista");
 
@@ -673,14 +695,11 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Album", "Album")
                         .WithMany("Notas")
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Creador")
                         .WithMany("Notas")
-                        .HasForeignKey("CreadorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("CreadorId");
 
                     b.Navigation("Album");
 
@@ -692,12 +711,12 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Album", "Album")
                         .WithMany("Notificaciones")
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "UserFrom")
                         .WithMany("Notificaciones_Hechas")
                         .HasForeignKey("UserFromId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "UserTo")
                         .WithMany("Notificaciones_Recibidas")
@@ -714,26 +733,11 @@ namespace MetaMusic.Migrations
 
             modelBuilder.Entity("MetaMusic.Data.Entities.Peticion", b =>
                 {
-                    b.HasOne("MetaMusic.Data.Entities.Album", "Album")
-                        .WithMany("Peticiones")
-                        .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MetaMusic.Data.Entities.Artista", "Artista")
-                        .WithMany("Peticiones")
-                        .HasForeignKey("ArtistaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
                         .WithMany("Peticiones")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Album");
-
-                    b.Navigation("Artista");
 
                     b.Navigation("Usuario");
                 });
@@ -753,8 +757,7 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
                         .WithMany("Reportes")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Nota");
 
@@ -765,37 +768,17 @@ namespace MetaMusic.Migrations
 
             modelBuilder.Entity("MetaMusic.Data.Entities.Review", b =>
                 {
-                    b.HasOne("MetaMusic.Data.Entities.Usuario", "Creador")
-                        .WithMany("Reviews")
-                        .HasForeignKey("CreadorId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("MetaMusic.Data.Entities.Album", "Album")
+                    b.HasOne("MetaMusic.Data.Entities.Album", null)
                         .WithOne("Review")
-                        .HasForeignKey("MetaMusic.Data.Entities.Review", "IdAlbum")
+                        .HasForeignKey("MetaMusic.Data.Entities.Review", "AlbumId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Album");
+                    b.HasOne("MetaMusic.Data.Entities.Usuario", "Creador")
+                        .WithMany("Reviews")
+                        .HasForeignKey("CreadorId");
 
                     b.Navigation("Creador");
-                });
-
-            modelBuilder.Entity("MetaMusic.Data.Entities.Suscripcion", b =>
-                {
-                    b.HasOne("MetaMusic.Data.Entities.Usuario", "Suscriptor")
-                        .WithMany("Suscripciones")
-                        .HasForeignKey("SuscriptorId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
-                        .WithMany("Suscriptores")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Suscriptor");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MetaMusic.Data.Entities.Track", b =>
@@ -814,8 +797,7 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Rol", "Rol")
                         .WithMany("Usuarios")
                         .HasForeignKey("RolId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Rol");
                 });
@@ -830,7 +812,7 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
                         .WithMany("Notas_DisLikeadas")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Nota");
 
@@ -847,7 +829,7 @@ namespace MetaMusic.Migrations
                     b.HasOne("MetaMusic.Data.Entities.Usuario", "Usuario")
                         .WithMany("Notas_Likeadas")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Nota");
 
@@ -881,8 +863,6 @@ namespace MetaMusic.Migrations
 
                     b.Navigation("Notificaciones");
 
-                    b.Navigation("Peticiones");
-
                     b.Navigation("Review");
 
                     b.Navigation("Tracks");
@@ -893,8 +873,6 @@ namespace MetaMusic.Migrations
                     b.Navigation("Albumes");
 
                     b.Navigation("GenerosMusicales");
-
-                    b.Navigation("Peticiones");
 
                     b.Navigation("Suscriptores");
                 });
@@ -957,10 +935,6 @@ namespace MetaMusic.Migrations
                     b.Navigation("Reportes");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("Suscripciones");
-
-                    b.Navigation("Suscriptores");
                 });
 #pragma warning restore 612, 618
         }

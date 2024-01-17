@@ -11,6 +11,8 @@ namespace MetaMusic.Data.Entities
         [Key]
         public int Id { get; set; }
 
+
+        
         public string Nombre { get; set; } = null!;
         public string Correo { get; set; } = "";
 
@@ -18,7 +20,7 @@ namespace MetaMusic.Data.Entities
         public string FotoDePerfil { get; set; } = null!;
 
         public string Biografia { get; set; } = null!;
-        public Rol Rol { get; set; } = new Rol();
+        public Rol? Rol { get; set; } = new Rol();
 
         public List<Artista> Artistas_Creados { get; set; } = new List<Artista>();
 

@@ -13,9 +13,7 @@ namespace MetaMusic.Data.Entities
 
         public Album Album { get; set; } = null!;
 
-        public TimeSpan Duracion = new TimeSpan();
-
-        public int Likes => Usuarios_Liked.Count();
+        public int Cantidad_Likes { get; set; } = 0;
 
         public List<Usuario_Like_Track> Usuarios_Liked { get; set; } = new List<Usuario_Like_Track>();
 
@@ -24,8 +22,9 @@ namespace MetaMusic.Data.Entities
             Id = request.Id,
             Titulo = request.Titulo,
             Album = request.Album,
-            Duracion = request.Duracion,
+
             Usuarios_Liked = request.Usuarios_Liked
+            
             // Agrega otras propiedades si es necesario
         };
 
@@ -45,11 +44,7 @@ namespace MetaMusic.Data.Entities
                 modificacion = true;
             }
 
-            if (this.Duracion != trackResponse.Duracion)
-            {
-                this.Duracion = trackResponse.Duracion;
-                modificacion = true;
-            }
+            
 
             if (!Usuarios_Liked.SequenceEqual(trackResponse.Usuarios_Liked))
             {
@@ -69,7 +64,7 @@ namespace MetaMusic.Data.Entities
                 Id = this.Id,
                 Titulo = this.Titulo,
                 Album = this.Album,
-                Duracion = this.Duracion,
+               
                 Usuarios_Liked = this.Usuarios_Liked
                 // Agrega otras asignaciones si es necesario
             };

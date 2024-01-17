@@ -1,4 +1,5 @@
 ﻿using MetaMusic.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace MetaMusic.Data.Responses
 {
@@ -8,6 +9,6 @@ namespace MetaMusic.Data.Responses
 
         public string Contenido { get; set; } = null!;
 
-        public Usuario Usuario { get; set; } = new Usuario();
+        public Usuario? Usuario { get; set; } = new Usuario();
     }
 }

@@ -11,9 +11,7 @@ namespace MetaMusic.Data.Responses
 
         public Album Album { get; set; } = null!;
 
-        public TimeSpan Duracion = new TimeSpan();
-
-        public int Likes => Usuarios_Liked.Count();
+        public int Cantidad_Likes { get; set; } = 0;
 
         public List<Usuario_Like_Track> Usuarios_Liked { get; set; } = new List<Usuario_Like_Track>();
 

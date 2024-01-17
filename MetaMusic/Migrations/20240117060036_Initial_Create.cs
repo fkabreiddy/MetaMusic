@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MetaMusic.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial_Create : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace MetaMusic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nombre = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,7 +48,7 @@ namespace MetaMusic.Migrations
                     CorreoNormalizado = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FotoDePerfil = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Biografia = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RolId = table.Column<int>(type: "int", nullable: false)
+                    RolId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,7 +57,8 @@ namespace MetaMusic.Migrations
                         name: "FK_Usuarios_Roles_RolId",
                         column: x => x.RolId,
                         principalTable: "Roles",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,14 +67,17 @@ namespace MetaMusic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdSpotify = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Fecha_Publicacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Publicado = table.Column<bool>(type: "bit", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IdSpotify = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Fecha_Publicacion = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     Modificado = table.Column<bool>(type: "bit", nullable: false),
                     Fecha_Publicacion_Formateada = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Fecha_Agregado = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaModificado = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Portada = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreadorId = table.Column<int>(type: "int", nullable: true)
+                    CreadorId = table.Column<int>(type: "int", nullable: true),
+                    Calificacion_Creador = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,7 +86,8 @@ namespace MetaMusic.Migrations
                         name: "FK_Albumes_Usuarios_CreadorId",
                         column: x => x.CreadorId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,8 +97,8 @@ namespace MetaMusic.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Foto_Perfil = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SpotifyId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    SpotifyId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreadorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -103,7 +108,8 @@ namespace MetaMusic.Migrations
                         name: "FK_Artistas_Usuarios_CreadorId",
                         column: x => x.CreadorId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,8 +118,8 @@ namespace MetaMusic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Contenido = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false)
+                    Contenido = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UsuarioId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -122,31 +128,35 @@ namespace MetaMusic.Migrations
                         name: "FK_Busquedas_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Suscripciones",
+                name: "Peticiones",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SuscriptorId = table.Column<int>(type: "int", nullable: true),
-                    UsuarioId = table.Column<int>(type: "int", nullable: true)
+                    UsuarioId = table.Column<int>(type: "int", nullable: false),
+                    ArtistaNombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    AlbumNombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    ArtistaSpotifyId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    AlbumSpotifyId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    ArtistaFoto = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    AlbumPortada = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Acumulaciones = table.Column<int>(type: "int", nullable: false),
+                    UltimaPeticionFecha = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Suscripciones", x => x.Id);
+                    table.PrimaryKey("PK_Peticiones", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Suscripciones_Usuarios_SuscriptorId",
-                        column: x => x.SuscriptorId,
-                        principalTable: "Usuarios",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Suscripciones_Usuarios_UsuarioId",
+                        name: "FK_Peticiones_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,7 +167,7 @@ namespace MetaMusic.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AlbumId = table.Column<int>(type: "int", nullable: true),
                     UsuarioId = table.Column<int>(type: "int", nullable: true),
-                    Numero = table.Column<int>(type: "int", nullable: false)
+                    Numero = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -166,12 +176,14 @@ namespace MetaMusic.Migrations
                         name: "FK_Calificaciones_Albumes_AlbumId",
                         column: x => x.AlbumId,
                         principalTable: "Albumes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Calificaciones_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -180,10 +192,12 @@ namespace MetaMusic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Contenido = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreadorId = table.Column<int>(type: "int", nullable: false),
+                    Contenido = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreadorId = table.Column<int>(type: "int", nullable: true),
+                    Cantidad_Dislikes = table.Column<int>(type: "int", nullable: false),
+                    Cantidad_Likes = table.Column<int>(type: "int", nullable: false),
                     Fecha_Creacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AlbumId = table.Column<int>(type: "int", nullable: false)
+                    AlbumId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -192,7 +206,8 @@ namespace MetaMusic.Migrations
                         name: "FK_Notas_Albumes_AlbumId",
                         column: x => x.AlbumId,
                         principalTable: "Albumes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Notas_Usuarios_CreadorId",
                         column: x => x.CreadorId,
@@ -206,7 +221,8 @@ namespace MetaMusic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Titulo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Fecha_Creacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserToId = table.Column<int>(type: "int", nullable: false),
                     UserFromId = table.Column<int>(type: "int", nullable: true),
                     AlbumId = table.Column<int>(type: "int", nullable: true)
@@ -218,12 +234,14 @@ namespace MetaMusic.Migrations
                         name: "FK_Notificacions_Albumes_AlbumId",
                         column: x => x.AlbumId,
                         principalTable: "Albumes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Notificacions_Usuarios_UserFromId",
                         column: x => x.UserFromId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Notificacions_Usuarios_UserToId",
                         column: x => x.UserToId,
@@ -237,19 +255,20 @@ namespace MetaMusic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Contenido = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contenido = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: false),
+                    Titulo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreadorId = table.Column<int>(type: "int", nullable: true),
-                    IdAlbum = table.Column<int>(type: "int", nullable: false)
+                    AlbumId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reviews_Albumes_IdAlbum",
-                        column: x => x.IdAlbum,
+                        name: "FK_Reviews_Albumes_AlbumId",
+                        column: x => x.AlbumId,
                         principalTable: "Albumes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reviews_Usuarios_CreadorId",
                         column: x => x.CreadorId,
@@ -264,7 +283,8 @@ namespace MetaMusic.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AlbumId = table.Column<int>(type: "int", nullable: false)
+                    AlbumId = table.Column<int>(type: "int", nullable: false),
+                    Cantidad_Likes = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -299,7 +319,8 @@ namespace MetaMusic.Migrations
                         name: "FK_Album_Artista_Artistas_ArtistaId",
                         column: x => x.ArtistaId,
                         principalTable: "Artistas",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -350,40 +371,6 @@ namespace MetaMusic.Migrations
                         name: "FK_Genero_Artistas_Generos_GeneroId",
                         column: x => x.GeneroId,
                         principalTable: "Generos",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Peticiones",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    AlbumId = table.Column<int>(type: "int", nullable: true),
-                    ArtistaId = table.Column<int>(type: "int", nullable: false),
-                    Acumulaciones = table.Column<int>(type: "int", nullable: false),
-                    UltimaPeticionFecha = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Peticiones", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Peticiones_Albumes_AlbumId",
-                        column: x => x.AlbumId,
-                        principalTable: "Albumes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Peticiones_Artistas_ArtistaId",
-                        column: x => x.ArtistaId,
-                        principalTable: "Artistas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Peticiones_Usuarios_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -404,12 +391,14 @@ namespace MetaMusic.Migrations
                         name: "FK_Usuario_Dislike_Notas_Notas_NotaId",
                         column: x => x.NotaId,
                         principalTable: "Notas",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Usuario_Dislike_Notas_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -428,12 +417,14 @@ namespace MetaMusic.Migrations
                         name: "FK_Usuario_Like_Notas_Notas_NotaId",
                         column: x => x.NotaId,
                         principalTable: "Notas",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Usuario_Like_Notas_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -442,9 +433,10 @@ namespace MetaMusic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contenido = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
+                    Titulo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Contenido = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    Fecha_Creacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UsuarioId = table.Column<int>(type: "int", nullable: true),
                     ReviewId = table.Column<int>(type: "int", nullable: true),
                     NotaId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -455,7 +447,8 @@ namespace MetaMusic.Migrations
                         name: "FK_Reportes_Notas_NotaId",
                         column: x => x.NotaId,
                         principalTable: "Notas",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reportes_Reviews_ReviewId",
                         column: x => x.ReviewId,
@@ -465,7 +458,8 @@ namespace MetaMusic.Migrations
                         name: "FK_Reportes_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -484,12 +478,14 @@ namespace MetaMusic.Migrations
                         name: "FK_Usuario_Like_Tracks_Tracks_TrackId",
                         column: x => x.TrackId,
                         principalTable: "Tracks",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Usuario_Like_Tracks_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -573,16 +569,6 @@ namespace MetaMusic.Migrations
                 column: "UserToId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Peticiones_AlbumId",
-                table: "Peticiones",
-                column: "AlbumId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Peticiones_ArtistaId",
-                table: "Peticiones",
-                column: "ArtistaId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Peticiones_UsuarioId",
                 table: "Peticiones",
                 column: "UsuarioId");
@@ -603,25 +589,15 @@ namespace MetaMusic.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_CreadorId",
+                name: "IX_Reviews_AlbumId",
                 table: "Reviews",
-                column: "CreadorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_IdAlbum",
-                table: "Reviews",
-                column: "IdAlbum",
+                column: "AlbumId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Suscripciones_SuscriptorId",
-                table: "Suscripciones",
-                column: "SuscriptorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Suscripciones_UsuarioId",
-                table: "Suscripciones",
-                column: "UsuarioId");
+                name: "IX_Reviews_CreadorId",
+                table: "Reviews",
+                column: "CreadorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tracks_AlbumId",
@@ -692,9 +668,6 @@ namespace MetaMusic.Migrations
                 name: "Reportes");
 
             migrationBuilder.DropTable(
-                name: "Suscripciones");
-
-            migrationBuilder.DropTable(
                 name: "Usuario_Dislike_Notas");
 
             migrationBuilder.DropTable(
@@ -704,10 +677,10 @@ namespace MetaMusic.Migrations
                 name: "Usuario_Like_Tracks");
 
             migrationBuilder.DropTable(
-                name: "Generos");
+                name: "Artistas");
 
             migrationBuilder.DropTable(
-                name: "Artistas");
+                name: "Generos");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

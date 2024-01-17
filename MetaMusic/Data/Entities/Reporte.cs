@@ -9,10 +9,13 @@ namespace MetaMusic.Data.Entities
         [Key]
         public int Id { get; set; }
 
+        [StringLength(50)]
         public string Titulo { get; set; } = null!;
 
+        [StringLength(120)]
         public string Contenido { get; set; } = null!;
 
+        public DateTime Fecha_Creacion { get; set; }
         public Usuario? Usuario { get; set; } = new Usuario();
 
         public Review? Review { get; set; } = new Review();
@@ -25,7 +28,8 @@ namespace MetaMusic.Data.Entities
             Contenido = request.Contenido,
             Usuario = request.Usuario,
             Review = request.Review,
-            Nota = request.Nota
+            Nota = request.Nota,
+            Fecha_Creacion = DateTime.Now
             // Agrega otras propiedades si es necesario
         };
 
@@ -77,7 +81,8 @@ namespace MetaMusic.Data.Entities
                 Contenido = this.Contenido,
                 Usuario = this.Usuario,
                 Review = this.Review,
-                Nota = this.Nota
+                Nota = this.Nota,
+                Fecha_Creacion = this.Fecha_Creacion
                 // Agrega otras asignaciones si es necesario
             };
         }

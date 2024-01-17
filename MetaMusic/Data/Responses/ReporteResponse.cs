@@ -10,7 +10,8 @@ namespace MetaMusic.Data.Responses
 
         public string Contenido { get; set; } = null!;
 
-        public Usuario Usuario { get; set; } = new Usuario();
+        public DateTime Fecha_Creacion { get; set; }
+        public Usuario? Usuario { get; set; } = new Usuario();
 
         public Review? Review { get; set; } = new Review();
         public Nota? Nota { get; set; } = new Nota();
