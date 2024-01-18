@@ -22,7 +22,7 @@
                     </MudTooltip>
                    
                     <MudTooltip Arrow=true Color="Color.Error" Text="Copiar ID del Album">
-                        <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" @onclick='async()=>{ await CopyTextToClipboard("6DmPNcfpkXBVRJsEIJY9tl");}' Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Rounded.CopyAll"></MudIcon>
+                        <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" @onclick='async()=>{ await CopiarAlPortapapeles("6DmPNcfpkXBVRJsEIJY9tl");}' Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Rounded.CopyAll"></MudIcon>
 
                     </MudTooltip>
 
@@ -54,7 +54,7 @@ else
                     </MudTooltip>
 
                     <MudTooltip Arrow=true Color="Color.Error" Text="Copiar ID del Artista">
-                        <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" @onclick='async()=>{ await CopyTextToClipboard("6DmPNcfpkXBVRJsEIJY9tl");}' Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Rounded.CopyAll"></MudIcon>
+                        <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" @onclick='async()=>{ await CopiarAlPortapapeles("6DmPNcfpkXBVRJsEIJY9tl");}' Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Rounded.CopyAll"></MudIcon>
 
                     </MudTooltip>
 
@@ -65,14 +65,59 @@ else
 }
 
 
+@functions{
+    public void MostrarNotificacion(string Titulo, string Contenido)
+    {
+        SnackbarService.Add(
 
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+
+        </MudContainer>
+    </div>
+    ,
+           Severity.Normal,
+    config => { config.HideIcon = true; }
+         );
+    }
+
+    private async Task CopiarAlPortapapeles(string Id)
+    {
+        bool resultado;
+        // Llama a la función JavaScript y espera el resultado
+        resultado = await JSR.InvokeAsync<bool>("clipboardCopy.copyText", Id);
+
+        // Aquí puedes usar el valor booleano (resultado) como desees
+        if (resultado)
+        {
+            MostrarNotificacion("ID Copiado", $"ID {Id} Copiado a Portapapeles.");
+        }
+        else
+        {
+            // Hubo un error al copiar
+        }
+    }
+}
 
 @code {
     [Parameter] public Peticion Peticion { get; set; } = new Peticion();
     
+   
 
-    private async Task CopyTextToClipboard(string Text)
-    {
-        await JSR.InvokeVoidAsync("clipboardCopy.copyText", Text);
-    }
+    
 }

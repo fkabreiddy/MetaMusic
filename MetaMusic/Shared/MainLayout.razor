@@ -246,18 +246,7 @@
       
 </div>
 
-<script>
-    document.addEventListener("scroll", function () {
-        var elemento = document.getElementById("navbar");
 
-        // Verificar si el scrollbar está en la parte superior
-        if (window.scrollY >= 3) {
-            elemento.classList.add("mostrar");
-        } else {
-            elemento.classList.remove("mostrar");
-        }
-    });
-</script>
 @functions{
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

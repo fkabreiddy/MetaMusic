@@ -51,11 +51,13 @@
 
         window.clipboardCopy = {
             copyText: function (text) {
-                navigator.clipboard.writeText(text)
-                
-                    .catch(function (error) {
-                        alert(error);
-                    });
+                try {
+                    navigator.clipboard.writeText(text);
+                    return true;
+                } catch (error) {
+                    alert(error);
+                    return false;
+                }
             }
         };
 
@@ -64,5 +66,19 @@
             window.scrollTo(0, 0);
         }
     </script>
+    <script>
+        document.addEventListener("scroll", function () {
+            var elemento = document.getElementById("navbar");
+
+            // Verificar si el scrollbar está en la parte superior
+            if (window.scrollY >= 3) {
+                elemento.classList.add("mostrar");
+            } else {
+                elemento.classList.remove("mostrar");
+            }
+        });
+    </script>
 </body>
 </html>
+
+                         
