@@ -9,7 +9,7 @@
                     @if (tipodeContenidoEncontrado == "")
                     {
                         <MudItem md="8" sm="8" lg="8" xxl="8" xl="8" xs="8">
-                            <MudCard>
+                     
 
                                 <MudContainer Style="height: auto; width: 100%;  display: flex; border-radius: 9px; flex-direction: column; ">
 
@@ -27,10 +27,7 @@
                                         <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "album" ? MudBlazor.Variant.Filled : MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "album";}' Default=true Text="Album / Single"></MudChip>
                                     </MudChipSet>
 
-                                    @if (Mensaje != "")
-                                    {
-                                        <MudText Align="Align.Center" Color="Color.Error" Style="font-size: 12px; font-weight: bold;  margin-top: 20px; ">@Mensaje</MudText>
-                                    }
+                                    
                                     <MudTextField T="string" @bind-Value="url" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='@($"""URl del {tipodeContenido} a buscar""")'></MudTextField>
 
 
@@ -47,7 +44,7 @@
                                     else
                                     {
 
-                                        <MudChip @onclick="async()=>{await BuscarEnSpotify();}" Variant="MudBlazor.Variant.Filled" Disabled="@buscando" Color="Color.Error" Style="font-size: 12px; margin-bottom: 15px; cursor: pointer;">
+                                        <MudChip @onclick="async()=>{await BuscarEnSpotify();}" Variant="MudBlazor.Variant.Filled" Disabled="@buscando" Color="Color.Error" Style="font-size: 12px; margin-bottom: 15px; margin-top: 30px; cursor: pointer;">
                                             Buscar
                                         </MudChip>
                                     }
@@ -58,7 +55,7 @@
                                 </MudContainer>
 
 
-                            </MudCard>
+                            
                         </MudItem>
                     }
 
@@ -123,7 +120,7 @@
     public string url = "";
     public string tipodeContenido = "album";
     public string tipodeContenidoEncontrado = "";
-    public string Mensaje;
+   
     public Track trackActual = new Track();
     protected override async Task OnInitializedAsync()
     {
@@ -158,11 +155,13 @@
         }
         catch (APIException e)
         {
-            Mensaje = "Album o Single no Encontrado";
+            MostrarNotificacion("Album no encontrado", "No pudimos encontrar el album que estas buscando. Asegurate de poner el ID correcto.");
+            
         }
         catch (Exception e)
         {
             var excepcion = e.InnerException?.Message ?? e.Message;
+            MostrarNotificacion("Error Inesperado", "Hubo un error con su solicitud. Intente Luego.");
 
         }
 
@@ -179,8 +178,9 @@
         }
         else
         {
-            await MessageBoxOk("Error", $"{x.Message}", "Ok");
-           
+
+            MostrarNotificacion("Error Inesperado", $"{x.Message}");
+
         }
     }
     public async Task GetArtist()
@@ -194,8 +194,9 @@
         }
         else
         {
-              await MessageBoxOk("Error", $"{x.Message}", "Ok");
-            Mensaje = "Artista no Encontrado";
+            MostrarNotificacion("Error Inesperado",  $"{x.Message}");
+         
+           
         }
     }
 
@@ -211,12 +212,16 @@
         }
         catch (APIException e)
         {
-            Mensaje = "Artista no Encontrado";
+
+            MostrarNotificacion("Artista no encontrado", "No pudimos encontrar el artista que estas buscando. Asegurate de poner el ID correcto.");
            
+
         }
         catch (Exception e)
         {
-            await MessageBoxOk("Error Inesperado", "Hubo un error con su solicitud. Intente Luego.", "Ok");
+            MostrarNotificacion("Error Inesperado", "Hubo un error con su solicitud. Intente Luego.");
+
+            
             var excepcion = e.InnerException?.Message ?? e.Message;
 
         }
@@ -259,6 +264,33 @@
 
     }
 
+     public void MostrarNotificacion(string Titulo, string Contenido )
+    {
+        SnackbarService.Add(
 
+        @<div>
+            <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+                <MudContainer Style="display: flex; flex-direction: column;">
+
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                    <div style="display: flex; gap:10px;align-items: center;">
+                        <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                    </div>
+                </MudContainer>
+
+
+
+            </MudContainer>
+        </div>,
+           Severity.Normal,
+            config => { config.HideIcon = true; }
+         );
+    }
     
 }

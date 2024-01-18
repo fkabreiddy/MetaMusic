@@ -21,6 +21,7 @@ namespace MetaMusic.Data.Entities
 
         [ForeignKey("Album")]
         public int AlbumId { get; set; }
+        public Album Album { get; set; } = null!;
         public List<Reporte> Reportes { get; set; } = new List<Reporte>();
 
         public static Review Crear(ReviewRequest request) => new Review()
@@ -30,7 +31,7 @@ namespace MetaMusic.Data.Entities
             Creador = request.Creador,
             AlbumId = request.AlbumId,
             Reportes = request.Reportes,
-           
+           Album = request.Album,
             Titulo = request.Titulo
             // Agrega otras propiedades si es necesario
         };
@@ -56,8 +57,12 @@ namespace MetaMusic.Data.Entities
                 this.Creador = review.Creador;
                 modificacion = true;
             }
+            if (this.Album != review.Album)
+            {
+                this.Album = review.Album;
+                modificacion = true;
+            }
 
-      
 
             if (!Reportes.SequenceEqual(review.Reportes))
             {
@@ -81,7 +86,7 @@ namespace MetaMusic.Data.Entities
                 Creador = this.Creador,
                 AlbumId = this.AlbumId,
                 Reportes = this.Reportes,
-              
+                Album = this.Album,
                 Titulo = this.Titulo
                 // Agrega otras asignaciones si es necesario
             };

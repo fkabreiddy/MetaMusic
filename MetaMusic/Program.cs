@@ -36,7 +36,7 @@ builder.Services.AddScoped<IArtistaService, ArtistaService>();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddScoped<IAlbumService, AlbumService>();
 builder.Services.AddScoped<IBorradorService, BorradorService>();
-builder.Services.AddScoped<IDbScripts, DbScripts>();
+
 
 builder.Services.AddHttpClient();
 builder.Services.AddSignalR();
@@ -113,3 +113,5 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+
+

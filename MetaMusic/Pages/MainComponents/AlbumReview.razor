@@ -197,7 +197,7 @@
 
                                 <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
                                     <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
-                                        @Albumresponse.Calificaciones?.FirstOrDefault(c => c.Usuario?.Id == Albumresponse.Creador?.Id).Numero 
+                                        @Albumresponse.Calificacion_Creador
                                     </MudAvatar>
                                     <MudText Style="font-size: 12px;  font-weight: bold; opacity: 0.8;  " Color="Color.Secondary">CALIFICACION DEL REVIEWER</MudText>
                                 </MudCard>
@@ -237,7 +237,7 @@
 
                                 @if(Albumresponse.Calificaciones.Where(c => c.Usuario?.Id != Albumresponse.Creador?.Id).Count() >= 1)
                                 {
-                                    <MudChip @onclick="ShowNotes" Style="font-size: 13px;  border: dashed 1px red; cursor: pointer;" Variant="Variant.Text" Color="Color.Error">Ver @Albumresponse.Calificaciones.Where(c => c.Usuario.Id != Albumresponse.Creador.Id).Count() reviews</MudChip>
+                                    <MudChip @onclick="ShowNotes" Style="font-size: 13px;  border: dashed 1px red; cursor: pointer;" Variant="Variant.Text" Color="Color.Error">Ver @Albumresponse.Calificaciones.Where(c => c.Usuario?.Id != Albumresponse.Creador?.Id).Count() reviews</MudChip>
 
                                 }
                                 else

@@ -164,7 +164,7 @@ namespace MetaMusic.Data.Services
             {
                 return new Result<MetaMusic.Data.Request.AlbumRequest>()
                 {
-                    Message = "No se encontro el artista",
+                    Message = "No se encontro el artista o ID incorrecto",
                     Success = false
                 };
             }

@@ -21,7 +21,7 @@ namespace MetaMusic.Data.Services
             this.googleAuth = googleAuth;
         }
 
-        public async Task<Result<AlbumResponse>> Crear(AlbumRequest request, CalificacionRequest calificacion, ReviewRequest review)
+        public async Task<Result<AlbumResponse>> Crear(AlbumRequest request, ReviewRequest review)
         {
             try
             {
@@ -53,18 +53,17 @@ namespace MetaMusic.Data.Services
                     };
 
 
-               
 
 
-               
-                calificacion.Usuario = userUser;
-                request.Calificacion_Creador = calificacion.Numero;
+
+
+
                 review.Creador = userUser;
                 request.Review = Review.Crear(review);
 
                 request.Creador = userUser;
-   
-      
+
+
 
                 var newalbum = Album.Crear(request);
                 await dbContext.Albumes.AddAsync(newalbum);
@@ -92,7 +91,7 @@ namespace MetaMusic.Data.Services
             }
         }
 
-        public async Task<Result<AlbumResponse>> Modificar(AlbumRequest request, CalificacionRequest calificacion, ReviewRequest review)
+        public async Task<Result<AlbumResponse>> Modificar(AlbumRequest request, ReviewRequest review)
         {
             try
             {
@@ -130,12 +129,6 @@ namespace MetaMusic.Data.Services
                 if (album is not null)
                     album.Modificar(request);
 
-                var ca = await dbContext.Calificaciones.FirstOrDefaultAsync(c => c.Id == calificacion.Id);
-
-
-                if (ca is not null)
-
-                    ca.Modificar(calificacion);
 
                 var re = await dbContext.Reviews.FirstOrDefaultAsync(r => r.Id == review.Id);
 
@@ -202,7 +195,7 @@ namespace MetaMusic.Data.Services
                 var tr = await dbContext.Tracks.FirstOrDefaultAsync(a => a.Id == track.Id);
                 var user = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == currentuser.Data.Id);
 
-                if(tr is null)
+                if (tr is null)
                     return new Result<Usuario_Like_Track>()
                     { Message = "No existe el track", Success = false };
 

@@ -78,6 +78,7 @@ namespace MetaMusic.Data.Context
 
             modelBuilder.Entity<Album>().HasMany(a => a.Artistas).WithOne(r => r.Album).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Album>().HasMany(a => a.Calificaciones).WithOne(r => r.Album).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Album>().HasOne(a => a.Review).WithOne(r => r.Album).HasForeignKey<Review>(r => r.AlbumId).IsRequired(true).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Album>().HasMany(a => a.Notas).WithOne(r => r.Album).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Album>().HasMany(a => a.Tracks).WithOne(r => r.Album).OnDelete(DeleteBehavior.Cascade);

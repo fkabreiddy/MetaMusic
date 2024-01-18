@@ -61,21 +61,69 @@
            
                 @foreach (var numero in rate)
                 {
-                    <MudAvatar @onclick="()=>{newCalificacion.Numero = numero;}" Variant=" Variant.Outlined" Style="@($"""{(newCalificacion.Numero == numero ? "border: dashed 2px red;" : "")}height: 50px; width: 50px; cursor: pointer;""")">
+                    if(numero == 10)
+                    {
+                        <MudAvatar @onclick="()=>{parteentera = numero; partedecimal = 0.0;}" Variant=" Variant.Outlined" Style="@($"""{(parteentera  == numero ? "border: dashed 2px red;" : "")}height: 50px; width: 50px; cursor: pointer;""")">
+                            @numero
+                        </MudAvatar>
+                    }
+                    else
+                    {
+                        <MudAvatar @onclick="()=>{parteentera = numero;}" Variant=" Variant.Outlined" Style="@($"""{(parteentera  == numero ? "border: dashed 2px red;" : "")}height: 50px; width: 50px; cursor: pointer;""")">
                         @numero
                     </MudAvatar>
+                    }
+                    
 
+                   
                 }
+       
                 
+                
+
+               
+
             </MudContainer>
-         
-            <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
+
+            @if(parteentera <= 9.9)
+            {
+                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" >
+                     <MudContainer Style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 25px;margin-bottom: 30px; margin-top: 50px; ">
+
+
+
+                        @foreach (var numero in decimales)
+                        {
+                            <MudAvatar @onclick="()=>{partedecimal = numero ;}" Variant=" Variant.Outlined" Size="Size.Small" Style="@($"""{(partedecimal == numero ? "border: dashed 2px red;" : "")}height: 30px; font-size: 12px; width: 30px; cursor: pointer;""")">
+                                @numero
+                            </MudAvatar>
+
+
+                        }
+
+
+
+                    </MudContainer>
+                </BlazorAnimation.Animation>
+                   
+            }
+
+
+    <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;" >Tu Calificacion</MudText>
+
+
+      <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" >
+        <MudText Align="Align.Center" Style="font-size: 70px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;" Color="Color.Error">@(parteentera + partedecimal)</MudText>
+
+     </BlazorAnimation.Animation>
+
+    <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
         <MudContainer>
             <MudGrid Justify="Justify.SpaceBetween" Spacing="2" Style="margin-top: 60px; ">
                 <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;">
 
                     <MudTextField AutoGrow=true T="string" @bind-Value="newReview.Titulo" Immediate=true MaxLength="100" Counter="100" Variant="MudBlazor.Variant.Text" Style="font-size: 20px; font-family: SourceSerif4; font-size: 20px; " Placeholder="Titulo de la review (Obligatorio)" DisableUnderLine=true></MudTextField>
-                    <MudTextField @bind-Value="newReview.Contenido" AutoGrow=true T="string" MaxLength="1500" Counter="1500" Immediate=true Variant="MudBlazor.Variant.Text" Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  " Placeholder="Cuerpo de la critica (Obligatorio)" DisableUnderLine=true></MudTextField>
+                    <MudTextField @bind-Value="newReview.Contenido" AutoGrow=true T="string" MaxLength="3000" Counter="3000" Immediate=true Variant="MudBlazor.Variant.Text" Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  " Placeholder="Cuerpo de la critica (Obligatorio)" DisableUnderLine=true></MudTextField>
                 
                    
 
@@ -124,11 +172,13 @@
 
     public async Task Crear()
     {
-        var r = await albumService.Crear(Request, newCalificacion, newReview);
+        Request.Calificacion_Creador = partedecimal + parteentera;
+        var r = await albumService.Crear(Request, newReview);
 
         if(r.Success == true && r.Data  is not null)
         {
-            navManager.NavigateTo($"/album/{r.Data.IdSpotify}");
+            MostrarNotificacion(r.Data, "Review creado exitosamente", $"Se ha creado la review {r.Data.Nombre} se forma exitosa");
+            navManager.NavigateTo("/");
         }
         else
         {
@@ -142,10 +192,10 @@
     
     
 
-    public CalificacionRequest newCalificacion = new CalificacionRequest();
-    public int ratenumber = 0;
-    public List<int> rate = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    
+    public int parteentera = 1;
+    public double partedecimal = 0.1;
+    public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    public List<double> decimales = new List<double>() { 0.0, 0.1, 0.2, 0.3,0.4, 0.5, 0.6, 0.7,0.8, 0.9 };
     public bool vermas = false;
  
     private async Task<bool?> MessageBoxOk(string Titulo, string Descripcion, string si)
@@ -157,5 +207,47 @@
         StateHasChanged();
         return result;
 
+    }
+
+    public void MostrarNotificacion(AlbumResponse Album, string Titulo, string Contenido)
+    {
+        SnackbarService.Add(
+
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+            <MudAvatar Style="height: 40px; width: 40px; font-size:8px;padding-left:0; cursor: pointer; border-radius: 5px;" Square="true" Rounded=false Color="MudBlazor.Color.Primary"><MudImage src="@Album.Portada"></MudImage></MudAvatar>
+
+
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+            <MudButton Variant="Variant.Text" @onclick='()=>{navManager.NavigateTo($"/album/{Album.IdSpotify}");}' Style="font-size: 10px; font-weight: bold; cursor: pointer; " Color="MudBlazor.Color.Error" DisableElevation="true">Ver</MudButton>
+
+
+
+
+
+
+
+
+        </MudContainer>
+    </div>,
+       Severity.Normal,
+        config => { config.HideIcon = true; }
+     );
     }
 }
