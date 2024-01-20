@@ -22,7 +22,7 @@
                                 <MudChip @onclick="async ()=>{await DeSuscribirse(Artista);}" Style="font-size: 10px;  width: 50%; font-weight: bold;cursor: pointer;" Size="Size.Small" Variant="Variant.Filled">
                                     @if (suscribiendo)
                                     {
-                                        <MudProgressCircular Style="width: 20px; height: 20px" Color="Color.Error" Indeterminate=true></MudProgressCircular>
+                                        <MudProgressCircular Style="width: 10px; height: 10px" Color="Color.Error" Indeterminate=true></MudProgressCircular>
                                     }
                                     else
                                     {
@@ -36,7 +36,7 @@
                                 <MudChip @onclick="async ()=>{await Suscribirse(Artista);}" Style="font-size: 10px;  border: dashed 1px red; width: 50%; font-weight: bold;cursor: pointer; " Size="Size.Small" Variant="Variant.Text" Color="Color.Error">
                                     @if (suscribiendo)
                                     {
-                                        <MudProgressCircular Style="width: 20px; height: 20px" Color="Color.Error" Indeterminate=true></MudProgressCircular>
+                                        <MudProgressCircular Style="width: 10px; height: 10px" Color="Color.Error" Indeterminate=true></MudProgressCircular>
                                     }
                                     else
                                     {

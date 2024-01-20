@@ -1,5 +1,5 @@
 ﻿<style>
-   
+
 </style>
 
 <MudPaper>
@@ -9,20 +9,20 @@
            
             <div style="display: flex; gap: 10px;padding: 0; ">
                 <MudAvatar style="height: 20px; width: 20px;">
-                    <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="https://th.bing.com/th/id/OIP.UgQzi6yAnGyBFUgYT-H0swHaHa?rs=1&pid=ImgDetMain" />
+                    <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@nota.Creador?.FotoDePerfil" />
                 </MudAvatar>
                 <MudText Style="font-size: 12px;height: 20px; overflow: hidden;  font-weight: bold; white-space: nowrap; text-overflow: ellipsis;">
-                    Breiddy Garcia
+                    @nota.Creador?.Nombre
                 </MudText>
             </div>
            
             <MudText Align="Align.End" Style="font-size: 12px;height: 20px; overflow: hidden;   white-space: nowrap; text-overflow: ellipsis; opacity: 0.7;">
-                Hace 2 dias
+                @nota.Fecha_Creacion.FechaRelativa()
             </MudText>
         </MudContainer>
         <MudContainer Class=" review-text" Style="padding: 0; height: auto; margin-top: 10px; margin-bottom: 10px;">
             <MudText Style="font-size: 12px; opacity: 0.7;">
-                Musicalmente, el álbum es diverso y complejo, fusionando elementos de jazz, funk, soul y spoken word con el hip-hop. La producción es rica en capas, con arreglos detallados y colaboraciones con músicos talentosos que contribuyen a la profundidad sonora del proyecto.
+               @nota.Contenido
             </MudText>
         </MudContainer>
         <MudContainer Style="padding: 0; display: flex;  margin-top: 15px; margin-bottom: 15px; align-items: center; justify-content:space-between;">
@@ -73,13 +73,15 @@
 
                
             </div>
-            <MudAvatar style="height: 20px; width: 20px;font-size: 12px; right: 0;">
-                3
+            <MudAvatar style="height: 30px; width: 30px;font-size: 12px; right: 0;">
+                @calificacion.Numero
             </MudAvatar>
         </MudContainer>
 
     </MudContainer>
 </MudPaper>
 @code {
+    [Parameter] public CalificacionResponse calificacion { get; set; } = new CalificacionResponse();
+    [Parameter] public NotaResponse nota { get; set; } = new NotaResponse();
     [Parameter] public bool ReportButton { get; set; } = true;
 }

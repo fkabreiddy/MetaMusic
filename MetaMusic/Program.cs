@@ -2,6 +2,7 @@ using BlazorAnimation;
 using MetaMusic.Authentication;
 using MetaMusic.Data;
 using MetaMusic.Data.Context;
+using MetaMusic.Data.OtherEntities;
 using MetaMusic.Data.Services;
 using MetaMusic.Data.ThemeManagement;
 using Microsoft.AspNetCore.Authentication;
@@ -39,8 +40,9 @@ builder.Services.AddScoped<IBorradorService, BorradorService>();
 builder.Services.AddScoped<ICalificacionService, CalificacionService>();
 builder.Services.AddScoped<INotaService, NotaService>();
 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>(); //can be placed among other "AddScoped" - above: var app = builder.Build();   
 
-
+  
 
 builder.Services.AddHttpClient();
 builder.Services.AddSignalR();
@@ -108,7 +110,7 @@ if (!app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-
+await SeedDatabase(); //can be placed above app.UseStaticFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -117,5 +119,15 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+
+
+async Task SeedDatabase() //can be placed at the very bottom under app.Run()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        await dbInitializer.Initialize();
+    }
+}
 
 

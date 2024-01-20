@@ -39,16 +39,19 @@ namespace MetaMusic.Data.Services
                 if (album is null)
                     return new Result<CalificacionResponse>() { Message = "El album no existe", Success = false };
 
+
+
                 calificacionrequest.Usuario = usuarioactual;
                 calificacionrequest.Album = album;
 
 
 
-                await dbContext.Calificaciones.AddAsync(Calificacion.Crear(calificacionrequest));
+                var request = Calificacion.Crear(calificacionrequest);
+                await dbContext.Calificaciones.AddAsync(request);
 
                 await dbContext.SaveChangesAsync();
 
-                var calificacion_a_devolver = await dbContext.Calificaciones.FirstOrDefaultAsync(n => n.Id == calificacionrequest.Id);
+                var calificacion_a_devolver = await dbContext.Calificaciones.FirstOrDefaultAsync(n => n.Id == request.Id);
 
                 if (calificacion_a_devolver is null)
                     return new Result<CalificacionResponse>() { Message = "Hubo un error a la hora de crear su calificacion, los cambios no se guardaron.", Success = false };
@@ -81,9 +84,9 @@ namespace MetaMusic.Data.Services
 
             try
             {
-            
 
-                var album = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Id == a.Id);
+
+                var album = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Id == albumrequest.Id);
 
                 if (album is null)
                     return new Result<List<CalificacionResponse>>() { Message = "El album no existe", Success = false };
@@ -92,7 +95,7 @@ namespace MetaMusic.Data.Services
                 var calificaciones_a_devolver = await dbContext.Calificaciones.Include(c => c.Usuario).Where(c => c.Album.Id == album.Id).ToListAsync();
 
                 if (calificaciones_a_devolver is null)
-                    return new Result<List<CalificacionResponse>> () { Message = "Hubo un error a la hora de crear su calificacion, los cambios no se guardaron.", Success = false };
+                    return new Result<List<CalificacionResponse>>() { Message = "Hubo un error a la hora de crear su calificacion, los cambios no se guardaron.", Success = false };
 
                 return new Result<List<CalificacionResponse>>()
                 {
@@ -109,6 +112,48 @@ namespace MetaMusic.Data.Services
             catch (Exception e)
             {
                 return new Result<List<CalificacionResponse>>()
+                {
+
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = false
+                };
+            }
+        }
+
+        public async Task<Result<bool>> Eliminar(int albumid, int usuarioid)
+        {
+
+            try
+            {
+
+              
+                var calificacion = await dbContext.Calificaciones.FirstOrDefaultAsync(a => a.Album.Id == albumid && a.Usuario.Id == usuarioid);
+
+                if (calificacion is null)
+                    return new Result<bool>() { Message = "La calificacion no existe", Success = false };
+
+
+
+                dbContext.Calificaciones.Remove(calificacion);
+
+                await dbContext.SaveChangesAsync();
+
+
+                return new Result<bool>()
+                {
+                    Data = true,
+                    Message = "Nota publicada",
+                    Success = true
+                };
+
+
+
+
+
+            }
+            catch (Exception e)
+            {
+                return new Result<bool>()
                 {
 
                     Message = e.InnerException?.Message ?? e.Message,

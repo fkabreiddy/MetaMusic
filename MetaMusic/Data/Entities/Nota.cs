@@ -10,7 +10,7 @@ namespace MetaMusic.Data.Entities
         public int Id { get; set; }
 
 
-        [StringLength(100)]
+        [StringLength(400)]
         public string Contenido { get; set; } = null!;
 
         public Usuario? Creador { get; set; } = new Usuario();

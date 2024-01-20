@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MetaMusic.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_Create : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -192,7 +192,7 @@ namespace MetaMusic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Contenido = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Contenido = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
                     CreadorId = table.Column<int>(type: "int", nullable: true),
                     Cantidad_Dislikes = table.Column<int>(type: "int", nullable: false),
                     Cantidad_Likes = table.Column<int>(type: "int", nullable: false),

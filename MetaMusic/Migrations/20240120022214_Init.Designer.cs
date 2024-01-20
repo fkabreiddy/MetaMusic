@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MetaMusic.Migrations
 {
     [DbContext(typeof(MetaMusicDbContext))]
-    [Migration("20240117192541_Mejora_Album_Review")]
-    partial class Mejora_Album_Review
+    [Migration("20240120022214_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -267,8 +267,8 @@ namespace MetaMusic.Migrations
 
                     b.Property<string>("Contenido")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
 
                     b.Property<int?>("CreadorId")
                         .HasColumnType("int");

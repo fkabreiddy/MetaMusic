@@ -57,63 +57,58 @@
 
             </div>
              <MudText Style="font-size: 20px; font-weight: bold;  opacity: 0.8; margin-top: 30px; margin-bottom: 30px;" Align="Align.Center" Color="Color.Secondary">CALIFICA ESTE ALBUM </MudText>
-            <MudContainer Style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 25px; ">
-           
-                @foreach (var numero in rate)
+    <MudContainer Style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 25px; ">
+
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; ">
+            <MudAvatar Class="calification-card" Variant=" Variant.Outlined" Style="height: 100px; width: 100px; cursor: pointer; margin-top: 20px; margin-bottom: 10px; font-weight: bold;">
+                @Math.Round((double)parteentera, 1)
+            </MudAvatar>
+            <MudButtonGroup Color="Color.Default" Size="Size.Small" Variant="Variant.Text">
+                <MudIconButton Icon="@Icons.Material.Rounded.ArrowBack" Size="Size.Small" Color="Color.Error" Disabled="@(parteentera <= 1)" @onclick="()=>{parteentera -= 1;}"></MudIconButton>
+
+                @if (parteentera >= 9)
                 {
-                    if(numero == 10)
-                    {
-                        <MudAvatar @onclick="()=>{parteentera = numero; partedecimal = 0.0;}" Variant=" Variant.Outlined" Style="@($"""{(parteentera  == numero ? "border: dashed 2px red;" : "")}height: 50px; width: 50px; cursor: pointer;""")">
-                            @numero
-                        </MudAvatar>
-                    }
-                    else
-                    {
-                        <MudAvatar @onclick="()=>{parteentera = numero;}" Variant=" Variant.Outlined" Style="@($"""{(parteentera  == numero ? "border: dashed 2px red;" : "")}height: 50px; width: 50px; cursor: pointer;""")">
-                        @numero
-                    </MudAvatar>
-                    }
-                    
+                    <MudIconButton Icon="@Icons.Material.Rounded.ArrowForward" Size="Size.Small" Color="Color.Error" Disabled="@(parteentera >= 10)" @onclick="()=>{parteentera += 1;partedecimal = 0;}"></MudIconButton>
 
-                   
                 }
-       
-                
-                
+                else
+                {
+                    <MudIconButton Icon="@Icons.Material.Rounded.ArrowForward" Size="Size.Small" Color="Color.Error" Disabled="@(parteentera >= 10)" @onclick="()=>{parteentera += 1;}"></MudIconButton>
 
-               
+                }
 
-            </MudContainer>
-
-            @if(parteentera <= 9.9)
-            {
-                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" >
-                     <MudContainer Style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 25px;margin-bottom: 30px; margin-top: 50px; ">
+            </MudButtonGroup>
+        </div>
+        @if (parteentera <= 9.9)
+        {
 
 
-
-                        @foreach (var numero in decimales)
-                        {
-                            <MudAvatar @onclick="()=>{partedecimal = numero ;}" Variant=" Variant.Outlined" Size="Size.Small" Style="@($"""{(partedecimal == numero ? "border: dashed 2px red;" : "")}height: 30px; font-size: 12px; width: 30px; cursor: pointer;""")">
-                                @numero
-                            </MudAvatar>
-
-
-                        }
+            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
+                <div style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center;margin-top: 20px; margin-bottom: 20px; ">
+                    <MudAvatar Variant=" Variant.Outlined" Class="calification-card" Style="height: 50px; font-size: 12px; width: 50px; cursor: pointer; margin-top: 20px; margin-bottom: 10px; font-weight: bold;">
+                        @Math.Round((double)partedecimal, 1)
+                    </MudAvatar>
+                    <MudButtonGroup DisableElevation=true Color="Color.Default" Size="Size.Small" Variant="Variant.Text">
+                        <MudIconButton Icon="@Icons.Material.Rounded.ArrowBack" Color="Color.Error" Size="Size.Small" Disabled="@(partedecimal <=0.0)" @onclick="()=>{partedecimal-= 0.1;}"></MudIconButton>
 
 
+                        <MudIconButton Icon="@Icons.Material.Rounded.ArrowForward" Color="Color.Error" Size="Size.Small" Disabled="@(partedecimal >= 0.8)" @onclick="()=>{partedecimal += 0.1;}"></MudIconButton>
+                    </MudButtonGroup>
+                </div>
+            </BlazorAnimation.Animation>
 
-                    </MudContainer>
-                </BlazorAnimation.Animation>
-                   
-            }
+        }
 
+
+    </MudContainer>
+
+           
 
     <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;" >Tu Calificacion</MudText>
 
 
       <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" >
-        <MudText Align="Align.Center" Style="font-size: 70px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;" Color="Color.Error">@(parteentera + partedecimal)</MudText>
+        <MudText Align="Align.Center" Style="font-size: 70px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;" Color="Color.Error">@Math.Round((double)(parteentera + partedecimal), 1)</MudText>
 
      </BlazorAnimation.Animation>
 

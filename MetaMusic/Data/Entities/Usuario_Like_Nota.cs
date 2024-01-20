@@ -13,11 +13,11 @@ namespace MetaMusic.Data.Entities
 
         public Nota? Nota { get; set; } = new Nota();
 
-        public static Usuario_Like_Nota Crear(Usuario_Like_NotaRequest request) => new Usuario_Like_Nota()
+        public static Usuario_Like_Nota Crear(Nota nota, Usuario usuario) => new Usuario_Like_Nota()
         {
-            Id = request.Id,
-            Usuario = request.Usuario,
-            Nota = request.Nota
+           
+            Usuario = usuario,
+            Nota = nota
             // Agrega otras propiedades si es necesario
         };
 

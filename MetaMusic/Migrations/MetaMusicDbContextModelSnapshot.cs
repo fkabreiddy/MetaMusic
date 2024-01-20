@@ -220,138 +220,6 @@ namespace MetaMusic.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Generos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Nombre = "R&B"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Nombre = "Pop"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Nombre = "Country"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Nombre = "Reggae"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Nombre = "Dance"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Nombre = "Folk"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Nombre = "Indie"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Nombre = "Blues"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Nombre = "Soul"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Nombre = "Funk"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Nombre = "Metal"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Nombre = "Rock"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Nombre = "Pop Urbano"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Nombre = "Regueton"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Nombre = "Bachata"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Nombre = "Merengue"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Nombre = "Electro-Pop"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Nombre = "Electronica"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Nombre = "Punk"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Nombre = "Rap"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Nombre = "Experimental"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Nombre = "Hyper-Pop"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Nombre = "Alternativa"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Nombre = "Classical"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Nombre = "Disco"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Nombre = "Hip-Hop"
-                        });
                 });
 
             modelBuilder.Entity("MetaMusic.Data.Entities.Genero_Artista", b =>
@@ -396,8 +264,8 @@ namespace MetaMusic.Migrations
 
                     b.Property<string>("Contenido")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
 
                     b.Property<int?>("CreadorId")
                         .HasColumnType("int");
@@ -588,18 +456,6 @@ namespace MetaMusic.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Tipo = "Normal"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Tipo = "Staff"
-                        });
                 });
 
             modelBuilder.Entity("MetaMusic.Data.Entities.Track", b =>
