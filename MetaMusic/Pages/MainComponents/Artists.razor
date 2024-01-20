@@ -160,76 +160,70 @@ else
                 <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
 
 
-                <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
-
-                    <MudGrid Style="display: flex; align-items: center;">
-                        <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
 
 
-                            <MudContainer Style="display: flex; flex-direction: column; gap: 20px;">
-                                <div style="display: flex; gap: 10px; align-items: center;">
-                                    <MudIcon Icon="@Icons.Material.Rounded.MusicNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
-                                    <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">TRACKS</MudText>
+                    <MudGrid Style="display: flex; align-items: first baseline;">
 
-                                    <MudText Style="font-size: 15px;">@Artista.GetAllTracksCount()</MudText>
-                                    </div>
-                                    <MudDivider></MudDivider>
-                                    <div style="display: flex; gap: 10px; align-items: center;">
-                                        <MudIcon Icon="@Icons.Material.Rounded.EditNote" Style="height: 17px; width: 17px;" Color="Color.Error"></MudIcon>
-                                        <MudText Style="font-size: 15px;font-weight: bold; " Color="Color.Error">REVIEWS</MudText>
+                        <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
+                            <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" >REVIEWS</MudText>
 
+                            <MudGrid>
+                                @foreach (var album in albumes)
+                                {
+                                    <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+                                        <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                    </MudItem>
+                                }
+                            </MudGrid>
+                        </MudItem>
+                           
 
-                                        <MudText Style="font-size: 15px; ">@Artista.Albumes.Count()</MudText>
-                                    </div>
-                                    <MudDivider></MudDivider>
+                       <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
+                                <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" >TRACKS POPULARES</MudText>
 
-
-                                </MudContainer>
-                            </MudItem>
-
-                            <MudItem md="8" lg="8" xxl="8" xl="8" sm="12" xs="12">
-                                <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">TRACKS POPULARES</MudText>
-
-                                <MudContainer>
-                                    <MudGrid Justify="Justify.Center">
+                         
+                                    <AuthorizeView>
+                                        <Authorized>
+                                            <MudGrid Justify="Justify.Center">
 
 
-                                        @foreach (var track in Tracks)
-                                    {
-                                        <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
-                                            <MetaMusic.Pages.Common_Components.TrackComponent track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
-                                        </MudItem>
-                                    }
+                                                @foreach (var track in Tracks.AsEnumerable().Take(6))
+                                                {
+                                                    <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
+                                                        <MetaMusic.Pages.Common_Components.TrackComponent currentuser="new UsuarioResponse(){Id = UserId}" track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
+                                                    </MudItem>
+                                                }
 
 
-                                </MudGrid>
-                            </MudContainer>
+                                            </MudGrid>
+                                        </Authorized>
+                                        <NotAuthorized>
+                                            <MudGrid Justify="Justify.Center">
+
+
+                                                @foreach (var track in Tracks.AsEnumerable().Take(6))
+                                                {
+                                                    <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
+                                                        <MetaMusic.Pages.Common_Components.TrackComponent DisableLikeButton=true track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
+                                                    </MudItem>
+                                                }
+
+
+                                            </MudGrid>
+                                        </NotAuthorized>
+                                    </AuthorizeView>
+                                
+                      
                         </MudItem>
 
 
 
                     </MudGrid>
 
-                </MudItem>
+      
 
 
-                <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
-
-
-
-                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12" Style="margin-top: 40px; margin-bottom: 40px;">
-                    <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;" Color="Color.Error">REVIEWS</MudText>
-
-
-                    <MudGrid>
-                        @foreach (var album in albumes)
-                        {
-                            <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
-                                <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
-                            </MudItem>
-                        }
-                    </MudGrid>
-                </MudItem>
+               
             </MudGrid>
         </MudItem>
     }
@@ -265,28 +259,39 @@ else
     }
     protected override async Task OnParametersSetAsync()
     {
-      
+
         DataLoaded = false;
         if(UserId == 0)
         {
-             await GetCurrentUser();  
+            await GetCurrentUser();  
             DataLoaded = true;
         }
         if(Artista.Id == 0)
         {
 
             await GetArtista();
+            await GetArtistAlbumes(Artista);
             DataLoaded = true;
         }
-        
-        
-       
-           
-       
-        
+
+
+
+
+
+
     }
-    
-    
+
+    public async Task GetArtistAlbumes(ArtistaResponse artista)
+    {
+        var r = await albumService.ConsultarPorArtista(artista.Id);
+
+        if(r.Success == true && r.Data is not null)
+        {
+            albumes = r.Data;
+            Tracks = r.Data.SelectMany(a => a.Tracks.OrderByDescending(t => t.Cantidad_Likes)).ToList();
+        }
+    }
+
     public async Task GetArtista(){
 
         

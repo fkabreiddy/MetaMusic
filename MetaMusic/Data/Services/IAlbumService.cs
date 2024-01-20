@@ -17,6 +17,7 @@ namespace MetaMusic.Data.Services
         Task<Result<Usuario_Like_Track>> LikeTrack(Track track);
         Task<Result<AlbumResponse>> Modificar(AlbumRequest request, ReviewRequest review);
 
+        Task<Result<List<AlbumResponse>>> ConsultarPorArtista(int artistaid);
         Task<Result<AlbumResponse>> GetBestReview();
     }
 }
