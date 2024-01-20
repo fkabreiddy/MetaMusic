@@ -647,7 +647,7 @@ else
 
         calificacionRequest.Numero = parteentera + partedecimal;
 
-        if(notaRequest.Contenido != "")
+        if(!string.IsNullOrWhiteSpace(notaRequest.Contenido) && !string.IsNullOrEmpty(notaRequest.Contenido)  )
         {
             var r = await notaService.Crear(notaRequest,  Albumresponse.ToRequest());
 
@@ -684,8 +684,9 @@ else
 
             if(r.Success && r.Data is not null)
             {
-
+                 calificacionResponse = r.Data;
                 calificaciones.Add(r.Data);
+               
                 MostrarNotificacion("Crtiica hecha", "Se guardó tu cítica correctamente");
                 StateHasChanged();
             }

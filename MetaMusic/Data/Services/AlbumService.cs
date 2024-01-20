@@ -380,5 +380,35 @@ namespace MetaMusic.Data.Services
                 { Message = e.InnerException?.Message ?? e.Message, Success = false };
             }
         }
+
+
+        public async Task<Result<AlbumResponse>> GetBestReview()
+        {
+            try
+            {
+                var album = await dbContext.Albumes.Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(a => a.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Calificaciones.Count() * Math.Round(a.Calificaciones.Average(c => c.Numero), 1)).FirstOrDefaultAsync();
+
+                if (album == null)
+                    return new()
+                    {
+                        Message = "No hay mejor review",
+                        Success = false
+                    };
+
+                return new Result<AlbumResponse>()
+                {
+                    Data = album.ToResponse(),
+                    Success = true
+                };
+            }
+            catch (Exception e)
+            {
+                return new()
+                {
+                    Success = false,
+                    Message = e.InnerException?.Message ?? e.Message
+                };
+            }
+        }
     }
 }

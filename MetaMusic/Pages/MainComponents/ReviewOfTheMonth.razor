@@ -39,7 +39,7 @@
        
         <MudItem md="6" lg="6" xxl="6" Class="container" xl="6" sm="10" xs="10" Style="height: 320px; width:100%;">
 
-            <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="https://www.loudandquiet.com/files/2019/04/weyes-blood-titanic-rising-artwork.jpg" Style="height:100%;border-radius: 10px; width: 100%;  " />
+            <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@Album.Portada" Style="height:100%;border-radius: 10px; width: 100%;  " />
                 <MudText Class="portada-text" Style="font-size: 25px; font-weight: bold; font-family: SourceSerif4; opacity: 1;" Color="Color.Primary" Align="Align.Center"> <mark>Titanic Rising - Weyes Blood</mark></MudText>
                 
            
@@ -75,5 +75,5 @@
 
 
 @code {
-
+    [Parameter] public AlbumResponse Album { get; set; } = new AlbumResponse();
 }

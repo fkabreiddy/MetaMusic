@@ -41,7 +41,7 @@ namespace MetaMusic.Data.Responses
 
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
 
-        public double Promedio_Calificaciones => Math.Round(Calificaciones.Average(c => c.Numero), 1);
+        public double Promedio_Calificaciones => Calificaciones.Count() >= 1 ? Math.Round(Calificaciones.Average(c => c.Numero), 1) : 0;
         public double Calificacion_Creador { get; set; } = 0.0;
         public List<Nota> Notas { get; set; } = new List<Nota>();
         public List<Track> Tracks { get; set; } = new List<Track>();

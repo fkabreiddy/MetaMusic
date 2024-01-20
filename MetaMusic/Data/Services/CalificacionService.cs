@@ -34,7 +34,7 @@ namespace MetaMusic.Data.Services
                 if (usuarioactual is null)
                     return new Result<CalificacionResponse>() { Message = "Primero crea una cuenta", Success = false };
 
-                var album = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Id == a.Id);
+                var album = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Id == albumrequest.Id);
 
                 if (album is null)
                     return new Result<CalificacionResponse>() { Message = "El album no existe", Success = false };

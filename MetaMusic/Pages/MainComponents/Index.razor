@@ -58,17 +58,24 @@
 
 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
     <MudDivider Style="margin-top: 40px; margin-bottom: 40px;  "></MudDivider>
-    <SongReviewOfTheMonth></SongReviewOfTheMonth>
+    @if (recentAlbumsLoaded && AlbumReviewOfTheMontLoaded)
+    {
+          <SongReviewOfTheMonth album="@reviewOfTheMont"></SongReviewOfTheMonth>        
+    }
+
 
 </BlazorAnimation.Animation>
 
 
 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(2)">
     <MudDivider Style="margin-top: 40px; margin-bottom: 40px;"></MudDivider>
-     @if (recentAlbumsLoaded)
+   
+    @if(AlbumReviewOfTheMontLoaded)
     {
         <ArtistasNuevos></ArtistasNuevos>
     }
+   
+    
 
 </BlazorAnimation.Animation>
 @functions{
@@ -81,8 +88,22 @@
         if(r.Data is not null)
         {
             albumesrecientes = r.Data;
-            recentAlbumsLoaded = true;
+          
         }
+
+        recentAlbumsLoaded = true;
+    }
+    public async Task GetReviewOfTheMont()
+    {
+        AlbumReviewOfTheMontLoaded = false;
+        var r = await albumService.GetBestReview();
+
+        if(r.Success && r.Data is not null)
+        {
+            reviewOfTheMont = r.Data;
+          
+        }
+        AlbumReviewOfTheMontLoaded = true;
     }
     public async Task VerifyUserAuth(){
         var state = await authstate.GetAuthenticationStateAsync();
@@ -114,6 +135,7 @@
 
             await GetRecentAlbums();
             await VerifyUserAuth();
+            await GetReviewOfTheMont();
         }
         catch(Exception e)
         {
@@ -124,7 +146,8 @@
     }
 
     public bool recentAlbumsLoaded = false;
+    public bool AlbumReviewOfTheMontLoaded = false;
     public List<AlbumResponse> albumesrecientes = new List<AlbumResponse>();
-
+    public AlbumResponse reviewOfTheMont = new AlbumResponse();
 
 }
