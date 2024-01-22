@@ -27,6 +27,24 @@
 
         </BlazorAnimation.Animation>
     }
+    else if(notRecentAlbumes)
+    {
+
+            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                    <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+
+
+                        <MudText Style="font-size: 15px; font-weight: bold; opacity: 0.7;">No hay nada aqui. Contenido nuevo pronto.</MudText>
+
+
+                    </MudItem>
+                </div>
+            </BlazorAnimation.Animation>
+        
+    }
     else
     {
         <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
@@ -60,7 +78,27 @@
     <MudDivider Style="margin-top: 40px; margin-bottom: 40px;  "></MudDivider>
     @if (recentAlbumsLoaded && AlbumReviewOfTheMontLoaded)
     {
-          <SongReviewOfTheMonth album="@reviewOfTheMont"></SongReviewOfTheMonth>        
+        if(!notReviewOfTheMonth)
+        {
+            <SongReviewOfTheMonth album="@reviewOfTheMont"></SongReviewOfTheMonth>
+
+        }
+        else
+        {
+            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                    <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+
+
+                        <MudText Style="font-size: 15px; font-weight: bold; opacity: 0.7;">No hay nada aqui. Contenido nuevo pronto.</MudText>
+
+
+                    </MudItem>
+                </div>
+            </BlazorAnimation.Animation>
+        }
     }
 
 
@@ -82,16 +120,21 @@
 
     public async Task GetRecentAlbums()
     {
+
         recentAlbumsLoaded = false;
         var r = await albumService.ConsultarRecientes();
 
         if(r.Data is not null)
         {
             albumesrecientes = r.Data;
-          
+            notRecentAlbumes = false;
         }
-
+        else
+        {
+            notRecentAlbumes = true;
+        }
         recentAlbumsLoaded = true;
+
     }
     public async Task GetReviewOfTheMont()
     {
@@ -101,7 +144,11 @@
         if(r.Success && r.Data is not null)
         {
             reviewOfTheMont = r.Data;
-          
+            notReviewOfTheMonth = false;
+        }
+        else
+        {
+            notReviewOfTheMonth = true;
         }
         AlbumReviewOfTheMontLoaded = true;
     }
@@ -147,6 +194,8 @@
 
     public bool recentAlbumsLoaded = false;
     public bool AlbumReviewOfTheMontLoaded = false;
+    public bool notRecentAlbumes = true;
+    public bool notReviewOfTheMonth = true;
     public List<AlbumResponse> albumesrecientes = new List<AlbumResponse>();
     public AlbumResponse reviewOfTheMont = new AlbumResponse();
 

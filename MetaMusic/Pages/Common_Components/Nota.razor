@@ -29,16 +29,46 @@
 
             <div style="display: flex; gap :30px;">
                 <div style="display: flex; gap :8px;align-items: center;">
-                    <MudIcon Icon="@Icons.Material.Rounded.Favorite" Color="Color.Error" Style="width: 15px; height: 15px;"></MudIcon>
-                    <MudText Style="font-size: 12px;font-weight: bold; opacity: 0.7; " Color="Color.Primary">90</MudText>
+                     @if(disableInteractivity)
+                    {
+                        <MudIcon Icon="@( nota.Usuarios_Liked.Any(U => U.Id == usuarioactual.Id)  ? Icons.Material.Rounded.Favorite : Icons.Material.Rounded.FavoriteBorder  )" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+                        
+                    }
+                    else
+                        {
+                        <MudIcon @onclick="async ()=>{await likeNote();}" Icon="@( nota.Usuarios_Liked.Any(U => U.Id == usuarioactual.Id)  ? Icons.Material.Rounded.Favorite : Icons.Material.Rounded.FavoriteBorder  )" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+
+                    }
+                    <MudText Style="font-size: 12px;font-weight: bold; opacity: 0.7; " Color="Color.Primary">@nota.Cantidad_Likes</MudText>
                 </div>
 
-                <div style="display: flex; gap :8px;align-items: center;">
-                    <MudIcon Icon="@Icons.Material.Rounded.ThumbDownAlt" Color="Color.Error" Style="width: 15px; height: 15px;"></MudIcon>
-                    <MudText Style="font-size: 12px;font-weight: bold; opacity: 0.7; " Color="Color.Primary">5</MudText>
-                </div>
+              
+                    <div style="display: flex; gap :8px;align-items: center;">
 
-                @if(ReportButton)
+                        @if(disableInteractivity)
+                        {
+                         <MudIcon Icon="@(nota.Usuarios_DisLiked.Any(U => U.Id == usuarioactual.Id) ? Icons.Material.Rounded.ThumbDownAlt : Icons.Material.Outlined.ThumbDownAlt  )" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+
+                        }
+                        else
+                        {
+                         <MudIcon @onclick="async ()=>{await DislikeNote();}" Icon="@(nota.Usuarios_DisLiked.Any(U => U.Id == usuarioactual.Id) ? Icons.Material.Rounded.ThumbDownAlt : Icons.Material.Outlined.ThumbDownAlt  )" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+
+                        }
+                        <MudText Style="font-size: 12px;font-weight: bold; opacity: 0.7; " Color="Color.Primary">@nota.Cantidad_Dislikes</MudText>
+                    </div>
+                
+               
+
+               
+                @if(deletebuttonvisible || usuarioactual.Rol.Tipo == "Staff")
+                {
+                    <div style="display: flex; gap :8px;align-items: center;">
+                        <MudIcon @onclick="async ()=>{await DislikeNote();}" Icon="@Icons.Material.Rounded.Delete" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+                      
+                    </div>
+                }
+                else
                 {
                     <MudMenu ListClass="pa-0 mud-elevation-4" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag">
 
@@ -53,7 +83,7 @@
 
 
                                 <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Contenido Ofensivo</MudText></MudMenuItem>
-                                <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Critica Imparcial / Hate</MudText></MudMenuItem>
+                                <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Spam</MudText></MudMenuItem>
 
 
 
@@ -69,7 +99,7 @@
                     </MudMenu>
 
                 }
-            
+
 
                
             </div>
@@ -80,8 +110,38 @@
 
     </MudContainer>
 </MudPaper>
+
+@functions{
+
+    public async Task DislikeNote()
+    {
+        var r = await notaService.DisLikeNota(nota.Id, usuarioactual.Id);
+
+        if(r.Success && r.Data is not null)
+        {
+
+            nota = r.Data;
+            StateHasChanged();
+        }
+    }
+
+    public async Task likeNote()
+    {
+        var r = await notaService.LikeNota(nota.Id, usuarioactual.Id);
+
+        if (r.Success && r.Data is not null)
+        {
+
+            nota = r.Data;
+            StateHasChanged();
+        }
+    }
+}
 @code {
     [Parameter] public CalificacionResponse calificacion { get; set; } = new CalificacionResponse();
     [Parameter] public NotaResponse nota { get; set; } = new NotaResponse();
     [Parameter] public bool ReportButton { get; set; } = true;
+    [Parameter] public UsuarioResponse usuarioactual { get; set; } = new UsuarioResponse();
+    [Parameter] public bool disableInteractivity { get; set; } = false;
+    [Parameter] public bool deletebuttonvisible { get; set; } = false;
 }

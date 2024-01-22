@@ -162,7 +162,7 @@ namespace MetaMusic.Data.Services
 
 
 
-                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).FirstOrDefaultAsync(a => a.Album.Id == notaid);
+                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).FirstOrDefaultAsync(a => a.Id == notaid);
 
                 if (notas is null)
                     return new Result<NotaResponse>() { Message = "la nota no existe", Success = false };
@@ -227,7 +227,7 @@ namespace MetaMusic.Data.Services
 
 
 
-                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).FirstOrDefaultAsync(a => a.Album.Id == notaid);
+                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).FirstOrDefaultAsync(a => a.Id == notaid);
 
                 if (notas is null)
                     return new Result<NotaResponse>() { Message = "la nota no existe", Success = false };

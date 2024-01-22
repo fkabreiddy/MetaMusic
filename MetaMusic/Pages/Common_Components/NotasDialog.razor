@@ -16,12 +16,12 @@
         <MudDivider Class="mt-5 mb-5"></MudDivider>
         <div style="overflow: auto; max-height: 69vh; " >
             <MudContainer Style="display: flex; flex-direction: column; gap : 10px; margin-bottom: 20px; ">
-                <Calificaciones></Calificaciones>
+                <Calificaciones calificaciones="@calificaciones" promedio="@promedio"></Calificaciones>
             </MudContainer>
             <MudText Align="Align.Center" Style="font-size: 10px; font-weight: bold; margin-top: 20px; margin-bottom: 20px; opacity: 0.5;">•  •  •  •  •  •  •  •  •  •  •  •</MudText>
 
             <MudContainer style="@($"""background-color: {backgroundTitleColor}; display: flex; margin-bottom: 30px;  gap : 10px; justify-content: space-between; align-items: center; padding-left: 50px; padding-bottom: 20px;  padding-right: 50px;position: sticky; top: 0; z-index: 1;""")">
-                <MudText Style="font-size: 15px; font-weight: bold" Align="Align.Center" Color="Color.Error">   NOTAS (180)</MudText>
+                <MudText Style="font-size: 15px; font-weight: bold" Align="Align.Center" Color="Color.Error">   NOTAS (@notas.Count())</MudText>
 
                 <MudMenu ListClass="pa-0 mud-elevation-4" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.FilterList">
                                              
@@ -49,11 +49,21 @@
            
             <MudContainer>
                 <MudGrid>
-                    @foreach(var item in lista)
+                    @foreach(var nota in notas)
                     {
-                        <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
-                            <Nota></Nota>
-                        </MudItem>
+                        @if(nota.Creador?.Id == usuarioactual.Id)
+                        {
+                            <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                <Nota usuarioactual="@usuarioactual" ReportButton=false nota="@nota"  deletebuttonvisible=true calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == nota.Creador?.Id)"></Nota>
+                            </MudItem>
+                        }
+                        else
+                        {
+                            <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                <Nota usuarioactual="@usuarioactual" nota="@nota" calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == nota.Creador?.Id)"></Nota>
+                            </MudItem>
+                        }
+                       
 
                         <MudDivider Class="mb-5 mt-5"></MudDivider>
                     }
@@ -72,8 +82,10 @@
     public MudDialogInstance MudDialog { get; set; }
 
     public List<int> lista = new List<int>() { 1, 2, 3, 4, 5, 6 };
-
-
+    [Parameter] public List<CalificacionResponse> calificaciones { get; set; } = new List<CalificacionResponse>();
+    [Parameter] public List<NotaResponse> notas { get; set; } = new List<NotaResponse>();
+    [Parameter] public double promedio { get; set; }
+    [Parameter] public UsuarioResponse usuarioactual { get; set; } = new UsuarioResponse();
     public string backgroundTitleColor => (theme.IsDark() ? "#191919" : "#F9F9F9");
-
+    
 }

@@ -73,7 +73,15 @@ namespace MetaMusic.Data.Services
                     Success = false
                 };
             }
-          
+            catch (Exception e)
+            {
+                return new Result<ArtistaResponse>()
+                {
+                    Message = "Hubo un error, intenta denuevo mas tarde",
+                    Success = false
+                };
+            }
+
         }
         public async Task<Result<MetaMusic.Data.Request.AlbumRequest>> GetAlbum(string albumId)
         {
@@ -168,8 +176,13 @@ namespace MetaMusic.Data.Services
                     Success = false
                 };
             }
+            catch (Exception e)
             {
-
+                return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                {
+                    Message = "Hubo un error, intenta denuevo mas tarde",
+                    Success = false
+                };
             }
         }
 

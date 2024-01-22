@@ -23,17 +23,25 @@
           <MudItem md="5" lg="5" xxl="5"  xl="5" sm="12" xs="12">
 
 
-        @if (album.Artistas.Count() >= 2)
-        {
-            <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
-        }
-        else
-        {
-            <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error">
-                @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre)
-            </MudText>
+            @try
+            {
+                @if (album.Artistas.Count() >= 2)
+                {
+                    <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
+                }
+                else
+                {
+                    <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error">
+                        @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre)
+                    </MudText>
 
-        }
+                }
+            }
+            catch
+            {
+
+            }
+       
 
        
             <MudText Style="font-size: 50px; font-family: SourceSerif4;  " Align="Align.Center">“@album.Nombre”</MudText>

@@ -1,26 +1,58 @@
 ﻿
     <div style="display: flex; flex-direction: column;  gap: 20px; align-items: center; justify-content: center; margin-bottom: 20px;">
     
-            <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="font-weight: bold;">
-                8
+            <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="font-weight: bold; width: 50px; height: 50px; font-size: 20px;">
+                @promedio
             </MudAvatar>
         
         <div style="display: flex; flex-direction: column;  gap: 20px; align-items: center; justify-content: center;">
             <div style="display: flex; gap: 20px; align-items: center;">
-                <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">120</span>  criticas positivas (10 - 7)</MudText>
+                <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">@calificaciones.Where(c => c.Numero <= 10 && c.Numero >= 7).Count()</span>  criticas positivas (10 - 7)</MudText>
                 <MudIcon Style="height: 20px; width: 20px;" Color="Color.Error" Icon="@Icons.Material.Rounded.Favorite"></MudIcon>
             </div>
-            <MudProgressLinear Color="Color.Success" Rounded="true" Size="Size.Small" Value="@(120 *  100 / 180)" />
+
+            @if (calificaciones.Where(c => c.Numero <= 10 && c.Numero >= 7).Count() >= 1)
+            {
+
+            <MudProgressLinear Color="Color.Success" Rounded="true" Size="Size.Small" Value="@(calificaciones.Where(c => c.Numero <= 10 && c.Numero >= 7).Count()   *  100 / calificaciones.Count())" />
+            }
+            else
+            {
+
+            <MudProgressLinear Color="Color.Success" Rounded="true" Size="Size.Small" Value="0" />
+
+            }
+       
             <div style="display: flex; gap: 20px; align-items: center;">
-                <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">50</span>  criticas neutrales (6 - 4)</MudText>
-                <MudIcon Style="height: 20px; width: 20px;" Color="Color.Error" Icon="@Icons.Material.Rounded.SentimentNeutral"></MudIcon>
+                <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">@calificaciones.Where(c => c.Numero <= 6 && c.Numero >= 4).Count()</span>  criticas neutrales (6 - 4)</MudText>
+
+          
+              <MudIcon Style="height: 20px; width: 20px;" Color="Color.Error" Icon="@Icons.Material.Rounded.SentimentNeutral"></MudIcon>
             </div>
-            <MudProgressLinear Color="Color.Warning" Rounded="true" Size="Size.Small" Value="@(50 *  100 / 180)" />
+                 @if (calificaciones.Where(c => c.Numero <= 6 && c.Numero >= 4).Count() >=1)
+                {
+                    <MudProgressLinear Color="Color.Warning" Rounded="true" Size="Size.Small" Value="@(calificaciones.Where(c => c.Numero <= 6 && c.Numero >= 4).Count() *  100 / calificaciones.Count())" />
+
+                }
+                else
+                {
+                    <MudProgressLinear Color="Color.Warning" Rounded="true" Size="Size.Small" Value="0" />
+
+                }
             <div style="display: flex; gap: 20px; align-items: center;">
-                <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">10</span>  criticas malas (3 - 1)</MudText>
+            <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">@calificaciones.Where(c => c.Numero <= 3 && c.Numero >= 0).Count()</span>  criticas negativas (3 - 0)</MudText>
                 <MudIcon Style="height: 20px; width: 20px;" Color="Color.Error" Icon="@Icons.Material.Rounded.ThumbDown"></MudIcon>
             </div>
-            <MudProgressLinear Color="Color.Error" Rounded="true" Size="Size.Small" Value="@(10 *  100 / 180)" />
+             @if (calificaciones.Where(c => c.Numero <= 3 && c.Numero >= 0).Count() >= 1)
+            {
+                              <MudProgressLinear Color="Color.Error" Rounded="true" Size="Size.Small" Value="@(calificaciones.Where(c => c.Numero <= 3 && c.Numero >= 0).Count() *  100 / calificaciones.Count())" />
+
+            }
+            else
+            {
+            <MudProgressLinear Color="Color.Error" Rounded="true" Size="Size.Small" Value="0" />
+
+            }
         </div>
         
 
@@ -33,4 +65,6 @@
 
 @code {
 
+    [Parameter] public List<CalificacionResponse> calificaciones { get; set; } = new List<CalificacionResponse>();
+    [Parameter] public double promedio { get; set; } = 0.0;
 }

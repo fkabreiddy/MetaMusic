@@ -432,7 +432,7 @@
                                 <div style=" display: flex; justify-content: center;">
 
                                     <MudItem md="6" lg="5" xxl="4" xl="5" sm="8" xs="10">
-                                        <MetaMusic.Pages.Common_Components.Nota calificacion="calificacionResponse" nota="notaResponse" ReportButton=false></MetaMusic.Pages.Common_Components.Nota>
+                                        <MetaMusic.Pages.Common_Components.Nota calificacion="calificacionResponse" usuarioactual="UsuarioActual" deletebuttonvisible=true nota="notaResponse"  ReportButton=false></MetaMusic.Pages.Common_Components.Nota>
 
                                     </MudItem>
 
@@ -752,8 +752,12 @@ else
     public async Task ShowNotes()
     {
         var options = new MudBlazor.DialogOptions() { NoHeader = true, CloseButton = false };
-
-        await dService.ShowAsync<Pages.Common_Components.NotasDialog>("", options);
+        var parameter = new DialogParameters<MetaMusic.Pages.Common_Components.NotasDialog>();
+        parameter.Add(x => x.calificaciones, calificaciones);
+        parameter.Add(x => x.notas, notas);
+        parameter.Add(x => x.usuarioactual, UsuarioActual);
+        parameter.Add(x => x.promedio, Albumresponse.Promedio_Calificaciones);
+        await dService.ShowAsync<Pages.Common_Components.NotasDialog>("", parameter, options);
     }
 
    
