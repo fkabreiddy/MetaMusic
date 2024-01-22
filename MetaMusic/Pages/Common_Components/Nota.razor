@@ -31,12 +31,12 @@
                 <div style="display: flex; gap :8px;align-items: center;">
                      @if(disableInteractivity)
                     {
-                        <MudIcon Icon="@( nota.Usuarios_Liked.Any(U => U.Id == usuarioactual.Id)  ? Icons.Material.Rounded.Favorite : Icons.Material.Rounded.FavoriteBorder  )" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+                        <MudIcon Icon="@( nota.Usuarios_Liked.Any(U => U.Usuario.Id == usuarioactual.Id)  ? Icons.Material.Rounded.Favorite : Icons.Material.Rounded.FavoriteBorder  )" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
                         
                     }
                     else
                         {
-                        <MudIcon @onclick="async ()=>{await likeNote();}" Icon="@( nota.Usuarios_Liked.Any(U => U.Id == usuarioactual.Id)  ? Icons.Material.Rounded.Favorite : Icons.Material.Rounded.FavoriteBorder  )" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+                        <MudIcon @onclick="async ()=>{await likeNote();}" Icon="@( nota.Usuarios_Liked.Any(U => U.Usuario.Id == usuarioactual.Id)  ? Icons.Material.Rounded.Favorite : Icons.Material.Rounded.FavoriteBorder  )" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
 
                     }
                     <MudText Style="font-size: 12px;font-weight: bold; opacity: 0.7; " Color="Color.Primary">@nota.Cantidad_Likes</MudText>
@@ -47,12 +47,12 @@
 
                         @if(disableInteractivity)
                         {
-                         <MudIcon Icon="@(nota.Usuarios_DisLiked.Any(U => U.Id == usuarioactual.Id) ? Icons.Material.Rounded.ThumbDownAlt : Icons.Material.Outlined.ThumbDownAlt  )" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+                         <MudIcon Icon="@(nota.Usuarios_DisLiked.Any(U => U.Usuario.Id == usuarioactual.Id) ? Icons.Material.Rounded.ThumbDownAlt : Icons.Material.Outlined.ThumbDownAlt  )" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
 
                         }
                         else
                         {
-                         <MudIcon @onclick="async ()=>{await DislikeNote();}" Icon="@(nota.Usuarios_DisLiked.Any(U => U.Id == usuarioactual.Id) ? Icons.Material.Rounded.ThumbDownAlt : Icons.Material.Outlined.ThumbDownAlt  )" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+                         <MudIcon @onclick="async ()=>{await DislikeNote();}" Icon="@(nota.Usuarios_DisLiked.Any(U => U.Usuario.Id == usuarioactual.Id) ? Icons.Material.Rounded.ThumbDownAlt : Icons.Material.Outlined.ThumbDownAlt  )" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
 
                         }
                         <MudText Style="font-size: 12px;font-weight: bold; opacity: 0.7; " Color="Color.Primary">@nota.Cantidad_Dislikes</MudText>
@@ -70,7 +70,7 @@
                 }
                 else
                 {
-                    <MudMenu ListClass="pa-0 mud-elevation-4" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag">
+                     <MudMenu ListClass="pa-0 mud-elevation-4" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag">
 
                         <ActivatorContent>
                             <div style="display: flex; gap :8px;align-items: center;">

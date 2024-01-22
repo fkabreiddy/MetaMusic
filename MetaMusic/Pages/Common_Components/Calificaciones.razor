@@ -7,8 +7,8 @@
         
         <div style="display: flex; flex-direction: column;  gap: 20px; align-items: center; justify-content: center;">
             <div style="display: flex; gap: 20px; align-items: center;">
-                <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">@calificaciones.Where(c => c.Numero <= 10 && c.Numero >= 7).Count()</span>  criticas positivas (10 - 7)</MudText>
-                <MudIcon Style="height: 20px; width: 20px;" Color="Color.Error" Icon="@Icons.Material.Rounded.Favorite"></MudIcon>
+                <span style="font-size: 12px; font-weight: bold;color: #E74646;">@calificaciones.Where(c => c.Numero <= 10 && c.Numero >= 7).Count()</span>
+                <MudText Style="font-size: 12px; font-weight: bold"> criticas positivas (10 - 7)</MudText>
             </div>
 
             @if (calificaciones.Where(c => c.Numero <= 10 && c.Numero >= 7).Count() >= 1)
@@ -24,10 +24,10 @@
             }
        
             <div style="display: flex; gap: 20px; align-items: center;">
-                <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">@calificaciones.Where(c => c.Numero <= 6 && c.Numero >= 4).Count()</span>  criticas neutrales (6 - 4)</MudText>
+            <span style="font-size: 12px; font-weight: bold;color: #E74646;">@calificaciones.Where(c => c.Numero <= 6 && c.Numero >= 4).Count()</span>
+                <MudText Style="font-size: 12px; font-weight: bold">  criticas neutrales (6 - 4)</MudText>
 
           
-              <MudIcon Style="height: 20px; width: 20px;" Color="Color.Error" Icon="@Icons.Material.Rounded.SentimentNeutral"></MudIcon>
             </div>
                  @if (calificaciones.Where(c => c.Numero <= 6 && c.Numero >= 4).Count() >=1)
                 {
@@ -40,8 +40,8 @@
 
                 }
             <div style="display: flex; gap: 20px; align-items: center;">
-            <MudText Style="font-size: 12px; font-weight: bold"><span style="color: #E74646;">@calificaciones.Where(c => c.Numero <= 3 && c.Numero >= 0).Count()</span>  criticas negativas (3 - 0)</MudText>
-                <MudIcon Style="height: 20px; width: 20px;" Color="Color.Error" Icon="@Icons.Material.Rounded.ThumbDown"></MudIcon>
+            <span style="font-size: 12px; font-weight: bold;color: #E74646;">@calificaciones.Where(c => c.Numero <= 3 && c.Numero >= 0).Count()</span>
+            <MudText Style="font-size: 12px; font-weight: bold">  criticas negativas (3 - 0)</MudText>
             </div>
              @if (calificaciones.Where(c => c.Numero <= 3 && c.Numero >= 0).Count() >= 1)
             {
