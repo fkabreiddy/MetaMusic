@@ -192,7 +192,13 @@ namespace MetaMusic.Data.Entities
                 modificacion = true;
             }
 
-            FechaModificado = DateTime.Now;
+            Modificado = modificacion;
+
+            if(modificacion==true)
+            {
+                FechaModificado = DateTime.Now;
+
+            }
             return modificacion;
         }
     }

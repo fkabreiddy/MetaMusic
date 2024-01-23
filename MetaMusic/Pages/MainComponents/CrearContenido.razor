@@ -3,13 +3,14 @@
     <Authorized>
        @if(Autorizado)
        {
-            <MudItem Style="margin-top: 60px;">
-                <MudGrid Justify="Justify.Center">
+            <MudItem Style="margin-top: 60px;margin-bottom: 60px;">
+                <MudCard >
+                    <MudGrid Justify="Justify.Center">
 
-                    @if (tipodeContenidoEncontrado == "")
-                    {
-                        <MudItem md="8" sm="8" lg="8" xxl="8" xl="8" xs="8">
-                     
+                        @if (tipodeContenidoEncontrado == "")
+                        {
+                            <MudItem md="8" sm="8" lg="8" xxl="8" xl="8" xs="8">
+
 
                                 <MudContainer Style="height: auto; width: 100%;  display: flex; border-radius: 9px; flex-direction: column; ">
 
@@ -27,27 +28,30 @@
                                         <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "album" ? MudBlazor.Variant.Filled : MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "album";}' Default=true Text="Album / Single"></MudChip>
                                     </MudChipSet>
 
+                                    <div style="display: flex; flex-direction: column; justify-content: center;align-items: center;">
+                                        <MudTextField T="string" @bind-Value="url" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 10px; border: dashed 1px;   ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='@($"""ID del {tipodeContenido} a buscar""")'></MudTextField>
+
+
+
+
+
+                                        @if (buscando)
+                                        {
+                                            <div style=" display: flex; justify-content: center; margin-bottom: 15px;  width: 100px;  align-items: center; position: relative;">
+                                                <MudProgressLinear Rounded="true" Indeterminate="true" Color="Color.Error"> </MudProgressLinear>
+
+                                            </div>
+                                        }
+                                        else
+                                        {
+
+                                            <MudChip @onclick="async()=>{await BuscarEnSpotify();}" Variant="MudBlazor.Variant.Filled" Disabled="@(buscando || string.IsNullOrEmpty(url) || string.IsNullOrWhiteSpace(url))" Color="Color.Error" Style="font-size: 12px; margin-bottom: 15px; margin-top: 30px; width: 100px; cursor: pointer;">
+                                                Buscar
+                                            </MudChip>
+                                        }
+                                    </div>
+
                                     
-                                    <MudTextField T="string" @bind-Value="url" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='@($"""URl del {tipodeContenido} a buscar""")'></MudTextField>
-
-
-
-
-
-                                    @if (buscando)
-                                    {
-                                        <div style=" display: flex; justify-content: center; margin-bottom: 15px;  align-items: center; position: relative;">
-                                            <MudProgressLinear Rounded="true" Indeterminate="true" Color="Color.Error"> </MudProgressLinear>
-
-                                        </div>
-                                    }
-                                    else
-                                    {
-
-                                        <MudChip @onclick="async()=>{await BuscarEnSpotify();}" Variant="MudBlazor.Variant.Filled" Disabled="@buscando" Color="Color.Error" Style="font-size: 12px; margin-bottom: 15px; margin-top: 30px; cursor: pointer;">
-                                            Buscar
-                                        </MudChip>
-                                    }
 
 
 
@@ -55,35 +59,37 @@
                                 </MudContainer>
 
 
-                            
-                        </MudItem>
-                    }
+
+                            </MudItem>
+                        }
 
 
 
-                </MudGrid>
-                <MudItem>
+                    </MudGrid>
+                    <MudItem>
 
-                    @if (tipodeContenidoEncontrado == "artista")
-                    {
-                        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-                            <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
-                            <MetaMusic.Pages.Common_Components.CrearArtista newArtista="artistaRequest"></MetaMusic.Pages.Common_Components.CrearArtista>
-                        </BlazorAnimation.Animation>
+                        @if (tipodeContenidoEncontrado == "artista")
+                        {
+                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+                                <MetaMusic.Pages.Common_Components.CrearArtista newArtista="artistaRequest"></MetaMusic.Pages.Common_Components.CrearArtista>
+                            </BlazorAnimation.Animation>
 
-                    }
-                    else if (tipodeContenidoEncontrado == "album")
-                    {
+                        }
+                        else if (tipodeContenidoEncontrado == "album")
+                        {
 
-                        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-                            <MetaMusic.Pages.Common_Components.CrearAlbum Request="AlbumRequest"></MetaMusic.Pages.Common_Components.CrearAlbum>
-                        </BlazorAnimation.Animation>
+                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                <MetaMusic.Pages.Common_Components.CrearAlbum Request="AlbumRequest"></MetaMusic.Pages.Common_Components.CrearAlbum>
+                            </BlazorAnimation.Animation>
 
-                    }
+                        }
 
 
 
-                </MudItem>
+                    </MudItem>
+                </MudCard>
+              
             </MudItem>
         }
       

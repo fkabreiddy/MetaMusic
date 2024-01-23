@@ -6,7 +6,19 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+ 
+
+    .portada {
+        transition: transform 0.3s ease-out;
+        cursor: pointer;
+    }
+
+    .portada:hover {
+        transform: scale(1.05);
+    }
 </style>
+
 <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
 
     <MudText Style="font-size: 20px; font-weight: bold;">REVIEW DEL MES</MudText>
@@ -76,7 +88,7 @@
         </MudItem>
         <MudItem md="4" lg="4" xxl="4" Class="container" xl="4" sm="12" xs="12"  Style=" display: flex; align-items: center; align-items: center; justify-content: center; gap: 50px;">
 
-            <MudAvatar Square=true Rounded=false Style="height: 250px; width: 250px;">
+            <MudAvatar Class="portada" @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}' Square=true Rounded=false Style="height: 250px; width: 250px;">
             <MudImage src="@album.Portada" />
             </MudAvatar>
            
