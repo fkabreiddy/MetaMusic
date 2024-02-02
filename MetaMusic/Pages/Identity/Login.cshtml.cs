@@ -21,10 +21,13 @@ namespace MetaMusic.Pages.Identity
             this.asingData = asingData;
             this.navManager = navManager;
         }
-        public IActionResult OnGetAsync(string returnUrl = null)
+        public IActionResult OnGetAsync(string returnUrl = "")
         {
             try
             {
+
+              
+
                 string provider = "Google";
                 // Request a redirect to the external login provider.
                 var authenticationProperties = new AuthenticationProperties
@@ -33,6 +36,8 @@ namespace MetaMusic.Pages.Identity
                     pageHandler: "Callback",
                     values: new { returnUrl }),
                 };
+
+               
                 return new ChallengeResult(provider, authenticationProperties);
             }
             catch

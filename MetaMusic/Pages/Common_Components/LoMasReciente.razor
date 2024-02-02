@@ -20,7 +20,11 @@
                     <MostRecentReview album="@albumes[0]"></MostRecentReview>
                 </MudItem>
 
-
+                <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert=true>
+                <MudContainer>
+                    <MudDivider DividerType="DividerType.Middle" Class="mt-5 mb-5"></MudDivider>
+                </MudContainer>
+                </MudHidden>
 
                 <MudItem md="6" sm="12" xl="6" lg="6" xxl="6" xs="12" Style="display: flex; flex-direction: column; gap; 20px; position: sticky;">
                     @foreach (var album in albumes.Skip(1))

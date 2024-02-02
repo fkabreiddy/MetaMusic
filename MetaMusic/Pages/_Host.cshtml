@@ -39,15 +39,7 @@
     <script src="_content/BlazorAnimation/blazorAnimationInterop.js"></script>
     <script src="_content/BlazorContentEditable/BlazorContentEditable.js"></script>
     <script>
-        window.agregarScrollListener = () => {
-            window.addEventListener('scroll', () => {
-                // Invocar la función de C# y pasar la posición de desplazamiento vertical
-                DotNet.invokeMethodAsync('MetaMusic', 'ManejarScroll', window.scrollY)
-                    .then(data => console.log(data))
-                    .catch(error => console.error(error));
-            });
-        };
-
+       
 
         window.clipboardCopy = {
             copyText: function (text) {
@@ -67,16 +59,7 @@
         }
     </script>
     <script>
-        document.addEventListener("scroll", function () {
-            var elemento = document.getElementById("navbar");
-
-            // Verificar si el scrollbar está en la parte superior
-            if (window.scrollY >= 3) {
-                elemento.classList.add("mostrar");
-            } else {
-                elemento.classList.remove("mostrar");
-            }
-        });
+        
     </script>
     
 </body>

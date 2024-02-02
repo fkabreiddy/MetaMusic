@@ -95,6 +95,27 @@ namespace MetaMusic.Data.Services
                 };
             }
         }
+        public async Task<Result<List<ArtistaResponse>>> ConsultarTodosLosArtistas(int cantidad)
+        {
+            try
+            {
+
+                var artistas = await dbContext.Artistas.Include(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Include(a => a.Suscriptores).Take(cantidad).ToListAsync();
+
+
+                if (artistas is null)
+                {
+                    return new Result<List<ArtistaResponse>>() { Message = "No hay Artistas", Success = false };
+
+                }
+
+                return new Result<List<ArtistaResponse>>() { Data = artistas.Select(a => a.ToResponse()).ToList(), Success = true };
+            }
+            catch (Exception e)
+            {
+                return new Result<List<ArtistaResponse>>() { Message = e.InnerException?.Message ?? e.Message, Success = false };
+            }
+        }
         public async Task<Result<List<ArtistaResponse>>> ConsultarTodosLosArtistas()
         {
             try
@@ -104,6 +125,28 @@ namespace MetaMusic.Data.Services
 
 
                 if (artistas is null)
+                {
+                    return new Result<List<ArtistaResponse>>() { Message = "No hay Artistas", Success = false };
+
+                }
+
+                return new Result<List<ArtistaResponse>>() { Data = artistas.Select(a => a.ToResponse()).ToList(), Success = true };
+            }
+            catch (Exception e)
+            {
+                return new Result<List<ArtistaResponse>>() { Message = e.InnerException?.Message ?? e.Message, Success = false };
+            }
+        }
+      
+        public async Task<Result<List<ArtistaResponse>>> ConsultarMas(int startindex)
+        {
+            try
+            {
+                
+                var artistas = await dbContext.Artistas.Include(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Include(a => a.Suscriptores).Skip(startindex).Take(8).ToListAsync();
+
+
+                if (artistas is null || artistas.Count <= 0)
                 {
                     return new Result<List<ArtistaResponse>>() { Message = "No hay Artistas", Success = false };
 
@@ -135,6 +178,7 @@ namespace MetaMusic.Data.Services
             }
         }
 
+       
         public async Task<Result<ArtistaResponse>> Suscribirse(ArtistaResponse artista)
         {
             try

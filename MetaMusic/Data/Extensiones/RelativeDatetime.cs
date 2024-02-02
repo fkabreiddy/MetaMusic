@@ -36,18 +36,22 @@
             }
 
             // Si la diferencia es menor a un mes, devolver los días
-            if (diferencia.TotalDays < 30)
+            if (diferencia.TotalDays < 7)
             {
                 return "Hace " + (int)diferencia.TotalDays + " d";
             }
 
-            // Si la diferencia es menor a un año, devolver los meses
+            if (diferencia.TotalDays < 30)
+            {
+                return "Hace " + (int)(diferencia.TotalDays / 7) + " W";
+            }
+            
             if (diferencia.TotalDays < 365)
             {
                 return "Hace " + (int)(diferencia.TotalDays / 30) + " M";
             }
 
-            // Si la diferencia es mayor o igual a un año, devolver los años
+
             return "Hace " + (int)(diferencia.TotalDays / 365) + " A";
         }
         public static string FechaRelativa(this DateTime? fecha)

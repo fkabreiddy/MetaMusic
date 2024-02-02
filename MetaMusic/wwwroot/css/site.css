@@ -19,6 +19,15 @@ a, .btn-link {
     color: #0071c1;
 }
 
+::-webkit-scrollbar {
+    width: 1px;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    width: 2px;
+    border-radius: 10px;
+    background: #E74646; 
+}
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
