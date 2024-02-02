@@ -12,16 +12,16 @@
         }
 
         ::-webkit-scrollbar {
-    width: 1px;
-    border-radius: 10px;
-}
+            width: 1px !important;
+        border-radius: 10px !important;
+        }
 
     .navbar-container {
         
     }
 
     .mostrar {
-        border-bottom: 1px solid #E74646;
+        border-bottom: 1px solid #E74646 !important;
     }
 
 
@@ -29,25 +29,20 @@
    
 
     ::-webkit-scrollbar-thumb {
-        width: 2px;
-        background: #E74646; /* make scrollbar transparent */
+        width: 2px !important;
+        background: #E74646 !important; /* make scrollbar transparent */
     }
 
-    ::-webkit-scrollbar-thumb {
-        width: 2px;
-        border-radius: 10px;
-        background: #E74646; /* make scrollbar transparent */
-    }
-
+ 
 
 </style>
-<div style="     width: calc( 100vw - 14px); ">
- 
-    <MudItem>
-        <MudGrid>
-            <MudItem md="12" sm="12" xs="12" xxl="12" lg="12" xl="12" Style="@($""" {(theme.IsDark() ? "background-color:#000000;" : "background-color:#ffffff;")}; z-index: 10;""")">
 
-                <MudContainer id="navbar" Class="@navbarclass" Style="@($""" {(theme.IsDark() ? "background-color:#000000;" : "background-color:#ffffff;")}; z-index: 10;height: 80px; display: flex; justify-content: space-between; max-width: 100%; gap: 10px;position: fixed;""")">
+ 
+    
+        <div style="width: 100%;">
+              <MudContainer Class="@navbarclass" id="navbar" md="12" sm="12" xs="12" xxl="12" lg="12" xl="12" Style="@($""" {(theme.IsDark() ? "background-color:#000000;" : "background-color:#ffffff;")}; z-index: 10;border: solid 2px red;  gap: 10px; position: fixed;z-index: 10;height: 80px; display: flex; justify-content: space-between; max-width: 100%;top: 0;""")">
+
+          
                   
                     <MudTooltip Arrow=true Color="Color.Error" Text="Ir a Inicio">
                         <div @onclick='()=>{navManager.NavigateTo("/");}' style="display: flex; cursor: pointer; align-items: center; flex-direction: column;">
@@ -200,43 +195,43 @@
                                                     <MudTextField MaxLength="30" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
                             
                         }
-                       @*  @if (theme.IsDark())
+                        @if (theme.IsDark())
                         {
                         <MudIcon Size="Size.Small" Style="cursor: pointer;" @onclick="()=>{theme.SetDarkTheme(!theme.IsDark());}" Icon="@Icons.Material.Filled.WbSunny" Color="Color.Error"></MudIcon>
                         }
                         else
                         {
                             <MudIcon Size="Size.Small" Style="cursor: pointer;" @onclick="()=>{theme.SetDarkTheme(!theme.IsDark()) ; }" Icon="@Icons.Material.Rounded.NightlightRound" Color="Color.Error"></MudIcon>
-                        } *@
+                        } 
                        
                     </div>
 
-                </MudContainer>
+              
                
-            </MudItem>
-
-            
+            </MudContainer>
 
 
 
-            <MudItem md="12" sm="12" xs="12" xxl="12" lg="12" xl="12" Style="margin-top: 4em; ">
-                <MudContainer >
+
+
+              <MudContainer Style="margin-top: 4em; width: 100%; ">
+        
                   
                     @if(UserDataLoaded)
                     {
                         @Body
                     }
                   
-                </MudContainer>
+              
 
 
-            </MudItem>
+            </MudContainer>
 
             
 
-        </MudGrid>
+        </div>
        
-    </MudItem>
+   
 
    
 
@@ -244,7 +239,7 @@
    
 
       
-</div>
+
 
 
 @functions{
