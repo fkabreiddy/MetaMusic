@@ -21,18 +21,19 @@
                 </MudItem>
 
                 <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert=true>
-                <MudContainer>
+                <MudContainer Style="width: 150px;">
                     <MudDivider DividerType="DividerType.Middle" Class="mt-5 mb-5"></MudDivider>
                 </MudContainer>
                 </MudHidden>
 
-                <MudItem md="6" sm="12" xl="6" lg="6" xxl="6" xs="12" Style="display: flex; flex-direction: column; gap; 20px; position: sticky;">
+                <MudItem md="6" sm="12" xl="6" lg="6" xxl="6" xs="12" Style="display: flex; flex-direction: column; gap; 20px; position: sticky; gap: 40px;">
                     @foreach (var album in albumes.Skip(1))
                     {
+                        
                         <MudItem md="12" sm="12" xl="12" lg="12" xxl="12" xs="12">
                             <RecentReview_Card album="album"></RecentReview_Card>
 
-                            <MudContainer>
+                            <MudContainer Style="width: 150px;">
                                 <MudDivider DividerType="DividerType.Middle" Class="mt-5 mb-5"></MudDivider>
                             </MudContainer>
                         </MudItem>

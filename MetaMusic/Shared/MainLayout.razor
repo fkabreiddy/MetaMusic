@@ -40,7 +40,7 @@
  
     
         <div style="width: 100%;">
-              <MudContainer Class="@navbarclass" id="navbar" md="12" sm="12" xs="12" xxl="12" lg="12" xl="12" Style="@($""" {(theme.IsDark() ? "background-color:#000000;" : "background-color:#ffffff;")}; z-index: 10;border: solid 2px red;  gap: 10px; position: fixed;z-index: 10;height: 80px; display: flex; justify-content: space-between; max-width: 100%;top: 0;""")">
+              <MudContainer Class="@navbarclass" id="navbar" md="12" sm="12" xs="12" xxl="12" lg="12" xl="12" Style="@($""" {(theme.IsDark() ? "background-color:#000000;" : "background-color:#ffffff;")}; z-index: 10;  gap: 10px; position: sticky;z-index: 10;height: 80px; display: flex; justify-content: space-between; max-width: 100%;top: 0;""")">
 
           
                   
@@ -214,7 +214,7 @@
 
 
 
-              <MudContainer Style="margin-top: 4em; width: 100%; ">
+              <MudContainer Style="margin-top: 2em; width: 100%; ">
         
                   
                     @if(UserDataLoaded)
@@ -243,16 +243,7 @@
 
 
 @functions{
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-
-            await JSR.InvokeVoidAsync("agregarScrollListener");
-
-
-        }
-    }
+  
 
     protected override async Task OnInitializedAsync()
     {

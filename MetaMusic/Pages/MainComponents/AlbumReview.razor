@@ -115,10 +115,7 @@
                             <MudImage src="@Albumresponse.Portada" />
                         </MudAvatar>
                         <div class="d-flex" style="gap: 10px; align-items: center;">
-                            <MudLink @onclick='()=>{navManager.NavigateTo($"/user/{Albumresponse.Creador?.CorreoNormalizado}");}' Style="opacity: 0.7;font-size: 12px; font-style: italic; font-family: SourceSerif4; cursor: pointer;">Reviwer: @Albumresponse.Creador?.Nombre  </MudLink>
-                            <MudText Style="font-size: 10px; opacity: 0.7; cursor: pointer;">•</MudText>
-
-                            <MudText Style="font-size: 10px;  opacity: 0.7;  cursor: pointer;">@Albumresponse.Fecha_Agregado.FechaRelativa()</MudText>
+                           
 
 
                                 <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Info">
@@ -187,7 +184,14 @@
                     <MudDivider DividerType="DividerType.Middle" Style=" width: 50%; "></MudDivider>
 
                 </div>
+                <div style="display: flex;gap:10px; align-items: center; justify-content: center;">
+                       <MudLink @onclick='()=>{navManager.NavigateTo($"/user/{Albumresponse.Creador?.CorreoNormalizado}");}' Style="opacity: 0.7;font-size: 12px; font-style: italic; font-family: SourceSerif4; cursor: pointer;">Reviwer: @Albumresponse.Creador?.Nombre  </MudLink>
+                            <MudText Style="font-size: 10px; opacity: 0.7; cursor: pointer;">•</MudText>
 
+                            <MudText Style="font-size: 10px;  opacity: 0.7;  cursor: pointer;">@Albumresponse.Fecha_Agregado.FechaRelativa()</MudText>
+                            <MudText Style="font-size: 10px; opacity: 0.7; cursor: pointer;">•</MudText>
+                            <MudText Style="font-size: 10px;  opacity: 0.7;  cursor: pointer;">@Albumresponse.Fecha_Agregado.ToString("dd 'de' MMMM 'del' yyyy")</MudText>
+                </div>
 
 
                 <div>

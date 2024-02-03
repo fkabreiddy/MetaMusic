@@ -11,5 +11,6 @@ namespace MetaMusic.Data.Services
         Task<Result<NotaResponse>> DisLikeNota(int notaid, int userid);
         Task<Result<bool>> Eliminar(int notaid);
         Task<Result<NotaResponse>> LikeNota(int notaid, int userid);
+        Task<Result<List<NotaResponse>>> ConsulatNotasDelUsuario(int userid);
     }
 }

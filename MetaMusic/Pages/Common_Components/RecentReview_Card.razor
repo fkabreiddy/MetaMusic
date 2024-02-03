@@ -35,7 +35,8 @@
                 }
            
             
-            <MudText Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4;">“@album.Nombre”
+            <MudText Style="font-size: 19px; font-weight: bold; font-family: SourceSerif4;">
+                <div style="cursor: pointer;" @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'>“@album.Nombre”</div>
                 
                 @if (album.Artistas.Count() >= 3)
                 {
@@ -65,9 +66,13 @@
             <MudText Style="font-size: 10px; margin-top: 10px; "><b>Reviewer:</b> @album.Creador.Nombre</MudText>
             </MudContainer>
         </MudItem>
-        <MudItem md="4" xxl="4" lg="4" >
-            <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 150px; width: 150px;   " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
-        </MudItem>
+
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudItem md="4" xxl="4" lg="4">
+                <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 150px; width: 150px;   " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+            </MudItem>
+        </MudHidden>
+       
     </MudGrid>
 
 

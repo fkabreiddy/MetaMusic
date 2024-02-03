@@ -196,80 +196,73 @@ else
                                                     }
                                                 </MudGrid>
                                             </MudTabPanel>
-                                             
-                                            <MudTabPanel style="@($"""{(view == "Borradores" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Borradores";}' Text="Borradores">
-                                                <MudGrid Style="margin-top: 20px;" Spacing="3">
-                                                    @foreach (var album in albumesRock)
-                                                    {
-                                                        <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
-                                                            <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                    <MudTabPanel style="@($"""{(view == "Reviews" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reviews";}' Text="Reviews">
+                                        <MudContainer Style="display: flex; justify-content: center; width: 90%;">
+                                            @if (theme.IsDark())
+                                            {
+                                                <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                                            }
+                                            else
+                                            {
+                                                <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                                            }
+
+                                        </MudContainer>
+
+                                        <MudGrid Style="margin-top: 20px;">
+                                            @foreach (var review in reviews.Where(r => r.Nombre.ToLower().Contains(filtro_review.ToLower())))
+                                            {
+                                                @if (cargandoreviews)
+                                                {
+
+                                                    <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                                                        <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+                                                            @if (theme.IsDark())
+                                                            {
+                                                                <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                            }
+
+                                                            <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+
+
                                                         </MudItem>
-                                                    }
-                                                </MudGrid>
-                                            </MudTabPanel>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <MudItem md="4" lg="4" xl="4" xxl="3" sm="6" xs="6">
+                                                        <MetaMusic.Pages.Common_Components.ReviewCard album="review"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                                    </MudItem>
+                                                }
+
+                                            }
+                                        </MudGrid>
+                                    </MudTabPanel>
+                                             
+                                         
                                 }
                                   
                                 <MudTabPanel style="@($"""{(view == "Notas" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Notas";}' Text="Notas">
+                                    <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Las notas que hagas se registrarán aquí. Puedes borrarlas y presiona "Ver Album" para ver la review donde hiciste la nota.</MudText>
                                     <MudGrid Style="margin-top: 20px;">
-                                        @foreach (var album in albumesRock)
+                                        @foreach (var nota in notas)
                                         {
                                             <MudItem md="6" lg="6" xl="6" xxl="6" sm="12" xs="12">
-                                                <MetaMusic.Pages.Common_Components.Nota ReportButton=false></MetaMusic.Pages.Common_Components.Nota>
+                                               <MetaMusic.Pages.Common_Components.Nota nota="@nota" showSource=true disableInteractivity=true deletebuttonvisible=true></MetaMusic.Pages.Common_Components.Nota>
                                             </MudItem>
                                         }
                                     </MudGrid>
                                 </MudTabPanel>
-                                <MudTabPanel style="@($"""{(view == "Reviews" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reviews";}' Text="Reviews">
-                                    <MudContainer Style="display: flex; justify-content: center; width: 90%;">
-                                        @if (theme.IsDark())
-                                        {
-                                            <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
-
-                                        }
-                                        else
-                                        {
-                                            <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
-
-                                        }
-
-                                    </MudContainer>
-
-                                    <MudGrid Style="margin-top: 20px;">
-                                        @foreach (var review in reviews.Where(r => r.Nombre.ToLower().Contains(filtro_review.ToLower())))
-                                        {
-                                            @if (cargandoreviews)
-                                            {
-
-                                                <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
-
-
-                                                    <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
-                                                        @if (theme.IsDark())
-                                                        {
-                                                            <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
-                                                        }
-                                                        else
-                                                        {
-
-                                                            <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
-                                                        }
-
-                                                        <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
-
-
-                                                    </MudItem>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <MudItem md="4" lg="4" xl="4" xxl="3" sm="6" xs="6">
-                                                    <MetaMusic.Pages.Common_Components.ReviewCard album="review"></MetaMusic.Pages.Common_Components.ReviewCard>
-                                                </MudItem>
-                                            }
-
-                                        }
-                                    </MudGrid>
-                                </MudTabPanel>
+                           
                                 <MudTabPanel style="@($"""{(view == "Siguiendo" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Siguiendo";}' Text="Siguiendo">
                                     <MudContainer Style="display: flex; justify-content: center; width: 90%;">
                                         @if (theme.IsDark())
@@ -371,6 +364,7 @@ else
             await GetUser();
             await GetRecentAlbums(Usuario);
             await ConsultarSuscripciones(Usuario);
+            await GetNotas(Usuario.Id);
         }
 
 
@@ -440,8 +434,16 @@ else
             cargandosuscripciones = false;
         }
     }
- 
 
+    public async Task GetNotas(int userid)
+    {
+        var r = await notaService.ConsulatNotasDelUsuario(userid);
+
+        if(r.Data is not null && r.Success)
+        {
+            notas = r.Data;
+        }
+    }
 
     public void MostrarNotificacion(string Titulo, string Contenido)
     {
@@ -478,6 +480,7 @@ else
     public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
     public UsuarioResponse Usuario { get; set; } = new UsuarioResponse();
     public List<AlbumResponse> reviews { get; set; } = new List<AlbumResponse>();
+      public List<NotaResponse> notas { get; set; } = new List<NotaResponse>();
     public bool userDataLoaded = false;
     public bool GuardandoCambios = false;
     public bool UsuarioNoEncontrado = true;

@@ -154,6 +154,41 @@ namespace MetaMusic.Data.Services
             }
         }
 
+        public async Task<Result<List<NotaResponse>>> ConsulatNotasDelUsuario(int userid)
+        {
+
+            try
+            {
+
+
+                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).Where(a => a.Creador.Id == userid).ToListAsync();
+
+                if (notas is null)
+                    return new Result<List<NotaResponse>>() { Message = "El album no tiene notas", Success = false };
+
+
+                return new Result<List<NotaResponse>>()
+                {
+                    Data = notas.Select(n => n.ToResponse()).ToList(),
+                    Message = "Exito",
+                    Success = true
+                };
+
+
+
+
+
+            }
+            catch (Exception e)
+            {
+                return new Result<List<NotaResponse>>()
+                {
+
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = false
+                };
+            }
+        }
         public async Task<Result<NotaResponse>> LikeNota(int notaid, int userid)
         {
 
