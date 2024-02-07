@@ -36,10 +36,10 @@ builder.Services.AddScoped<IGeneroService, GeneroService>();
 builder.Services.AddScoped<IArtistaService, ArtistaService>();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddScoped<IAlbumService, AlbumService>();
-builder.Services.AddScoped<IBorradorService, BorradorService>();
+
 builder.Services.AddScoped<ICalificacionService, CalificacionService>();
 builder.Services.AddScoped<INotaService, NotaService>();
-
+builder.Services.AddScoped<IReporteService, ReporteService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>(); //can be placed among other "AddScoped" - above: var app = builder.Build();   
 
   

@@ -26,7 +26,7 @@ a, .btn-link {
 ::-webkit-scrollbar-thumb {
     width: 2px;
     border-radius: 10px;
-    background: #E74646; 
+    background-color: #E74646; 
 }
 .btn-primary {
     color: #fff;

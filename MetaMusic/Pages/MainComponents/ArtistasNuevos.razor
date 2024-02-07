@@ -12,19 +12,7 @@
 
 
 </div>
-<MudContainer Style="display: flex; justify-content: center; width: 50vw;">
-    @if (theme.IsDark())
-    {
-        <MudTextField   @bind-Value="filtro_artista"  MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
 
-    }
-    else
-    {
-        <MudTextField @bind-Value="filtro_artista" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
-
-    }
-
-</MudContainer>
 <MudGrid Spacing="2"  >
 
     @if(Artistas.Count()>=1)
