@@ -17,6 +17,7 @@ namespace MetaMusic.Data.Entities
 
         public Usuario? UserFrom { get; set; } = new Usuario();
 
+        public bool Saw { get; set; } = false;
         public Album? Album { get; set; } = new Album();
         public NotificacionResponse ToResponse()
         {
@@ -27,7 +28,8 @@ namespace MetaMusic.Data.Entities
                 UserTo = this.UserTo,
                 UserFrom = this.UserFrom,
                 Album = this.Album,
-                Fecha_Creacion = this.Fecha_Creacion
+                Fecha_Creacion = this.Fecha_Creacion,
+                Saw = this.Saw
                 
                 // Agrega otras asignaciones si es necesario
             };
@@ -39,7 +41,8 @@ namespace MetaMusic.Data.Entities
             UserTo = request.UserTo,
             UserFrom = request.UserFrom,
             Album = request.Album,
-            Fecha_Creacion = DateTime.Now
+            Fecha_Creacion = DateTime.Now,
+            Saw = request.Saw
             
             // Agrega otras propiedades si es necesario
         };
@@ -53,6 +56,12 @@ namespace MetaMusic.Data.Entities
                 this.Titulo = notificacion.Titulo;
                 modificacion = true;
             }
+            if (this.Saw != notificacion.Saw)
+            {
+                this.Saw = notificacion.Saw;
+                modificacion = true;
+            }
+
 
             if (this.UserTo != notificacion.UserTo)
             {

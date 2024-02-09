@@ -12,13 +12,17 @@ namespace MetaMusic.Data.Entities
         public int Id { get; set; }
 
 
-        
+
+        [StringLength(100)]
         public string Nombre { get; set; } = null!;
+        [StringLength(150)]
         public string Correo { get; set; } = "";
 
+        [StringLength(150)]
         public string CorreoNormalizado { get; set; } = "";
         public string FotoDePerfil { get; set; } = null!;
 
+        [StringLength(100)]
         public string Biografia { get; set; } = null!;
         public Rol? Rol { get; set; } = new Rol();
 

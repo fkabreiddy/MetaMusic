@@ -47,7 +47,7 @@ namespace MetaMusic.Data.Responses
         public List<Track> Tracks { get; set; } = new List<Track>();
 
         public List<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
-
+        public bool IsAlbumOfTheMonth { get; set; } = false;
         public AlbumRequest ToRequest() => new AlbumRequest()
         {
             Id = this.Id,
@@ -65,7 +65,7 @@ namespace MetaMusic.Data.Responses
             Tracks = this.Tracks,
             Notificaciones = this.Notificaciones,
             Calificacion_Creador = this.Calificacion_Creador,
-
+            IsAlbumOfTheMonth = this.IsAlbumOfTheMonth,
           
             Publicado = this.Publicado
 

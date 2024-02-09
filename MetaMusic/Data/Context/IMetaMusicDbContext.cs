@@ -10,6 +10,8 @@ namespace MetaMusic.Data.Context
         DbSet<Artista> Artistas { get; set; }
         DbSet<Busqueda> Busquedas { get; set; }
         DbSet<Calificacion> Calificaciones { get; set; }
+
+      
         DbSet<Genero_Artista> Genero_Artistas { get; set; }
         DbSet<Genero> Generos { get; set; }
         DbSet<Nota> Notas { get; set; }

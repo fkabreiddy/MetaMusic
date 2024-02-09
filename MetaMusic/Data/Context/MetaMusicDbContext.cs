@@ -10,6 +10,7 @@ namespace MetaMusic.Data.Context
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Album> Albumes { get; set; }
 
+     
         public DbSet<Artista> Artistas { get; set; }
 
         public DbSet<Busqueda> Busquedas { get; set; }
@@ -73,7 +74,7 @@ namespace MetaMusic.Data.Context
             modelBuilder.Entity<Usuario>().HasMany(u => u.Artistas_Suscritos).WithOne(a => a.Usuario).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Usuario>().HasMany(u => u.Calificaciones).WithOne(a => a.Usuario).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Usuario>().HasMany(u => u.Peticiones).WithOne(a => a.Usuario).OnDelete(DeleteBehavior.Cascade);
-
+       
             //albumes
 
             modelBuilder.Entity<Album>().HasMany(a => a.Artistas).WithOne(r => r.Album).OnDelete(DeleteBehavior.Cascade);

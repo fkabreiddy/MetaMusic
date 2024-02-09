@@ -1,6 +1,7 @@
 ﻿using MetaMusic.Data.Request;
 using MetaMusic.Data.Responses;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MetaMusic.Data.Entities
@@ -37,10 +38,11 @@ namespace MetaMusic.Data.Entities
         public List<Album_Artista> Artistas { get; set; } = new List<Album_Artista>();
 
 
-
+        public bool IsAlbumOfTheMonth { get; set; } = false;
         
         public Review? Review { get; set; } = new Review();
 
+      
         public Usuario? Creador { get; set; } = new Usuario();
 
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
@@ -72,6 +74,7 @@ namespace MetaMusic.Data.Entities
             Tracks = request.Tracks,
             Notificaciones = request.Notificaciones,
             Calificacion_Creador = request.Calificacion_Creador,
+            IsAlbumOfTheMonth = request.IsAlbumOfTheMonth,
             Publicado = true
 
         };
@@ -93,7 +96,7 @@ namespace MetaMusic.Data.Entities
             Tracks = this.Tracks,
             Notificaciones = this.Notificaciones,
             Calificacion_Creador = this.Calificacion_Creador,
-
+            IsAlbumOfTheMonth = this.IsAlbumOfTheMonth,
             FechaModificado = this.FechaModificado,
             Publicado = this.Publicado
 
@@ -124,6 +127,12 @@ namespace MetaMusic.Data.Entities
             if (this.Calificacion_Creador != album.Calificacion_Creador)
             {
                 Calificacion_Creador = album.Calificacion_Creador;
+                modificacion = true;
+            }
+
+            if (this.IsAlbumOfTheMonth != album.IsAlbumOfTheMonth)
+            {
+                IsAlbumOfTheMonth = album.IsAlbumOfTheMonth;
                 modificacion = true;
             }
             if (this.Fecha_Publicacion != album.Fecha_Publicacion)

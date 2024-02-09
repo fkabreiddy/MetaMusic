@@ -465,7 +465,54 @@ namespace MetaMusic.Data.Services
             }
         }
 
+        public async Task<Result<bool>> AlbumOfTheMonthUpdate()
+        {
+            try
+            {
+                if (DateTime.Now.Day == 1)
+                {
+                    
+                    int previousMonth = DateTime.Now.Month == 1 ? 12 : DateTime.Now.Month - 1;
 
+                    var alreadyDone = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Fecha_Agregado.Month == previousMonth && a.IsAlbumOfTheMonth == true);
+
+                    if (alreadyDone is not null)
+                        return new Result<bool>()
+                        {
+                            Message = "Esta tarea ya se hizo",
+                            Success = false
+                        };
+
+                    var albumes = await dbContext.Albumes.Where(a => a.Fecha_Agregado.Month == previousMonth && a.IsAlbumOfTheMonth == false).OrderByDescending(a => a.Calificaciones.Count() * Math.Round(a.Calificaciones.Average(c => c.Numero), 1)).Take(3).ToListAsync();
+
+                    if (albumes is not null && albumes.Any())
+                    {
+                        foreach (var album in albumes)
+                        {
+                           
+                                album.IsAlbumOfTheMonth = true;
+                        }
+                    }
+
+
+                }
+
+                await dbContext.SaveChangesAsync();
+                return new Result<bool>()
+                {
+                    Message = "Exito",
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Result<bool>()
+                {
+                    Message = ex.InnerException?.Message ?? ex.Message,
+                    Success = false
+                };
+            }
+        }
         public async Task<Result<AlbumResponse>> GetBestReview()
         {
             try

@@ -43,7 +43,7 @@ namespace MetaMusic.Data.Request
 
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
 
-
+        public bool IsAlbumOfTheMonth { get; set; } = false;
         public double Calificacion_Creador { get; set; } = 0.0;
         public List<Nota> Notas { get; set; } = new List<Nota>();
         public List<Track> Tracks { get; set; } = new List<Track>();
