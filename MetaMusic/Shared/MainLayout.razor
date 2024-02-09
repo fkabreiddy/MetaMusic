@@ -195,14 +195,14 @@
                                                     <MudTextField MaxLength="30" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
                             
                         }
-                        @if (theme.IsDark())
+                        @* @if (theme.IsDark())
                         {
                         <MudIcon Size="Size.Small" Style="cursor: pointer;" @onclick="()=>{theme.SetDarkTheme(!theme.IsDark());}" Icon="@Icons.Material.Filled.WbSunny" Color="Color.Error"></MudIcon>
                         }
                         else
                         {
                             <MudIcon Size="Size.Small" Style="cursor: pointer;" @onclick="()=>{theme.SetDarkTheme(!theme.IsDark()) ; }" Icon="@Icons.Material.Rounded.NightlightRound" Color="Color.Error"></MudIcon>
-                        } 
+                        }  *@
                        
                     </div>
 
@@ -320,7 +320,7 @@
             {
                 Primary = "#1D1A31",
                 Secondary = "#393E46",
-                Surface = "#FFFFFF ",
+                Surface = "#FDFDFD ",
                 Background = "#FFFFFF ",
                 Tertiary = "#164863",
                 Error = "#E74646"
