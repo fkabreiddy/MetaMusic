@@ -15,6 +15,7 @@ namespace MetaMusic.Data.Entities
         [StringLength(120)]
         public string Contenido { get; set; } = null!;
 
+        public int Severidad { get; set; } = 0;
         public DateTime Fecha_Creacion { get; set; }
         public Usuario? Usuario { get; set; } = new Usuario();
 
@@ -29,7 +30,8 @@ namespace MetaMusic.Data.Entities
             Usuario = request.Usuario,
             Review = request.Review,
             Nota = request.Nota,
-            Fecha_Creacion = DateTime.Now
+            Fecha_Creacion = DateTime.Now,
+            Severidad = request.Severidad
             // Agrega otras propiedades si es necesario
         };
 
@@ -48,6 +50,8 @@ namespace MetaMusic.Data.Entities
                 this.Contenido = reporte.Contenido;
                 modificacion = true;
             }
+
+
 
             if (this.Usuario != reporte.Usuario)
             {
@@ -82,7 +86,8 @@ namespace MetaMusic.Data.Entities
                 Usuario = this.Usuario,
                 Review = this.Review,
                 Nota = this.Nota,
-                Fecha_Creacion = this.Fecha_Creacion
+                Fecha_Creacion = this.Fecha_Creacion,
+                Severidad = this.Severidad
                 // Agrega otras asignaciones si es necesario
             };
         }

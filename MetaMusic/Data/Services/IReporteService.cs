@@ -7,7 +7,7 @@ namespace MetaMusic.Data.Services
     {
         Task<Result<List<ReporteResponse>>> Consultar(int currentuserId);
         Task<Result<bool>> Eliminar(int reporte);
-        Task<Result<bool>> ReportarNota(int nota, string motivo);
-        Task<Result<bool>> ReportarReview(int review, string motivo);
+        Task<Result<bool>> ReportarNota(int nota, string motivo, int severidad);
+        Task<Result<bool>> ReportarReview(int review, string motivo, int severidad);
     }
 }

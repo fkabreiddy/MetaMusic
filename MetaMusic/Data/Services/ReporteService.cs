@@ -20,10 +20,11 @@ namespace MetaMusic.Data.Services
         }
 
         [Authorize]
-        public async Task<Result<bool>> ReportarReview(int review, string motivo)
+        public async Task<Result<bool>> ReportarReview(int review, string motivo, int severidad)
         {
             try
             {
+               
                 var currentuser = await googleAuthService.GetCurrentUser();
 
                 if (currentuser.Data == null)
@@ -49,6 +50,17 @@ namespace MetaMusic.Data.Services
                     };
 
                 }
+
+                var existe = await dbContext.Reportes.FirstOrDefaultAsync(r => r.Review.Id == review && r.Usuario.Id == usuarioResponse.Id);
+
+                if(existe is not null)
+                {
+                    return new Result<bool>()
+                    {
+                        Success = false,
+                        Message = "Ya has hecho un reporte de esta review el cual está en proceso."
+                    };
+                }
                 var reviewResponse = await dbContext.Reviews.Include(r => r.Album).FirstOrDefaultAsync(r => r.Id == review);
 
                 if (reviewResponse is null)
@@ -60,7 +72,7 @@ namespace MetaMusic.Data.Services
                     };
                 }
 
-                await dbContext.Reportes.AddAsync(Reporte.Crear(new ReporteRequest() { Contenido = $"{motivo}", Titulo = "Reporte a una review tuya.", Review = reviewResponse, Usuario = usuarioResponse }));
+                await dbContext.Reportes.AddAsync(Reporte.Crear(new ReporteRequest() { Contenido = $"{motivo}", Titulo = "Reporte a una review tuya.", Review = reviewResponse, Usuario = usuarioResponse, Severidad = severidad }));
 
                 await dbContext.SaveChangesAsync();
 
@@ -88,7 +100,7 @@ namespace MetaMusic.Data.Services
 
             }
         }
-        public async Task<Result<bool>> ReportarNota(int nota, string motivo)
+        public async Task<Result<bool>> ReportarNota(int nota, string motivo, int severidad)
         {
             try
             {
@@ -128,7 +140,7 @@ namespace MetaMusic.Data.Services
                     };
                 }
 
-                await dbContext.Reportes.AddAsync(Reporte.Crear(new ReporteRequest() { Contenido = $"{motivo}", Titulo = "Reporte a una nota.", Nota = notaResponse, Usuario = usuarioResponse }));
+                await dbContext.Reportes.AddAsync(Reporte.Crear(new ReporteRequest() { Contenido = $"{motivo}", Titulo = "Reporte a una nota.", Nota = notaResponse, Usuario = usuarioResponse, Severidad = severidad }));
 
                 await dbContext.SaveChangesAsync();
 

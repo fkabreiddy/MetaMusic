@@ -469,8 +469,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                if (DateTime.Now.Day == 1)
-                {
+               
                     
                     int previousMonth = DateTime.Now.Month == 1 ? 12 : DateTime.Now.Month - 1;
 
@@ -487,15 +486,14 @@ namespace MetaMusic.Data.Services
 
                     if (albumes is not null && albumes.Any())
                     {
-                        foreach (var album in albumes)
-                        {
-                           
-                                album.IsAlbumOfTheMonth = true;
-                        }
+
+
+                         albumes[0].IsAlbumOfTheMonth = true;
+                        
                     }
 
 
-                }
+                
 
                 await dbContext.SaveChangesAsync();
                 return new Result<bool>()
@@ -517,14 +515,13 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var album = await dbContext.Albumes.Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(a => a.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Calificaciones.Count() * Math.Round(a.Calificaciones.Average(c => c.Numero), 1)).FirstOrDefaultAsync();
+                int previousMonth = DateTime.Now.Month == 1 ? 12 : DateTime.Now.Month - 1;
+                var album = await dbContext.Albumes.Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(a => a.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Calificaciones.Count() * Math.Round(a.Calificaciones.Average(c => c.Numero), 1)).FirstOrDefaultAsync(a => a.IsAlbumOfTheMonth == true && a.Fecha_Agregado.Month == previousMonth);
 
+                
                 if (album == null)
-                    return new()
-                    {
-                        Message = "No hay mejor review",
-                        Success = false
-                    };
+                    album = await dbContext.Albumes.Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(a => a.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Calificaciones.Count() * Math.Round(a.Calificaciones.Average(c => c.Numero), 1)).FirstOrDefaultAsync(a => a.IsAlbumOfTheMonth);
+
 
                 return new Result<AlbumResponse>()
                 {

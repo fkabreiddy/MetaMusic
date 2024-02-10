@@ -188,12 +188,14 @@ else
                                             </MudTabPanel>
                                             <MudTabPanel style="@($"""{(view == "Reportes" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reportes";}' Text="Reportes">
                                                 <MudGrid Style="margin-top: 20px;" Spacing="3">
-                                                    @foreach (var album in albumesRock)
-                                                    {
-                                                        <MudItem md="3" lg="3" xl="3" xxl="3" sm="6" xs="6">
-                                                            <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                                   
+                                                    <Virtualize Items="reportes.ToList()" TItem="ReporteResponse">
+                                                         <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                                                                                                     <MetaMusic.Pages.Common_Components.Reporte reporte="@context"></MetaMusic.Pages.Common_Components.Reporte>
+
                                                         </MudItem>
-                                                    }
+                                                    </Virtualize>
+                                                    
                                                 </MudGrid>
                                             </MudTabPanel>
                                     <MudTabPanel style="@($"""{(view == "Reviews" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reviews";}' Text="Reviews">
@@ -337,7 +339,15 @@ else
 
 @functions{
 
+    public async Task GetReportes(int userid){
 
+        var r = await reporteService.Consultar(userid);
+
+        if(r.Data is not null && r.Success)
+        {
+            reportes = r.Data;
+        }
+    }
     public async Task ModificarUsuario()
 
     {
@@ -362,7 +372,13 @@ else
         if(Usuario.Id == 0)
         {
             await GetUser();
-            await GetRecentAlbums(Usuario);
+
+            if(Usuario.Rol.Tipo == "Staff")
+            {
+                await GetRecentAlbums(Usuario);
+                await GetReportes(Usuario.Id);
+            }
+           
             await ConsultarSuscripciones(Usuario);
             await GetNotas(Usuario.Id);
         }
@@ -481,25 +497,17 @@ else
     public UsuarioResponse Usuario { get; set; } = new UsuarioResponse();
     public List<AlbumResponse> reviews { get; set; } = new List<AlbumResponse>();
       public List<NotaResponse> notas { get; set; } = new List<NotaResponse>();
+
     public bool userDataLoaded = false;
     public bool GuardandoCambios = false;
     public bool UsuarioNoEncontrado = true;
+
     public List<ArtistaResponse> suscripciones { get; set; } = new List<ArtistaResponse>();
     public string IdToCopy = "";
     public string filtro_artista = "";
     public string filtro_review = "";
-    public static List<AlbumResponse> albumesRock = new List<AlbumResponse>(){
-
-
-    };
-
-
-    public List<Track> Tracks = new List<Track>(){
-
-
-    };
-
-
+  
+    public List<ReporteResponse> reportes {get; set;} = new List<ReporteResponse>();
     public static Peticion peticion1 = new Peticion() { };
     public static Peticion peticion2 = new Peticion() { };
     public List<Peticion> peticiones = new List<Peticion>() { peticion1, peticion2 };

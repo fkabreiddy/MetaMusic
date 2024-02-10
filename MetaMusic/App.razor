@@ -16,6 +16,11 @@
 </CascadingAuthenticationState>
 
 @code{
+    protected override async Task OnInitializedAsync()
+    {
+        var r = await albumService.AlbumOfTheMonthUpdate();
 
-   
+        
+    }
+
 }

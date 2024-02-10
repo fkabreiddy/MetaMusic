@@ -14,5 +14,7 @@ namespace MetaMusic.Data.Request
 
         public Review? Review { get; set; } = new Review();
         public Nota? Nota { get; set; } = new Nota();
+
+        public int Severidad { get; set; } = 0;
     }
 }

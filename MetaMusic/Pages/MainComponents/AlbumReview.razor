@@ -114,65 +114,95 @@
                         <MudAvatar Square=true Rounded=false Style="height: 250px; width: 250px;">
                             <MudImage src="@Albumresponse.Portada" />
                         </MudAvatar>
-                        <div class="d-flex" style="gap: 10px; align-items: center;">
-                           
+
+                        <AuthorizeView>
+                            <Authorized>
+                                <div class="d-flex" style="gap: 10px; align-items: center;">
 
 
-                                <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Info">
+
+                                    <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Info">
 
 
-                                    <MudPaper Class="" Outlined="true" style="padding: 10px; overflow: hidden;">
+                                        <MudPaper Class="" Outlined="true" style="padding: 10px; overflow: hidden;">
 
-                                          @if(Albumresponse.Creador?.Id == UsuarioActual.Id)
-                                          {
-                                               <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;" @onclick="async()=>{await EditReview();}">Editar Review</MudText></MudMenuItem>
-                                            <MudMenuItem Style="border-radius: 10px;">
-                                              <div Style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 20px;">
-                                                <MudText Style="font-size: 10px;">Ver Album en Spotify</MudText>
-                                                <MudAvatar Style="width: 25px; height: 25px;">
-                                                    <MudImage src="@Albumresponse.Portada"></MudImage>
-                                                </MudAvatar>
-                                               </div> 
-                                            </MudMenuItem>
-                                            <MudDivider></MudDivider>
+                                            @if (Albumresponse.Creador?.Id == UsuarioActual.Id)
+                                            {
+                                                <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;" @onclick="async()=>{await EditReview();}">Editar Review</MudText></MudMenuItem>
+                                                <MudMenuItem Style="border-radius: 10px;">
+                                                    <div Style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 20px;">
+                                                        <MudText Style="font-size: 10px;">Ver Album en Spotify</MudText>
+                                                        <MudAvatar Style="width: 25px; height: 25px;">
+                                                            <MudImage src="@Albumresponse.Portada"></MudImage>
+                                                        </MudAvatar>
+                                                    </div>
+                                                </MudMenuItem>
+                                                <MudDivider></MudDivider>
 
-                                             <MudTooltip  Text="No podras eliminar la review si ya paso 1 dia de su crecion." Arrow="true" Color="Color.Error">
-                                                                                             <MudMenuItem  Style="border-radius: 10px;" Disabled="@(DateTime.Now.Subtract(@Albumresponse.Fecha_Agregado).Days >= 1)"><MudText Style="font-size: 10px;   " @onclick="async()=>{await DeleteReview();}" Color="Color.Error">Eliminar Review</MudText></MudMenuItem>
-
-
-                                             </MudTooltip>
+                                                <MudTooltip Text="No podras eliminar la review si ya paso 1 dia de su crecion." Arrow="true" Color="Color.Error">
+                                                    <MudMenuItem Style="border-radius: 10px;" Disabled="@(DateTime.Now.Subtract(@Albumresponse.Fecha_Agregado).Days >= 1)"><MudText Style="font-size: 10px;   " @onclick="async()=>{await DeleteReview();}" Color="Color.Error">Eliminar Review</MudText></MudMenuItem>
 
 
-                                          }
-                                          else
-                                          {
+                                                </MudTooltip>
 
-                                           
-                                               <MudMenuItem Style="border-radius: 10px;">
-                                                  <div Style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 20px;">
-                                                    <MudText Style="font-size: 10px;">Ver Album en Spotify</MudText>
-                                                    <MudAvatar Style="width: 25px; height: 25px;">
-                                                        <MudImage src="@Albumresponse.Portada"></MudImage>
-                                                    </MudAvatar>
-                                                   </div> 
+
+                                            }
+                                            else
+                                            {
+
+
+                                                <MudMenuItem Style="border-radius: 10px;">
+                                                    <div Style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 20px;">
+                                                        <MudText Style="font-size: 10px;">Ver Album en Spotify</MudText>
+                                                        <MudAvatar Style="width: 25px; height: 25px;">
+                                                            <MudImage src="@Albumresponse.Portada"></MudImage>
+                                                        </MudAvatar>
+                                                    </div>
                                                 </MudMenuItem>
 
                                                 <MudDivider></MudDivider>
-                                            <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;  opacity: 0.7;" Color="Color.Error">Reportar Review</MudText></MudMenuItem>
+                                                <MudMenuItem Style="border-radius: 10px;">
+
+                                                    <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Info">
+                                                        <ActivatorContent>
+                                                            <MudMenuItem Style="border-radius: 10px;">
+                                                                <MudText Style="font-size: 10px;  opacity: 0.7;" Color="Color.Error"> Reportar Review</MudText>
+                                                            </MudMenuItem>
+                                                        </ActivatorContent>
+                                                        <ChildContent>
+                                                            <MudPaper Class="" Outlined="true" style="padding: 10px; overflow: hidden;">
+                                                                <MudMenuItem Style="border-radius: 10px;">
+                                                                    <MudText Style="font-size: 10px;  opacity: 0.7;" @onclick='async() => {await Reportar("Error Ortográfico", 1);}' Color="Color.Error">Error Ortográfico</MudText>
+
+                                                                </MudMenuItem>
+                                                                <MudMenuItem Style="border-radius: 10px;">
+                                                                    <MudText Style="font-size: 10px;  opacity: 0.7;" @onclick='async() => {await Reportar("Contenido Ofensivo", 2);}' Color="Color.Error">Contenido Ofensivo</MudText>
+
+                                                                </MudMenuItem>
+                                                            </MudPaper>
+                                                        </ChildContent>
 
 
-                                          }
+                                                    </MudMenu>
 
-                                       
-
-                                    </MudPaper>
+                                                </MudMenuItem>
 
 
+                                            }
 
 
-                                </MudMenu>
-                            
-                        </div>
+
+                                        </MudPaper>
+
+
+
+
+                                    </MudMenu>
+
+                                </div>
+                            </Authorized>
+                        </AuthorizeView>
+                       
 
 
 
@@ -789,7 +819,7 @@ else
         await dService.ShowAsync<Pages.Common_Components.NotasDialog>("", parameter, options);
     }
 
-   
+
     public async Task GetCurrentUser()
     {
 
@@ -818,7 +848,7 @@ else
             await GetNotas(Albumresponse);
             DataCargada = true;
             AlbumFound = true;
-            
+
         }
     }
 
@@ -838,7 +868,7 @@ else
         {
             tracksloading = false;
             MostrarNotificacion("Exito","Hubo un error al cargar los tracks. Intenta denuevo");
-            
+
         }
 
 
@@ -852,6 +882,24 @@ else
             yesText: si);
         StateHasChanged();
         return result;
+
+    }
+
+
+    public async Task Reportar(string Motivo, int Severidad)
+    {
+        var r = await reporteService.ReportarReview(Albumresponse.Review?.Id ?? 0,Motivo, Severidad );
+
+        if(r.Success)
+        {
+            MostrarNotificacion("Reporte Hecho", "Se ha reportado la review exitosamente");
+
+        }
+        else
+        {
+            MostrarNotificacion("Error", r.Message );            
+        }
+
 
     }
 
