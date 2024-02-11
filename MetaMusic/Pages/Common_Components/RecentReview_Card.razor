@@ -50,7 +50,7 @@
                         </div>
 
                 }
-                else
+                else if (album.Artistas.Count() == 1)
                 {
                     <div Style="display: flex; gap: 10px; ">
                         <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[0].Artista?.SpotifyId}");}' Style="font-size: 15px; font-weight: bold; font-family: SourceSerif4;opacity: 0.7;">@album.Artistas[0].Artista?.Nombre</MudLink>

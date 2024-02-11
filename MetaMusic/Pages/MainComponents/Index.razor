@@ -179,10 +179,18 @@
     {
         try
         {
+            if(albumesrecientes.Count()<=0)
+            {
+                await GetRecentAlbums();
+            }
 
-            await GetRecentAlbums();
             await VerifyUserAuth();
-            await GetReviewOfTheMont();
+
+            if (reviewOfTheMont.Id == 0)
+            {
+                await GetReviewOfTheMont();
+            }
+          
         }
         catch(Exception e)
         {

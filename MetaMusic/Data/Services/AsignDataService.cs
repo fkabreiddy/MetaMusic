@@ -1,7 +1,10 @@
 ﻿using MetaMusic.Data.Context;
 using MetaMusic.Data.Request;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components;
 using System.Security.Claims;
+using MetaMusic.Data.OtherEntities;
 
 namespace MetaMusic.Data.Services
 {
@@ -12,9 +15,11 @@ namespace MetaMusic.Data.Services
         private readonly NavigationManager navigationManager;
         private readonly IGoogleAuthService authService;
         private readonly IMetaMusicDbContext dbContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AsignDataService(IGoogleAuthService authService, IMetaMusicDbContext dbContext, IHttpContextAccessor Context, IUserService userServices, NavigationManager navigationManager)
+        public AsignDataService(IHttpContextAccessor _httpContextAccessor,IGoogleAuthService authService, IMetaMusicDbContext dbContext, IHttpContextAccessor Context, IUserService userServices, NavigationManager navigationManager)
         {
+            this._httpContextAccessor = _httpContextAccessor;
             this.dbContext = dbContext;
             this.Context = Context;
             this.userServices = userServices;
@@ -26,7 +31,7 @@ namespace MetaMusic.Data.Services
 
         }
 
-        public async Task<bool> AsignData()
+        public async Task<Result<LoginResponse>> AsignData()
         {
             try
             {
@@ -98,45 +103,52 @@ namespace MetaMusic.Data.Services
                     request.Correo = Gmail;
                     request.Nombre = GivenName + " "+ Surname;
                     request.FotoDePerfil = Avatar;
-                    string Normalizar( string cadena)
-                    {
-                        // Encuentra la posición del primer arroba
-                        int indiceArroba = cadena.IndexOf('@');
-
-                        if (indiceArroba != -1) // Verifica si se encontró el arroba
-                        {
-                            // Extrae la subcadena hasta el arroba
-                            return cadena.Substring(0, indiceArroba);
-                        }
-                        else
-                        {
-                            // Si no se encontró el arroba, devuelve la cadena completa
-                            return cadena;
-                        }
-                    }
-                    request.CorreoNormalizado = Normalizar(Gmail);
+                    
+                    request.CorreoNormalizado = request.Correo.Normalize();
                    var r = await userServices.Login(request);
 
-                    if(r.Success)
+                    if(r.Success && r.Data is not null)
                     {
-                        return true;
+                     
+                        return new Result<LoginResponse>()
+                        {
+                            Message = "Exito",
+                            Success = true,
+                            Data = r.Data.ToLoginResponse()
+                        };
                     }
                     else
                     {
-                        return false;
+                        return new Result<LoginResponse>()
+                        {
+                            Message = "No estas logeado",
+                            Success = false,
+                            
+                        };
                     }
                    
                 }
                 else
                 {
-
-                    return false;
+                    navigationManager.NavigateTo("/login-error");
+                    return new Result<LoginResponse>()
+                    {
+                        Message = "Error",
+                        Success = false,
+                       
+                    };
                 }
 
             }
             catch (Exception ex)
             {
-                return false;
+                navigationManager.NavigateTo("/login-error");
+                return new Result<LoginResponse>()
+                {
+                    Message = "Error",
+                    Success = false,
+
+                };
             }
 
         }

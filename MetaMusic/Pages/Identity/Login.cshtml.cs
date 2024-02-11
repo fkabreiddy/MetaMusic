@@ -60,7 +60,7 @@ namespace MetaMusic.Pages.Identity
                         RedirectUri = this.Request.Host.Value
                     };
 
-                    
+                   
                     await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(GoogleUser));
@@ -70,8 +70,23 @@ namespace MetaMusic.Pages.Identity
 
                var r =  await asingData.AsignData();
 
-                if(r == true)
+                if(r.Success == true)
                 {
+                    // Agregar el claim de rol a la identidad del usuario
+                    var roleClaim = new Claim(ClaimTypes.Role, r.Data.Rol.Tipo);
+                    GoogleUser.AddClaim(roleClaim);
+
+                    // Actualizar la cookie de autenticación
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        RedirectUri = this.Request.Host.Value
+                    };
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(GoogleUser),
+                        authProperties);
                     return LocalRedirect("/");
                 }
                 else

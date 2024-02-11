@@ -1,8 +1,10 @@
 ﻿
+using MetaMusic.Data.OtherEntities;
+
 namespace MetaMusic.Data.Services
 {
     public interface IAsignDataService
     {
-        Task<bool> AsignData();
+        Task<Result<LoginResponse>> AsignData();
     }
 }

@@ -34,7 +34,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var user = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == request.Correo);
+                var user = await dbContext.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Correo == request.Correo);
 
                 if(user is not null)
                 {

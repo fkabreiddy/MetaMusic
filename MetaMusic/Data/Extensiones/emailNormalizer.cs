@@ -4,6 +4,7 @@
     {
         public static string ObtenerSubcadenaHastaArroba(this string cadena)
         {
+            cadena.Replace(".", "");
             // Encuentra la posición del primer arroba
             int indiceArroba = cadena.IndexOf('@');
 

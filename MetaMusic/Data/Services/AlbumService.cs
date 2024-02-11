@@ -342,7 +342,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Take(3).Where(a => a.Publicado == true).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Take(3).Where(a => a.Publicado == true).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()

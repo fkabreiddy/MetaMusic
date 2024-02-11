@@ -10,7 +10,7 @@ namespace MetaMusic.Data.Request
         public string Correo { get; set; } = "";
 
         public string CorreoNormalizado { get; set; } = "";
-        public string FotoDePerfil { get; set; } = null!;
+        public string FotoDePerfil { get; set; } = "";
 
         public string Biografia { get; set; } = null!;
         public Rol Rol { get; set; } = new Rol();

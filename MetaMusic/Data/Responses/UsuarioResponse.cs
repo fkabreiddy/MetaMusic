@@ -1,4 +1,5 @@
 ﻿using MetaMusic.Data.Entities;
+using MetaMusic.Data.OtherEntities;
 using MetaMusic.Data.Request;
 
 namespace MetaMusic.Data.Responses
@@ -11,7 +12,7 @@ namespace MetaMusic.Data.Responses
         public string Correo { get; set; } = "";
 
         public string CorreoNormalizado { get; set; } = "";
-        public string FotoDePerfil { get; set; } = null!;
+        public string FotoDePerfil { get; set; } = "";
 
         public string Biografia { get; set; } = null!;
         public Rol Rol { get; set; } = new Rol();
@@ -34,7 +35,16 @@ namespace MetaMusic.Data.Responses
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
 
 
+        public LoginResponse ToLoginResponse() => new LoginResponse()
+        {
+            Id = this.Id,
+            Nombre = this.Nombre,
+            Correo = this.Correo,
 
+            Rol = this.Rol,
+
+            // Agrega otras propiedades si es necesario
+        };
         public UsuarioRequest ToRequest() => new UsuarioRequest()
         {
             Id = this.Id,

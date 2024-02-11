@@ -113,38 +113,46 @@
 
                                                     </MudMenuItem>
 
-                                                    @if (UsuarioActual.Rol.Tipo == "Staff")
-                                                    {
-                                                        <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                                        <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Staff Options</MudText>
-                                                        <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                                        <MudMenuItem @onclick='()=>{navManager.NavigateTo("/crear-contenido");}' Style="border-radius: 10px;">
+                                                    <AuthorizeView Context="menuextra" Roles="Staff">
+                                                        <Authorized >
+                                                                     <MudDivider Class="mb-3 mt-3"></MudDivider>
+                                                                <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Staff Options</MudText>
+                                                                <MudDivider Class="mb-3 mt-3"></MudDivider>
+                                                                <MudMenuItem @onclick='()=>{navManager.NavigateTo("/crear-contenido");}' Style="border-radius: 10px;">
 
 
-                                                            <div style="display:flex; justify-content: space-between; align-items: center;border-radius: 9px;">
-                                                                <MudText Color="Color.Error" Style="font-size: 12px;   ">Crear Contenido</MudText>
-                                                                <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Add"></MudIcon>
-                                                            </div>
+                                                                    <div style="display:flex; justify-content: space-between; align-items: center;border-radius: 9px;">
+                                                                        <MudText Color="Color.Error" Style="font-size: 12px;   ">Crear Contenido</MudText>
+                                                                        <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Add"></MudIcon>
+                                                                    </div>
 
 
 
 
-                                                        </MudMenuItem>
-                                                        <MudMenuItem Style="border-radius: 10px;">
-                                                            <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                                <MudText Style="font-size: 12px;   ">Peticiones</MudText>
-                                                                <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.NewReleases"></MudIcon>
-                                                            </div>
+                                                                </MudMenuItem>
+                                                                <MudMenuItem Disabled=true Style="border-radius: 10px;">
+                                                                    <div style="display:flex; justify-content: space-between; align-items: center;">
+                                                                        <MudText Style="font-size: 12px;   ">Peticiones</MudText>
+                                                                        <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.NewReleases"></MudIcon>
+                                                                    </div>
 
-                                                        </MudMenuItem>
-                                                        <MudMenuItem Style="border-radius: 10px;">
-                                                            <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                                <MudText Style="font-size: 12px;   ">Reportes</MudText>
-                                                                <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag"></MudIcon>
-                                                            </div>
+                                                                </MudMenuItem>
+                                                                <MudMenuItem Disabled=true Style="border-radius: 10px;">
+                                                                    <div style="display:flex; justify-content: space-between; align-items: center;">
+                                                                        <MudText Style="font-size: 12px;   ">Reportes</MudText>
+                                                                        <MudBadge Color="Color.Error" Overlap="true" Visible=hayReportes Bordered="true" Dot=true>
+                                                                                                                                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag"></MudIcon>
 
-                                                        </MudMenuItem>
-                                                    }
+                                                                        </MudBadge>
+                                                                    </div>
+
+                                                                </MudMenuItem>
+                                                        </Authorized>
+                                                       
+                                                    </AuthorizeView>
+                                                   
+                                                        
+                                                    
 
 
                                                     <MudDivider Class="mb-3 mt-3"></MudDivider>
@@ -243,7 +251,7 @@
 
 
 @functions{
-  
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -260,7 +268,7 @@
 
             UserIsAuthorized = true;
             UserDataLoaded = true;
-
+            await albumService.AlbumOfTheMonthUpdate();
 
 
 
@@ -281,13 +289,16 @@
         {
             UsuarioActual = r.Data;
             gettingUserData = false;
+            await GetReportes(UsuarioActual.Id);
             StateHasChanged();
         }
-        
+
 
 
 
     }
+
+    
 
     [JSInvokable]
     public void ManejarScroll(int scrollY)
@@ -296,7 +307,16 @@
         navbarclass = (scrollY == 0) ? "navbar-container" : "mostrar";
     }
 
-  
+    public async Task GetReportes(int userid)
+    {
+
+        var r = await reporteService.Consultar(userid);
+
+        if (r.Data is not null && r.Success)
+        {
+            hayReportes = true;
+        }
+    }
 
    
 }
@@ -307,6 +327,7 @@
     public bool UserIsAuthorized = false;
     private string navbarclass = "navbar-container";
     public bool IsDarkMode { get; set; } = true ;
+    public bool hayReportes = false;
     private MudTheme ThemeCustom => new()
      {
 

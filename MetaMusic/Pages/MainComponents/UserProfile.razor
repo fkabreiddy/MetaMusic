@@ -186,7 +186,10 @@ else
                                                     }
                                                 </MudGrid>
                                             </MudTabPanel>
-                                            <MudTabPanel style="@($"""{(view == "Reportes" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reportes";}' Text="Reportes">
+                                            <MudTabPanel  style="@($"""{(view == "Reportes" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reportes";}' Text="Reportes">
+
+                                                <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Las reviews que tengan mas de 3 reportes serán ocultadas. Mantente al tanto de el feedback que hacen los usuarios.</MudText>
+
                                                 <MudGrid Style="margin-top: 20px;" Spacing="3">
                                                    
                                                     <Virtualize Items="reportes.ToList()" TItem="ReporteResponse">
@@ -198,7 +201,7 @@ else
                                                     
                                                 </MudGrid>
                                             </MudTabPanel>
-                                    <MudTabPanel style="@($"""{(view == "Reviews" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reviews";}' Text="Reviews">
+                                           <MudTabPanel style="@($"""{(view == "Reviews" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reviews";}' Text="Reviews">
                                         <MudContainer Style="display: flex; justify-content: center; width: 90%;">
                                             @if (theme.IsDark())
                                             {

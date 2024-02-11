@@ -19,12 +19,12 @@ namespace MetaMusic.Data.Services
             this.googleAuthService = googleAuthService;
         }
 
-        [Authorize]
+     
         public async Task<Result<bool>> ReportarReview(int review, string motivo, int severidad)
         {
             try
             {
-               
+
                 var currentuser = await googleAuthService.GetCurrentUser();
 
                 if (currentuser.Data == null)
@@ -53,7 +53,7 @@ namespace MetaMusic.Data.Services
 
                 var existe = await dbContext.Reportes.FirstOrDefaultAsync(r => r.Review.Id == review && r.Usuario.Id == usuarioResponse.Id);
 
-                if(existe is not null)
+                if (existe is not null)
                 {
                     return new Result<bool>()
                     {
@@ -71,8 +71,8 @@ namespace MetaMusic.Data.Services
                         Message = "Review no encontrada"
                     };
                 }
-
-                await dbContext.Reportes.AddAsync(Reporte.Crear(new ReporteRequest() { Contenido = $"{motivo}", Titulo = "Reporte a una review tuya.", Review = reviewResponse, Usuario = usuarioResponse, Severidad = severidad }));
+                var nuevoReporte = new ReporteRequest() { Contenido = $"{motivo}", Titulo = "Reporte a una review tuya.", Review = reviewResponse, Usuario = usuarioResponse, Severidad = severidad, Nota = null };
+                await dbContext.Reportes.AddAsync(Reporte.Crear(nuevoReporte));
 
                 await dbContext.SaveChangesAsync();
 
@@ -175,7 +175,7 @@ namespace MetaMusic.Data.Services
             {
 
 
-                var reportes = await dbContext.Reportes.Include(r => r.Review).ThenInclude(re => re.Album).Include(r => r.Review).ThenInclude(re => re.Creador).Include(r => r.Nota).Where(r => r.Review.Creador.Id == currentuserId || r.Nota != null).ToListAsync();
+                var reportes = await dbContext.Reportes.Include(r => r.Review).ThenInclude(re => re.Album).Include(r => r.Review).ThenInclude(re => re.Creador).Include(r => r.Nota).Where(r => r.Severidad == 1).ToListAsync();
 
                 if (reportes is null)
                 {

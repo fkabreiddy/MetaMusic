@@ -1,8 +1,7 @@
 ﻿@page "/crear-contenido"
-<AuthorizeView>
+<AuthorizeView Roles="Staff">
     <Authorized>
-       @if(Autorizado)
-       {
+      
             <MudItem Style="margin-top: 60px;margin-bottom: 60px;">
                 <MudCard >
                     <MudGrid Justify="Justify.Center">
@@ -91,7 +90,7 @@
                 </MudCard>
               
             </MudItem>
-        }
+        
       
     </Authorized>
     <NotAuthorized>

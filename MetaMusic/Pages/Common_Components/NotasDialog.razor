@@ -6,7 +6,7 @@
 
                 <MudText Style="font-size: 20px; font-weight: bold;">NOTAS</MudText>
                 <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
-                <MudText  Align="Align.Center" Style="font-size: 15px; font-weight: bold; opacity: 0.7;">DID YOU KNOW THAT THERES A TUNNER UNDER OCEAN BLVD</MudText>
+                <MudText  Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7;">DID YOU KNOW THAT THERES A TUNNER UNDER OCEAN BLVD</MudText>
 
 
 
@@ -29,12 +29,12 @@
                     <MudPaper Outlined="true" style="padding: 10px; overflow: hidden;">
 
                                                
-                            <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Solo Buenas criticas</MudText></MudMenuItem>
-                            <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;" >Solo Malas Criticas</MudText></MudMenuItem>
-                            <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Solo Criticas Neutrales</MudText></MudMenuItem>
+                            <MudMenuItem @onclick='()=>{filtro = "bueno";}' Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Solo Buenas criticas</MudText></MudMenuItem>
+                            <MudMenuItem @onclick='()=>{filtro = "malo";}' Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Solo Malas Criticas</MudText></MudMenuItem>
+                            <MudMenuItem  @onclick='()=>{filtro = "neutro";}' Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Solo Criticas Neutrales</MudText></MudMenuItem>
 
                             <MudDivider></MudDivider>
-                            <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;  opacity: 0.7;">Todas las Criticas</MudText></MudMenuItem>
+                            <MudMenuItem  @onclick='()=>{filtro = "todo";}' Style="border-radius: 10px;"><MudText Style="font-size: 10px;  opacity: 0.7;">Todas las Criticas</MudText></MudMenuItem>
 
 
                                             
@@ -49,24 +49,87 @@
            
             <MudContainer>
                 <MudGrid>
-                    @foreach(var nota in notas)
-                    {
-                        @if(nota.Creador?.Id == usuarioactual.Id)
-                        {
-                            <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
-                                <Nota usuarioactual="@usuarioactual" ReportButton=false nota="@nota"  deletebuttonvisible=true calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == nota.Creador?.Id)"></Nota>
-                            </MudItem>
-                        }
-                        else
-                        {
-                            <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
-                                <Nota usuarioactual="@usuarioactual" nota="@nota" calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == nota.Creador?.Id)"></Nota>
-                            </MudItem>
-                        }
-                       
 
-                      
+                    @if(filtro == "todo")
+                    {
+                        <Virtualize Items="notas.OrderBy(n => n.Fecha_Creacion).ToList()" TItem="NotaResponse">
+                              @if (context.Creador?.Id == usuarioactual.Id)
+                            {
+                                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                    <Nota usuarioactual="@usuarioactual" ReportButton=false nota="@context" deletebuttonvisible=true calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == context.Creador?.Id)"></Nota>
+                                </MudItem>
+                            }
+                            else
+                            {
+                                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                    <Nota usuarioactual="@usuarioactual" nota="@context" calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == context.Creador?.Id)"></Nota>
+                                </MudItem>
+                            }
+                        </Virtualize>
+                       
+                          
+
+
+
+                        
                     }
+                    else if(filtro == "malo")
+                    {
+                        <Virtualize Items="notas.Where(n => calificaciones.Any(c => c.Usuario.Id == n.Creador.Id && c.Numero <= 3 && c.Numero >= 1)).OrderBy(n => n.Fecha_Creacion).ToList()" TItem="NotaResponse">
+                            @if (context.Creador?.Id == usuarioactual.Id)
+                            {
+                                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                    <Nota usuarioactual="@usuarioactual" ReportButton=false nota="@context" deletebuttonvisible=true calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == context.Creador?.Id)"></Nota>
+                                </MudItem>
+                            }
+                            else
+                            {
+                                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                    <Nota usuarioactual="@usuarioactual" nota="@context" calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == context.Creador?.Id)"></Nota>
+                                </MudItem>
+                            }
+                        </Virtualize>
+
+                    }
+                    else if (filtro == "neutro")
+                    {
+                        <Virtualize Items="notas.Where(n => calificaciones.Any(c => c.Usuario.Id == n.Creador.Id && c.Numero <= 6 && c.Numero >= 4)).OrderBy(n => n.Fecha_Creacion).ToList()" TItem="NotaResponse">
+                            @if (context.Creador?.Id == usuarioactual.Id)
+                            {
+                                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                    <Nota usuarioactual="@usuarioactual" ReportButton=false nota="@context" deletebuttonvisible=true calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == context.Creador?.Id)"></Nota>
+                                </MudItem>
+                            }
+                            else
+                            {
+                                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                    <Nota usuarioactual="@usuarioactual" nota="@context" calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == context.Creador?.Id)"></Nota>
+                                </MudItem>
+                            }
+                        </Virtualize>
+
+                    }
+                    else
+                    {
+                        
+                        <Virtualize Items="notas.Where(n => calificaciones.Any(c => c.Usuario.Id == n.Creador.Id && c.Numero <= 10 && c.Numero >= 7)).OrderBy(n => n.Fecha_Creacion).ToList()" TItem="NotaResponse">
+                            @if (context.Creador?.Id == usuarioactual.Id)
+                            {
+                                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                    <Nota usuarioactual="@usuarioactual" ReportButton=false nota="@context" deletebuttonvisible=true calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == context.Creador?.Id)"></Nota>
+                                </MudItem>
+                            }
+                            else
+                            {
+                                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                    <Nota usuarioactual="@usuarioactual" nota="@context" calificacion="@calificaciones.FirstOrDefault(c => c.Usuario?.Id == context.Creador?.Id)"></Nota>
+                                </MudItem>
+                            }
+                        </Virtualize>
+
+                                           
+                    }
+
                 </MudGrid>
             </MudContainer>
         </div>
@@ -81,11 +144,12 @@
 
     public MudDialogInstance MudDialog { get; set; }
 
-    public List<int> lista = new List<int>() { 1, 2, 3, 4, 5, 6 };
+
     [Parameter] public List<CalificacionResponse> calificaciones { get; set; } = new List<CalificacionResponse>();
     [Parameter] public List<NotaResponse> notas { get; set; } = new List<NotaResponse>();
     [Parameter] public double promedio { get; set; }
     [Parameter] public UsuarioResponse usuarioactual { get; set; } = new UsuarioResponse();
     public string backgroundTitleColor => (theme.IsDark() ? "#191919" : "#F9F9F9");
-    
+    public string filtro = "todo";
+
 }

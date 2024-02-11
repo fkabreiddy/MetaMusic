@@ -163,20 +163,25 @@
                                                 <MudDivider></MudDivider>
                                                 <MudMenuItem Style="border-radius: 10px;">
 
-                                                    <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Info">
+                                                    <MudMenu ActivationEvent="MouseEvent.MouseOver" ListClass="pa-0 menu" AnchorOrigin="Origin.CenterRight" TransformOrigin="Origin.CenterLeft" Size="Size.Small" Icon="@Icons.Material.Rounded.Info">
                                                         <ActivatorContent>
-                                                            <MudMenuItem Style="border-radius: 10px;">
-                                                                <MudText Style="font-size: 10px;  opacity: 0.7;" Color="Color.Error"> Reportar Review</MudText>
-                                                            </MudMenuItem>
+                                                            
+                                                               
+                                                                   
+                                                                    <MudText Style="font-size: 10px;" Color="Color.Error"> Reportar Review</MudText>
+                                                                    
+                                                                
+                                                               
+                                                       
                                                         </ActivatorContent>
                                                         <ChildContent>
                                                             <MudPaper Class="" Outlined="true" style="padding: 10px; overflow: hidden;">
-                                                                <MudMenuItem Style="border-radius: 10px;">
-                                                                    <MudText Style="font-size: 10px;  opacity: 0.7;" @onclick='async() => {await Reportar("Error Ortográfico", 1);}' Color="Color.Error">Error Ortográfico</MudText>
+                                                                <MudMenuItem  @onclick='async() => {await Reportar("Error Ortográfico", 1);}' Style="border-radius: 10px;">
+                                                                    <MudText Style="font-size: 10px; " Color="Color.Error">Error Ortográfico</MudText>
 
-                                                                </MudMenuItem>
-                                                                <MudMenuItem Style="border-radius: 10px;">
-                                                                    <MudText Style="font-size: 10px;  opacity: 0.7;" @onclick='async() => {await Reportar("Contenido Ofensivo", 2);}' Color="Color.Error">Contenido Ofensivo</MudText>
+                                                                </MudMenuItem >
+                                                                <MudMenuItem Style="border-radius: 10px;" @onclick='async() => {await Reportar("Contenido Ofensivo", 2);}'>
+                                                                    <MudText Style="font-size: 10px; " Color="Color.Error">Contenido Ofensivo</MudText>
 
                                                                 </MudMenuItem>
                                                             </MudPaper>
@@ -486,7 +491,7 @@
                                     <div style=" display: flex; justify-content: center;">
 
                                     <MudItem md="6" lg="5" xxl="4" xl="5" sm="8" xs="10">
-                                        <MetaMusic.Pages.Common_Components.Nota calificacion="calificacionResponse" nota="notaResponse" ReportButton=false></MetaMusic.Pages.Common_Components.Nota>
+                                        <MetaMusic.Pages.Common_Components.Nota calificacion="calificacionResponse" nota="notaResponse" deletebuttonvisible=true ReportButton=false></MetaMusic.Pages.Common_Components.Nota>
 
                                         </MudItem>
 
@@ -888,7 +893,7 @@ else
 
     public async Task Reportar(string Motivo, int Severidad)
     {
-        var r = await reporteService.ReportarReview(Albumresponse.Review?.Id ?? 0,Motivo, Severidad );
+        var r = await reporteService.ReportarReview(Albumresponse.Review?.Id ?? 0  ,Motivo, Severidad );
 
         if(r.Success)
         {
