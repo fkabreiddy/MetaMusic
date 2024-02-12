@@ -175,7 +175,7 @@ namespace MetaMusic.Data.Services
             {
 
 
-                var reportes = await dbContext.Reportes.Include(r => r.Review).ThenInclude(re => re.Album).Include(r => r.Review).ThenInclude(re => re.Creador).Include(r => r.Nota).Where(r => r.Severidad == 1).ToListAsync();
+                var reportes = await dbContext.Reportes.Include(r => r.Review).ThenInclude(re => re.Album).Include(r => r.Review).ThenInclude(re => re.Creador).Include(r => r.Nota).Where(r => r.Review.Album.Creador.Id  == currentuserId || r.Nota.Id != 0 ).ToListAsync();
 
                 if (reportes is null)
                 {

@@ -65,7 +65,7 @@ namespace MetaMusic.Data.Services
                 };
 
             }
-            catch (APIException e)
+            catch (APIException)
             {
                 return new Result<ArtistaResponse>()
                 {
@@ -73,7 +73,7 @@ namespace MetaMusic.Data.Services
                     Success = false
                 };
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new Result<ArtistaResponse>()
                 {
@@ -168,7 +168,7 @@ namespace MetaMusic.Data.Services
                     Success = true
                 };
             }
-            catch (APIException e)
+            catch (APIException)
             {
                 return new Result<MetaMusic.Data.Request.AlbumRequest>()
                 {
@@ -176,7 +176,7 @@ namespace MetaMusic.Data.Services
                     Success = false
                 };
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new Result<MetaMusic.Data.Request.AlbumRequest>()
                 {

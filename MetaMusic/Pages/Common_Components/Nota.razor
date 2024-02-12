@@ -121,6 +121,22 @@
     </MudContainer>
 </MudPaper>
 
+
+<MudMessageBox @ref="mudMessageBox">
+    <TitleContent>
+        <MudText Style="font-size: 15px; font-weight: bold; opacity: 0.7;" Color="Color.Error">@mbTitle</MudText>
+        </TitleContent>
+        <MessageContent>
+            <MudText Style="font-size: 15px; ">@mbContent</MudText>
+        </MessageContent>
+        <NoButton>
+            <MudButton Variant="Variant.Text" Color="Color.Error">@mbNoButton</MudButton>
+        </NoButton>
+        <YesButton>
+            <MudButton Variant="Variant.Text" >@mbYesButton</MudButton>
+        </YesButton>
+    </MudMessageBox>
+
 @functions{
 
     public async Task DislikeNote()
@@ -146,13 +162,29 @@
             StateHasChanged();
         }
     }
-
+    public void InitializeMessageBox(string Title, string Content, string YesText, string NoText)
+    {
+        mbTitle = Title;
+        mbContent = Content;
+        mbYesButton = YesText;
+        mbNoButton = NoText;
+    }
     public async Task Borrar()
     {
+        InitializeMessageBox("Borrar Calificacion", "¿Realmente deseas borrar la Calificacion? Esta acción no se puede desahacer.", "Si", "No");
+
+        var desicion = await mudMessageBox.Show();
+
+        @if(desicion == false)
+        {
+            return ;
+        }
+
         var r = await notaService.Eliminar(nota.Id);
 
         if(r.Success)
         {
+            
             MostrarNotificacion("Nota Borrada", "Se borró la nota exitosamente. Ya no estará cuando vuelvas");
             StateHasChanged();
             
@@ -194,6 +226,12 @@
     }
 }
 @code {
+    public string mbTitle { get; set; } = "";
+    public string mbContent { get; set; } = "";
+    public string mbYesButton { get; set; } = "";
+    public string mbNoButton { get; set; } = "";
+
+    public MudMessageBox mudMessageBox { get; set; } = new MudMessageBox();
     [Parameter] public CalificacionResponse calificacion { get; set; } = new CalificacionResponse();
     [Parameter] public NotaResponse nota { get; set; } = new NotaResponse();
     [Parameter] public bool ReportButton { get; set; } = true;

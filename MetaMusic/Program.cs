@@ -38,6 +38,7 @@ builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddScoped<IAlbumService, AlbumService>();
 
 builder.Services.AddScoped<ICalificacionService, CalificacionService>();
+builder.Services.AddScoped<IMessageBox, MessageBox>();
 
 builder.Services.AddScoped<INotaService, NotaService>();
 builder.Services.AddScoped<IReporteService, ReporteService>();

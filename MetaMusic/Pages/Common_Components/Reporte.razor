@@ -42,7 +42,7 @@
                             </MudTooltip>
 
                             <MudTooltip Arrow=true Color="Color.Error" Text="Eliminar">
-                                <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Rounded.Delete"></MudIcon>
+                                <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" Size="Size.Small" Color="Color.Error " @onclick="async()=>{await BorrarReporte();}" Icon="@Icons.Material.Rounded.Delete"></MudIcon>
 
                             </MudTooltip>
                         </div>
@@ -93,7 +93,7 @@ else if (reporte.Nota is not null && reporte.Nota?.Id != 0)
                         </MudTooltip>
 
                         <MudTooltip Arrow=true Color="Color.Error" Text="Eliminar">
-                            <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Rounded.Delete"></MudIcon>
+                            <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" Size="Size.Small" Color="Color.Error" @onclick="async()=>{await BorrarReporte();}" Icon="@Icons.Material.Rounded.Delete"></MudIcon>
 
                         </MudTooltip>
                 </div>
@@ -101,8 +101,70 @@ else if (reporte.Nota is not null && reporte.Nota?.Id != 0)
         </MudContainer>
     </MudCard>
 }
+@functions{
+    public void MostrarNotificacion(string Titulo, string Contenido)
+    {
+        SnackbarService.Add(
 
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+
+        </MudContainer>
+    </div>
+    ,
+           Severity.Normal,
+    config => { config.HideIcon = true; }
+         );
+    }
+    public async Task BorrarReporte()
+    {
+        var desicion = await MessageBox("Eliminar Reporte", "¿Deseas eliminar este reporte? Esta acción no se puede deshacer.", "Eliminar", "Cancelar");
+
+        if(desicion == true)
+        {
+            var r = await reporteService.Eliminar(reporte.Id);
+
+            if (r.Success)
+            {
+                reporte = new ReporteResponse();
+                MostrarNotificacion("Reporte Eliminado", "Se ha eliminado el reporte correctamente");
+                StateHasChanged();
+            }
+            else
+            {
+                MostrarNotificacion("Error", r.Message);
+            }
+        }
+       
+        
+    }
+}
 
 @code {
     [Parameter] public ReporteResponse reporte { get; set; } = new ReporteResponse();
+    private async Task<bool?> MessageBox(string Titulo, string Descripcion, string si, string No)
+    {
+        bool? result = await dService.ShowMessageBox(
+            Titulo,
+            Descripcion,
+            yesText: si, noText: No);
+        StateHasChanged();
+        return result;
+
+    }
 }

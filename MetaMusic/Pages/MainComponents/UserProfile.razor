@@ -97,63 +97,73 @@ else
                                 <MudText Style="font-size: 13px; font-weight: bold" Color="Color.Error">Biografia</MudText>
                                 <MudText Align="Align.Center" Style="font-size: 12px; ">@Usuario.Biografia</MudText>
 
-                            @if (UsuarioActual.Id == Usuario.Id)
-                            {
-                                <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
-                                <MudCard>
+                                <AuthorizeView>
+                                    <Authorized>
+                                        @if (UsuarioActual.Id == Usuario.Id)
+                                    {
+                                        <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+                                        <MudCard>
 
-                                    <MudContainer Style="height: auto; width: 100%; display: flex; border-radius: 9px; flex-direction: column; ">
-
-
-                                        <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold; margin-bottom: 10px; margin-top: 20px; ">EDITA TU PERFIL</MudText>
-
-                                        <MudTextField @bind-Value="Usuario.Nombre" Immediate="true" MaxLength="30" T="string" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Tu nuevo nombre aqui'></MudTextField>
-
-                                        <MudTextField @bind-Value="Usuario.FotoDePerfil" Immediate="true" T="string" Adornment="Adornment.Start" Style="font-size: 12px;    border: dashed 1px ;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Url de tu perfil'></MudTextField>
-
-                                        <MudTextField @bind-Value="Usuario.Biografia" Immediate="true" MaxLength="100" T="string" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 21px; border: dashed 1px ;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Biografia'></MudTextField>
-
-                                        <div style="display: flex; justify-content: center; align-items: center;">
-                                            <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Surface" @onclick="ModificarUsuario" Style="font-size: 12px; margin-bottom: 15px; cursor: pointer;">
-                                                @if (GuardandoCambios)
-                                                {
-
-                                                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Error"></MudProgressCircular>
+                                            <MudContainer Style="height: auto; width: 100%; display: flex; border-radius: 9px; flex-direction: column; ">
 
 
+                                                <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold; margin-bottom: 10px; margin-top: 20px; ">EDITA TU PERFIL</MudText>
 
-                                                }
-                                                else
-                                                {
-                                                    <MudText Style="font-size: 12px;  cursor: pointer;">Guardar Cambios</MudText>
+                                                <MudTextField @bind-Value="Usuario.Nombre" Immediate="true" MaxLength="30" T="string" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Tu nuevo nombre aqui'></MudTextField>
 
-                                                }
-                                            </MudChip>
+                                                <MudTextField @bind-Value="Usuario.FotoDePerfil" Immediate="true" T="string" Adornment="Adornment.Start" Style="font-size: 12px;    border: dashed 1px ;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Url de tu perfil'></MudTextField>
 
-                                        </div>
+                                                <MudTextField @bind-Value="Usuario.Biografia" Immediate="true" MaxLength="100" T="string" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 21px; border: dashed 1px ;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Biografia'></MudTextField>
+
+                                                <div style="display: flex; justify-content: center; align-items: center;">
+                                                    <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Surface" @onclick="ModificarUsuario" Style="font-size: 12px; margin-bottom: 15px; cursor: pointer;">
+                                                        @if (GuardandoCambios)
+                                                        {
+
+                                                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Error"></MudProgressCircular>
 
 
-                                    </MudContainer>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudText Style="font-size: 12px;  cursor: pointer;">Guardar Cambios</MudText>
+
+                                                        }
+                                                    </MudChip>
+
+                                                </div>
 
 
-                                </MudCard>
-                            }
-                            @if (Usuario.Rol.Tipo != "Normal")
-                            {
-                                 <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+                                            </MudContainer>
+
+
+                                        </MudCard>
+                                    }
+                                    </Authorized>
+                                </AuthorizeView>
+                     
+
+                            <AuthorizeView Roles="Staff">
+                                <Authorized>
+                                    <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
                                     <MudContainer Style="display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center;">
                                         <MudText Style="font-size: 13px;  font-weight: bold;" Color="Color.Error">Opciones del Staff</MudText>
                                         <div class="staff-option" style="padding: 15px; display: flex; justify-content: space-between; align-items: center; gap: 21px; cursor: pointer; border-radius: 10px;  margin-bottom: 15px; flex-wrap: wrap;">
-                                                <MudText Style="font-size: 12px;" Color="Color.Primary" > Actualizar Portadas de Artistas </MudText>
-                                            <MudIconButton Icon="@Icons.Material.Rounded.Update" Size="Size.Small" ></MudIconButton>
+                                            <MudText Style="font-size: 12px;" Color="Color.Primary"> Actualizar Portadas de Artistas </MudText>
+                                            <MudIconButton Icon="@Icons.Material.Rounded.Update" Size="Size.Small"></MudIconButton>
                                         </div>
                                         <div class="staff-option" style="padding: 15px;display: flex; justify-content: space-between; align-items: center; gap: 21px; cursor: pointer; margin-bottom: 15px; flex-wrap: wrap; border-radius: 10px;">
-                                        <MudText Style="font-size: 12px;" Color="Color.Primary">Actualizar Portadas de Albumes </MudText>
-                                            <MudIconButton Icon="@Icons.Material.Rounded.Update" Size="Size.Small" ></MudIconButton>
+                                            <MudText Style="font-size: 12px;" Color="Color.Primary">Actualizar Portadas de Albumes </MudText>
+                                            <MudIconButton Icon="@Icons.Material.Rounded.Update" Size="Size.Small"></MudIconButton>
                                         </div>
-                                 
+
                                     </MudContainer>
-                            }
+                                </Authorized>
+                            </AuthorizeView>
+                           
+                                
+                            
                            
                               
 
@@ -171,90 +181,93 @@ else
                             <MudTabs DisableRipple=true Color="Color.Transparent" Rounded="true" HideSlider="true" AlwaysShowScrollButtons="false" MinimumTabWidth="100" Elevation="0" IconColor="Color.Secondary" ScrollIconColor="Color.Secondary" Centered="true" Style="font-size: 10px; width: 100%;  height: 100%; margin-bottom: 15px;margin-top: 30px; padding:0; " SliderColor="Color.Secondary">
 
                               
-                                @if (Usuario.Id == UsuarioActual.Id && Usuario.Rol.Tipo == "Staff")
-                                {
-                                           
-                                            <MudTabPanel style="@($"""{(view == "Peticiones" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Peticiones";}' Text="Peticiones">
-                                                <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Las Peticiones se eliminan cuando se eliminan automaticamente cuando se agregue el contenido.</MudText>
-                                                <MudGrid Style="margin-top: 20px;" Spacing="3">
-                                                    @foreach (var peticion in peticiones)
-                                                    {
-                                                        <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
-                                                            <MetaMusic.Pages.Common_Components.NuevaPeticion Peticion="peticion"></MetaMusic.Pages.Common_Components.NuevaPeticion>
+                                <AuthorizeView Context="staff_options" Roles="Staff">
+                                    @if (Usuario.Id == UsuarioActual.Id && Usuario.Rol.Tipo == "Staff")
+                                    {
 
-                                                        </MudItem>
-                                                    }
-                                                </MudGrid>
-                                            </MudTabPanel>
-                                            <MudTabPanel  style="@($"""{(view == "Reportes" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reportes";}' Text="Reportes">
-
-                                                <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Las reviews que tengan mas de 3 reportes serán ocultadas. Mantente al tanto de el feedback que hacen los usuarios.</MudText>
-
-                                                <MudGrid Style="margin-top: 20px;" Spacing="3">
-                                                   
-                                                    <Virtualize Items="reportes.ToList()" TItem="ReporteResponse">
-                                                         <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
-                                                                                                                     <MetaMusic.Pages.Common_Components.Reporte reporte="@context"></MetaMusic.Pages.Common_Components.Reporte>
-
-                                                        </MudItem>
-                                                    </Virtualize>
-                                                    
-                                                </MudGrid>
-                                            </MudTabPanel>
-                                           <MudTabPanel style="@($"""{(view == "Reviews" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reviews";}' Text="Reviews">
-                                        <MudContainer Style="display: flex; justify-content: center; width: 90%;">
-                                            @if (theme.IsDark())
-                                            {
-                                                <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
-
-                                            }
-                                            else
-                                            {
-                                                <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
-
-                                            }
-
-                                        </MudContainer>
-
-                                        <MudGrid Style="margin-top: 20px;">
-                                            @foreach (var review in reviews.Where(r => r.Nombre.ToLower().Contains(filtro_review.ToLower())))
-                                            {
-                                                @if (cargandoreviews)
+                                        <MudTabPanel style="@($"""{(view == "Peticiones" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Peticiones";}' Text="Peticiones">
+                                            <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Las Peticiones se eliminan cuando se eliminan automaticamente cuando se agregue el contenido.</MudText>
+                                            <MudGrid Style="margin-top: 20px;" Spacing="3">
+                                                @foreach (var peticion in peticiones)
                                                 {
+                                                    <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                                        <MetaMusic.Pages.Common_Components.NuevaPeticion Peticion="peticion"></MetaMusic.Pages.Common_Components.NuevaPeticion>
 
-                                                    <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                                                    </MudItem>
+                                                }
+                                            </MudGrid>
+                                        </MudTabPanel>
+                                        <MudTabPanel style="@($"""{(view == "Reportes" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reportes";}' Text="Reportes">
 
+                                            <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Las reviews que tengan mas de 3 reportes serán ocultadas. Mantente al tanto de el feedback que hacen los usuarios.</MudText>
 
-                                                        <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
-                                                            @if (theme.IsDark())
-                                                            {
-                                                                <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
-                                                            }
-                                                            else
-                                                            {
+                                            <MudGrid Style="margin-top: 20px;" Spacing="3">
 
-                                                                <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
-                                                            }
+                                                <Virtualize Items="reportes.ToList()" TItem="ReporteResponse">
+                                                    <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                                        <MetaMusic.Pages.Common_Components.Reporte reporte="@context"></MetaMusic.Pages.Common_Components.Reporte>
 
-                                                            <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+                                                    </MudItem>
+                                                </Virtualize>
 
+                                            </MudGrid>
+                                        </MudTabPanel>
+                                        <MudTabPanel style="@($"""{(view == "Reviews" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reviews";}' Text="Reviews">
+                                            <MudContainer Style="display: flex; justify-content: center; width: 90%;">
+                                                @if (theme.IsDark())
+                                                {
+                                                    <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
 
-                                                        </MudItem>
-                                                    </div>
                                                 }
                                                 else
                                                 {
-                                                    <MudItem md="4" lg="4" xl="4" xxl="3" sm="6" xs="6">
-                                                        <MetaMusic.Pages.Common_Components.ReviewCard album="review"></MetaMusic.Pages.Common_Components.ReviewCard>
-                                                    </MudItem>
+                                                    <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
                                                 }
 
-                                            }
-                                        </MudGrid>
-                                    </MudTabPanel>
-                                             
-                                         
-                                }
+                                            </MudContainer>
+
+                                            <MudGrid Style="margin-top: 20px;">
+                                                @foreach (var review in reviews.Where(r => r.Nombre.ToLower().Contains(filtro_review.ToLower())))
+                                                {
+                                                    @if (cargandoreviews)
+                                                    {
+
+                                                        <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                                                            <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+                                                                @if (theme.IsDark())
+                                                                {
+                                                                    <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                                }
+                                                                else
+                                                                {
+
+                                                                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                                }
+
+                                                                <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+
+
+                                                            </MudItem>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <MudItem md="4" lg="4" xl="4" xxl="3" sm="6" xs="6">
+                                                            <MetaMusic.Pages.Common_Components.ReviewCard album="review"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                                        </MudItem>
+                                                    }
+
+                                                }
+                                            </MudGrid>
+                                        </MudTabPanel>
+
+
+                                    }
+                               </AuthorizeView>
+                            
                                   
                                 <MudTabPanel style="@($"""{(view == "Notas" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Notas";}' Text="Notas">
                                     <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Las notas que hagas se registrarán aquí. Puedes borrarlas y presiona "Ver Album" para ver la review donde hiciste la nota.</MudText>
@@ -342,6 +355,7 @@ else
 
 @functions{
 
+
     public async Task GetReportes(int userid){
 
         var r = await reporteService.Consultar(userid);
@@ -349,6 +363,7 @@ else
         if(r.Data is not null && r.Success)
         {
             reportes = r.Data;
+            StateHasChanged();
         }
     }
     public async Task ModificarUsuario()
@@ -398,6 +413,8 @@ else
 
 
     }
+
+   
 
     public async Task GetUser()
     {
@@ -500,7 +517,7 @@ else
     public UsuarioResponse Usuario { get; set; } = new UsuarioResponse();
     public List<AlbumResponse> reviews { get; set; } = new List<AlbumResponse>();
       public List<NotaResponse> notas { get; set; } = new List<NotaResponse>();
-
+   
     public bool userDataLoaded = false;
     public bool GuardandoCambios = false;
     public bool UsuarioNoEncontrado = true;
