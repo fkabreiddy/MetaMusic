@@ -31,7 +31,7 @@ namespace MetaMusic.Data.Controllers
             try
             {
                 
-
+                
                 string provider = "Google";
                 var authenticationProperties = new AuthenticationProperties
                 {

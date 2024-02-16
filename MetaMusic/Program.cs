@@ -1,3 +1,4 @@
+using MetaMusic;
 using BlazorAnimation;
 using MetaMusic.Authentication;
 using MetaMusic.Data;
@@ -12,13 +13,15 @@ using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using MudBlazor.Services;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Builder;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
 
 builder.Services.AddMudServices();
 builder.Services.Configure<AnimationOptions>(Guid.NewGuid().ToString(), c => { });
@@ -116,10 +119,13 @@ app.UseHttpsRedirection();
 await SeedDatabase(); //can be placed above app.UseStaticFiles();
 app.UseStaticFiles();
 app.MapControllers();
-app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
+app.UseRouting();
+app.UseAntiforgery();
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
 
 app.Run();
 
