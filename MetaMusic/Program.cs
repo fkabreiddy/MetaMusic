@@ -91,6 +91,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<HttpClient>();
 builder.WebHost.UseStaticWebAssets();
 builder.WebHost.UseUrls("https://localhost:7277/");
+
 //lista de blogs en el cache
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
@@ -114,7 +115,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 await SeedDatabase(); //can be placed above app.UseStaticFiles();
 app.UseStaticFiles();
-
+app.MapControllers();
 app.UseRouting();
 
 app.MapBlazorHub();

@@ -158,7 +158,7 @@
                                                     <MudDivider Class="mb-3 mt-3"></MudDivider>
                                                     <MudMenuItem Style="border-radius: 10px; " Class="meta-nav-button">
                                                         <div style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between;">
-                                                            <MudLink Href="/google-log-out" Target="_top" Underline="Underline.None" Style="font-size: 12px;   " Class="meta-nav-button">Cerrar Sesion</MudLink>
+                                                    <MudLink Href="googlelogin/logout" Target="_top" Underline="Underline.None" Style="font-size: 12px;   " Class="meta-nav-button">Cerrar Sesion</MudLink>
                                                             <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.ArrowBack"></MudIcon>
 
                                                         </div>
@@ -187,7 +187,7 @@
                                
                             </Authorized>
                             <NotAuthorized>
-                                <MudChip Color="Color.Error" Target="_top" Style="font-size: 12px; font-weight: bold;" Href="/google-login" Text="Iniciar Sesion"></MudChip>
+                    <MudChip Color="Color.Error" Target="_top" Style="font-size: 12px; font-weight: bold;" Href="googlelogin/signin-google" Text="Iniciar Sesion"></MudChip>
 
                             </NotAuthorized>
 
@@ -252,7 +252,7 @@
 
 @functions{
 
-
+   
     protected override async Task OnInitializedAsync()
     {
         UserDataLoaded = false;
