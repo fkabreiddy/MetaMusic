@@ -6,6 +6,8 @@ using MetaMusic.Data.Responses;
 using MetaMusic.Pages.MainComponents;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using static MudBlazor.CategoryTypes;
 
 namespace MetaMusic.Data.Services
 {
@@ -100,7 +102,7 @@ namespace MetaMusic.Data.Services
             try
             {
 
-                var artistas = await dbContext.Artistas.Include(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Include(a => a.Suscriptores).Take(cantidad).ToListAsync();
+                var artistas = await dbContext.Artistas.Include(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Include(a => a.Suscriptores).OrderByDescending(a => a.Id).Take(cantidad).ToListAsync();
 
 
                 if (artistas is null)
@@ -143,7 +145,7 @@ namespace MetaMusic.Data.Services
             try
             {
                 
-                var artistas = await dbContext.Artistas.Include(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Include(a => a.Suscriptores).Skip(startindex).Take(8).ToListAsync();
+                var artistas = await dbContext.Artistas.Include(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Include(a => a.Suscriptores).OrderByDescending(a => a.Id).Skip(startindex).Take(8).ToListAsync();
 
 
                 if (artistas is null || artistas.Count <= 0)
@@ -290,10 +292,54 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var artista = await dbContext.Artistas.FirstOrDefaultAsync(a => a.SpotifyId == request.SpotifyId);
+                var artista = await dbContext.Artistas.Include(a => a.GenerosMusicales).FirstOrDefaultAsync(a => a.SpotifyId == request.SpotifyId);
 
+                
+
+
+
+                
                 if (artista is null)
                     return new Result<ArtistaResponse>() { Message = "No existe el Artista", Success = false };
+
+                if(artista.GenerosMusicales.Count() >= 1)
+                {
+                    foreach (var genero in artista.GenerosMusicales)
+                    {
+                        var relacion = await dbContext.Genero_Artistas.FirstOrDefaultAsync(g => g.Genero.Id == genero.Id && g.Artista.Id == artista.Id);
+
+                        if (relacion is not null)
+                            dbContext.Genero_Artistas.Remove(relacion);
+
+
+                    }
+                }
+
+
+
+                var generosaAgregar = request.GenerosMusicales.ToList();
+                artista.GenerosMusicales.Clear();
+
+                
+                if (generosaAgregar.Count() >= 1)
+                {
+                    
+                        foreach (var genero in generosaAgregar)
+                        {
+                            var genre = await dbContext.Generos.FirstOrDefaultAsync(g => g.Id == genero.Genero.Id);
+
+                            if (genre is not null)
+                                 request.GenerosMusicales.Add(new Genero_Artista() { Artista = artista, Genero = genre });
+
+                        };
+
+                       
+                    
+                }
+
+
+                
+
 
                 artista.Modificar(request);
 

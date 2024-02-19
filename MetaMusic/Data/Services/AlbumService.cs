@@ -426,7 +426,8 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).ThenInclude(t => t.Usuarios_Liked).ThenInclude(t => t.Usuario).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Take(3).Where(a => a.Publicado == true && a.Artistas.Any(a => a.Artista.Id == artistaid)).ToListAsync();
+                var artista = await dbContext.Artistas.FirstOrDefaultAsync(a => a.Id == artistaid);
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).ThenInclude(t => t.Usuarios_Liked).ThenInclude(t => t.Usuario).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Take(3).Where(a => a.Publicado == true && a.Artistas.Any(a => a.Artista.Id == artistaid || a.Album.Tracks.Any(t => t.Titulo.Contains(artista.Nombre)))).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()

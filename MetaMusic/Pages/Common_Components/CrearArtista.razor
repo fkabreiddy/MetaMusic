@@ -45,11 +45,33 @@
 
 
 
+        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+            <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
 
+        </div>
 
-            <MudContainer Style="  display: flex; align-items: center; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
-                <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Crear();}"  Disabled=@(newArtista.GenerosMusicales.Count() <= 1)>
-                    @if(CreandoArtista)
+            <MudContainer Style="  display: flex; align-items: center; justify-content: center; margin-top: 20px; flex-wrap: wrap; gap: 20px;">
+
+                
+                @if(IsEditing)
+                {
+                    <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Edit();}" Disabled=@(newArtista.GenerosMusicales.Count() <= 1)>
+                        @if (CreandoArtista)
+                        {
+                            <MudProgressCircular Size="Size.Small"></MudProgressCircular>
+                        }
+                        else
+                        {
+                            <MudText Style="font-size: 13px;font-weight: bold;">Guardar Cambios</MudText>
+                        }
+                    </MudButton>
+                <MudButtton Variant="MudBlazor.Variant.Text" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo($"/artist/{newArtista.SpotifyId}", true);}'> Cancelar</MudButtton>
+
+                }
+                else
+                {
+                <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Crear();}" Disabled=@(newArtista.GenerosMusicales.Count() <= 1)>
+                    @if (CreandoArtista)
                     {
                         <MudProgressCircular Size="Size.Small"></MudProgressCircular>
                     }
@@ -57,12 +79,15 @@
                     {
                         <MudText Style="font-size: 13px;font-weight: bold;">Guardar Artista</MudText>
                     }
-                </MudChip>
-                <MudChip Variant="MudBlazor.Variant.Outlined"  Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo("/crear-contenido", true);}' Text="Cancelar"></MudChip>
+                </MudButton>
+                <MudButtton Variant="MudBlazor.Variant.Text" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo("/crear-contenido", true);}'> Cancelar</MudButtton>
+
+                }
+
 
             </MudContainer>
 
-        <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+      
        
         
         
@@ -79,7 +104,7 @@
         if(r.Success == true && r.Data is not null)
         {
             CreandoArtista = false;
-            
+
 
             navManager.NavigateTo("/");
             MostrarNotificacion(r.Data, "Se ha creado el artista", $"Se ha creado el artista {r.Data.Nombre} correctamente");
@@ -117,12 +142,24 @@
             newArtista.GenerosMusicales.Add(new Genero_Artista() { Genero = genero.ToBaseClass() });
         }
     }
+
+    public async Task Edit(){
+        CreandoArtista = true;
+        var r = await artistaService.ModificarArtista(newArtista);
+
+        if(r.Success && r.Data is not null)
+        {
+            navManager.NavigateTo($"/artist/{r.Data.SpotifyId}", true);
+            MostrarNotificacion(r.Data, "Se ha modificad el artista", $"Se ha modificado el artista {r.Data.Nombre} correctamente");
+        }
+        CreandoArtista = false;
+    }
 }
 @code {
     public List<GeneroResponse> generosMusicales = new List<GeneroResponse>();
 
-    [Parameter]
-    public ArtistaRequest newArtista { get; set; } = new ArtistaRequest();
+    [Parameter] public ArtistaRequest newArtista { get; set; } = new ArtistaRequest();
+    [Parameter] public bool IsEditing { get; set; } = false;
     public bool CreandoArtista = false;
     public void MostrarNotificacion(ArtistaResponse Artista, string Titulo, string Contenido )
     {

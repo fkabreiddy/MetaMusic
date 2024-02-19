@@ -129,7 +129,7 @@
                                             @if (Albumresponse.Creador?.Id == UsuarioActual.Id)
                                             {
                                                 <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;" @onclick="async()=>{await EditReview();}">Editar Review</MudText></MudMenuItem>
-                                                <MudMenuItem Style="border-radius: 10px;">
+                                                <MudMenuItem Style="border-radius: 10px;" Target="_blank" Href=@($"https://open.spotify.com/intl-es/album/{Albumresponse.IdSpotify}")>
                                                     <div Style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 20px;">
                                                         <MudText Style="font-size: 10px;">Ver Album en Spotify</MudText>
                                                         <MudAvatar Style="width: 25px; height: 25px;">
@@ -656,10 +656,10 @@ else
         <MudText Style="font-size: 15px; ">@mbContent</MudText>
     </MessageContent>
     <NoButton>
-        <MudButton Variant="Variant.Text" Color="Color.Error">@mbNoButton</MudButton>
+            <MudButton Variant="Variant.Text" Style="font-size: 12px;" Color="Color.Error">@mbNoButton</MudButton>
     </NoButton>
     <YesButton>
-        <MudButton Variant="Variant.Text"  >@mbYesButton</MudButton>
+        <MudButton Variant="Variant.Text" Style="font-size: 12px;"  >@mbYesButton</MudButton>
     </YesButton>
 </MudMessageBox>
 

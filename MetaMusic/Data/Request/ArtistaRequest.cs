@@ -1,4 +1,5 @@
 ﻿using MetaMusic.Data.Entities;
+using MetaMusic.Data.Responses;
 using System.ComponentModel.DataAnnotations;
 
 namespace MetaMusic.Data.Request
@@ -22,5 +23,17 @@ namespace MetaMusic.Data.Request
         public List<Artista_Suscriptor> Suscriptores { get; set; } = new List<Artista_Suscriptor>();
         public Usuario? Creador { get; set; } = new Usuario();
         public List<Album_Artista> Albumes { get; set; } = new List<Album_Artista>();
+
+        public Artista ToBaseClass() => new Artista()
+        {
+            Id = this.Id,
+            Foto_Perfil = this.Foto_Perfil,
+            Nombre = this.Nombre,
+            SpotifyId = this.SpotifyId,
+            GenerosMusicales = this.GenerosMusicales,
+            Suscriptores = this.Suscriptores,
+            Creador = this.Creador,
+            Albumes = this.Albumes,
+        };
     }
 }
