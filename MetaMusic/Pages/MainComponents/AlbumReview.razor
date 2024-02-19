@@ -20,7 +20,10 @@
 
 @if(edit)
 {
-    <MetaMusic.Pages.Common_Components.CrearAlbum Request="@Albumresponse">
+    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+        <MetaMusic.Pages.Common_Components.CrearAlbum Request="@Albumresponse.ToRequest()" IsEditing=true></MetaMusic.Pages.Common_Components.CrearAlbum>
+
+       </BlazorAnimation.Animation >
 }
 else
 {
@@ -134,7 +137,7 @@ else
 
                                             @if (Albumresponse.Creador?.Id == UsuarioActual.Id)
                                             {
-                                                <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;" @onclick="async()=>{await EditReview();}">Editar Review</MudText></MudMenuItem>
+                                                <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;" @onclick="async()=>{edit = true;}">Editar Review</MudText></MudMenuItem>
                                                 <MudMenuItem Style="border-radius: 10px;" Target="_blank" Href=@($"https://open.spotify.com/intl-es/album/{Albumresponse.IdSpotify}")>
                                                     <div Style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 20px;">
                                                         <MudText Style="font-size: 10px;">Ver Album en Spotify</MudText>
@@ -297,7 +300,7 @@ else
                             </MudText>
                             @if(Albumresponse.Modificado)
                             {
-                                <MudText Style="font-size: 10px; opacity: 0.7; cursor: pointer;">Review modificada el @Albumresponse.FechaModificado.ToString("dd 'de' MMMM 'del' yyyy") </MudText>
+                                <MudText Style="font-size: 10px; opacity: 0.7; cursor: pointer;">Review modificada el @Albumresponse.FechaModificado?.ToString("dd 'de' MMMM 'del' yyyy") </MudText>
                                     
                 
                                 
@@ -305,7 +308,7 @@ else
                         </MudItem>
                         <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
 
-                            <MudContainer Style="display: flex; flex-direction: column; gap: 20px; overflow: hidden; height: auto; position: sticky; top: 100px;)">
+                            <MudContainer Style="display: flex; flex-direction: column; gap: 20px; overflow: hidden; height: auto; position: sticky; top: 100px;">
                                 <div style="display: flex; gap: 20px;align-items: center; justify-content: center; height: auto; ">
                                     <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8; " Align="Align.Center" Color="Color.Secondary">@Albumresponse.Tracks.Count() TRACKS </MudText>
                                    
@@ -675,19 +678,8 @@ else
     </YesButton>
 </MudMessageBox>
 
-    @functions{
-    public async Task EditReview()
-    {
-        var parameters = new DialogParameters<MetaMusic.Pages.Common_Components.EditAlbumDialog>();
-        parameters.Add(x => x.Album, Albumresponse);
-        parameters.Add(x => x.Review, Albumresponse.Review?.ToResponse());
-        var dialogoptions = new DialogOptions(){NoHeader = true};
-        var dialog = await dService.ShowAsync<MetaMusic.Pages.Common_Components.EditAlbumDialog>("", parameters, dialogoptions);
-        var result = await dialog.Result;
-
-
-
-    }
+@functions{
+   
     public async Task GetNotas(AlbumResponse album)
     {
         var r = await notaService.Consultar(album.Id);

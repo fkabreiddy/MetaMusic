@@ -1,9 +1,9 @@
-﻿<MudItem Style="margin-top: 60px;">
-   
-       
-            <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
+﻿
 
-                <MudText Style="font-size: 20px; font-weight: bold;">ALBUM REVIEW</MudText>
+
+    <div style="margin-top: 60px;height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
+
+                <MudText Style="font-size: 20px; font-weight: bold;">@(IsEditing ? "EDITANDO ALBUM REVIEW" :"ALBUM REVIEW" )</MudText>
                 <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
 
 
@@ -52,7 +52,7 @@
 
 
             </MudGrid>
-            <div style="display:flex; align-items: center; justify-content: center;margin-top: 20px; margin-bottom: 20px;">
+            <div style="display:flex; align-items: center; justify-content: center;margin-top: 40px; margin-bottom: 40px;">
                 <MudDivider DividerType="DividerType.Middle" Style=" width: 50%; "></MudDivider>
 
             </div>
@@ -112,16 +112,19 @@
 
      </BlazorAnimation.Animation>
 
-    <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
-        <MudContainer>
-            <MudGrid Justify="Justify.SpaceAround" Spacing="2" Style="margin-top: 60px; ">
+        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+            <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
+
+        </div>
+    
+            <MudGrid Justify="Justify.SpaceAround" Spacing="2" Style="margin-top: 60px; height: auto; ">
                 <MudItem md="5" lg="5" xxl="5" xl="5" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px; height: auto;">
 
                    
                     <MudTextField AutoGrow=true T="string" @bind-Value="newReview.Titulo" Immediate=true MaxLength="100" Counter="100" Variant="MudBlazor.Variant.Text" Style="font-size: 20px; font-family: SourceSerif4; font-size: 20px; " Placeholder="Titulo de la review (Obligatorio)" DisableUnderLine=true></MudTextField>
 
 
-                    <MudTextField @bind-Value="newReview.Contenido" AutoGrow=true T="string" MaxLength="3000" Counter="3000" Immediate=true Variant="MudBlazor.Variant.Text" Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  " Placeholder="Cuerpo de la critica (Obligatorio)" DisableUnderLine=true></MudTextField>
+                    <MudTextField @bind-Value="newReview.Contenido"   MaxLines="20" T="string" MaxLength="3000" Counter="3000" Immediate=true Variant="MudBlazor.Variant.Text" Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  height: auto;"  AutoGrow=true Placeholder="Cuerpo de la critica (Obligatorio)" DisableUnderLine=true></MudTextField>
                 
 
                    
@@ -130,26 +133,70 @@
 
                    
                 </MudItem>
-                <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12" Style="@($""" {(vermas ? "max-height: auto; " : "max-height: 400px;"  )} display: flex; flex-direction: column; gap: 20px; overflow: hidden; """)">
+                 <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
+
+                         <MudContainer Style="display: flex; flex-direction: column; gap: 20px; overflow: hidden; height: auto; position: sticky; top: 100px;">
+                            <div style="display: flex; gap: 20px;align-items: center; justify-content: center; height: auto; ">
+                                    <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8; " Align="Align.Center" Color="Color.Secondary">@Request.Tracks.Count() TRACKS </MudText>
+
+                                @if (vermas)
+                                {
+                                    <MudText @onclick="()=>{vermas = !vermas;}" Style="font-size: 10px; cursor: pointer;" Color="Color.Error">
+                                        VER MENOS
+                                    </MudText>
+                                }
+                                else
+                                {
+                                    <MudText @onclick="()=>{vermas = !vermas;}" Style="font-size: 10px; cursor: pointer;" Color="Color.Error">
+                                        VER MAS
+                                    </MudText>
+                                }
 
 
-                    <div style="display: flex; gap: 20px;align-items: center; justify-content: center;   top: 0;">
-                        <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8; " Align="Align.Center" Color="Color.Secondary">@Request.Tracks.Count() TRACKS </MudText>
-                        <MudText @onclick="()=>{vermas = !vermas;}" Style="font-size: 10px; cursor: pointer;" Color="Color.Error">
-                            @(vermas ? "Ver Menos" : "Ver Mas")
-                        </MudText>
-                    </div>
+                            </div>
 
-                    <MudGrid>
-                        @foreach (var track in Request.Tracks)
-                        {
-                            <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
-                                <MetaMusic.Pages.Common_Components.TrackComponent track="track" DisableLikeButton=true ></MetaMusic.Pages.Common_Components.TrackComponent>
+                
 
-                            </MudItem>
-                        }
+                  
+                            <MudGrid>
 
-                    </MudGrid>
+                                @if (vermas)
+                                {
+                                    @foreach (var track in Request.Tracks)
+                                    {
+                                        <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+
+                                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                <MetaMusic.Pages.Common_Components.TrackComponent currentuser="@UsuarioActual" track="track"></MetaMusic.Pages.Common_Components.TrackComponent>
+
+                                            </BlazorAnimation.Animation>
+
+                                        </MudItem>
+                                    }
+                                }
+                                else
+                                {
+                                    @foreach (var track in Request.Tracks.AsEnumerable().Take(4))
+                                    {
+                                        <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+
+                                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                <MetaMusic.Pages.Common_Components.TrackComponent currentuser="@UsuarioActual" track="track"></MetaMusic.Pages.Common_Components.TrackComponent>
+
+                                            </BlazorAnimation.Animation>
+
+                                        </MudItem>
+                                    }
+                                }
+
+
+                            </MudGrid>
+                      
+                           
+
+               
+
+                        </MudContainer>
 
 
 
@@ -158,46 +205,65 @@
 
 
 
-                </MudItem>
+
+
+
+                  </MudItem>
 
             </MudGrid>
-            @if (IsEditing)
-            {
-                <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Edit();}" Disabled="@(string.IsNullOrEmpty(newReview.Titulo) || string.IsNullOrEmpty(newReview.Contenido) )" @onclick="async ()=>{await Crear();}">
-                           @if (CreandoAlbum)
-                    {
-                        <MudProgressCircular Size="Size.Small"></MudProgressCircular>
-                    }
-                    else
-                    {
-                        <MudText Style="font-size: 13px;font-weight: bold;">Guardar Cambios</MudText>
-                    }
-                </MudButton>
-                <MudButtton Variant="MudBlazor.Variant.Text" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo($"/review/{Request.IdSpotify}", true);}'> Cancelar</MudButtton>
+          
+    
+         <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+            <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
 
-            }
-            else
-            {
-                <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Crear();}" Disabled="@(string.IsNullOrEmpty(newReview.Titulo) || string.IsNullOrEmpty(newReview.Contenido) )" }">
-                    @if (CreandoAlbum)
-                    {
-                        <MudProgressCircular Size="Size.Small"></MudProgressCircular>
-                    }
-                    else
-                    {
-                        <MudText Style="font-size: 13px;font-weight: bold;">Guardar Artista</MudText>
-                    }
-                </MudButton>
-                <MudButtton Variant="MudBlazor.Variant.Text" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo("/crear-contenido", true);}'> Cancelar</MudButtton>
+        </div>
 
-            }
+            <MudContainer Style="  display: flex; align-items: center; justify-content: center; margin-top: 20px; flex-wrap: wrap; gap: 20px;">
+        @if (IsEditing)
+        {
+            <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Edit();}" Disabled="@(string.IsNullOrEmpty(newReview.Titulo) || string.IsNullOrEmpty(newReview.Contenido) )">
+                @if (CreandoAlbum)
+                {
+                    <MudProgressCircular Size="Size.Small"></MudProgressCircular>
+                }
+                else
+                {
+                    <MudText Style="font-size: 13px;font-weight: bold;">GUARDAR CAMBIOS</MudText>
+                }
+            </MudButton>
+            <MudButton Variant="MudBlazor.Variant.Text" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo($"/album/{Request.IdSpotify}", true);}'> Cancelar</MudButton>
 
-            
-        </MudContainer>
+        }
+        else
+        {
+            <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Crear();}" Disabled="@(string.IsNullOrEmpty(newReview.Titulo) || string.IsNullOrEmpty(newReview.Contenido) )" }">
+                @if (CreandoAlbum)
+                {
+                    <MudProgressCircular Size="Size.Small"></MudProgressCircular>
+                }
+                else
+                {
+                    <MudText Style="font-size: 13px;font-weight: bold;">Guardar Artista</MudText>
+                }
+            </MudButton>
+            <MudButton Variant="MudBlazor.Variant.Text" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo("/crear-contenido", true);}'> Cancelar</MudButton>
+
+        }
+
+            </MudContainer>
 
 
-</MudItem>
 @functions{
+
+    public async Task getUsuarioActual()
+    {
+        var r = await userService.ConsultarUsuarioActual();
+
+        if(r.Data is not null)
+        {
+            UsuarioActual = r.Data;
+        }
+    }
     public async Task Edit()
     {
 
@@ -206,17 +272,23 @@
 
         if (r.Success == true)
         {
-            navManager.NavigateTo($"/review/{Request.IdSpotify}", true);
+            navManager.NavigateTo($"/album/{Request.IdSpotify}", true);
+            MostrarNotificacion("Review Modificada exitosamente", $"Se ha creado la review de forma exitosa");
 
 
         }
     }
     protected override void OnInitialized()
     {
-
         parteentera = (int)Request.Calificacion_Creador;
         partedecimal = Request.Calificacion_Creador - parteentera;
         newReview = Request.Review.ToRquest();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await getUsuarioActual();
+      
     }
     public async Task Crear()
     {
@@ -226,7 +298,7 @@
 
         if(r.Success == true && r.Data  is not null)
         {
-            MostrarNotificacion(r.Data, "Review creado exitosamente", $"Se ha creado la review {r.Data.Nombre} se forma exitosa");
+            MostrarNotificacion(r.Data, "Review creado exitosamente", $"Se ha creado la review {r.Data.Nombre} de forma exitosa");
             navManager.NavigateTo("/");
         }
         else
@@ -235,31 +307,46 @@
         }
         CreandoAlbum = false;
     }
-}
-@code {
-    [Parameter] public MetaMusic.Data.Request.AlbumRequest Request { get; set; } = new MetaMusic.Data.Request.AlbumRequest();
-    public ReviewRequest newReview = new ReviewRequest();
 
-
-    [Parameter]public bool IsEditing { get; set; } = false;
-    public bool CreandoAlbum = false;
-    public int parteentera = 1;
-    public double partedecimal = 0.1;
-    public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    public List<double> decimales = new List<double>() { 0.0, 0.1, 0.2, 0.3,0.4, 0.5, 0.6, 0.7,0.8, 0.9 };
-    public bool vermas = false;
- 
     private async Task<bool?> MessageBoxOk(string Titulo, string Descripcion, string si)
     {
         bool? result = await dService.ShowMessageBox(
-            Titulo,
-            Descripcion,
-            yesText: si);
+        Titulo,
+        Descripcion,
+        yesText: si);
         StateHasChanged();
         return result;
 
     }
+    public void MostrarNotificacion(string Titulo, string Contenido)
+    {
+        SnackbarService.Add(
 
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+
+        </MudContainer>
+    </div>
+    ,
+           Severity.Normal,
+    config => { config.HideIcon = true; }
+         );
+    }
     public void MostrarNotificacion(AlbumResponse Album, string Titulo, string Contenido)
     {
         SnackbarService.Add(
@@ -301,4 +388,19 @@
         config => { config.HideIcon = true; }
      );
     }
+}
+@code {
+    [Parameter] public MetaMusic.Data.Request.AlbumRequest Request { get; set; } = new MetaMusic.Data.Request.AlbumRequest();
+    public ReviewRequest newReview = new ReviewRequest();
+
+    public UsuarioResponse UsuarioActual = new UsuarioResponse();
+    [Parameter]public bool IsEditing { get; set; } = false;
+    public bool CreandoAlbum = false;
+    public int parteentera = 1;
+    public double partedecimal = 0.1;
+    public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    public List<double> decimales = new List<double>() { 0.0, 0.1, 0.2, 0.3,0.4, 0.5, 0.6, 0.7,0.8, 0.9 };
+    public bool vermas = false;
+ 
+   
 }

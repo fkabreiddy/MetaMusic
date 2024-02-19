@@ -79,7 +79,7 @@ namespace MetaMusic.Data.Entities
 
         public ReviewRequest ToRquest()
         {
-            return new ReviewResponse
+            return new ReviewRequest
             {
                 Id = this.Id,
                 Contenido = this.Contenido,
