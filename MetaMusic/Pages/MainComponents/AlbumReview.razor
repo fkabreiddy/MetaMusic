@@ -18,7 +18,13 @@
         }
 </style>
 
-@if(DataCargada)
+@if(edit)
+{
+    <MetaMusic.Pages.Common_Components.CrearAlbum Request="@Albumresponse">
+}
+else
+{
+    @if(DataCargada)
 {
     if(!AlbumFound)
     {
@@ -284,14 +290,16 @@
                 
                 <MudContainer>
                     <MudGrid Justify="Justify.SpaceAround" Spacing="2" Style="margin-top: 60px; ">
-                        <MudItem md="5" lg="5" xxl="5" xl="5" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;">
+                        <MudItem md="5" lg="5" xxl="5" xl="5" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;white-space: pre-line; ">
                             <MudText Style="font-family: SourceSerif4; font-size: 20px;  ">“@Albumresponse.Review?.Titulo”</MudText>
                                 <MudText Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  ">
                                     @Albumresponse.Review?.Contenido
                             </MudText>
                             @if(Albumresponse.Modificado)
                             {
-                                <MudText Style="font-size: 10px; opacity: 0.7; cursor: pointer;">Esta review fue modificada.</MudText>
+                                <MudText Style="font-size: 10px; opacity: 0.7; cursor: pointer;">Review modificada el @Albumresponse.FechaModificado.ToString("dd 'de' MMMM 'del' yyyy") </MudText>
+                                    
+                
                                 
                             }
                         </MudItem>
@@ -454,7 +462,7 @@
 
                  <AuthorizeView>
                     <Authorized>
-                        @if(UsuarioActual.Id == Albumresponse.Creador.Id)
+                        @if(UsuarioActual.Id == Albumresponse.Creador?.Id)
                         {
                             <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;">Tu Calificacion</MudText>
 
@@ -647,6 +655,10 @@ else
         </MudItem>
     </div>
 }
+
+}
+
+
 
 <MudMessageBox @ref="mudMessageBox"  >
     <TitleContent>
@@ -977,7 +989,7 @@ else
         List<Track> tracksdelalbum = new List<Track>();
         await GetCurrentUser();
         await GetAlbum();
-        
+
 
     }
 
@@ -985,7 +997,7 @@ else
     public List<CalificacionResponse> calificaciones { get; set; } = new List<CalificacionResponse>();
     public CalificacionResponse calificacionResponse{ get; set; } = new CalificacionResponse();
 
-     public NotaRequest notaRequest { get; set; } = new NotaRequest();
+    public NotaRequest notaRequest { get; set; } = new NotaRequest();
     public List<NotaResponse> notas { get; set; } = new List<NotaResponse>();
     public NotaResponse notaResponse { get; set; } = new NotaResponse();
 
@@ -994,7 +1006,7 @@ else
     public List<AlbumResponse> albumesrealciondos = new List<AlbumResponse>();
     public bool DataCargada = false;
     public int ratenumber = 1;
-   
+
     public UsuarioResponse UsuarioActual = new UsuarioResponse();
     public AlbumResponse Albumresponse = new AlbumResponse();
     public List<Track> tracksdelalbum = new List<Track>();
@@ -1005,7 +1017,7 @@ else
     public bool tracksloading = false;
     public bool BorrandoReview = false;
     public int vista = 4;
-    
+    public bool edit = false;
     public bool creatingOrRemovingCalification = false;
    
     public int parteentera = 1;

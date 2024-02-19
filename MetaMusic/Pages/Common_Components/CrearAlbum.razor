@@ -114,12 +114,18 @@
 
     <MudDivider Style="margin-top: 30px; margin-bottom: 30px;"></MudDivider>
         <MudContainer>
-            <MudGrid Justify="Justify.SpaceBetween" Spacing="2" Style="margin-top: 60px; ">
-                <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px; height: auto;">
+            <MudGrid Justify="Justify.SpaceAround" Spacing="2" Style="margin-top: 60px; ">
+                <MudItem md="5" lg="5" xxl="5" xl="5" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px; height: auto;">
 
+                   
                     <MudTextField AutoGrow=true T="string" @bind-Value="newReview.Titulo" Immediate=true MaxLength="100" Counter="100" Variant="MudBlazor.Variant.Text" Style="font-size: 20px; font-family: SourceSerif4; font-size: 20px; " Placeholder="Titulo de la review (Obligatorio)" DisableUnderLine=true></MudTextField>
+
+
                     <MudTextField @bind-Value="newReview.Contenido" AutoGrow=true T="string" MaxLength="3000" Counter="3000" Immediate=true Variant="MudBlazor.Variant.Text" Style="font-family: SourceSerif4; font-size: 18px; opacity: 0.7;  " Placeholder="Cuerpo de la critica (Obligatorio)" DisableUnderLine=true></MudTextField>
                 
+
+                   
+                    
                    
 
                    
@@ -155,18 +161,66 @@
                 </MudItem>
 
             </MudGrid>
-            <div style="margin-top: 60px; display: flex; justify-content: center;">
-                 <MudChip Style="font-size: 12px;" Disabled="@(string.IsNullOrEmpty(newReview.Titulo) || string.IsNullOrEmpty(newReview.Contenido) )" @onclick="async ()=>{await Crear();}" Color="Color.Error">Crear Review</MudChip>
+            @if (IsEditing)
+            {
+                <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Edit();}" Disabled="@(string.IsNullOrEmpty(newReview.Titulo) || string.IsNullOrEmpty(newReview.Contenido) )" @onclick="async ()=>{await Crear();}">
+                           @if (CreandoAlbum)
+                    {
+                        <MudProgressCircular Size="Size.Small"></MudProgressCircular>
+                    }
+                    else
+                    {
+                        <MudText Style="font-size: 13px;font-weight: bold;">Guardar Cambios</MudText>
+                    }
+                </MudButton>
+                <MudButtton Variant="MudBlazor.Variant.Text" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo($"/review/{Request.IdSpotify}", true);}'> Cancelar</MudButtton>
 
-            </div>
+            }
+            else
+            {
+                <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Crear();}" Disabled="@(string.IsNullOrEmpty(newReview.Titulo) || string.IsNullOrEmpty(newReview.Contenido) )" }">
+                    @if (CreandoAlbum)
+                    {
+                        <MudProgressCircular Size="Size.Small"></MudProgressCircular>
+                    }
+                    else
+                    {
+                        <MudText Style="font-size: 13px;font-weight: bold;">Guardar Artista</MudText>
+                    }
+                </MudButton>
+                <MudButtton Variant="MudBlazor.Variant.Text" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo("/crear-contenido", true);}'> Cancelar</MudButtton>
+
+            }
+
+            
         </MudContainer>
 
 
 </MudItem>
 @functions{
+    public async Task Edit()
+    {
 
+        Request.Calificacion_Creador = partedecimal + parteentera;
+        var r = await albumService.Modificar(Request, newReview);
+
+        if (r.Success == true)
+        {
+            navManager.NavigateTo($"/review/{Request.IdSpotify}", true);
+
+
+        }
+    }
+    protected override void OnInitialized()
+    {
+
+        parteentera = (int)Request.Calificacion_Creador;
+        partedecimal = Request.Calificacion_Creador - parteentera;
+        newReview = Request.Review.ToRquest();
+    }
     public async Task Crear()
     {
+        CreandoAlbum = false;
         Request.Calificacion_Creador = partedecimal + parteentera;
         var r = await albumService.Crear(Request, newReview);
 
@@ -179,14 +233,16 @@
         {
             await MessageBoxOk("Error", $"{r.Message}", "Ok");
         }
+        CreandoAlbum = false;
     }
 }
 @code {
     [Parameter] public MetaMusic.Data.Request.AlbumRequest Request { get; set; } = new MetaMusic.Data.Request.AlbumRequest();
     public ReviewRequest newReview = new ReviewRequest();
-    
-    
 
+
+    [Parameter]public bool IsEditing { get; set; } = false;
+    public bool CreandoAlbum = false;
     public int parteentera = 1;
     public double partedecimal = 0.1;
     public List<int> rate = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };

@@ -77,6 +77,20 @@ namespace MetaMusic.Data.Entities
             return modificacion;
         }
 
+        public ReviewRequest ToRquest()
+        {
+            return new ReviewResponse
+            {
+                Id = this.Id,
+                Contenido = this.Contenido,
+                Creador = this.Creador,
+                AlbumId = this.AlbumId,
+                Reportes = this.Reportes,
+                Album = this.Album,
+                Titulo = this.Titulo
+                // Agrega otras asignaciones si es necesario
+            };
+        }
         public ReviewResponse ToResponse()
         {
             return new ReviewResponse

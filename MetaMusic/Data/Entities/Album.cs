@@ -98,7 +98,9 @@ namespace MetaMusic.Data.Entities
             Calificacion_Creador = this.Calificacion_Creador,
             IsAlbumOfTheMonth = this.IsAlbumOfTheMonth,
             FechaModificado = this.FechaModificado,
-            Publicado = this.Publicado
+            Publicado = this.Publicado,
+            Modificado = this.Modificado,
+           
 
         };
 
@@ -201,10 +203,11 @@ namespace MetaMusic.Data.Entities
                 modificacion = true;
             }
 
-            Modificado = modificacion;
+         
 
             if(modificacion==true)
             {
+                Modificado = modificacion;
                 FechaModificado = DateTime.Now;
 
             }
