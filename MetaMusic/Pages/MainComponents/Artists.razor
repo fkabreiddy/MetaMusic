@@ -59,7 +59,7 @@ else
                         <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold">No pudimos encontrar el Artista</MudText>
                         <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7;">Puede que sea error nuestro o que el artista no exista. Si consideras que es lo primero, recarga la pagina.</MudText>
                         <MudTooltip Arrow="true" Color="Color.Error" Text="Intentar Denuevo">
-                            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Rounded.Update" Size="Size.Small" @onclick='()=>{navManager.NavigateTo($"/user/{spotifyid}", true) ;}'></MudIconButton>
+                            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Rounded.Update" Size="Size.Small" @onclick='()=>{navManager.NavigateTo($"/artist/{spotifyid}", true) ;}'></MudIconButton>
 
                         </MudTooltip>
 
@@ -92,7 +92,7 @@ else
                                         <AuthorizeView Roles="Staff">
                                             @if (UserId == Artista.Creador?.Id)
                                             {
-                                                <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Rounded.Info">
+                                                <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Rounded.MoreHoriz">
 
 
                                                     <MudPaper Class="" Outlined="true" style="padding: 10px; overflow: hidden;">
@@ -395,7 +395,7 @@ else
         if(r.Success == true && r.Data is not null)
         {
             albumes = r.Data;
-            Tracks = r.Data.SelectMany(a => a.Tracks.OrderByDescending(t => t.Cantidad_Likes)).Where(t => t.Titulo.Contains(artista.Nombre) || t.Album.Artistas.Any(a => a.Artista.Nombre == artista.Nombre)).ToList();
+            Tracks = r.Data.SelectMany(a => a.Tracks.OrderByDescending(t => t.Cantidad_Likes)).Where(t => t.Album.Artistas.Any(a => a.Artista.Nombre == artista.Nombre)).ToList();
         }
     }
 
@@ -410,7 +410,7 @@ else
         {
             Artista = r.Data;
             ArtistsFound = true;
-            StateHasChanged();
+            
         }
     }
     public void InitializeMessageBox(string Title, string Content, string YesText, string NoText)

@@ -3,6 +3,8 @@ using MetaMusic.Data.Entities;
 using MetaMusic.Data.OtherEntities;
 using MetaMusic.Data.Request;
 using MetaMusic.Data.Responses;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Globalization;
@@ -14,11 +16,13 @@ namespace MetaMusic.Data.Services
     {
         private readonly IMetaMusicDbContext dbContext;
         private readonly IGoogleAuthService googleAuth;
+        private readonly NavigationManager navManager;
         public AlbumService(IMetaMusicDbContext dbContext,
-                           IGoogleAuthService googleAuth)
+                           IGoogleAuthService googleAuth, NavigationManager navManager)
         {
             this.dbContext = dbContext;
             this.googleAuth = googleAuth;
+            this.navManager = navManager;
         }
 
         public async Task<Result<AlbumResponse>> Crear(AlbumRequest request, ReviewRequest review)
@@ -175,6 +179,22 @@ namespace MetaMusic.Data.Services
                 return new Result<AlbumResponse>() { Message = "Success", Success = true, Data = album.ToResponse() };
 
             }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException is SqlException sqlException && NetworkError.IsNetworkError(sqlException.Number)) 
+                {
+
+                    navManager.NavigateTo("network-error");
+                    return new Result<AlbumResponse>()
+                    { Message = ex.InnerException?.Message ?? ex.Message, Success = false };
+                }
+                else
+                {
+                    return new Result<AlbumResponse>()
+                    { Message = ex.InnerException?.Message ?? ex.Message, Success = false };
+                }
+                
+            }
             catch (Exception e)
             {
 
@@ -213,6 +233,21 @@ namespace MetaMusic.Data.Services
 
 
                 return new Result<Usuario_Like_Track>() { Message = "Success", Success = true, };
+
+            }
+            catch (IOException ex)
+            {
+                if (ex.InnerException is SqlException sqlException && NetworkError.IsNetworkError(sqlException.Number))
+                {
+
+                    navManager.NavigateTo("network-error");
+                    return new Result<Usuario_Like_Track>() { Message = "Error de conexion", Success = false, };
+                }
+                else
+                {
+                    navManager.NavigateTo("network-error");
+                    return new Result<Usuario_Like_Track>() { Message = "Error desconocido", Success = true, };
+                }
 
             }
             catch (Exception e)
@@ -294,11 +329,7 @@ namespace MetaMusic.Data.Services
             }
         }
 
-        //public async Task<Result<List<AlbumResponse>>> Consultar(string filtro)
-        //{
-
-        //}
-
+       
         public async Task<Result<bool>> Eliminar(AlbumResponse response)
         {
             try
@@ -426,8 +457,10 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var artista = await dbContext.Artistas.FirstOrDefaultAsync(a => a.Id == artistaid);
-                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).ThenInclude(t => t.Usuarios_Liked).ThenInclude(t => t.Usuario).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Take(3).Where(a => a.Publicado == true && a.Artistas.Any(a => a.Artista.Id == artistaid || a.Album.Tracks.Any(t => t.Titulo.Contains(artista.Nombre)))).ToListAsync();
+                
+
+                
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).ThenInclude(t => t.Usuarios_Liked).ThenInclude(t => t.Usuario).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Where(a => a.Publicado == true && a.Artistas.Any(a => a.Artista.Id == artistaid)).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()

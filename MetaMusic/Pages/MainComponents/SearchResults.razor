@@ -1,0 +1,26 @@
+﻿@page "/search/{topic}"
+
+<div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
+
+    <MudText Style="font-size: 20px; font-weight: bold;">BUSCAR</MudText>
+    <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
+   
+
+
+
+
+
+
+
+
+</div>
+
+<MudGrid>
+    <MudItem xxl="4" xl="4" lg="4" md="5" sm="5" xs="6"></MudItem>
+    <MudItem xxl="8" xl="8" lg="8" md="7" sm="7" xs="6"></MudItem>
+</MudGrid>
+
+@code {
+    
+    [Parameter] public string topic { get; set; } = string.Empty;
+}
