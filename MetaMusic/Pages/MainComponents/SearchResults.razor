@@ -1,8 +1,8 @@
 ﻿@page "/search/{topic}"
 
-<div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
+<div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center;   ">
 
-    <MudText Style="font-size: 20px; font-weight: bold;">BUSCAR</MudText>
+    <MudText Style="font-size: 20px; font-weight: bold;">BUSCARDOR</MudText>
     <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
    
 
@@ -38,13 +38,46 @@
 }
 else
 {
-    <MudGrid Justify="Justify.SpaceBetween">
+    @if((Albumes.Count() + Artistas.Count() + Usuarios.Count()) <= 0)
+    {
+        <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12" Style="margin-top:60px;">
+            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                    <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                        @if (theme.IsDark())
+                        {
+                            <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                        }
+                        else
+                        {
+
+                            <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                        }
+
+                        <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold"><b>NO HAY RESULTADOS DE</b></MudText>
+                        <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7;">“@topic”</MudText>
+                        <MudTooltip Arrow="true" Color="Color.Error" Text="Volver">
+                            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Rounded.ArrowBack" Size="Size.Small" @onclick='()=>{navManager.NavigateTo($"/" );}'></MudIconButton>
+
+                        </MudTooltip>
+
+                    </MudItem>
+                </div>
+            </BlazorAnimation.Animation>
+        </MudItem>
+    }
+    else
+    {
+         <MudGrid Justify="Justify.SpaceBetween" Style="margin-top: 60px;">
         <MudItem xxl="3" xl="3" lg="3" md="3" sm="5" xs="12" Style="position: sticky;  top: 100px;z-index:1;">
            
          
          
                 <MudContainer  Style="position: sticky;  top: 100px;z-index:1;background-color: black;" >
-                    <div style="width: 100%; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="width: 100%; display: flex; flex-direction: column; justify-content: center;gap:10px; align-items: center;">
+                         <MudText Style="font-size: 12px; font-weight: bold;">@(Albumes.Count() + Artistas.Count() + Usuarios.Count()) RESULTADOS</MudText>
                         <MudButton Style="font-size: 10px; margin-bottom: 10px; cursor: pointer;" @onclick="()=>{panel_contraido = !panel_contraido;}" Variant="Variant.Text">@(panel_contraido ? "Expandir " : "Contraer ") Resumen de Resultado</MudButton>
 
                     </div>
@@ -141,6 +174,8 @@ else
            
         </MudItem>
     </MudGrid>
+    }
+   
 }
 
 
@@ -152,6 +187,7 @@ else
 
         if(r.Success && r.Data is not null)
         {
+            View = "albumes";
             Albumes = r.Data;
         }
     }
@@ -162,6 +198,7 @@ else
 
         if (r.Success && r.Data is not null)
         {
+            View = "usuarios";
             Usuarios = r.Data;
         }
     }
@@ -173,30 +210,39 @@ else
 
         if (r.Success && r.Data is not null)
         {
+            View = "artistas";
             Artistas = r.Data;
         }
     }
 
     protected override async Task OnParametersSetAsync(){
         buscando = true;
-        await getAlbumes();
-        await getArtistas();
+
         await getUsuarios();
+
+        await getArtistas();
+        await getAlbumes();
         await GetCurrentUser();
 
-        if(Usuarios.Count() >= 1 && Artistas.Count() <= 0 && Albumes.Count() <= 0)
-        {
-            View = "usuarios";
-        }
-        else if (Usuarios.Count() <= 0 && Artistas.Count() >= 1 && Albumes.Count() <= 0)
-        {
-            View = "artistas";
-
-    }
-        else
+        if (Albumes.Count > Usuarios.Count && Albumes.Count > Artistas.Count)
         {
             View = "albumes";
         }
+        else if (Usuarios.Count > Albumes.Count && Usuarios.Count > Artistas.Count)
+        {
+            View = "usuarios";
+        }
+        else if (Artistas.Count > Albumes.Count && Artistas.Count > Usuarios.Count)
+        {
+            View = "artistas";
+        }
+        else
+        {
+            View = "";
+        }
+
+
+       
         buscando = false;
     }
     public async Task GetCurrentUser()
@@ -217,7 +263,7 @@ else
     }
 }
 @code {
-    public string View = "albumes";
+    public string View = string.Empty;
     [Parameter] public string topic { get; set; } = string.Empty;
     public List<UsuarioResponse> Usuarios { get; set; } = new List<UsuarioResponse>();
     public List<ArtistaResponse> Artistas { get; set; } = new List<ArtistaResponse>();
@@ -225,4 +271,7 @@ else
     public int currentuser_id = 0;
     public bool buscando = true;
     public bool panel_contraido = false;
+
+
+    
 }

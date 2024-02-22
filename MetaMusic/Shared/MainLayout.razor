@@ -195,12 +195,12 @@
 
                         @if (theme.IsDark())
                         {
-                               <MudTextField MaxLength="30" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar"></MudTextField>
+                <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar"></MudTextField>
 
                         }
                         else
                         {
-                           <MudTextField MaxLength="30" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
+                <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
                             
                         }
                        
@@ -272,6 +272,15 @@
         {
             UserDataLoaded = true;
 
+        }
+    }
+
+    private void HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            // Llamar a tu función aquí
+            navManager.NavigateTo($"/search/{buscar}");
         }
     }
     public async Task GetCurrentUser()
