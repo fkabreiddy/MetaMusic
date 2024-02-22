@@ -236,14 +236,14 @@
         }
         else
         {
-            <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Crear();}" Disabled="@(string.IsNullOrEmpty(newReview.Titulo) || string.IsNullOrEmpty(newReview.Contenido) )" }">
+            <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Crear();}" Disabled="@(string.IsNullOrEmpty(newReview.Titulo) || string.IsNullOrEmpty(newReview.Contenido) )" >
                 @if (CreandoAlbum)
                 {
                     <MudProgressCircular Size="Size.Small"></MudProgressCircular>
                 }
                 else
                 {
-                    <MudText Style="font-size: 13px;font-weight: bold;">Guardar Artista</MudText>
+                    <MudText Style="font-size: 13px;font-weight: bold;">Guardar Review</MudText>
                 }
             </MudButton>
             <MudButton Variant="MudBlazor.Variant.Text" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo("/crear-contenido", true);}'> Cancelar</MudButton>
@@ -266,7 +266,7 @@
     }
     public async Task Edit()
     {
-
+        CreandoAlbum = true;
         Request.Calificacion_Creador = partedecimal + parteentera;
         var r = await albumService.Modificar(Request, newReview);
 
@@ -276,6 +276,11 @@
             MostrarNotificacion("Review Modificada exitosamente", $"Se ha creado la review de forma exitosa");
 
 
+        }
+        else
+        {
+            CreandoAlbum = false;
+            MostrarNotificacion("Error", $"Se ha producido un error modificando la review, intenta denuevo.");
         }
     }
     protected override void OnInitialized()

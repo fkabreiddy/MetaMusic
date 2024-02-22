@@ -245,7 +245,8 @@ else
 
                                 <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
                                     <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
-                                        @Albumresponse.Calificacion_Creador
+                                        @( Math.Round(Albumresponse.Calificacion_Creador, 1))
+                                        
                                     </MudAvatar>
                                     <MudText Style="font-size: 12px;  font-weight: bold; opacity: 0.8;  " Color="Color.Secondary">CALIFICACION DEL REVIEWER</MudText>
                                 </MudCard>
@@ -471,7 +472,7 @@ else
 
 
                             <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
-                                <MudText Align="Align.Center" Style="font-size: 70px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;" Color="Color.Error">@Albumresponse.Calificacion_Creador</MudText>
+                                <MudText Align="Align.Center" Style="font-size: 70px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;" Color="Color.Error">@( Math.Round(Albumresponse.Calificacion_Creador, 1))</MudText>
 
                                 </BlazorAnimation.Animation>
 
@@ -501,7 +502,7 @@ else
 
 
                                     <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
-                                        <MudText Align="Align.Center" Style="font-size: 70px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;" Color="Color.Error">@calificacionResponse.Numero</MudText>
+                                        <MudText Align="Align.Center" Style="font-size: 70px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;" Color="Color.Error">@( Math.Round(calificacionResponse.Numero, 1))</MudText>
 
                                         </BlazorAnimation.Animation>
 

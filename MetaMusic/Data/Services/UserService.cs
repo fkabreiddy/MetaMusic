@@ -149,6 +149,10 @@ namespace MetaMusic.Data.Services
                         Message = "Hubo un problema a la hora de crear tu cuenta, intenta mas tarde"
                     };
 
+
+                var correonormalizado = request.Correo.Normalize();
+                request.CorreoNormalizado = correonormalizado;
+
                 await dbContext.Usuarios.AddAsync(Usuario.Crear(request));
 
                 await dbContext.SaveChangesAsync();
