@@ -1,6 +1,19 @@
 ﻿
 <style>
 
+    .album-portada-card {
+       
+        cursor: pointer;
+        transition: border 0.3s ease;
+        padding: 5px;
+        justify-content: center;
+        align-items: center;/* Agregar una transición para suavizar el cambio */
+    }
+
+        .album-portada-card:hover {
+            
+            animation: pulse 0.5s ease; /* Aplicar la animación definida */
+        }
     .portada{
         transition: transform 0.3s ease-out;
         cursor: pointer;
@@ -69,7 +82,10 @@
 
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
             <MudItem md="4" xxl="4" lg="4">
-                <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 150px; width: 150px;   " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+                <div class="album-portada-card">
+                    <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 150px; width: 150px;   " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+
+                </div>
             </MudItem>
         </MudHidden>
        

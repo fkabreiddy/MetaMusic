@@ -3,7 +3,10 @@
 
 <MudGrid Justify="Justify.Center" Style="display: flex; align-items: last baseline; ">
     <MudItem md="12" sm="12" xs="12" xxl="12" lg="12" Style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center;">
-        <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 220px; width: 220px;   " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+        <div class="album-portada-card">
+            <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 220px; width: 220px;   " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+
+        </div>
     </MudItem>
     <MudItem md="12" sm="12" xs="12" xxl="12" lg="12">
         <MudContainer Style="display: flex; flex-direction: column; gap: 10px; align-items: center; width: 60%; justify-content: center;">
