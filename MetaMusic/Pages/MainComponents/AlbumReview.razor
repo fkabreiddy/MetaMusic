@@ -694,7 +694,7 @@ else
     }
     public async Task EliminarCalificacion()
     {
-        InitializeMessageBox("Borrar Calificacion", "¿Realmente deseas borrar la Calificacion? Esta acción no se puede desahacer.", "Si", "No");
+        InitializeMessageBox("Borrar Calificación", "¿Realmente deseas borrar la Calificación? Esta acción no se puede desahacer.", "Si", "No");
 
         var desicion = await mudMessageBox.Show();
 
@@ -732,7 +732,7 @@ else
 
             creatingOrRemovingCalification = false;
             StateHasChanged();
-            MostrarNotificacion("Critica Eliminada", "Se eliminó tu cítica correctamente");
+            MostrarNotificacion("Crítica Eliminada", "Se eliminó tu cítica correctamente");
         
 
       
@@ -773,7 +773,7 @@ else
 
                     calificacionResponse = x.Data;
                     calificaciones.Add(x.Data);
-                    MostrarNotificacion("Crtica hecha", "Se guardó tu cítica correctamente");
+                    MostrarNotificacion("Crítica hecha", "Se guardó tu crítica correctamente");
                     StateHasChanged();
                 }
 
@@ -796,7 +796,7 @@ else
                 calificacionResponse = r.Data;
                 calificaciones.Add(r.Data);
 
-                MostrarNotificacion("Crtiica hecha", "Se guardó tu cítica correctamente");
+                MostrarNotificacion("Crítica hecha", "Se guardó tu crítica correctamente");
                 StateHasChanged();
             }
             else
@@ -837,7 +837,7 @@ else
     }
     public async Task DeleteReview()
     {
-        InitializeMessageBox("Borrar Review", "¿Realmente deseas borrar la Review? Esta acción no se puede desahacer.", "Si", "No");
+        InitializeMessageBox("Borrar Review", "¿Realmente deseas borrar la Review? Esta acción no se puede desahacer?", "Si", "No");
 
         var desicion = await mudMessageBox.Show();
 
@@ -849,7 +849,7 @@ else
             if(r.Success)
             {
 
-                MostrarNotificacion("Exito", "La review ha sido borrada exitosamente.");
+                MostrarNotificacion("Éxito", "La review ha sido borrada exitosamente.");
                 navManager.NavigateTo("/");
             }
             else
@@ -920,7 +920,7 @@ else
         else
         {
             tracksloading = false;
-            MostrarNotificacion("Lo sentimos","Hubo un error al cargar los tracks. Intenta denuevo");
+            MostrarNotificacion("Lo sentimos","Hubo un error al cargar los tracks. Intenta denuevo.");
 
         }
 
@@ -934,7 +934,7 @@ else
 
         if(r.Success)
         {
-            MostrarNotificacion("Reporte Hecho", "Se ha reportado la review exitosamente");
+            MostrarNotificacion("Reporte Hecho", "Se ha reportado la review exitosamente.");
 
         }
         else

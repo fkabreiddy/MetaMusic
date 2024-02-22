@@ -6,10 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="Pages\MainComponents\NetworkErrorComponent.razor" />
-  </ItemGroup>
-
   
 
   <ItemGroup>
@@ -29,24 +25,6 @@
     <PackageReference Include="SpotifyAPI.Web.Auth" Version="7.1.1" />
     <PackageReference Include="TinyMCE" Version="6.8.3" />
     <PackageReference Include="TinyMCE.Blazor" Version="1.0.4" />
-  </ItemGroup>
-
-  
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\MainComponents\NetworkErrorComponent.razor" />
-  </ItemGroup>
-
-  
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\MainComponents\NetworkErrorComponent.razor" />
-  </ItemGroup>
-
-  
-
-  <ItemGroup>
-    <None Include="Pages\MainComponents\NetworkErrorComponent.razor" />
   </ItemGroup>
 
   
