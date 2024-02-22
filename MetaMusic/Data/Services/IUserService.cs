@@ -9,6 +9,7 @@ namespace MetaMusic.Data.Services
         Task<Result<UsuarioResponse>> ConsultarUsuario(string email);
         Task<Result<UsuarioResponse>> ConsultarUsuarioActual();
         Task<Result<UsuarioResponse>> Crear(UsuarioRequest request);
+        Task<Result<List<UsuarioResponse>>> BuscarUsuario(string filtro);
         Task<Result<bool>> Eliminar(UsuarioRequest request);
         Task<Result<UsuarioResponse>> Login(UsuarioRequest request);
         Task<Result> Logout();

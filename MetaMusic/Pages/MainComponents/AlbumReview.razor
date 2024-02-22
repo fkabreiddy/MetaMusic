@@ -612,52 +612,52 @@ else
     }
     
 }
-else if(BorrandoReview)
-{
+    else if(BorrandoReview)
+    {
 
-    <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
-
-
-        <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
-            @if (theme.IsDark())
-            {
-                <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
-            }
-            else
-            {
-
-                <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
-            }
-            <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold; margin-top: 15px; margin-bottom: 15px;">Borrando</MudText>
-            <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+        <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
 
 
-        </MudItem>
-    </div>
-}
-else
-{
+            <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+                @if (theme.IsDark())
+                {
+                    <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                }
+                else
+                {
 
-    <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
-
-
-        <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
-            @if (theme.IsDark())
-            {
-                <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
-            }
-            else
-            {
-
-                <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
-            }
-
-            <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                }
+                <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold; margin-top: 15px; margin-bottom: 15px;">Borrando</MudText>
+                <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
 
 
-        </MudItem>
-    </div>
-}
+            </MudItem>
+        </div>
+    }
+    else
+    {
+
+        <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+            <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+                @if (theme.IsDark())
+                {
+                    <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                }
+                else
+                {
+
+                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                }
+
+                <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+
+
+            </MudItem>
+        </div>
+    }
 
 }
 

@@ -6,6 +6,14 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+    .album-genre {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
 
 <MudGrid Justify="Justify.Center" Style="display: flex; align-items: last baseline; ">
@@ -20,11 +28,11 @@
             {
                 @if (album.Artistas.Count() >= 2)
                 {
-                    <MudText Style="font-size: 12px; font-weight: bold;" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
+                    <MudText Style="font-size: 12px; font-weight: bold;" Class="album-genre" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
                 }
                 else
                 {
-                    <MudText Style="font-size: 12px; font-weight: bold;" Color="Color.Error">
+                    <MudText Style="font-size: 12px; font-weight: bold;" Class="album-genre" Color="Color.Error">
                         @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre)
                     </MudText>
 

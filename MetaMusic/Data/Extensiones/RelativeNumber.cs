@@ -1,9 +1,9 @@
 ﻿namespace MetaMusic.Data.Extensiones
 {
-    public class RelativeNumber
+    public static class RelativeNumber
     {
 
-        public string NumeroRelativo(int? numero)
+        public static string NumeroRelativo(this int numero)
         {
             // Si el número es menor que mil, devolver el número sin cambios
             if (numero < 1000)

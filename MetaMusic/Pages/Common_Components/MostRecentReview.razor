@@ -11,11 +11,11 @@
 
             @if (album.Artistas.Count() >= 2)
             {
-                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
+                <MudText Class="album-genre" Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
             }
             else
             {
-                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error">
+                <MudText Class="album-genre" Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error">
                     @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre)
                 </MudText>
 

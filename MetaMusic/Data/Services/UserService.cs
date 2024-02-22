@@ -377,5 +377,39 @@ namespace MetaMusic.Data.Services
 
             }
         }
+        public async Task<Result<List<UsuarioResponse>>> BuscarUsuario(string filtro)
+        {
+            try
+            {
+               
+
+                var usuarios = await dbContext.Usuarios.Include(u => u.Rol).Where(u => u.CorreoNormalizado.ToLower() == filtro.ToLower() || u.Nombre.ToLower().Contains(filtro.ToLower())).ToListAsync();
+
+
+                if (usuarios is null)
+                    return new Result<List<UsuarioResponse>>
+                    {
+                        Message = "Usuario no encontrado",
+                        Success = false
+                    };
+
+                return new Result<List<UsuarioResponse>>
+                {
+                    Data = usuarios.Select(u => u.ToResponse()).ToList(),
+                    Message = "Usuarios Encontrados",
+                    Success = true
+                };
+            }
+            catch (Exception e)
+            {
+
+                return new Result<List<UsuarioResponse>>
+                {
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = false
+                };
+
+            }
+        }
     }
 }

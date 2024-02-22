@@ -195,22 +195,15 @@
 
                         @if (theme.IsDark())
                         {
-                            <MudTextField MaxLength="30" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+                               <MudTextField MaxLength="30" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar"></MudTextField>
 
                         }
                         else
                         {
-                                                    <MudTextField MaxLength="30" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+                           <MudTextField MaxLength="30" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
                             
                         }
-                        @* @if (theme.IsDark())
-                        {
-                        <MudIcon Size="Size.Small" Style="cursor: pointer;" @onclick="()=>{theme.SetDarkTheme(!theme.IsDark());}" Icon="@Icons.Material.Filled.WbSunny" Color="Color.Error"></MudIcon>
-                        }
-                        else
-                        {
-                            <MudIcon Size="Size.Small" Style="cursor: pointer;" @onclick="()=>{theme.SetDarkTheme(!theme.IsDark()) ; }" Icon="@Icons.Material.Rounded.NightlightRound" Color="Color.Error"></MudIcon>
-                        }  *@
+                       
                        
                     </div>
 
@@ -328,6 +321,7 @@
     private string navbarclass = "navbar-container";
     public bool IsDarkMode { get; set; } = true ;
     public bool hayReportes = false;
+    public string buscar = "";
     private MudTheme ThemeCustom => new()
      {
 

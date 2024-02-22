@@ -183,7 +183,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var artista = await dbContext.Artistas.Include(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Include(a => a.Suscriptores).ThenInclude(s => s.Usuario).Where(a => a.Nombre == nombre).ToListAsync();
+                var artista = await dbContext.Artistas.Include(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Include(a => a.Suscriptores).ThenInclude(s => s.Usuario).Where(a => a.Nombre.ToLower().Contains(nombre.ToLower())).ToListAsync();
 
                 if (artista is null)
                     return new Result<List<ArtistaResponse>> () { Message = "No existe el Artista", Success = false };

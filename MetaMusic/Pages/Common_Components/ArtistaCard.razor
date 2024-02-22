@@ -10,7 +10,7 @@
                 <MudText Style="font-size: 10px; font-weight: bold;" Color="Color.Error">@Artista.GenerosMusicales[0].Genero?.Nombre / </MudText>
                 <MudText Style="font-size: 10px; font-weight: bold;" Color="Color.Error">@Artista.GenerosMusicales[1].Genero?.Nombre </MudText>
 
-                <MudText Style="font-size: 10px; margin-top: 10px; margin-bottom: 10px;">@Artista.Suscriptores.Count() Suscriptores  </MudText>
+                <MudText Style="font-size: 10px; margin-top: 10px; margin-bottom: 10px;">@Artista.Suscriptores.Count().NumeroRelativo() Suscriptores  </MudText>
 
                 <AuthorizeView>
                     <Authorized>
