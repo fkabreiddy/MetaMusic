@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-<MudThemeProvider  IsDarkMode=@theme.IsDark() Theme="ThemeCustom"/>
+<MudThemeProvider   IsDarkMode=@theme.IsDark() Theme="ThemeCustom"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 <PageTitle>MetaMusic</PageTitle>
@@ -24,7 +24,11 @@
         border-bottom: 1px solid #E74646 !important;
     }
 
+    .theme-button{
 
+    }
+
+    
 
    
 
@@ -195,16 +199,30 @@
 
                         @if (theme.IsDark())
                         {
-                <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar"></MudTextField>
+                                <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar"></MudTextField>
 
                         }
                         else
                         {
-                <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
-                            
+                          <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
+                              
                         }
-                       
-                       
+
+                      @*   @if (theme.IsDark())
+                        {
+                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FlipInX" Enabled="theme.IsDarkTheme">
+                                                             <MudIconButton @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}" Icon="@Icons.Material.Rounded.WbSunny" Color="Color.Warning"></MudIconButton>
+
+                            </BlazorAnimation.Animation>
+                        }
+                        else
+                        {
+                             <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FlipInX">
+                              <MudIconButton @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}" Icon="@Icons.Material.Rounded.DarkMode" Color="Color.Error"></MudIconButton>
+
+                                 </BlazorAnimation.Animation>
+
+                        } *@
                     </div>
 
               
@@ -344,10 +362,10 @@
             {
                 Primary = "#1D1A31",
                 Secondary = "#393E46",
-                Surface = "#FDFDFD ",
+                Surface = "#F5F7F8 ",
                 Background = "#FFFFFF ",
                 Tertiary = "#164863",
-                Error = "#E74646"
+                Error = "#D04848"
 
 
 
@@ -361,7 +379,7 @@
                 Secondary = "#f1f2f2",
                 Tertiary = "#164863",
                 Background = "#000000",
-                Error = "#E74646",
+                Error = "#D04848",
                 Surface = "#191919",
 
 

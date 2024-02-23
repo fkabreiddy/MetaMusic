@@ -1,4 +1,16 @@
 ﻿@page "/search/{topic}"
+<style>
+    .results-summary {
+    backdrop-filter: blur(6px) saturate(43%);
+    -webkit-backdrop-filter: blur(6px) saturate(43%);
+    background-color: transparent;
+    border-radius: 12px;
+  
+    border-radius: 10px; 
+    padding: 15px;
+
+}
+</style>
 
 <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center;   ">
 
@@ -72,10 +84,11 @@ else
     {
          <MudGrid Justify="Justify.SpaceBetween" Style="margin-top: 60px;">
         <MudItem xxl="3" xl="3" lg="3" md="3" sm="5" xs="12" Style="position: sticky;  top: 67px;z-index:1;">
-           
-         
-         
-                <MudContainer  Style="position: sticky;  top: 100px;z-index:1;background-color: black;" >
+
+
+
+
+                <MudContainer Style="position: sticky;  top: 100px;z-index:1;  " Class="results-summary">
                     <div style="width: 100%; display: flex; flex-direction: column; justify-content: center;gap:10px; align-items: center;">
                          <MudText Style="font-size: 12px; font-weight: bold;">@(Albumes.Count() + Artistas.Count() + Usuarios.Count()) RESULTADOS</MudText>
                         <MudButton Style="font-size: 10px; margin-bottom: 10px; cursor: pointer;" @onclick="()=>{panel_contraido = !panel_contraido;}" Variant="Variant.Text">@(panel_contraido ? "Expandir " : "Contraer ") Resumen de Resultado</MudButton>
