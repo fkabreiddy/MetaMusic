@@ -40,217 +40,175 @@
  
 
 </style>
+<MudLayout>
+    <MudAppBar Elevation="1"  Dense="false">
+        <MudTooltip Arrow=true Color="Color.Error" Text="Ir a Inicio">
+            <div @onclick='()=>{navManager.NavigateTo("/");}' style="display: flex; cursor: pointer; align-items: center; flex-direction: column;">
 
- 
+                @if (theme.IsDark())
+                {
+                    <MudImage Src="/meta-logo-white.png" Style="width: 50px; width: 50px;"></MudImage>
+                }
+                else
+                {
+                    <MudImage Src="/meta-logo.png" Style="width: 50px; width: 50px;"></MudImage>
+                }
+
+                
+
+            </div>
+        </MudTooltip>
+        <MudSpacer />
+        @if (theme.IsDark())
+        {
+            <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar"></MudTextField>
+
+        }
+        else
+        {
+
+            
+            <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
+
+        }
+
+        <AuthorizeView>
+            <Authorized>
+                @if (gettingUserData)
+                {
+                    <MudProgressCircular Indeterminate=true Color="Color.Error" Size="Size.Small"></MudProgressCircular>
+                }
+                else
+                {
+
+
+                    <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;" @onclick="()=>{opendrawer = !opendrawer;}"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+
+
+
+
+                }
+            </Authorized>
+            <NotAuthorized>
+                <MudButton Color="Color.Error" Target="_top" Variant="Variant.Text" Style="font-size: 12px; font-weight: bold;" Href="googlelogin/signin-google">Iniciar Sesion</MudButton>
+
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudAppBar>
     
-        <div style="width: 100%;">
-              <MudContainer Class="@navbarclass" id="navbar" md="12" sm="12" xs="12" xxl="12" lg="12" xl="12" Style="@($""" {(theme.IsDark() ? "background-color:#000000;" : "background-color:#ffffff;")}; z-index: 10;  gap: 10px; position: sticky;z-index: 10;height: 80px; display: flex; justify-content: space-between; max-width: 100%;top: 0;""")">
-
-          
-                  
-                    <MudTooltip Arrow=true Color="Color.Error" Text="Ir a Inicio">
-                        <div @onclick='()=>{navManager.NavigateTo("/");}' style="display: flex; cursor: pointer; align-items: center; flex-direction: column;">
-
-                            @if (theme.IsDark())
-                            {
-                                <MudImage Src="/meta-logo-white.png" Style="width: 50px; width: 50px;"></MudImage>
-                            }
-                            else
-                            {
-                                <MudImage Src="/meta-logo.png" Style="width: 50px; width: 50px;"></MudImage>
-                            }
-
-                            <MudText Style="font-size: 10px; font-weight: bold;">M E T A M U S I C</MudText>
-                        </div>
-                    </MudTooltip>
-                    
-                  
-                    <div style="display: flex; align-items: center;  gap : 17px;">
-
-
-                      
-
-                        <AuthorizeView>
-
-
-                            <Authorized>
-
-                                 @if(gettingUserData)
-                                {
-                                    <MudProgressCircular Indeterminate=true Color="Color.Error" Size="Size.Small"></MudProgressCircular>
-                                }
-                                else
-                                {
-                                     <MudMenu  AnchorOrigin="Origin.BottomLeft"  TransformOrigin="Origin.TopCenter">
-
-                                    <ActivatorContent>
-
-                                       
-                                            <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
-
-                                        
-
-                                    </ActivatorContent>
-                                    <ChildContent>
-
-                                        <MudPaper Style="border-radius: 10px;" Outlined=true>
-                                            <BlazorAnimation.Animation Style="z-index: 999999; position: static; border-radius: 10px;  " Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
-
-
-                                                <MudContainer Style="max-height: 80vh; overflow: auto; margin-top: 10px;margin-bottom: 10px;min-width: 220px; border-radius: 10px; ">
-
-
-                                                    <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Opciones</MudText>
-                                                    <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                                    <MudMenuItem @onclick='()=>{navManager.NavigateTo($"/user/{ UsuarioActual.CorreoNormalizado}");}' Style="border-radius: 10px;">
-                                                        <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                            <MudText Style="font-size: 12px;   ">Ver perfil</MudText>
-                                                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Person"></MudIcon>
-                                                        </div>
-
-                                                    </MudMenuItem>
-                                                    <MudMenuItem Style="border-radius: 10px;">
-                                                        <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                            <MudText Style="font-size: 12px;   ">Notificaciones</MudText>
-                                                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Notifications"></MudIcon>
-                                                        </div>
-
-                                                    </MudMenuItem>
-
-                                                    <AuthorizeView Context="menuextra" Roles="Staff">
-                                                        <Authorized >
-                                                                     <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                                                <MudText Align="Align.Center" Style="font-size: 12px; opacity: 0.7; ">Staff Options</MudText>
-                                                                <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                                                <MudMenuItem @onclick='()=>{navManager.NavigateTo("/crear-contenido");}' Style="border-radius: 10px;">
-
-
-                                                                    <div style="display:flex; justify-content: space-between; align-items: center;border-radius: 9px;">
-                                                                        <MudText Color="Color.Error" Style="font-size: 12px;   ">Crear Contenido</MudText>
-                                                                        <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Add"></MudIcon>
-                                                                    </div>
-
-
-
-
-                                                                </MudMenuItem>
-                                                                <MudMenuItem Disabled=true Style="border-radius: 10px;">
-                                                                    <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                                        <MudText Style="font-size: 12px;   ">Peticiones</MudText>
-                                                                        <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.NewReleases"></MudIcon>
-                                                                    </div>
-
-                                                                </MudMenuItem>
-                                                                <MudMenuItem Disabled=true Style="border-radius: 10px;">
-                                                                    <div style="display:flex; justify-content: space-between; align-items: center;">
-                                                                        <MudText Style="font-size: 12px;   ">Reportes</MudText>
-                                                                        <MudBadge Color="Color.Error" Overlap="true" Visible=hayReportes Bordered="true" Dot=true>
-                                                                                                                                            <MudIcon Color="Color.Primary" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag"></MudIcon>
-
-                                                                        </MudBadge>
-                                                                    </div>
-
-                                                                </MudMenuItem>
-                                                        </Authorized>
-                                                       
-                                                    </AuthorizeView>
-                                                   
-                                                        
-                                                    
-
-
-                                                    <MudDivider Class="mb-3 mt-3"></MudDivider>
-                                                    <MudMenuItem Style="border-radius: 10px; " Class="meta-nav-button">
-                                                        <div style="border-radius: 10px; display: flex; align-items: center; justify-content: space-between;">
-                                                    <MudLink Href="googlelogin/logout" Target="_top" Underline="Underline.None" Style="font-size: 12px;   " Class="meta-nav-button">Cerrar Sesion</MudLink>
-                                                            <MudIcon Color="Color.Error" Style="height:  15px; width: 15px;" Size="Size.Small" Icon="@Icons.Material.Rounded.ArrowBack"></MudIcon>
-
-                                                        </div>
-
-                                                    </MudMenuItem>
-
-
-                                                </MudContainer>
-
-
-
-                                            </BlazorAnimation.Animation>
-                                        </MudPaper>
-                                      
-
-                                    </ChildContent>
-
-
-
-
-
-
-                                </MudMenu>                                    
-                                }
-                               
-                               
-                            </Authorized>
-                            <NotAuthorized>
-                    <MudButton Color="Color.Error" Target="_top" Variant="Variant.Text" Style="font-size: 12px; font-weight: bold;" Href="googlelogin/signin-google" >Iniciar Sesion</MudButton>
-
-                            </NotAuthorized>
-
-                        </AuthorizeView>
-
-                        @if (theme.IsDark())
-                        {
-                                <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar"></MudTextField>
-
-                        }
-                        else
-                        {
-                          <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
-                              
-                        }
-
-                      @*   @if (theme.IsDark())
-                        {
-                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FlipInX" Enabled="theme.IsDarkTheme">
-                                                             <MudIconButton @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}" Icon="@Icons.Material.Rounded.WbSunny" Color="Color.Warning"></MudIconButton>
-
-                            </BlazorAnimation.Animation>
-                        }
-                        else
-                        {
-                             <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FlipInX">
-                              <MudIconButton @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}" Icon="@Icons.Material.Rounded.DarkMode" Color="Color.Error"></MudIconButton>
-
-                                 </BlazorAnimation.Animation>
-
-                        } *@
-                    </div>
-
-              
-               
-            </MudContainer>
-
-
-
-
-
-              <MudContainer Style="margin-top: 2em; width: 100%; ">
-        
-                  
-                    @if(UserDataLoaded)
-                    {
-                        @Body
-                    }
-                  
-              
-
-
-            </MudContainer>
+        <MudDrawer @bind-Open="@opendrawer" Anchor="Anchor.Right" ClipMode="clipMode"  PreserveOpenState="false" Elevation="1" Variant="@DrawerVariant.Temporary">
+           <MudContainer Style="margin-top: 30px; display: flex; flex-direction: column;gap: 15px;">
 
             
 
-        </div>
-       
-   
+
+
+            <div style="display: flex; gap: 35px;  align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <div style="display: flex; gap: 10px; ">
+                    <MudAvatar Style="height: 32px; width: 32px;  "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+                    <div style="display: flex; flex-direction: column;">
+                        <MudText Style="font-size: 12px; font-weight: bold; opacity : 0.7;"> @UsuarioActual?.CorreoNormalizado</MudText>
+                            <MudLink Underline="Underline.Always" Href="@($"/user/{UsuarioActual.CorreoNormalizado}")" Color="Color.Error" Style="font-size: 10px;  opacity : 0.7;">Ver Perfil</MudLink>
+
+
+                        </div>
+                </div>
+
+               
+                    <MudIcon Icon="@Icons.Material.Rounded.Close"  @onclick="()=>{opendrawer = !opendrawer;}" Style="width: 15px; height: 15px;cursor:pointer;" Size="Size.Small"></MudIcon>
+            </div>
+                <div style="display: flex; gap: 15px;  align-items: center;">
+
+                    <MudIcon Icon="@Icons.Material.Outlined.Home" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
+
+                    <MudText Style="font-size: 12px;  opacity : 0.7;">Home</MudText>
+
+                </div>
+
+                <AuthorizeView Roles="Staff" >
+                    <Authorized >
+                         <MudDivider Style="margin-top: 20px; margin-bottom: 20px;" DividerType="DividerType.FullWidth" Light=true></MudDivider>
+               
+                        <div style="display: flex; gap: 15px;  align-items: center; ">
+
+                            <MudIcon Icon="@Icons.Material.Outlined.AddCircleOutline" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
+
+                            <MudText Style="font-size: 12px;  opacity : 0.7;"> Crear Contenido</MudText>
+
+                        </div>
+                        <div style="display: flex; gap: 15px;  align-items: center; ">
+
+                   
+                  
+                                <MudIcon Icon="@Icons.Material.Outlined.Report" Style="width: 20px; height: 20px;cursor:pointer;" Size="Size.Small"></MudIcon>
+
+               
+
+                            <MudText Style="font-size: 12px;  opacity : 0.7;"> Reportes</MudText>
+                             <MudBadge Visible="@hayReportes" Color="Color.Error" Dot=true />
+
+                        </div>
+                        <div style="display: flex; gap: 15px;  align-items: center; ">
+
+
+
+                            <MudIcon Icon="@Icons.Material.Outlined.FrontHand" Style="width: 20px; height: 20px;cursor:pointer;" Size="Size.Small"></MudIcon>
+
+
+
+                            <MudText Style="font-size: 12px;  opacity : 0.7;">Peticiones</MudText>
+                            <MudBadge Visible="@hayReportes" Color="Color.Error" Dot=true />
+
+                        </div>
+                    </Authorized>
+                </AuthorizeView>
+               
+
+               <MudDivider Style="margin-top: 20px; margin-bottom: 20px;" DividerType="DividerType.FullWidth"  Light=true></MudDivider>
+
+                <div style="display: flex; gap: 15px;  align-items: center; ">
+
+                    <MudIcon Icon="@Icons.Material.Outlined.Notifications" Style="width: 20px; height: 20px;cursor:pointer;" Size="Size.Small"></MudIcon>
+
+                  <MudText Style="font-size: 12px;  opacity : 0.7;"> Notificaciones</MudText>
+                         
+                </div>
+                 <div style="display: flex; gap: 15px;  align-items: center; ">
+
+                    <MudIcon Icon="@(theme.IsDarkTheme ? @Icons.Material.Outlined.LightMode : @Icons.Material.Outlined.LightMode)" Style="width: 20px; height: 20px;cursor:pointer;" @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}" Size="Size.Small"></MudIcon>
+
+                  <MudText Style="font-size: 12px;  opacity : 0.7;"> Activar Modo @(theme.IsDarkTheme ? "Claro" : "Oscuro") </MudText>
+                         
+                </div>
+
+                <MudDivider Style="margin-top: 20px; margin-bottom: 20px;" DividerType="DividerType.FullWidth" Light=true></MudDivider>
+
+                <div style="display: flex; gap: 15px;  align-items: center; ">
+
+                    <MudIcon  Icon="@Icons.Material.Outlined.ArrowBack" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
+
+                    <MudLink Href="googlelogin/logout" Target="_top" Style="font-size: 12px;  opacity : 0.7;">Cerrar Sesión</MudLink>
+
+                </div>
+                
+            </MudContainer>
+          
+            
+           
+        </MudDrawer>
+        
+    <MudMainContent Class="pt-16 px-16"> 
+        <MudContainer Class="mt-6">
+            @if (UserDataLoaded)
+            {
+                @Body
+            }
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+
 
    
 
@@ -263,7 +221,7 @@
 
 @functions{
 
-   
+    DrawerClipMode clipMode = DrawerClipMode.Never;
     protected override async Task OnInitializedAsync()
     {
         UserDataLoaded = false;
@@ -349,6 +307,7 @@
     public bool IsDarkMode { get; set; } = true ;
     public bool hayReportes = false;
     public string buscar = "";
+    public bool opendrawer = false;
     private MudTheme ThemeCustom => new()
      {
 
@@ -365,7 +324,11 @@
                 Surface = "#F5F7F8 ",
                 Background = "#FFFFFF ",
                 Tertiary = "#164863",
-                Error = "#D04848"
+                Error = "#D04848",
+                
+                AppbarBackground = "#ffffff",
+                DrawerBackground = "#ffffff"
+
 
 
 
@@ -381,6 +344,8 @@
                 Background = "#000000",
                 Error = "#D04848",
                 Surface = "#191919",
+                AppbarBackground = "#000000",
+                DrawerBackground = "#000000"
 
 
 
