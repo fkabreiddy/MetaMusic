@@ -81,8 +81,11 @@
                 else
                 {
 
+                    @if(!opendrawer)
+                    {
+                        <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;" @onclick="()=>{opendrawer = !opendrawer;}"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
 
-                    <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;" @onclick="()=>{opendrawer = !opendrawer;}"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+                    }
 
 
 
@@ -96,8 +99,8 @@
         </AuthorizeView>
     </MudAppBar>
     
-        <MudDrawer @bind-Open="@opendrawer" Anchor="Anchor.Right" ClipMode="clipMode"  PreserveOpenState="false" Elevation="1" Variant="@DrawerVariant.Temporary">
-           <MudContainer Style="margin-top: 30px; display: flex; flex-direction: column;gap: 15px;">
+        <MudDrawer @bind-Open="@opendrawer" Anchor="Anchor.Right" ClipMode="clipMode"  PreserveOpenState="false" Elevation="1"  Variant="@DrawerVariant.Responsive">
+           <MudContainer Style="margin-top: 30px; display: flex; flex-direction: column;gap: 25px;margin-bottom: 20px;">
 
             
 
@@ -133,7 +136,7 @@
 
                             <MudIcon Icon="@Icons.Material.Outlined.AddCircleOutline" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
 
-                            <MudText Style="font-size: 12px;  opacity : 0.7;"> Crear Contenido</MudText>
+                            <MudLink Underline="Underline.Hover" @onclick='()=>{navManager.NavigateTo("/crear-contenido");}' Style="font-size: 12px;  opacity : 0.7;"> Crear Contenido</MudLink>
 
                         </div>
                         <div style="display: flex; gap: 15px;  align-items: center; ">
@@ -145,7 +148,7 @@
                
 
                             <MudText Style="font-size: 12px;  opacity : 0.7;"> Reportes</MudText>
-                             <MudBadge Visible="@hayReportes" Color="Color.Error" Dot=true />
+                             <MudBadge Bordered=true Visible="@hayReportes" Color="Color.Error" Dot=true  />
 
                         </div>
                         <div style="display: flex; gap: 15px;  align-items: center; ">
@@ -157,7 +160,7 @@
 
 
                             <MudText Style="font-size: 12px;  opacity : 0.7;">Peticiones</MudText>
-                            <MudBadge Visible="@hayReportes" Color="Color.Error" Dot=true />
+                            <MudBadge Visible="@hayReportes" Bordered=true Color="Color.Error" Dot=true />
 
                         </div>
                     </Authorized>
@@ -171,11 +174,13 @@
                     <MudIcon Icon="@Icons.Material.Outlined.Notifications" Style="width: 20px; height: 20px;cursor:pointer;" Size="Size.Small"></MudIcon>
 
                   <MudText Style="font-size: 12px;  opacity : 0.7;"> Notificaciones</MudText>
+                                              <MudBadge Visible="@hayNotificaciones" Bordered=true Color="Color.Error" Dot=true />
+
                          
                 </div>
                  <div style="display: flex; gap: 15px;  align-items: center; ">
 
-                    <MudIcon Icon="@(theme.IsDarkTheme ? @Icons.Material.Outlined.LightMode : @Icons.Material.Outlined.LightMode)" Style="width: 20px; height: 20px;cursor:pointer;" @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}" Size="Size.Small"></MudIcon>
+                    <MudIcon Icon="@(theme.IsDarkTheme ? @Icons.Material.Outlined.DarkMode : @Icons.Material.Outlined.LightMode)" Style="width: 20px; height: 20px;cursor:pointer;" @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}" Size="Size.Small"></MudIcon>
 
                   <MudText Style="font-size: 12px;  opacity : 0.7;"> Activar Modo @(theme.IsDarkTheme ? "Claro" : "Oscuro") </MudText>
                          
@@ -183,7 +188,7 @@
 
                 <MudDivider Style="margin-top: 20px; margin-bottom: 20px;" DividerType="DividerType.FullWidth" Light=true></MudDivider>
 
-                <div style="display: flex; gap: 15px;  align-items: center; ">
+                <div style="display: flex; gap: 15px;  align-items: center; margin-bottom: 20px; ">
 
                     <MudIcon  Icon="@Icons.Material.Outlined.ArrowBack" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
 
@@ -198,12 +203,12 @@
         </MudDrawer>
         
     <MudMainContent Class="pt-16 px-16"> 
-        <MudContainer Class="mt-6">
+       
             @if (UserDataLoaded)
             {
                 @Body
             }
-        </MudContainer>
+      
     </MudMainContent>
 </MudLayout>
 
@@ -222,6 +227,8 @@
 @functions{
 
     DrawerClipMode clipMode = DrawerClipMode.Never;
+
+
     protected override async Task OnInitializedAsync()
     {
         UserDataLoaded = false;
@@ -276,7 +283,7 @@
 
     }
 
-    
+
 
     [JSInvokable]
     public void ManejarScroll(int scrollY)
@@ -293,6 +300,23 @@
         if (r.Data is not null && r.Success)
         {
             hayReportes = true;
+        }
+    }
+
+    public async Task getNotificaciones()
+    {
+        var r= await notificacionesService.Consultar();
+
+        if(r.Success && r.Data is not null)
+        {
+            if(r.Data.Any(n => n.Saw == false))
+            {
+                hayNotificaciones = true;
+            }
+        }
+        else
+        {
+            hayNotificaciones = false;            
         }
     }
 
@@ -325,7 +349,7 @@
                 Background = "#FFFFFF ",
                 Tertiary = "#164863",
                 Error = "#D04848",
-                
+
                 AppbarBackground = "#ffffff",
                 DrawerBackground = "#ffffff"
 
@@ -388,6 +412,7 @@
 
     };
     public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
+    public bool hayNotificaciones { get; set; } = false;
 
    
 }

@@ -9,7 +9,7 @@ namespace MetaMusic.Data.Entities
         [Key]
         public int Id { get; set; }
 
-        [StringLength(50)]
+        [StringLength(150)]
         public string Titulo { get; set; } = null!;
 
         public DateTime Fecha_Creacion { get; set; }

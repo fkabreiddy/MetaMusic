@@ -137,12 +137,23 @@ else if (reporte.Nota is not null && reporte.Nota?.Id != 0)
 
         if(desicion == true)
         {
+            if (reporte.Usuario is not null)
+            {
+                string titulo = $"""Revisado tu reporte a una {(reporte.Nota is null ? "nota" : $"review {reporte.Review?.Album.Nombre} ")} y no vimos ningun problema.""";
+                var x = await notificacionesService.NotificacionGenerica(reporte.Usuario.Id, titulo);
+
+            }
+
             var r = await reporteService.Eliminar(reporte.Id);
 
             if (r.Success)
             {
-                reporte = new ReporteResponse();
+
                 MostrarNotificacion("Reporte Eliminado", "Se ha eliminado el reporte correctamente");
+
+                reporte = new ReporteResponse();
+
+               
                 StateHasChanged();
             }
             else

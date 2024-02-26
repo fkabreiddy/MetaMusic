@@ -4,7 +4,6 @@ using MetaMusic.Data.Entities;
 using MetaMusic.Data.Responses;
 using SpotifyAPI.Web;
 using Microsoft.EntityFrameworkCore;
-using MetaMusic.Pages.MainComponents;
 
 namespace MetaMusic.Data.Services
 {

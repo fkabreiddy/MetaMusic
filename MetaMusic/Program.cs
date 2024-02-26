@@ -46,8 +46,8 @@ builder.Services.AddScoped<IMessageBox, MessageBox>();
 builder.Services.AddScoped<INotaService, NotaService>();
 builder.Services.AddScoped<IReporteService, ReporteService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>(); //can be placed among other "AddScoped" - above: var app = builder.Build();   
+builder.Services.AddScoped<INotificacionService, NotificacionService>();
 
-  
 
 builder.Services.AddHttpClient();
 builder.Services.AddSignalR();
@@ -121,11 +121,10 @@ app.UseStaticFiles();
 app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 app.UseRouting();
 app.UseAntiforgery();
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+
 app.UseStatusCodePagesWithRedirects("/404");
 
 app.Run();

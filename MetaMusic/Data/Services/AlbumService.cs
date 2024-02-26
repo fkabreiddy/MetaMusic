@@ -17,11 +17,14 @@ namespace MetaMusic.Data.Services
         private readonly IMetaMusicDbContext dbContext;
         private readonly IGoogleAuthService googleAuth;
         private readonly NavigationManager navManager;
+
+        private readonly INotificacionService notificacionesService;
         public AlbumService(IMetaMusicDbContext dbContext,
-                           IGoogleAuthService googleAuth, NavigationManager navManager)
+                           IGoogleAuthService googleAuth, NavigationManager navManager, INotificacionService notificacionesService)
         {
             this.dbContext = dbContext;
             this.googleAuth = googleAuth;
+            this.notificacionesService = notificacionesService;
             this.navManager = navManager;
         }
 
@@ -74,6 +77,10 @@ namespace MetaMusic.Data.Services
 
 
                 await dbContext.SaveChangesAsync();
+
+
+                await notificacionesService.NotificarNuevoAlbum(newalbum.Id);
+
 
                 return new Result<AlbumResponse>()
                 {
