@@ -4,7 +4,7 @@ namespace MetaMusic.Data.Services
 {
     public class CurrentUser : ICurrentUser
     {
-        public UsuarioResponse UsuarioActual { get; set; }
+        public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
 
         public UsuarioResponse GetUsuarioActual()
         {

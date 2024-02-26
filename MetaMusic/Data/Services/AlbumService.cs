@@ -52,7 +52,7 @@ namespace MetaMusic.Data.Services
                         Message = "No existes en nuestros registros"
                     };
 
-                if (userUser.Rol.Tipo != "Staff")
+                if (userUser.Rol?.Tipo != "Staff")
                     return new Result<AlbumResponse>()
                     {
                         Success = false,
@@ -126,7 +126,7 @@ namespace MetaMusic.Data.Services
                         Message = "No existes en nuestros registros"
                     };
 
-                if (userUser.Rol.Tipo != "Staff")
+                if (userUser.Rol?.Tipo != "Staff")
                     return new Result<AlbumResponse>()
                     {
                         Success = false,
@@ -154,7 +154,7 @@ namespace MetaMusic.Data.Services
 
                 return new Result<AlbumResponse>()
                 {
-                    Data = album.ToResponse(),
+                    Data = album?.ToResponse(),
                     Message = "Modificacion Correcta",
                     Success = true
 
@@ -183,7 +183,7 @@ namespace MetaMusic.Data.Services
 
                 var album = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).FirstOrDefaultAsync(a => a.Id == album1.Id && a.Publicado == true);
 
-                return new Result<AlbumResponse>() { Message = "Success", Success = true, Data = album.ToResponse() };
+                return new Result<AlbumResponse>() { Message = "Success", Success = true, Data = album?.ToResponse() ?? null};
 
             }
             catch (DbUpdateException ex)

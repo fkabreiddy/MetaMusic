@@ -51,7 +51,7 @@ builder.Services.AddScoped<INotificacionService, NotificacionService>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddSignalR();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
 builder.Services.AddMudServices(config =>
 {
 
@@ -69,6 +69,7 @@ builder.Services.AddMudServices(config =>
 
 
 });
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 builder.Services.AddAuthentication().AddGoogle(option =>
 {
 
@@ -77,6 +78,8 @@ builder.Services.AddAuthentication().AddGoogle(option =>
     option.ClientSecret = builder.Configuration["Google:ClientSecret"] ?? "";
     option.ClaimActions.MapJsonKey("urn:google:profile", "link");
     option.Scope.Add("profile");
+ 
+    
     option.Events.OnCreatingTicket = (context) =>
     {
         var picture = context.User.GetProperty("picture").GetString();
@@ -88,6 +91,13 @@ builder.Services.AddAuthentication().AddGoogle(option =>
 
 });
 
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.Secure = CookieSecurePolicy.Always;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<HttpContextAccessor>();
 builder.Services.AddHttpClient();
@@ -97,11 +107,6 @@ builder.WebHost.UseUrls("https://localhost:7277/");
 
 //lista de blogs en el cache
 
-builder.Services.Configure<CookiePolicyOptions>(options =>
-{
-    options.Secure = CookieSecurePolicy.Always;
-
-});
 
 var app = builder.Build();
 
@@ -114,19 +119,23 @@ if (!app.Environment.IsDevelopment())
 }
 
 
-
 app.UseHttpsRedirection();
 await SeedDatabase(); //can be placed above app.UseStaticFiles();
 app.UseStaticFiles();
 app.MapControllers();
+app.UseCookiePolicy();
+
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+
+
 app.UseRouting();
-app.UseAntiforgery();
+
+app.UseAntiforgery(); 
 
 app.UseStatusCodePagesWithRedirects("/404");
-
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 app.Run();
 
 

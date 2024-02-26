@@ -16,11 +16,13 @@ namespace MetaMusic.Data.Controllers
     {
         private readonly IAsignDataService asingData;
         private readonly NavigationManager navManager;
+     
 
         public GoogleLoginController(IAsignDataService asingData, NavigationManager navManager)
         {
             this.asingData = asingData;
             this.navManager = navManager;
+            
         }
 
         [AllowAnonymous]
@@ -36,12 +38,13 @@ namespace MetaMusic.Data.Controllers
                 var authenticationProperties = new AuthenticationProperties
                 {
                     RedirectUri = Url.Action("Callback", "GoogleLogin", new { returnUrl }),
+                    IsPersistent= true,
                 };
                 return new ChallengeResult(provider, authenticationProperties);
             }
             catch
             {
-                return RedirectToAction("LoginError");
+                return LocalRedirect("/LoginError");
             }
         }
 
@@ -53,43 +56,41 @@ namespace MetaMusic.Data.Controllers
                 var GoogleUser = this.User.Identities.FirstOrDefault();
                 if (GoogleUser.IsAuthenticated)
                 {
-                    var authProperties = new AuthenticationProperties
+                    var r = await asingData.AsignData();
+
+                    if (r.Success == true && r.Data is not null)
                     {
-                        IsPersistent = true,
-                        RedirectUri = this.Request.Host.Value
-                    };
+                        // Agregar el claim de rol a la identidad del usuario
+                        var roleClaim = new Claim(ClaimTypes.Role, r.Data.Rol.Tipo );
+                        GoogleUser.AddClaim(roleClaim);
 
+                        var authProperties = new AuthenticationProperties
+                        {
+                            IsPersistent = true,
+                            RedirectUri = this.Request.Host.Value
+                        };
+                        await HttpContext.SignInAsync(
+                      CookieAuthenticationDefaults.AuthenticationScheme,
+                      new ClaimsPrincipal(GoogleUser),
+                      authProperties);
 
-                    await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(GoogleUser));
-                }
-
-                var r = await asingData.AsignData();
-
-                if (r.Success == true)
-                {
-                    // Agregar el claim de rol a la identidad del usuario
-                    var roleClaim = new Claim(ClaimTypes.Role, r.Data.Rol.Tipo);
-                    GoogleUser.AddClaim(roleClaim);
-
-                    // Actualizar la cookie de autenticación
-                    var authProperties = new AuthenticationProperties
+                        return LocalRedirect("/");
+                    }
+                    else
                     {
-                        IsPersistent = true,
-                        RedirectUri = this.Request.Host.Value
-                    };
+                        return LocalRedirect("/login-error");
+                    }
+                   
 
-                    await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(GoogleUser),
-                        authProperties);
-                    return LocalRedirect("/");
+                   
+
                 }
                 else
                 {
-                    return LocalRedirect("/google-log-out");
+                    return LocalRedirect("login-error");
                 }
+
+                
             }
             catch
             {
@@ -105,9 +106,14 @@ namespace MetaMusic.Data.Controllers
             // Clear the existing external cookie
             try
             {
-                await HttpContext
-                    .SignOutAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme);
+
+               
+                await HttpContext.SignOutAsync(
+    CookieAuthenticationDefaults.AuthenticationScheme);
+                HttpContext.Session.Clear();
+
+               
+
 
 
             }
