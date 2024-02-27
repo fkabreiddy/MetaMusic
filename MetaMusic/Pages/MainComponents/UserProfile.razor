@@ -1,4 +1,6 @@
 ﻿@page "/user/{useremail}"
+@page "/user/{useremail}/note/{notaid:int}"
+
 <style>
 
     .staff-option
@@ -12,6 +14,13 @@
         border: dashed 2px red;
             
     }
+
+    .focused_note{
+
+        border: dashed 1px red;
+    }
+
+   
 </style>
 @if(!userDataLoaded)
 {
@@ -80,10 +89,13 @@ else
                         <MudContainer Style="display: flex; flex-direction: column; gap:20px; justify-content:center; align-items: center; ">
                             <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">Usuario</MudText>
                             <MudText Style="font-size: 35px;   overflow: hidden; font-family: SourceSerif4;">“@Usuario.Nombre”</MudText>
-                                @if (Usuario.Rol.Tipo != "Normal")
-                            {
-                                <MudText Style="font-size: 12px; font-weight: bold" Color="Color.Error">@Usuario.Rol.Tipo</MudText>
-                            }
+                               <AuthorizeView Roles="Staff">
+                                   <Authorized>
+                                    <MudText Style="font-size: 12px; font-weight: bold" Color="Color.Error">@Usuario.Rol.Tipo</MudText>
+
+                                   </Authorized>
+                               </AuthorizeView>
+                            
 
                             <MudAvatar Style="height: 150px; width: 150px;border: dashed 2px;margin: 10px;"><MudImage src="@Usuario.FotoDePerfil"></MudImage></MudAvatar>
 
@@ -95,7 +107,10 @@ else
                                 </div>
                                 <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
                                 <MudText Style="font-size: 13px; font-weight: bold" Color="Color.Error">Biografia</MudText>
-                                <MudText Align="Align.Center" Style="font-size: 12px; ">@Usuario.Biografia</MudText>
+                               
+                                                                    <MudText  Align="Align.Center" Style="font-size: 12px; ">@Usuario.Biografia</MudText>
+
+                                
 
                                 <AuthorizeView>
                                     <Authorized>
@@ -289,8 +304,11 @@ else
                                         <MudGrid Style="margin-top: 20px;">
                                             @foreach (var nota in notas)
                                             {
-                                                <MudItem md="6" lg="6" xl="6" xxl="6" sm="12" xs="12">
-                                                    <MetaMusic.Pages.Common_Components.Nota nota="@nota" showSource=true disableInteractivity=true deletebuttonvisible=true></MetaMusic.Pages.Common_Components.Nota>
+                                                <MudItem  md="6" lg="6" xl="6" xxl="6" sm="12" xs="12">
+                                                    <div id="@nota.Id">
+                                                        <MetaMusic.Pages.Common_Components.Nota nota="@nota" Bordered="@(nota.Id == notaid)" showSource=true disableInteractivity=true deletebuttonvisible=true></MetaMusic.Pages.Common_Components.Nota>
+
+                                                    </div>
                                                 </MudItem>
                                             }
                                         </MudGrid>
@@ -346,7 +364,7 @@ else
                                                 {
 
                                                     <MudItem md="4" lg="4" xl="3" xxl="3" sm="6" xs="12" Style="margin-top: 30px;">
-                                                        <MetaMusic.Pages.Common_Components.ArtistaCard Artista="artista" VisibleSuscribeButton="true" UserId="@UsuarioActual.Id"></MetaMusic.Pages.Common_Components.ArtistaCard>
+                                                        <MetaMusic.Pages.Common_Components.ArtistaCard Artista="artista"  VisibleSuscribeButton="true" UserId="@UsuarioActual.Id"></MetaMusic.Pages.Common_Components.ArtistaCard>
                                                     </MudItem>
                                                 }
                                             }
@@ -376,7 +394,14 @@ else
 
 
 @functions{
-
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Assuming you have a property named 'desiredId' that specifies the id of the note you want to focus on
+            await JSR.InvokeVoidAsync("focusElementById", notaid);
+        }
+    }
 
     public async Task GetReportes(int userid){
 
@@ -538,8 +563,8 @@ else
     public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
     public UsuarioResponse Usuario { get; set; } = new UsuarioResponse();
     public List<AlbumResponse> reviews { get; set; } = new List<AlbumResponse>();
-      public List<NotaResponse> notas { get; set; } = new List<NotaResponse>();
-   
+    public List<NotaResponse> notas { get; set; } = new List<NotaResponse>();
+
     public bool userDataLoaded = false;
     public bool GuardandoCambios = false;
     public bool UsuarioNoEncontrado = true;
@@ -548,13 +573,14 @@ else
     public string IdToCopy = "";
     public string filtro_artista = "";
     public string filtro_review = "";
-  
+
     public List<ReporteResponse> reportes {get; set;} = new List<ReporteResponse>();
     public static Peticion peticion1 = new Peticion() { };
     public static Peticion peticion2 = new Peticion() { };
     public List<Peticion> peticiones = new List<Peticion>() { peticion1, peticion2 };
-
+    [Parameter] public int notaid {get; set;} 
     public bool cargandoreviews = true;
-      public bool cargandosuscripciones = true;
-    public string view = "Peticiones";
+    public bool cargandosuscripciones = true;
+    public string view = "Notas";
+    public string focused_note = "";
 }

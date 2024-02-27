@@ -140,7 +140,7 @@ namespace MetaMusic.Data.Services
                     };
                 }
 
-                await dbContext.Reportes.AddAsync(Reporte.Crear(new ReporteRequest() { Contenido = $"{motivo}", Titulo = "Reporte a una nota.", Nota = notaResponse, Usuario = usuarioResponse, Severidad = severidad }));
+                await dbContext.Reportes.AddAsync(Reporte.Crear(new ReporteRequest() { Contenido = $"{motivo}", Titulo = "Reporte a una nota.", Nota = notaResponse, Usuario = usuarioResponse, Severidad = severidad, Review=null }));
 
                 await dbContext.SaveChangesAsync();
 
@@ -175,7 +175,7 @@ namespace MetaMusic.Data.Services
             {
 
 
-                var reportes = await dbContext.Reportes.Include(r => r.Usuario).Include(r => r.Review).ThenInclude(re => re.Album).Include(r => r.Review).ThenInclude(re => re.Creador).Include(r => r.Nota).Where(r => r.Review.Album.Creador.Id  == currentuserId || r.Nota.Id != 0 ).ToListAsync();
+                var reportes = await dbContext.Reportes.Include(r => r.Usuario).Include(r => r.Review).ThenInclude(re => re.Album).Include(r => r.Review).ThenInclude(re => re.Creador).Include(r => r.Nota).ThenInclude(n => n.Creador).Where(r => r.Review.Album.Creador.Id  == currentuserId || r.Nota.Id != 0 ).ToListAsync();
 
                 if (reportes is null)
                 {

@@ -2,127 +2,131 @@
 
 </style>
 
-<MudPaper>
-    <MudContainer Style="display: flex; flex-direction: column; gap 10px; ">
-        <MudContainer Style="justify-content: space-between; height: 30px;display: flex; gap: 10px;padding: 0; margin-top:20px; flex-wrap: nowrap; text-overflow: ellipsis;">
+@if(nota.Id != 0)
+{
+    <MudPaper Style="@($"""{(Bordered ? "border: dashed red 2px;" : "")}""")" >
+        <MudContainer Style="display: flex; flex-direction: column; gap 10px; ">
+            <MudContainer Style="justify-content: space-between; height: 30px;display: flex; gap: 10px;padding: 0; margin-top:20px; flex-wrap: nowrap; text-overflow: ellipsis;">
 
-           
-            <div style="display: flex; gap: 10px;padding: 0; ">
-                <MudAvatar style="height: 20px; width: 20px;">
-                    <MudImage  src="@nota.Creador?.FotoDePerfil" />
-                </MudAvatar>
-                <MudText Style="font-size: 12px;height: 20px; overflow: hidden;  font-weight: bold; white-space: nowrap; text-overflow: ellipsis;">
-                    @nota.Creador?.Nombre
-                </MudText>
-            </div>
-           
-            <MudText Align="Align.End" Style="font-size: 12px;height: 20px; overflow: hidden;   white-space: nowrap; text-overflow: ellipsis; opacity: 0.7;">
-                @nota.Fecha_Creacion.FechaRelativa()
-            </MudText>
-        </MudContainer>
-        <MudContainer Class=" review-text" Style="padding: 0; height: auto; margin-top: 10px; margin-bottom: 10px;">
-            <div style="overflow: hidden; max-width: 100%;word-wrap: break-word;">
-                <MudText Style="font-size: 12px; opacity: 0.7;">
-                    @nota.Contenido
-                </MudText>
-            </div>
-        
-        </MudContainer>
-        <MudContainer Style="padding: 0; display: flex;  margin-top: 15px; margin-bottom: 15px; align-items: center; justify-content:space-between;">
 
-            <div style="display: flex; gap :30px; align-items: center;">
-                <div style="display: flex; gap :8px;align-items: center;">
-                     @if(disableInteractivity)
-                    {
-                        <MudIcon Icon="@( nota.Usuarios_Liked.Any(U => U.Usuario.Id == usuarioactual.Id)  ? Icons.Material.Rounded.Favorite : Icons.Material.Rounded.FavoriteBorder  )" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
-                        
-                    }
-                    else
-                        {
-                        <MudIcon @onclick="async ()=>{await likeNote();}" Icon="@( nota.Usuarios_Liked.Any(U => U.Usuario.Id == usuarioactual.Id)  ? Icons.Material.Rounded.Favorite : Icons.Material.Rounded.FavoriteBorder  )" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
-
-                    }
-                    <MudText Style="font-size: 12px;font-weight: bold; opacity: 0.7; " Color="Color.Primary">@nota.Cantidad_Likes</MudText>
+                <div style="display: flex; gap: 10px;padding: 0; ">
+                    <MudAvatar style="height: 20px; width: 20px;">
+                        <MudImage src="@nota.Creador?.FotoDePerfil" />
+                    </MudAvatar>
+                    <MudText Style="font-size: 12px;height: 20px; overflow: hidden;  font-weight: bold; white-space: nowrap; text-overflow: ellipsis;">
+                        @nota.Creador?.Nombre
+                    </MudText>
                 </div>
 
-              
-                    <div style="display: flex; gap :8px;align-items: center;">
+                <MudText Align="Align.End" Style="font-size: 12px;height: 20px; overflow: hidden;   white-space: nowrap; text-overflow: ellipsis; opacity: 0.7;">
+                    @nota.Fecha_Creacion.FechaRelativa()
+                </MudText>
+            </MudContainer>
+            <MudContainer Class=" review-text" Style="padding: 0; height: auto; margin-top: 10px; margin-bottom: 10px;">
+                <div style="overflow: hidden; max-width: 100%;word-wrap: break-word;">
+                    <MudText Style="font-size: 12px; opacity: 0.7;">
+                        @nota.Contenido
+                    </MudText>
+                </div>
 
-                        @if(disableInteractivity)
+            </MudContainer>
+            <MudContainer Style="padding: 0; display: flex;  margin-top: 15px; margin-bottom: 15px; align-items: center; justify-content:space-between;">
+
+                <div style="display: flex; gap :30px; align-items: center;">
+                    <div style="display: flex; gap :8px;align-items: center;">
+                        @if (disableInteractivity)
                         {
-                         <MudIcon Icon="@(nota.Usuarios_DisLiked.Any(U => U.Usuario.Id == usuarioactual.Id) ? Icons.Material.Rounded.ThumbDownAlt : Icons.Material.Outlined.ThumbDownAlt  )" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+                            <MudIcon Icon="@( nota.Usuarios_Liked.Any(U => U.Usuario.Id == usuarioactual.Id)  ? Icons.Material.Rounded.Favorite : Icons.Material.Rounded.FavoriteBorder  )" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
 
                         }
                         else
                         {
-                         <MudIcon @onclick="async ()=>{await DislikeNote();}" Icon="@(nota.Usuarios_DisLiked.Any(U => U.Usuario.Id == usuarioactual.Id) ? Icons.Material.Rounded.ThumbDownAlt : Icons.Material.Outlined.ThumbDownAlt  )" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+                            <MudIcon @onclick="async ()=>{await likeNote();}" Icon="@( nota.Usuarios_Liked.Any(U => U.Usuario.Id == usuarioactual.Id)  ? Icons.Material.Rounded.Favorite : Icons.Material.Rounded.FavoriteBorder  )" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+
+                        }
+                        <MudText Style="font-size: 12px;font-weight: bold; opacity: 0.7; " Color="Color.Primary">@nota.Cantidad_Likes</MudText>
+                    </div>
+
+
+                    <div style="display: flex; gap :8px;align-items: center;">
+
+                        @if (disableInteractivity)
+                        {
+                            <MudIcon Icon="@(nota.Usuarios_DisLiked.Any(U => U.Usuario.Id == usuarioactual.Id) ? Icons.Material.Rounded.ThumbDownAlt : Icons.Material.Outlined.ThumbDownAlt  )" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+
+                        }
+                        else
+                        {
+                            <MudIcon @onclick="async ()=>{await DislikeNote();}" Icon="@(nota.Usuarios_DisLiked.Any(U => U.Usuario.Id == usuarioactual.Id) ? Icons.Material.Rounded.ThumbDownAlt : Icons.Material.Outlined.ThumbDownAlt  )" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
 
                         }
                         <MudText Style="font-size: 12px;font-weight: bold; opacity: 0.7; " Color="Color.Primary">@nota.Cantidad_Dislikes</MudText>
                     </div>
-                
-               
 
-               
-                @if(deletebuttonvisible || usuarioactual.Rol.Tipo == "Staff")
+
+
+
+                    @if (deletebuttonvisible || usuarioactual.Rol.Tipo == "Staff")
+                    {
+                        <div style="display: flex; gap :8px;align-items: center;">
+                            <MudIcon @onclick="async ()=>{await Borrar();}" Icon="@Icons.Material.Rounded.Delete" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <MudMenu ListClass="pa-0 mud-elevation-4" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag">
+
+                            <ActivatorContent>
+                                <div style="display: flex; gap :8px;align-items: center;">
+                                    <MudIcon Icon="@Icons.Material.Rounded.Info" Color="Color.Error" Style="width: 15px; height: 15px;"></MudIcon>
+
+                                </div>
+                            </ActivatorContent>
+                            <ChildContent>
+                                <MudPaper Outlined="true" style="padding: 10px; overflow: hidden;">
+
+
+                                    <MudMenuItem Style="border-radius: 10px;" @onclick='async()=>{await ReportarNota("Contenido Ofensivo", 2);}'><MudText Style="font-size: 10px;">Contenido Ofensivo</MudText></MudMenuItem>
+                                    <MudMenuItem Style="border-radius: 10px;" @onclick='async()=>{await ReportarNota("Spam", 1);}'><MudText Style="font-size: 10px;">Spam</MudText></MudMenuItem>
+
+
+
+
+
+                                </MudPaper>
+                            </ChildContent>
+
+
+
+
+
+                        </MudMenu>
+
+                    }
+
+
+
+                </div>
+                @if (!showSource)
                 {
-                    <div style="display: flex; gap :8px;align-items: center;">
-                        <MudIcon @onclick="async ()=>{await Borrar();}" Icon="@Icons.Material.Rounded.Delete" Color="Color.Error" Style="width: 15px; height: 15px;cursor: pointer;"></MudIcon>
-                      
-                    </div>
+                    <MudAvatar style="height: 30px; width: 30px;font-size: 12px; right: 0;">
+                        @calificacion.Numero
+                    </MudAvatar>
                 }
                 else
                 {
-                     <MudMenu ListClass="pa-0 mud-elevation-4" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Size="Size.Small" Icon="@Icons.Material.Rounded.Flag">
-
-                        <ActivatorContent>
-                            <div style="display: flex; gap :8px;align-items: center;">
-                                <MudIcon Icon="@Icons.Material.Rounded.Info" Color="Color.Error" Style="width: 15px; height: 15px;"></MudIcon>
-
-                            </div>
-                        </ActivatorContent>
-                        <ChildContent>
-                            <MudPaper Outlined="true" style="padding: 10px; overflow: hidden;">
-
-
-                                <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Contenido Ofensivo</MudText></MudMenuItem>
-                                <MudMenuItem Style="border-radius: 10px;"><MudText Style="font-size: 10px;">Spam</MudText></MudMenuItem>
-
-
-
-
-
-                            </MudPaper>
-                        </ChildContent>
-
-
-
-
-
-                    </MudMenu>
-
+                    <MudText @onclick='()=>{navManager.NavigateTo($"/album/{nota.Album?.IdSpotify}");}' Align="Align.End" Style="font-size: 12px;height: 20px; overflow: hidden;   white-space: nowrap; text-overflow: ellipsis; opacity: 0.7;cursor: pointer;">
+                        Ver Album
+                    </MudText>
                 }
 
-
-               
-            </div>
-            @if(!showSource)
-            {
-                <MudAvatar style="height: 30px; width: 30px;font-size: 12px; right: 0;">
-                    @calificacion.Numero
-                </MudAvatar>
-            }
-            else
-            {
-                <MudText @onclick='()=>{navManager.NavigateTo($"/album/{nota.Album?.IdSpotify}");}' Align="Align.End" Style="font-size: 12px;height: 20px; overflow: hidden;   white-space: nowrap; text-overflow: ellipsis; opacity: 0.7;cursor: pointer;">
-                    Ver Album 
-                </MudText>
-            }
+            </MudContainer>
 
         </MudContainer>
+    </MudPaper>
+}
 
-    </MudContainer>
-</MudPaper>
 
 
 <MudMessageBox @ref="mudMessageBox">
@@ -141,7 +145,20 @@
     </MudMessageBox>
 
 @functions{
+    public async Task ReportarNota(string motivo, int severidad)
+    {
+        var         r = await reporteService.ReportarNota(nota.Id, motivo, severidad);
 
+        if(r.Success)
+        {
+            MostrarNotificacion("Reporte Hecho", "Un personal del Staff se encargara de revisarla y se tomara una accion");
+
+        }
+        else
+        {
+            MostrarNotificacion("Error", r.Message);
+        }
+    }
     public async Task DislikeNote()
     {
         var r = await notaService.DisLikeNota(nota.Id, usuarioactual.Id);
@@ -174,28 +191,65 @@
     }
     public async Task Borrar()
     {
-        InitializeMessageBox("Borrar Calificacion", "¿Realmente deseas borrar la Calificacion? Esta acción no se puede desahacer.", "Si", "No");
 
-        var desicion = await mudMessageBox.Show();
-
-        @if(desicion == false)
+        if(usuarioactual.Id == nota.Creador?.Id)
         {
-            return ;
-        }
+            InitializeMessageBox("Borrar Nota", "¿Realmente deseas borrar la Nota? Esta acción no se puede desahacer.", "Si", "No");
 
-        var r = await notaService.Eliminar(nota.Id);
+            var desicion = await mudMessageBox.Show();
 
-        if(r.Success)
-        {
-            
-            MostrarNotificacion("Nota Borrada", "Se borró la nota exitosamente. Ya no estará cuando vuelvas");
-            StateHasChanged();
-            
+            @if (desicion == false)
+            {
+                return;
+            }
+
+            var r = await notaService.Eliminar(nota.Id);
+
+            if (r.Success)
+            {
+
+                MostrarNotificacion("Nota Borrada", "Se borró la nota exitosamente. Ya no estará cuando vuelvas");
+                nota = new NotaResponse();
+                StateHasChanged();
+
+            }
+            else
+            {
+                MostrarNotificacion("Error", "Hubo un error al borrar tu nota. Intenta más tarde.");
+            }
         }
         else
         {
-            MostrarNotificacion("Error", "Hubo un error al borrar tu nota. Intenta más tarde.");
+            InitializeMessageBox("Borrar Nota", "¿Realmente deseas borrar la Nota? al ser eliminada le notificaremos al usuario que su nota ha sido borrada.", "Si", "No");
+
+            var desicion = await mudMessageBox.Show();
+
+            @if (desicion == false)
+            {
+                return;
+            }
+
+            if(nota.Creador is not null)
+            {
+                await notificacionesService.NotificacionGenerica(nota.Creador.Id, "Hemos borrado una de tus nota por violar nuestro codigo de conducta. Siempre manten el respeto en tus notas");
+
+            }
+            var r = await notaService.Eliminar(nota.Id);
+
+            if (r.Success)
+            {
+
+                MostrarNotificacion("Nota Borrada", "Se borró la nota exitosamente. Ya no estará cuando vuelvas");
+               
+                StateHasChanged();
+
+            }
+            else
+            {
+                MostrarNotificacion("Error", "Hubo un error al borrar tu nota. Intenta más tarde.");
+            }
         }
+       
     }
 
     public void MostrarNotificacion(string Titulo, string Contenido)
@@ -233,7 +287,7 @@
     public string mbContent { get; set; } = "";
     public string mbYesButton { get; set; } = "";
     public string mbNoButton { get; set; } = "";
-
+    [Parameter] public bool Bordered { get; set; } = false;
     public MudMessageBox mudMessageBox { get; set; } = new MudMessageBox();
     [Parameter] public CalificacionResponse calificacion { get; set; } = new CalificacionResponse();
     [Parameter] public NotaResponse nota { get; set; } = new NotaResponse();

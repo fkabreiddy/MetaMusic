@@ -521,7 +521,7 @@ else
                                         <div style=" display: flex; justify-content: center;">
 
                                             <MudItem md="6" lg="5" xxl="4" xl="5" sm="8" xs="10">
-                                                <MetaMusic.Pages.Common_Components.Nota calificacion="calificacionResponse" nota="notaResponse" deletebuttonvisible=true ReportButton=false></MetaMusic.Pages.Common_Components.Nota>
+                                                <MetaMusic.Pages.Common_Components.Nota calificacion="calificacionResponse" nota="notaResponse" usuarioactual="UsuarioActual" deletebuttonvisible=true ReportButton=false></MetaMusic.Pages.Common_Components.Nota>
 
                                             </MudItem>
 
@@ -590,7 +590,7 @@ else
 
                                         </BlazorAnimation.Animation>
                                     <MudContainer Style="margin-top: 20px; width: 70vw;">
-                                        <MudTextField AutoGrow=true T="string" @bind-Value="notaRequest.Contenido" OnAdornmentClick="async()=>{await CrearCalificacion();}" Immediate=true MaxLength="400" Counter="400" Variant="MudBlazor.Variant.Text" Style="font-size: 15px;" Placeholder="Escribe una nota (opcional)" DisableUnderLine=true AdornmentIcon="@Icons.Material.Rounded.Send" Adornment="Adornment.End"></MudTextField>
+                                        <MudTextField HelperText="Al crear una nota procura no emitir comentarios de odio ni formentar al acoso o hacer spam. Procura siempre mantener el respeto siempre." AutoGrow=true T="string" @bind-Value="notaRequest.Contenido" OnAdornmentClick="async()=>{await CrearCalificacion();}" Immediate=true MaxLength="400" Counter="400" Variant="MudBlazor.Variant.Text" Style="font-size: 15px;" Placeholder="Escribe una nota (opcional)" DisableUnderLine=true AdornmentIcon="@Icons.Material.Rounded.Send" Adornment="Adornment.End"></MudTextField>
                                     </MudContainer>
 
 

@@ -1,5 +1,14 @@
 ﻿@page "/artist/{spotifyid}"
-
+<style>
+    .results-summary {
+        backdrop-filter: blur(6px) saturate(43%);
+        -webkit-backdrop-filter: blur(6px) saturate(43%);
+        background-color: transparent;
+        border-radius: 12px;
+        border-radius: 10px;
+        padding: 15px;
+    }
+</style>
 @if(edit == true)
 {
      <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
@@ -242,21 +251,108 @@ else
                     }
                     else if (Artista.Albumes.Count() > 0)
                     {
-                        <div style="display: flex; justify-content: center; align-items: center; width: 100%; ">
-                            <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
+                            <div style="display: flex; justify-content: center; align-items: center; width: 100%; ">
+                                <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
 
-                        </div>
-                        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-                            <MudGrid Spacing="1" >
-                                 <Virtualize Items="albumes" TItem="AlbumResponse">
-                                     <MudItem xl="3" xxl="3" lg="3" md="4" sm="6" xs="6">
-                                         <ReviewCard album="@context"></ReviewCard>
-                                     </MudItem>
-                                 </Virtualize>
+                            </div>
+
+                            <MudText Style="font-size: 20px; font-weight: bold;margin-top: 20px; margin-bottom: 40px" Align="Align.Center">MAS DE @Artista.Nombre.ToUpper()</MudText>
+
+                        
+                            <MudGrid Justify="Justify.SpaceBetween" Style="margin-top: 60px;">
+                                <MudItem xxl="3" xl="3" lg="3" md="3" sm="5" xs="12" Style="position: sticky;  top: 67px;z-index:1;">
+
+
+
+
+                                    <MudContainer Style="position: sticky;  top: 100px;z-index:1;  " Class="results-summary">
+                                        <div style="width: 100%; display: flex; flex-direction: column; justify-content: center;gap:10px; align-items: center;">
+                                           
+                                            <MudButton Style="font-size: 10px; margin-bottom: 10px; cursor: pointer;" @onclick="()=>{panel_contraido = !panel_contraido;}" Variant="Variant.Text">@(panel_contraido ? "Expandir " : "Contraer ") Contenido del Artista</MudButton>
+
+                                        </div>
+                                        <MudCollapse Expanded="@(!panel_contraido)">
+                                            <MudGrid Spacing="2">
+
+                                                @if (albumes.Count() >= 1)
+                                                {
+                                                    <MudItem xxl="12" xl="12" sm="12" xs="12" md="12" lg="12">
+                                                        <MudCard Style="padding:10px; opacity:0.7; cursor:pointer;" @onclick='()=>{View ="albumes";}'>
+                                                            <MudContainer Style="display: flex; gap: 15px;align-items: center; justify-content: space-between;margin-top: 10px; margin-bottom: 10px;">
+                                                                <MudText Style="font-size: 12px; font-weight: bold;" Color="@(View == "albumes" ? Color.Error : Color.Inherit)">Albumes</MudText>
+                                                                <MudText Style="font-size: 10px;">@albumes.Count().NumeroRelativo() Albumes</MudText>
+                                                            </MudContainer>
+
+                                                        </MudCard>
+                                                    </MudItem>
+                                                }
+
+                                                @if (Tracks.Count() >= 1)
+                                                {
+                                                    <MudItem xxl="12" xl="12" sm="12" xs="12" md="12" lg="12">
+                                                        <MudCard Style="padding:10px; opacity:0.7;cursor:pointer;" @onclick='()=>{View ="tracks";}'>
+                                                            <MudContainer Style="display: flex; gap: 15px;align-items: center; justify-content: space-between;margin-top: 10px; margin-bottom: 10px;">
+                                                                <MudText Style="font-size: 12px; font-weight: bold;" Color="@(View == "tracks" ? Color.Error : Color.Inherit)">Top Tracks</MudText>
+                                                                <MudText Style="font-size: 10px;">Top @Tracks.Count().NumeroRelativo() </MudText>
+                                                            </MudContainer>
+
+                                                        </MudCard>
+                                                    </MudItem>
+                                                }
+
+                                           
+
+
+                                            </MudGrid>
+                                        </MudCollapse>
+
+                                    </MudContainer>
+
+
+
+
+
+                                </MudItem>
+                                <MudItem xxl="8" xl="8" lg="8" md="8" sm="7" xs="12">
+                                    <MudGrid>
+                                        @if (View == "albumes")
+                                        {
+
+
+                                            <Virtualize Items="albumes" TItem="AlbumResponse">
+                                                <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="12" Style="margin-bottom: 30px;">
+                                                    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                        <MetaMusic.Pages.Common_Components.ReviewCard album="@context"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                                    </BlazorAnimation.Animation>
+                                                </MudItem>
+                                            </Virtualize>
+
+                                        }
+                                        else if (View == "tracks")
+                                        {
+                                           
+
+                                               
+                                                     <Virtualize Items="Tracks" TItem="Track">
+                                                      
+                                                                <MudItem md="6" lg="6" xl="6" xxl="6" sm="12" xs="12" Style="margin-bottom: 30px;">
+                                                                    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                                        <MetaMusic.Pages.Common_Components.TrackComponent track="@context" currentuser="new UsuarioResponse(){Id = UserId}"></MetaMusic.Pages.Common_Components.TrackComponent>
+                                                                    </BlazorAnimation.Animation>
+                                                                </MudItem>
+                                                            
+                                                    </Virtualize>
+                                               
+                                                
+                                            
+                                        }
+                                       
+                                    </MudGrid>
+
+                                </MudItem>
                             </MudGrid>
-                          
+                        
 
-                        </BlazorAnimation.Animation>
                     }
 
 
@@ -346,7 +442,7 @@ else
         if(r.Success == true && r.Data is not null)
         {
             albumes = r.Data;
-            Tracks = r.Data.SelectMany(a => a.Tracks).Where(t => t.Album.Artistas.Any(a => a.Artista.Nombre == artista.Nombre)).OrderByDescending(t => t.Cantidad_Likes).ToList();
+            Tracks = r.Data.SelectMany(a => a.Tracks).Where(t => t.Album.Artistas.Any(a => a.Artista.Nombre == artista.Nombre)).OrderByDescending(t => t.Cantidad_Likes).Take(10).ToList();
         }
     }
 
@@ -458,5 +554,7 @@ else
     public string mbContent {get; set;} = "";
     public string mbYesButton {get; set;} = "";
     public string mbNoButton {get; set;} = "";
-        public MudMessageBox mudMessageBox { get; set; } = new MudMessageBox();
+    public MudMessageBox mudMessageBox { get; set; } = new MudMessageBox();
+    public string View = "albumes";
+    public bool panel_contraido = false;
 }
