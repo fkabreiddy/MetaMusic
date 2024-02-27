@@ -80,7 +80,7 @@ else
 
             </div>
             <MudItem Style="margin-top: 60px;">
-                <MudGrid>
+      
                     <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
                         <MudContainer>
                             <MudGrid Justify="Justify.Center" Style="display: flex; align-items: center;">
@@ -242,68 +242,19 @@ else
                     }
                     else if (Artista.Albumes.Count() > 0)
                     {
-                        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                        <div style="display: flex; justify-content: center; align-items: center; width: 100%; ">
                             <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
 
                         </div>
                         <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-                            <MudGrid Style="display: flex; align-items: first baseline;">
-
-                                <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
-                                    <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;">REVIEWS RELACIONADAS</MudText>
-
-                                    <MudGrid>
-                                        @foreach (var album in albumes)
-                                        {
-                                            <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
-                                                <MetaMusic.Pages.Common_Components.ReviewCard album="@album"></MetaMusic.Pages.Common_Components.ReviewCard>
-                                            </MudItem>
-                                        }
-                                    </MudGrid>
-                                </MudItem>
-
-
-                                <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
-                                    <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold ;margin-top: 20px; margin-bottom: 40px;">TRACKS POPULARES</MudText>
-
-
-                                    <AuthorizeView>
-                                        <Authorized>
-                                            <MudGrid Justify="Justify.Center">
-
-
-                                                @foreach (var track in Tracks.AsEnumerable().Take(6))
-                                                {
-                                                    <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
-                                                        <MetaMusic.Pages.Common_Components.TrackComponent currentuser="new UsuarioResponse(){Id = UserId}" track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
-                                                    </MudItem>
-                                                }
-
-
-                                            </MudGrid>
-                                        </Authorized>
-                                        <NotAuthorized>
-                                            <MudGrid Justify="Justify.Center">
-
-
-                                                @foreach (var track in Tracks.AsEnumerable().Take(6))
-                                                {
-                                                    <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
-                                                        <MetaMusic.Pages.Common_Components.TrackComponent DisableLikeButton=true track="@track"></MetaMusic.Pages.Common_Components.TrackComponent>
-                                                    </MudItem>
-                                                }
-
-
-                                            </MudGrid>
-                                        </NotAuthorized>
-                                    </AuthorizeView>
-
-
-                                </MudItem>
-
-
-
+                            <MudGrid Spacing="1" >
+                                 <Virtualize Items="albumes" TItem="AlbumResponse">
+                                     <MudItem xl="3" xxl="3" lg="3" md="4" sm="6" xs="6">
+                                         <ReviewCard album="@context"></ReviewCard>
+                                     </MudItem>
+                                 </Virtualize>
                             </MudGrid>
+                          
 
                         </BlazorAnimation.Animation>
                     }
@@ -312,7 +263,7 @@ else
 
 
 
-                </MudGrid>
+                
             </MudItem>
         }
     }
@@ -395,7 +346,7 @@ else
         if(r.Success == true && r.Data is not null)
         {
             albumes = r.Data;
-            Tracks = r.Data.SelectMany(a => a.Tracks.OrderByDescending(t => t.Cantidad_Likes)).Where(t => t.Album.Artistas.Any(a => a.Artista.Nombre == artista.Nombre)).ToList();
+            Tracks = r.Data.SelectMany(a => a.Tracks).Where(t => t.Album.Artistas.Any(a => a.Artista.Nombre == artista.Nombre)).OrderByDescending(t => t.Cantidad_Likes).ToList();
         }
     }
 

@@ -21,9 +21,12 @@
             </MudText>
         </MudContainer>
         <MudContainer Class=" review-text" Style="padding: 0; height: auto; margin-top: 10px; margin-bottom: 10px;">
-            <MudText Style="font-size: 12px; opacity: 0.7;">
-               @nota.Contenido
-            </MudText>
+            <div style="overflow: hidden; max-width: 100%;word-wrap: break-word;">
+                <MudText Style="font-size: 12px; opacity: 0.7;">
+                    @nota.Contenido
+                </MudText>
+            </div>
+        
         </MudContainer>
         <MudContainer Style="padding: 0; display: flex;  margin-top: 15px; margin-bottom: 15px; align-items: center; justify-content:space-between;">
 
