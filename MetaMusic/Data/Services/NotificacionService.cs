@@ -239,6 +239,44 @@ namespace MetaMusic.Data.Services
             }
         }
 
+
+        public async Task<Result<bool>> Eliminar(int notificationId)
+        {
+
+            try
+            {
+                var r = await dbContext.Notificacions.FirstOrDefaultAsync(n => n.Id == notificationId);
+
+                if (r is null)
+                    return new()
+                    {
+                        Message = "Hubo un problema borrando la notificacion",
+                        Success = false
+
+
+                    };
+
+                dbContext.Notificacions.Remove(r);
+                await dbContext.SaveChangesAsync();
+
+                return new()
+                {
+                    Message = "Notificacion Eliminada",
+                    Success = true,
+
+                };
+            }
+            catch (Exception e)
+            {
+                return new()
+                {
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = false
+                };
+
+            }
+        }
+
         
     }
 }

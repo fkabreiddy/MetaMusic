@@ -12,5 +12,7 @@ namespace MetaMusic.Data.Services
         Task<Result<List<NotificacionResponse>>> Consultar();
 
         Task<Result<bool>> NotificarReviewOculta(int _albumid);
+
+        Task<Result<bool>> Eliminar(int notificationId);
     }
 }

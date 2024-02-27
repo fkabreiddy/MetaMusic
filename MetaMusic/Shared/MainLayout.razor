@@ -29,7 +29,14 @@
     }
 
     
+    .nav-button{
+        border-radius:10px;
+    }
 
+    .nav-button:hover{
+            color: #E74646;
+
+    }
    
 
     ::-webkit-scrollbar-thumb {
@@ -106,7 +113,7 @@
 
 
 
-            <div style="display: flex; gap: 35px;  align-items: center; justify-content: space-between; margin-bottom: 20px;">
+            <div  style="display: flex; gap: 35px;  align-items: center; justify-content: space-between; margin-bottom: 20px;">
                 <div style="display: flex; gap: 10px; ">
                     <MudAvatar Style="height: 32px; width: 32px;  "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
                     <div style="display: flex; flex-direction: column;">
@@ -120,11 +127,11 @@
                
                     <MudIcon Icon="@Icons.Material.Rounded.Close"  @onclick="()=>{opendrawer = !opendrawer;}" Style="width: 15px; height: 15px;cursor:pointer;" Size="Size.Small"></MudIcon>
             </div>
-                <div style="display: flex; gap: 15px;  align-items: center;">
+                <div class="nav-button" @onclick='()=>{navManager.NavigateTo("/");}' style="display: flex; gap: 15px;  align-items: center; cursor: pointer;">
 
                     <MudIcon Icon="@Icons.Material.Outlined.Home" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
 
-                    <MudText Style="font-size: 12px;  opacity : 0.7;">Home</MudText>
+                    <MudText Style="font-size: 12px; font-weight: bold; ">Home</MudText>
 
                 </div>
 
@@ -132,14 +139,14 @@
                     <Authorized >
                          <MudDivider Style="margin-top: 20px; margin-bottom: 20px;" DividerType="DividerType.FullWidth" Light=true></MudDivider>
                
-                        <div style="display: flex; gap: 15px;  align-items: center; ">
+                        <div   class="nav-button" style="display: flex; gap: 15px;  align-items: center; ">
 
                             <MudIcon Icon="@Icons.Material.Outlined.AddCircleOutline" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
 
                             <MudLink Underline="Underline.Hover" @onclick='()=>{navManager.NavigateTo("/crear-contenido");}' Style="font-size: 12px;  opacity : 0.7;"> Crear Contenido</MudLink>
 
                         </div>
-                        <div style="display: flex; gap: 15px;  align-items: center; ">
+                        <div  style="display: flex; gap: 15px;  align-items: center; ">
 
                    
                   
@@ -169,7 +176,7 @@
 
                <MudDivider Style="margin-top: 20px; margin-bottom: 20px;" DividerType="DividerType.FullWidth"  Light=true></MudDivider>
 
-                <div style="display: flex; gap: 15px;  align-items: center; ">
+            <div class="nav-button" @onclick="showNotificaciones" style="display: flex; gap: 15px;  align-items: center; cursor: pointer;">
 
                     <MudIcon Icon="@Icons.Material.Outlined.Notifications" Style="width: 20px; height: 20px;cursor:pointer;" Size="Size.Small"></MudIcon>
 
@@ -178,9 +185,9 @@
 
                          
                 </div>
-                 <div style="display: flex; gap: 15px;  align-items: center; ">
+            <div class="nav-button" style="display: flex; gap: 15px;  align-items: center; cursor:pointer; " @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}">
 
-                    <MudIcon Icon="@(theme.IsDarkTheme ? @Icons.Material.Outlined.DarkMode : @Icons.Material.Outlined.LightMode)" Style="width: 20px; height: 20px;cursor:pointer;" @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}" Size="Size.Small"></MudIcon>
+                    <MudIcon Icon="@(theme.IsDarkTheme ? @Icons.Material.Outlined.DarkMode : @Icons.Material.Outlined.LightMode)" Style="width: 20px; height: 20px;cursor:pointer;"  Size="Size.Small"></MudIcon>
 
                   <MudText Style="font-size: 12px;  opacity : 0.7;"> Activar Modo @(theme.IsDarkTheme ? "Claro" : "Oscuro") </MudText>
                          
@@ -245,7 +252,7 @@
             UserIsAuthorized = true;
             UserDataLoaded = true;
             await albumService.AlbumOfTheMonthUpdate();
-
+            await getNotificaciones();
 
 
 
@@ -318,6 +325,14 @@
         {
             hayNotificaciones = false;            
         }
+    }
+
+    public async Task showNotificaciones()
+    {
+        var options = new MudBlazor.DialogOptions() { NoHeader = true, CloseButton = false };
+        
+      
+        await dService.ShowAsync<Pages.Common_Components.NotificationsDialog>("", options);
     }
 
    
