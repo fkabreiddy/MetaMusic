@@ -1,4 +1,6 @@
 ﻿using MetaMusic.Data.Responses;
+using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Principal;
 
 namespace MetaMusic.Data.Services
 {
@@ -6,5 +8,7 @@ namespace MetaMusic.Data.Services
     {
         UsuarioResponse GetUsuarioActual();
         bool SetUsuarioActual(UsuarioResponse response);
+
+        Task<AuthenticationState> GetIdentity();
     }
 }

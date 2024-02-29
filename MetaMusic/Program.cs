@@ -14,6 +14,8 @@ using MudBlazor;
 using MudBlazor.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +31,7 @@ builder.Services.AddScoped<ITheme, Theme>();
 
 builder.Services.AddDbContext<MetaMusicDbContext>();
 builder.Services.AddScoped<IMetaMusicDbContext, MetaMusicDbContext>();
-builder.Services.AddScoped<ICustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
 builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
 builder.Services.AddScoped<IAsignDataService, AsignDataService>();
@@ -69,6 +71,7 @@ builder.Services.AddMudServices(config =>
 
 
 });
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 builder.Services.AddAuthentication().AddGoogle(option =>
 {
@@ -78,8 +81,9 @@ builder.Services.AddAuthentication().AddGoogle(option =>
     option.ClientSecret = builder.Configuration["Google:ClientSecret"] ?? "";
     option.ClaimActions.MapJsonKey("urn:google:profile", "link");
     option.Scope.Add("profile");
- 
-    
+  
+    option.SaveTokens = true;
+
     option.Events.OnCreatingTicket = (context) =>
     {
         var picture = context.User.GetProperty("picture").GetString();

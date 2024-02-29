@@ -23,71 +23,44 @@ namespace MetaMusic.Data.Services
 
         private readonly NavigationManager navManager;
 
-        public UserService(ICurrentUser currentUser,NavigationManager navManager, IGoogleAuthService currentUserServices, IMetaMusicDbContext dbContext)
+        public UserService(ICurrentUser currentUser, NavigationManager navManager, IGoogleAuthService currentUserServices, IMetaMusicDbContext dbContext)
         {
             this.currentUserServices = currentUserServices;
             this.dbContext = dbContext;
             this.currentUser = currentUser;
             this.navManager = navManager;
         }
-        public async Task<Result<UsuarioResponse>> Login(UsuarioRequest request)
+        public async Task<Result<LoginResponse>> Login(string email)
         {
             try
             {
-                var user = await dbContext.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Correo == request.Correo);
+                var user = await dbContext.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Correo == email);
 
-                if(user is not null)
+                if (user is null)
                 {
-                   
-                    return new Result<UsuarioResponse>()
+
+                    return new()
                     {
-                        Data = user.ToResponse(),
-                        Message = "Logeo Exitoso",
-                        Success = true
+
+                        Message = "Error, el Usuario No esta registrado",
+                        Success = false
                     };
                 }
-                    
 
-               
-                    var creacion = await Crear(request);
-
-                    if (creacion.Success && creacion.Data is not null)
-                    {
-
-                     
-                       
-                            return new Result<UsuarioResponse>()
-                            {
-                                Data = creacion.Data,
-                                Message = "Creacion Exitoso",
-                                Success = true
-                            };
-
-                    }
-                    else
-                    {
-                        
-                        return new Result<UsuarioResponse>()
-                        {
-                               
-                                Message = "Error en la creacion del usuario",
-                                Success = false
-                        };
-                        
-                    }
-
-               
+                return new()
+                {
+                    Data = user.ToLoginResponse(),
+                    Message = "Logeo Exitoso",
+                    Success = true
+                };
 
 
 
-
-
-                
 
             }
             catch (Exception e)
             {
-                return new Result<UsuarioResponse>()
+                return new()
                 {
 
                     Message = (e is null) ? "Error desconocido" : e.InnerException?.Message ?? e.Message,
@@ -102,8 +75,8 @@ namespace MetaMusic.Data.Services
             try
             {
 
-               
-                
+
+
 
                 navManager.NavigateTo("/google-log-out", true);
 
@@ -125,11 +98,11 @@ namespace MetaMusic.Data.Services
             }
         }
 
-        public async Task<Result<UsuarioResponse>> Crear(UsuarioRequest request)
+        public async Task<Result<UsuarioResponse>> Crear(string nombre, string correo, string avatar)
         {
             try
             {
-                var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == request.Correo);
+                var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == correo);
 
                 if (usuario is not null) //si existe el usuario 
                     return new Result<UsuarioResponse>()
@@ -150,28 +123,19 @@ namespace MetaMusic.Data.Services
                     };
 
 
-                var correonormalizado = request.Correo.Normalize();
-                request.CorreoNormalizado = correonormalizado;
-
-                await dbContext.Usuarios.AddAsync(Usuario.Crear(request));
+                UsuarioRequest request = new UsuarioRequest() { Nombre = nombre, Correo = correo, FotoDePerfil = avatar ?? "https://i.pinimg.com/736x/fe/15/9f/fe159f0fa49b03c2907c0826de7ef291.jpg", Biografia = "Hablanos de ti", Rol = rol };
+                var newuser = Usuario.Crear(request);
+                await dbContext.Usuarios.AddAsync(newuser);
 
                 await dbContext.SaveChangesAsync();
 
 
-                var usuarioresponse = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Correo == request.Correo);
 
-                if (usuarioresponse is null) //problema creando el usuario
-                    return new Result<UsuarioResponse>()
-                    {
-
-                        Success = false,
-                        Message = "Tuvimos un porblema creando tu usuario, intenta mas tarde"
-                    };
 
 
                 return new Result<UsuarioResponse>()
                 {
-                    Data = usuarioresponse.ToResponse(),
+                    Data = newuser.ToResponse(),
                     Success = true,
                     Message = "Logeo Exitoso"
                 };
@@ -343,7 +307,7 @@ namespace MetaMusic.Data.Services
             {
                 var usuarioexistente = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.CorreoNormalizado == email);
 
-               
+
 
                 if (usuarioexistente is null)
                     return new Result<UsuarioResponse>
@@ -352,7 +316,7 @@ namespace MetaMusic.Data.Services
                         Success = false
                     };
 
-               
+
                 var usuario = await dbContext.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Id == usuarioexistente.Id);
 
 
@@ -385,7 +349,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-               
+
 
                 var usuarios = await dbContext.Usuarios.Include(u => u.Rol).Where(u => u.CorreoNormalizado.ToLower() == filtro.ToLower() || u.Nombre.ToLower().Contains(filtro.ToLower())).ToListAsync();
 

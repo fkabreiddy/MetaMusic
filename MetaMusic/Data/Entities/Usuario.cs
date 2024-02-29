@@ -106,7 +106,7 @@ namespace MetaMusic.Data.Entities
             Artistas_Suscritos = request.Artistas_Suscritos,
             Calificaciones = request.Calificaciones,
             Peticiones = request.Peticiones,
-            CorreoNormalizado = request.CorreoNormalizado,
+            CorreoNormalizado = request.Correo.Normalize(),
             
 
             // Agrega otras propiedades si es necesario

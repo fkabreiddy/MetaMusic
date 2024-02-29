@@ -7,6 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using EmbedIO.Routing;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Authorization;
+using MetaMusic.Data.OtherEntities;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.Win32;
 
 namespace MetaMusic.Data.Controllers
 {
@@ -16,13 +22,19 @@ namespace MetaMusic.Data.Controllers
     {
         private readonly IAsignDataService asingData;
         private readonly NavigationManager navManager;
-     
 
-        public GoogleLoginController(IAsignDataService asingData, NavigationManager navManager)
+        private readonly IUserService userService;
+        private readonly HttpClient httpClient;
+        private readonly ProtectedSessionStorage _sessionStorage;
+
+
+        public GoogleLoginController(IAsignDataService asingData, NavigationManager navManager, HttpClient httpClient, IUserService userService, ProtectedSessionStorage sessionStorage)
         {
             this.asingData = asingData;
             this.navManager = navManager;
-            
+            this.userService = userService;
+            this.httpClient = httpClient;
+            this._sessionStorage = _sessionStorage;
         }
 
         [AllowAnonymous]
@@ -56,31 +68,48 @@ namespace MetaMusic.Data.Controllers
                 var GoogleUser = this.User.Identities.FirstOrDefault();
                 if (GoogleUser.IsAuthenticated)
                 {
-                    var r = await asingData.AsignData();
 
-                    if (r.Success == true && r.Data is not null)
-                    {
-                        // Agregar el claim de rol a la identidad del usuario
-                        var roleClaim = new Claim(ClaimTypes.Role, r.Data.Rol.Tipo );
-                        GoogleUser.AddClaim(roleClaim);
 
-                        var authProperties = new AuthenticationProperties
-                        {
-                            IsPersistent = true,
-                            RedirectUri = this.Request.Host.Value
-                        };
-                        await HttpContext.SignInAsync(
-                      CookieAuthenticationDefaults.AuthenticationScheme,
-                      new ClaimsPrincipal(GoogleUser),
-                      authProperties);
+                    var email = GoogleUser.FindFirst(c => c.Type == ClaimTypes.Email)?.Value;
 
-                        return LocalRedirect("/");
-                    }
-                    else
+                    if(email is null)
                     {
                         return LocalRedirect("/login-error");
                     }
-                   
+
+                    var user = await userService.Login(email);
+
+                    if (user.Data is null)
+                    {
+                        var nombre = GoogleUser.FindFirst(c => c.Type == ClaimTypes.GivenName)?.Value ?? "John";
+
+                        var apellido = GoogleUser.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value ?? "Doe";
+
+                        var avatar = GoogleUser.FindFirst(c => c.Type == "picture")?.Value;
+                        var registar = await userService.Crear(nombre + " " + apellido, email, avatar);
+
+                        if(registar.Success && registar.Data is not null)
+                        {
+                            var claimsprincipal = CreateClaims(registar.Data.ToLoginResponse());
+                            var authenticationProperties = new AuthenticationProperties
+                            {
+                                AllowRefresh = false,
+                                IsPersistent = true,
+                            };
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsprincipal, authenticationProperties);
+                            return LocalRedirect("/");
+                        }
+                    }
+
+
+                    var claimsprincipal2 = CreateClaims(user.Data);
+                    var authenticationProperties2 = new AuthenticationProperties
+                    {
+                        AllowRefresh = false,
+                        IsPersistent = true,
+                    };
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsprincipal2, authenticationProperties2);
+                    return LocalRedirect("/");
 
                    
 
@@ -92,25 +121,31 @@ namespace MetaMusic.Data.Controllers
 
                 
             }
-            catch
+            catch(Exception ex)
             {
-                return RedirectToAction("LoginError");
+                return LocalRedirect("/login-error");
             }
         }
 
-        [HttpGet("logout")]
+        [HttpGet("logout/")]
         public async Task<IActionResult> logOut(
-           string returnUrl = null)
+           string returnUrl = "")
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             // Clear the existing external cookie
             try
             {
 
-               
+                var authenticationProperties = new AuthenticationProperties
+                {
+                    AllowRefresh = false,
+                    IsPersistent = true,
+                };
+
                 await HttpContext.SignOutAsync(
-    CookieAuthenticationDefaults.AuthenticationScheme);
-                HttpContext.Session.Clear();
+                    CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
+               
+                                HttpContext.Session.Clear();
 
                
 
@@ -126,5 +161,21 @@ namespace MetaMusic.Data.Controllers
         }
 
 
+        private ClaimsPrincipal CreateClaims(LoginResponse user)
+        {
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+                {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.Name, user.Nombre),
+                        new Claim(ClaimTypes.Role, user.Rol.Tipo),
+                        new Claim(ClaimTypes.Email, user.Correo),
+
+
+                },  CookieAuthenticationDefaults.AuthenticationScheme));
+
+
+            return claimsPrincipal;
+        }
+        
     }
 }

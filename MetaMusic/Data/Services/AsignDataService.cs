@@ -105,7 +105,7 @@ namespace MetaMusic.Data.Services
                     request.FotoDePerfil = Avatar;
                     
                     request.CorreoNormalizado = request.Correo.Normalize();
-                   var r = await userServices.Login(request);
+                   var r = await userServices.Login(Gmail);
 
                     if(r.Success && r.Data is not null)
                     {
@@ -114,7 +114,7 @@ namespace MetaMusic.Data.Services
                         {
                             Message = "Exito",
                             Success = true,
-                            Data = r.Data.ToLoginResponse()
+                            Data = r.Data
                         };
                     }
                     else

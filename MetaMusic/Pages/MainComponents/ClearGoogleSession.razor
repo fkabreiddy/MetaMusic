@@ -1,0 +1,33 @@
+﻿@page "/logout-from-google"
+
+@code {
+
+
+    protected override async Task OnAfterRenderAsync(bool fistrender)
+    {
+        if(fistrender)
+        {
+            await Logout();
+        }
+    }
+    private async Task Logout()
+        {
+            var authState = await currentUser.GetIdentity();
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                // Realiza las operaciones de logout necesarias
+                // Puedes utilizar métodos proporcionados por tu proveedor de autenticación
+                // Aquí es un ejemplo genérico
+                await currentUser.GetIdentity();
+                var token = user.FindFirst("access_token")?.Value;
+
+                // Puedes realizar alguna acción adicional según tus necesidades
+
+                // Llama a la función JavaScript para revocar el token de Google (si es necesario)
+                await JSR.InvokeVoidAsync("revokeGoogle", token);
+                
+            }
+        }
+}

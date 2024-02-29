@@ -8,6 +8,14 @@ namespace MetaMusic.Data.OtherEntities
         public string Nombre { get; set; } = "";
 
         public string Correo { get; set; } = "";
+
+        public string JWT { get; set; } = "";
         public Rol Rol { get; set; } = new Rol();
+
+        
+        private void GetEmailForJWT(string email)
+        {
+            this.Correo = email;
+        }
     }
 }

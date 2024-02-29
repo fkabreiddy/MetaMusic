@@ -68,6 +68,10 @@ else
                 element.focus();
             }
         }
+
+        window.revokeGoogle = async function (token) {
+            await fetch("https://accounts.google.com/o/oauth2/revoke?token=" + token, { "method": "GET" });
+        };
     </script>
     
 </body>
