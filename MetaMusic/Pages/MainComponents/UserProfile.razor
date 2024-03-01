@@ -95,10 +95,30 @@ else
 
                                    </Authorized>
                                </AuthorizeView>
-                            
 
-                            <MudAvatar Style="height: 150px; width: 150px;border: dashed 2px;margin: 10px;"><MudImage src="@Usuario.FotoDePerfil"></MudImage></MudAvatar>
+                               
+                            <MudAvatar Style="height: 150px; width: 150px;border: dashed 2px;margin: 10px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+                            <AuthorizeView Context="picture">
+                                <Authorized>
+                                    @if (UsuarioActual.Id == Usuario.Id)
+                                {
+                                    <MudFileUpload T="IBrowserFile" Accept=".png, .jpg" FilesChanged="ModificarMiFoto" MaximumFileCount="1">
+                                        <ButtonTemplate>
+                                            <MudButton HtmlTag="label"
+                                                       Variant="Variant.Text"
+                                                       Color="Color.Error"
+                                                       DisableElevation="true"
+                                                       Style="font-size: 12px;"
+                                                       for="@context.Id">
 
+                                                Editar Foto
+                                            </MudButton>
+                                        </ButtonTemplate>
+                                    </MudFileUpload>
+                                }
+                                </Authorized>
+                            </AuthorizeView>
+                           
 
 
                             <div style="display: flex; justify-content: space-between; align-items: center; gap: 21px; margin-bottom: 15px;">
@@ -126,7 +146,6 @@ else
 
                                                 <MudTextField Required=true @bind-Value="Usuario.Nombre"  MaxLength="30" Immediate=true HelperText="Evite los espacios en blanco al final" T="string" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Tu nuevo nombre aqui'></MudTextField>
 
-                                                <MudTextField Required=true @bind-Value="Usuario.FotoDePerfil" T="string" Immediate=true Adornment="Adornment.Start" Style="font-size: 12px;    border: dashed 1px ;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Url de tu perfil'></MudTextField>
 
                                                 <MudTextField Required=true @bind-Value="Usuario.Biografia" MaxLength="100" Immediate=true T="string" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 21px; border: dashed 1px ;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Biografia'></MudTextField>
 
@@ -443,7 +462,7 @@ else
                 await GetRecentAlbums(Usuario);
                 await GetReportes(Usuario.Id);
             }
-           
+
             await ConsultarSuscripciones(Usuario);
             await GetNotas(Usuario.Id);
         }
@@ -461,7 +480,7 @@ else
 
     }
 
-   
+
 
     public async Task GetUser()
     {
@@ -492,6 +511,73 @@ else
         userDataLoaded = true;
         StateHasChanged();
 
+    }
+
+    public async Task<(string?, string?)> GetFilePath(IBrowserFile ufile)
+    {
+
+
+        if (ufile != null && ufile.Size > 0 )
+        {
+            if(ufile.Size > 3 * 1024 * 1024)
+            {
+                MostrarNotificacion("Error", "Las imegenes no pueden superar los 3mb");
+                return (null, null);
+
+            }
+            var fileName = Path.GetFileName(ufile.Name);
+            
+            var newFileName = $"{Path.GetFileNameWithoutExtension("pfp")}_{UsuarioActual.CorreoNormalizado}{Path.GetExtension(ufile.Name)}";
+            return   (Path.Combine(@"wwwroot\UsersPFP", newFileName),newFileName) ;
+
+
+
+        }
+        else
+        {
+            return (null,null);
+        }
+
+
+    }
+
+    public async Task ModificarMiFoto(IBrowserFile ufile)
+    {
+        var items = await GetFilePath(ufile);
+
+        if(items.Item1 is null || items.Item2 is null)
+            return;
+
+        if (File.Exists(@"wwwroot\" + UsuarioActual.FotoDePerfil))
+        {
+            // Eliminar el archivo
+            File.Delete(@"wwwroot\" + UsuarioActual.FotoDePerfil);
+        }
+
+        UsuarioActual.FotoDePerfil = @"UsersPFP/"+items.Item2;
+
+
+
+        var r = await userService.Modificar(UsuarioActual.ToRequest());
+
+        if(r.Success && r.Data is not null)
+        {
+            var fileStream = new FileStream(items.Item1, FileMode.Create);
+
+            await ufile.OpenReadStream().CopyToAsync(fileStream);
+            UsuarioActual = r.Data;
+            MostrarNotificacion("Listo", "Se modificó la foto correctamente, vuelve a recargar la pagina.");
+            StateHasChanged();
+        }
+        else
+        {
+                        MostrarNotificacion("Error", "Error al modificar la foto, intenta mas tarde.");
+
+        }
+
+        
+     
+        
     }
 
     public async Task GetRecentAlbums(UsuarioResponse user)
