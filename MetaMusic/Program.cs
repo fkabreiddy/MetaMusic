@@ -16,6 +16,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +30,9 @@ builder.Services.AddRazorComponents()
 builder.Services.AddMudServices();
 builder.Services.Configure<AnimationOptions>(Guid.NewGuid().ToString(), c => { });
 builder.Services.AddScoped<ITheme, Theme>();
+
+builder.Services.AddScoped<ICustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
 
 builder.Services.AddDbContext<MetaMusicDbContext>();
 builder.Services.AddScoped<IMetaMusicDbContext, MetaMusicDbContext>();

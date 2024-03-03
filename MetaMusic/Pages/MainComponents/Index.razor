@@ -122,41 +122,64 @@
     
 
 </BlazorAnimation.Animation>
+
+<BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(3)">
+   
+    
+    <AuthorizeView Roles="Normal">
+        <Authorized>
+
+            <MudGrid Justify="Justify.Center">
+                @if (AlbumReviewOfTheMontLoaded)
+                {
+                    <MudItem md="6" lg="6" sm="12" xs="12" xxl="12" xl="12">
+                        <NuevaPeticion></NuevaPeticion>
+                    </MudItem>
+                    
+                }
+            </MudGrid>
+           
+
+        </Authorized>
+        <NotAuthorized>
+
+        </NotAuthorized>
+    </AuthorizeView>
+
+   
+
+
+</BlazorAnimation.Animation>
 @functions{
 
     public async Task GetRecentAlbums()
     {
 
-        recentAlbumsLoaded = false;
+        
         var r = await albumService.ConsultarRecientes();
 
         if(r.Data is not null)
         {
             albumesrecientes = r.Data;
-            notRecentAlbumes = false;
         }
         else
         {
-            notRecentAlbumes = true;
         }
-        recentAlbumsLoaded = true;
+        
 
     }
     public async Task GetReviewOfTheMont()
     {
-        AlbumReviewOfTheMontLoaded = false;
         var r = await albumService.GetBestReview();
 
         if(r.Success && r.Data is not null)
         {
             reviewOfTheMont = r.Data;
-            notReviewOfTheMonth = false;
         }
         else
         {
-            notReviewOfTheMonth = true;
         }
-        AlbumReviewOfTheMontLoaded = true;
+       
     }
     public async Task VerifyUserAuth(){
         var state = await authstate.GetAuthenticationStateAsync();
@@ -196,7 +219,7 @@
             {
                 await GetReviewOfTheMont();
             }
-          
+
         }
         catch(Exception e)
         {
@@ -206,10 +229,10 @@
 
     }
 
-    public bool recentAlbumsLoaded = false;
-    public bool AlbumReviewOfTheMontLoaded = false;
-    public bool notRecentAlbumes = false;
-    public bool notReviewOfTheMonth = true;
+    public bool recentAlbumsLoaded => albumesrecientes.Count() >= 1;
+    public bool AlbumReviewOfTheMontLoaded => reviewOfTheMont.Id != 0;
+    public bool notRecentAlbumes => albumesrecientes.Count() <= 0;
+    public bool notReviewOfTheMonth => reviewOfTheMont.Id == 0;
     public List<AlbumResponse> albumesrecientes = new List<AlbumResponse>();
     public AlbumResponse reviewOfTheMont = new AlbumResponse();
 

@@ -1,14 +1,15 @@
-﻿using MetaMusic.Data.Responses;
-using Microsoft.AspNetCore.Components.Authorization;
-using System.Security.Principal;
+﻿using MetaMusic.Data.OtherEntities;
+using MetaMusic.Data.Responses;
 
 namespace MetaMusic.Data.Services
 {
     public interface ICurrentUser
     {
-        UsuarioResponse GetUsuarioActual();
+        LoginResponse UsuarioActual { get; set; }
+
+        LoginResponse GetUsuarioActual();
         bool SetUsuarioActual(UsuarioResponse response);
 
-        Task<AuthenticationState> GetIdentity();
+        bool SetUsuarioActual(LoginResponse response);
     }
 }

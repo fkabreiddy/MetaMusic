@@ -103,20 +103,7 @@
 </AuthorizeView>
 
 @functions{
-    public async Task GetCurrentUser()
-    {
-        
-        var r = await userService.ConsultarUsuarioActual();
-        if (r.Success == true && r.Data is not null)
-        {
-            UsuarioActual = r.Data;
-
-            StateHasChanged();
-        }
-
-
-
-    }
+    
 }
 @code {
 
@@ -131,20 +118,7 @@
     public string tipodeContenidoEncontrado = "";
    
     public Track trackActual = new Track();
-    protected override async Task OnInitializedAsync()
-    {
-        await GetCurrentUser();
-        Autorizado = false;
-        if(UsuarioActual.Rol.Tipo != "Staff")
-        {
-            navManager.NavigateTo("/");
-        }
-        else
-        {
-            Autorizado = true;            
-        }
-        StateHasChanged();
-    }
+   
     public async Task BuscarAlbum()
     {
         try

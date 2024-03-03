@@ -70,6 +70,8 @@ namespace MetaMusic.Data.Services
 
 
         }
+
+        [Obsolete]
         public async Task<Result> Logout()
         {
             try

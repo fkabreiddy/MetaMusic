@@ -232,11 +232,11 @@ else
                 </div>
                 <div style="display: flex;gap:10px; align-items: center; justify-content: center;">
                        <MudLink @onclick='()=>{navManager.NavigateTo($"/user/{Albumresponse.Creador?.CorreoNormalizado}");}' Style="opacity: 0.7;font-size: 12px; font-style: italic; font-family: SourceSerif4; cursor: pointer;">Reviwer: @Albumresponse.Creador?.Nombre  </MudLink>
-                            <MudText Style="font-size: 10px; opacity: 0.7; cursor: pointer;">•</MudText>
+                            <MudText Style="font-size: 10px;  cursor: pointer;">•</MudText>
 
-                            <MudText Style="font-size: 10px;  opacity: 0.7;  cursor: pointer;">@Albumresponse.Fecha_Agregado.FechaRelativa()</MudText>
-                            <MudText Style="font-size: 10px; opacity: 0.7; cursor: pointer;">•</MudText>
-                            <MudText Style="font-size: 10px;  opacity: 0.7;  cursor: pointer;">@Albumresponse.Fecha_Agregado.ToString("dd 'de' MMMM 'del' yyyy")</MudText>
+                            <MudText Style="font-size: 10px;   cursor: pointer;">@Albumresponse.Fecha_Agregado.FechaRelativa()</MudText>
+                            <MudText Style="font-size: 10px; cursor: pointer;">•</MudText>
+                            <MudText Style="font-size: 10px;   cursor: pointer;">@Albumresponse.Fecha_Agregado.ToString("dd 'de' MMMM 'del' yyyy")</MudText>
                 </div>
 
 
@@ -245,18 +245,18 @@ else
                         <MudGrid Justify="Justify.Center" Style="display: flex; align-items: first baseline;">
                             <MudItem Style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;" md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
 
-                                <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+                                <div Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
                                     <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
                                         @( Math.Round(Albumresponse.Calificacion_Creador, 1))
                                         
                                     </MudAvatar>
                                     <MudText Style="font-size: 12px;  font-weight: bold; opacity: 0.8;  " Color="Color.Secondary">CALIFICACION DEL REVIEWER</MudText>
-                                </MudCard>
+                                </div>
 
                             </MudItem>
                             <MudItem Style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;" md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
 
-                                <MudCard Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+                                <div Style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
                                     <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="width: 120px; height: 120px; font-weight: bold;">
 
                                         
@@ -273,7 +273,7 @@ else
                                     </MudAvatar>
                                     <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8;   " Color="Color.Secondary"> @Albumresponse.Calificaciones.Count() CALIFICACIONES DEL PUBLICO </MudText>
 
-                                </MudCard>
+                                </div>
 
                                 @if(calificaciones.Count() >= 1)
                                 {
@@ -896,8 +896,8 @@ else
     }
     public async Task GetAlbum()
     {
-        AlbumFound = false;
-        DataCargada = false;
+
+
         var x = await albumService.ConsultarUno(albumid);
 
         if (x.Success == true && x.Data is not null)
@@ -905,8 +905,7 @@ else
             Albumresponse = x.Data;
             await GetCalificaciones(Albumresponse);
             await GetNotas(Albumresponse);
-            DataCargada = true;
-            AlbumFound = true;
+
 
         }
     }
@@ -919,18 +918,17 @@ else
         if(x.Data is not null)
         {
             tracksdelalbum = x.Data;
-            tracksloading = false;
             tracksloaded = true;
             StateHasChanged();
         }
         else
         {
-            tracksloading = false;
+
             MostrarNotificacion("Lo sentimos","Hubo un error al cargar los tracks. Intenta denuevo.");
 
         }
 
-
+        tracksloading = false;
     }
 
    
@@ -1003,14 +1001,14 @@ else
 
     [Parameter] public string albumid { get; set; } = "";
     public List<AlbumResponse> albumesrealciondos = new List<AlbumResponse>();
-    public bool DataCargada = false;
+    public bool DataCargada => Albumresponse.Id != 0;
     public int ratenumber = 1;
 
     public UsuarioResponse UsuarioActual = new UsuarioResponse();
     public AlbumResponse Albumresponse = new AlbumResponse();
     public List<Track> tracksdelalbum = new List<Track>();
     public bool vermas = false;
-    public bool AlbumFound = false;
+    public bool AlbumFound => Albumresponse.Id != 0 && DataCargada == true;
 
     public bool tracksloaded = false;
     public bool tracksloading = false;

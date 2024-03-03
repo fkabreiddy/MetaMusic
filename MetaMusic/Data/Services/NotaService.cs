@@ -125,7 +125,7 @@ namespace MetaMusic.Data.Services
             {
 
 
-                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).Where(a => a.Album.Id == albumid).ToListAsync();
+                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(n => n.Album).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).Where(a => a.Album.Id == albumid).ToListAsync();
 
                 if (notas is null)
                     return new Result<List<NotaResponse>>() { Message = "El album no tiene notas", Success = false };
@@ -161,7 +161,7 @@ namespace MetaMusic.Data.Services
             {
 
 
-                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).Where(a => a.Creador.Id == userid).ToListAsync();
+                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).Include(n => n.Album).Where(a => a.Creador.Id == userid).ToListAsync();
 
                 if (notas is null)
                     return new Result<List<NotaResponse>>() { Message = "El album no tiene notas", Success = false };

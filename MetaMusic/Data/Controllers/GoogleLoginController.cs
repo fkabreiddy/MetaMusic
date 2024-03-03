@@ -25,16 +25,17 @@ namespace MetaMusic.Data.Controllers
 
         private readonly IUserService userService;
         private readonly HttpClient httpClient;
-        private readonly ProtectedSessionStorage _sessionStorage;
+        private readonly ICurrentUser currentUser;
 
 
-        public GoogleLoginController(IAsignDataService asingData, NavigationManager navManager, HttpClient httpClient, IUserService userService, ProtectedSessionStorage sessionStorage)
+        public GoogleLoginController(IAsignDataService asingData, NavigationManager navManager, HttpClient httpClient, IUserService userService, ICurrentUser currentUser)
         {
             this.asingData = asingData;
             this.navManager = navManager;
             this.userService = userService;
+            this.currentUser = currentUser;
             this.httpClient = httpClient;
-            this._sessionStorage = _sessionStorage;
+            
         }
 
         [AllowAnonymous]
@@ -88,7 +89,7 @@ namespace MetaMusic.Data.Controllers
                         var avatar = GoogleUser.FindFirst(c => c.Type == "picture")?.Value;
                         var registar = await userService.Crear(nombre + " " + apellido, email, avatar);
 
-                        if(registar.Success && registar.Data is not null)
+                        if (registar.Success && registar.Data is not null)
                         {
                             var claimsprincipal = CreateClaims(registar.Data.ToLoginResponse());
                             var authenticationProperties = new AuthenticationProperties
@@ -111,7 +112,10 @@ namespace MetaMusic.Data.Controllers
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsprincipal2, authenticationProperties2);
                     return LocalRedirect("/");
 
+                    
+
                    
+
 
                 }
                 else

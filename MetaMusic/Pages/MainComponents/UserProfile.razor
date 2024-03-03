@@ -89,6 +89,7 @@ else
                         <MudContainer Style="display: flex; flex-direction: column; gap:20px; justify-content:center; align-items: center; ">
                             <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">Usuario</MudText>
                             <MudText Style="font-size: 35px;   overflow: hidden; font-family: SourceSerif4;">“@Usuario.Nombre”</MudText>
+                            <MudText Style="font-size: 15px;white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-family: SourceSerif4;">@Usuario.CorreoNormalizado</MudText>
                                <AuthorizeView Roles="Staff">
                                    <Authorized>
                                     <MudText Style="font-size: 12px; font-weight: bold" Color="Color.Error">@Usuario.Rol.Tipo</MudText>
@@ -97,7 +98,7 @@ else
                                </AuthorizeView>
 
                                
-                            <MudAvatar Style="height: 150px; width: 150px;border: dashed 2px;margin: 10px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+                            <MudAvatar Style="height: 150px; width: 150px;border: dashed 2px;margin: 10px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@Usuario.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
                             <AuthorizeView Context="picture">
                                 <Authorized>
                                     @if (UsuarioActual.Id == Usuario.Id)
@@ -111,7 +112,15 @@ else
                                                        Style="font-size: 12px;"
                                                        for="@context.Id">
 
-                                                Editar Foto
+                                                       @if(editandofoto)
+                                                       {
+                                                           <MudProgressCircular Indeterminate=true Color="Color.Error" Style="height: 20px; width: 20px;"> </MudProgressCircular>
+                                                       }
+                                                       else
+                                                       {
+                                                        @("Editar Foto")
+                                                       }
+                                                
                                             </MudButton>
                                         </ButtonTemplate>
                                     </MudFileUpload>
@@ -121,10 +130,6 @@ else
                            
 
 
-                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 21px; margin-bottom: 15px;">
-                                <MudText Style="font-size: 13px; font-weight: bold" Color="Color.Error">Correo </MudText>
-                                <MudText Style="font-size: 15px;white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-family: SourceSerif4;">@Usuario.Correo</MudText>
-                                </div>
                                 <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
                                 <MudText Style="font-size: 13px; font-weight: bold" Color="Color.Error">Biografia</MudText>
                                
@@ -144,10 +149,10 @@ else
 
                                                 <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold; margin-bottom: 10px; margin-top: 20px; ">EDITA TU PERFIL</MudText>
 
-                                                <MudTextField Required=true @bind-Value="Usuario.Nombre"  MaxLength="30" Immediate=true HelperText="Evite los espacios en blanco al final" T="string" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Tu nuevo nombre aqui'></MudTextField>
+                                                <MudTextField AutoGrow=true Required=true @bind-Value="UsuarioActual.Nombre"  MaxLength="30" Immediate=true HelperText="Evite los espacios en blanco al final" T="string" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; min-height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Tu nuevo nombre aqui'></MudTextField>
 
 
-                                                <MudTextField Required=true @bind-Value="Usuario.Biografia" MaxLength="100" Immediate=true T="string" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 21px; border: dashed 1px ;   width: 100% ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Biografia'></MudTextField>
+                                                <MudTextField AutoGrow=true  Required=true @bind-Value="UsuarioActual.Biografia" MaxLength="100" Immediate=true T="string" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 21px; border: dashed 1px ;   width: 100% ; border-radius:10px; min-height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Biografia'></MudTextField>
 
                                                 <div style="display: flex; justify-content: center; align-items: center;">
                                                     <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Surface" @onclick="ModificarUsuario" Disabled='@(Usuario.Nombre == "" || Usuario.FotoDePerfil == "" || Usuario.Biografia == "" || Char.IsWhiteSpace( Usuario.Nombre[Usuario.Nombre.Length - 1] )  )' Style="font-size: 12px; margin-bottom: 15px; cursor: pointer;">
@@ -200,7 +205,9 @@ else
                                   
                                 </Authorized>
                             </AuthorizeView>
-                           
+                            <AuthorizeView Roles="Normal">
+                                <ColaboradorPeticion></ColaboradorPeticion>
+                            </AuthorizeView>
                                 
                             
                            
@@ -433,8 +440,9 @@ else
         }
     }
     public async Task ModificarUsuario()
-
     {
+        UsuarioActual.Biografia = Usuario.Biografia;
+        UsuarioActual.Nombre = Usuario.Nombre;
         GuardandoCambios = true;
         var r = await userService.Modificar(UsuarioActual.ToRequest());
 
@@ -515,44 +523,58 @@ else
 
     public async Task<(string?, string?)> GetFilePath(IBrowserFile ufile)
     {
-
-
-        if (ufile != null && ufile.Size > 0 )
+        // Crear un CancellationTokenSource con un límite de tiempo de 10 segundos
+        using (var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
         {
-            if(ufile.Size > 3 * 1024 * 1024)
+            // Obtener el token de cancelación
+            var cancellationToken = cancellationTokenSource.Token;
+
+            try
             {
-                MostrarNotificacion("Error", "Las imegenes no pueden superar los 3mb");
-                return (null, null);
+                if (ufile != null && ufile.Size > 0)
+                {
+                    if (ufile.Size > 3 * 1024 * 1024)
+                    {
+                        MostrarNotificacion("Error", "Las imágenes no pueden superar los 3 MB");
+                        return (null, null);
+                    }
 
+                    var fileName = Path.GetFileName(ufile.Name);
+                    var guid = Guid.NewGuid().ToString();
+                    var newFileName = $"{guid}{Path.GetExtension(ufile.Name)}";
+
+                    // Simular una operación que puede llevar más de 10 segundos
+                 
+
+                    return (Path.Combine(@"wwwroot\UsersPFP", newFileName), newFileName);
+                }
+                else
+                {
+                    return (null, null);
+                }
             }
-            var fileName = Path.GetFileName(ufile.Name);
-            
-            var newFileName = $"{Path.GetFileNameWithoutExtension("pfp")}_{UsuarioActual.CorreoNormalizado}{Path.GetExtension(ufile.Name)}";
-            return   (Path.Combine(@"wwwroot\UsersPFP", newFileName),newFileName) ;
-
-
-
+            catch (OperationCanceledException)
+            {
+                // La operación fue cancelada debido a que se agotó el tiempo
+                MostrarNotificacion("Error", "La operación fue cancelada debido a que se agotó el tiempo");
+                return (null, null);
+            }
         }
-        else
-        {
-            return (null,null);
-        }
-
-
     }
 
     public async Task ModificarMiFoto(IBrowserFile ufile)
     {
+        editandofoto = true;
         var items = await GetFilePath(ufile);
 
-        if(items.Item1 is null || items.Item2 is null)
-            return;
-
-        if (File.Exists(@"wwwroot\" + UsuarioActual.FotoDePerfil))
+        if (items.Item1 is null || items.Item2 is null)
         {
-            // Eliminar el archivo
-            File.Delete(@"wwwroot\" + UsuarioActual.FotoDePerfil);
+            editandofoto = false;
+            return;            
         }
+        
+        var fotoactual = (@"wwwroot\" + UsuarioActual.FotoDePerfil).ToString();
+        
 
         UsuarioActual.FotoDePerfil = @"UsersPFP/"+items.Item2;
 
@@ -562,21 +584,28 @@ else
 
         if(r.Success && r.Data is not null)
         {
+            if (File.Exists(fotoactual))
+            {
+                // Eliminar el archivo
+                File.Delete(fotoactual);
+            }
             var fileStream = new FileStream(items.Item1, FileMode.Create);
 
             await ufile.OpenReadStream().CopyToAsync(fileStream);
             UsuarioActual = r.Data;
             MostrarNotificacion("Listo", "Se modificó la foto correctamente, vuelve a recargar la pagina.");
+          
             StateHasChanged();
         }
         else
         {
-                        MostrarNotificacion("Error", "Error al modificar la foto, intenta mas tarde.");
+            MostrarNotificacion("Error", "Error al modificar la foto, intenta mas tarde.");
 
         }
 
         
-     
+        editandofoto = false;
+
         
     }
 
@@ -669,4 +698,5 @@ else
     public bool cargandosuscripciones = true;
     public string view = "Notas";
     public string focused_note = "";
+    public bool editandofoto=false;
 }

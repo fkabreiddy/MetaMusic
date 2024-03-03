@@ -5,12 +5,11 @@
 
         <MudText Style="font-size: 15px; font-weight: bold;  margin-top: 20px;">HAS UNA PETICION</MudText>
 
-        <MudText Style="font-size: 12px;   opacity: 0.7; ">Ve a <MudLink Style="font-size: 12px;    " Href="https://open.spotify.com/" Underline="Underline.Always">Spotify.com</MudLink> busca el artista o album que quieras agregar y copia su identificador. En el recuadro de abajo.</MudText>
+        <MudText Style="font-size: 12px;   opacity: 0.7; ">Ve a <MudLink Style="font-size: 12px;    " Href="https://open.spotify.com/" Underline="Underline.Always">Spotify.com</MudLink> busca el artista o album que quieras  y copia su identificador. En el recuadro de abajo. Una persona del staff podria acceder a tu petición.</MudText>
 
         <MudText Style="font-size: 12px; opacity: 0.7; ">El ID son los caracteres finales en la url cuando buscas un artista, album o cancion en Spotify. Por ejemplo: "https://open.spotify.com/intl-es/album/<b style="text-decoration: underline;">123456789abcdefg"</b></MudText>
 
-        @if(UserIsAuthenticated)
-        {
+       
             <MudChipSet Mandatory=true>
 
                 <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "artista" ? MudBlazor.Variant.Filled: MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "artista";}' Text="Artista"></MudChip>
@@ -22,11 +21,7 @@
 
                 <MudIconButton Size="Size.Small" Color="Color.Error" Style="margin-top: 15px;" DisableElevation="true" Icon="@Icons.Material.Rounded.Send"></MudIconButton>
             </div>
-        }
-        else
-        {
-            <MudChip Color="Color.Error" Target="_top" Style="font-size: 12px; font-weight: bold;margin-bottom: 15px;" Href="/google-login" Text="Iniciar Sesion"></MudChip>
-        }
+       
 
     </MudContainer>
 

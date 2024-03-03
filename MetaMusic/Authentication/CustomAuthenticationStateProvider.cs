@@ -30,7 +30,7 @@ namespace MetaMusic.Authentication
                         new Claim(ClaimTypes.NameIdentifier, userData.Id.ToString()),
                         new Claim(ClaimTypes.Name, userData.Nombre),
                         new Claim(ClaimTypes.Role, userData.Rol.Tipo),
-                        new Claim(ClaimTypes.GivenName, userData.Correo),
+                        new Claim(ClaimTypes.Email, userData.Correo),
                         
 
                 }, "CustomAuth"));
@@ -53,7 +53,7 @@ namespace MetaMusic.Authentication
                         new Claim(ClaimTypes.NameIdentifier, userData.Id.ToString()),
                         new Claim(ClaimTypes.Email, userData.Correo),
                          new Claim(ClaimTypes.Role, userData.Rol.Tipo),
-                        new Claim(ClaimTypes.GivenName, userData.Correo),
+                        new Claim(ClaimTypes.Email, userData.Correo),
 
 
 

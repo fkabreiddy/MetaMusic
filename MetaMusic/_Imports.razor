@@ -14,6 +14,8 @@
 @using MetaMusic.Pages.MainComponents
 @using MetaMusic.Pages
 @using MetaMusic.Data.Extensiones
+@using MetaMusic.Authentication
+
 @using SpotifyAPI.Web
 @using MetaMusic.Data.ThemeManagement
 @using MetaMusic.Data.Entities
@@ -47,3 +49,4 @@
 @inject INotaService notaService
 @inject IReporteService reporteService
 @inject INotificacionService notificacionesService
+@inject ICustomAuthenticationStateProvider customAuthState

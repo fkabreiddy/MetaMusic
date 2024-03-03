@@ -33,6 +33,7 @@
   
 
   <ItemGroup>
+    <Folder Include="Pages\Identity\" />
     <Folder Include="wwwroot\UsersPFP\" />
   </ItemGroup>
 
