@@ -80,8 +80,16 @@ namespace MetaMusic.Data.Services
 
 
                 await notificacionesService.NotificarNuevoAlbum(newalbum.Id);
+                var r = await dbContext.Peticiones.Include(r => r.Usuario).Where(p => p.AlbumSpotifyId == newalbum.IdSpotify).ToListAsync();
 
+                if (r is not null)
+                    dbContext.Peticiones.RemoveRange(r);
 
+                foreach(var peticion in r)
+                {
+                    await notificacionesService.NotificacionGenerica(peticion.Usuario.Id, $"Por que lo pediste: {newalbum.Nombre}");
+
+                }
                 return new Result<AlbumResponse>()
                 {
                     Data = newalbum.ToResponse(),

@@ -61,6 +61,14 @@ namespace MetaMusic.Data.Services
                 request.GenerosMusicales.Clear();
                 var newArtist = Artista.Crear(request);
                 await dbContext.Artistas.AddAsync(newArtist);
+
+                var peticiones = await dbContext.Peticiones.Where(p => p.ArtistaSpotifyId == newArtist.SpotifyId).ToListAsync();
+
+                if (peticiones is not null)
+                    dbContext.Peticiones.RemoveRange(peticiones);
+
+                
+
                 await dbContext.SaveChangesAsync();
 
                 var artist = await dbContext.Artistas.FirstOrDefaultAsync(a => a.Id == newArtist.Id);
@@ -86,6 +94,7 @@ namespace MetaMusic.Data.Services
                     Success = true
                 };
 
+               
             }
             catch (Exception e)
             {

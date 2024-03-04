@@ -1,4 +1,5 @@
 ﻿using MetaMusic.Data.OtherEntities;
+using MetaMusic.Data.Responses;
 
 namespace MetaMusic.Data.Services
 {
@@ -7,5 +8,7 @@ namespace MetaMusic.Data.Services
         Task<Result<bool>> CrearAlbum(string spotifyId);
         Task<Result<bool>> CrearArtista(string spotifyId);
         Task<Result<bool>> Eliminar(int id);
+
+        Task<Result<List<PeticionResponse>>> ConsultarTodo();
     }
 }

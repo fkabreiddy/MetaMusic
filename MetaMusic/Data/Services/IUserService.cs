@@ -12,7 +12,7 @@ namespace MetaMusic.Data.Services
         Task<Result<UsuarioResponse>> Crear(string nombre, string correo, string avatar);
         Task<Result<bool>> Eliminar(UsuarioRequest request);
         Task<Result<LoginResponse>> Login(string email);
-        Task<Result> Logout();
+        Task<Result<bool>> Logout();
         Task<Result<UsuarioResponse>> Modificar(UsuarioRequest request);
     }
 }

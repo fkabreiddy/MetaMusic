@@ -1,4 +1,5 @@
-﻿using MetaMusic.Data.OtherEntities;
+﻿using MetaMusic.Data.Extensiones;
+using MetaMusic.Data.OtherEntities;
 using MetaMusic.Data.Request;
 using MetaMusic.Data.Responses;
 using System.ComponentModel.DataAnnotations;
@@ -106,7 +107,7 @@ namespace MetaMusic.Data.Entities
             Artistas_Suscritos = request.Artistas_Suscritos,
             Calificaciones = request.Calificaciones,
             Peticiones = request.Peticiones,
-            CorreoNormalizado = request.Correo.Normalize(),
+            CorreoNormalizado = request.Correo.Normalizar(),
             
 
             // Agrega otras propiedades si es necesario

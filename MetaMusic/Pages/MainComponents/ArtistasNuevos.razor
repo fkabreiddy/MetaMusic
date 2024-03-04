@@ -17,7 +17,7 @@
 
     @if(Artistas.Count()>=1)
     {
-        <Virtualize Items="Artistas.Where(a => a.Nombre.ToLower().Contains(filtro_artista.ToLower())).OrderByDescending(a => a.Id).Take(4).ToList()" TItem="ArtistaResponse">
+        <Virtualize Items="Artistas.OrderByDescending(a => a.Id).Take(4).ToList()" TItem="ArtistaResponse">
             <MudItem md="4" lg="3" xl="3" xxl="3" sm="6" xs="12" Style="margin-top: 30px;">
                 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
                     <MetaMusic.Pages.Common_Components.ArtistaCard Artista="context" UserId="currentuser_id"></MetaMusic.Pages.Common_Components.ArtistaCard>

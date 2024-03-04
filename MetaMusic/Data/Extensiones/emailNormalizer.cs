@@ -2,7 +2,7 @@
 {
     public static class emailNormalizer
     {
-        public static string ObtenerSubcadenaHastaArroba(this string cadena)
+        public static string Normalizar(this string cadena)
         {
             cadena.Replace(".", "_");
             // Encuentra la posición del primer arroba

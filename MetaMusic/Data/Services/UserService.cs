@@ -4,6 +4,8 @@ using MetaMusic.Data.Entities;
 using MetaMusic.Data.OtherEntities;
 using MetaMusic.Data.Request;
 using MetaMusic.Data.Responses;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
@@ -20,15 +22,17 @@ namespace MetaMusic.Data.Services
         private readonly IGoogleAuthService currentUserServices;
         private readonly IMetaMusicDbContext dbContext;
         private readonly ICurrentUser currentUser;
+        private readonly IHttpContextAccessor http;
 
         private readonly NavigationManager navManager;
 
-        public UserService(ICurrentUser currentUser, NavigationManager navManager, IGoogleAuthService currentUserServices, IMetaMusicDbContext dbContext)
+        public UserService(IHttpContextAccessor http,ICurrentUser currentUser, NavigationManager navManager, IGoogleAuthService currentUserServices, IMetaMusicDbContext dbContext)
         {
             this.currentUserServices = currentUserServices;
             this.dbContext = dbContext;
             this.currentUser = currentUser;
             this.navManager = navManager;
+            this.http = http;
         }
         public async Task<Result<LoginResponse>> Login(string email)
         {
@@ -71,8 +75,8 @@ namespace MetaMusic.Data.Services
 
         }
 
-        [Obsolete]
-        public async Task<Result> Logout()
+        
+        public async Task<Result<bool>> Logout()
         {
             try
             {
@@ -80,18 +84,28 @@ namespace MetaMusic.Data.Services
 
 
 
-                navManager.NavigateTo("/google-log-out", true);
+                var authenticationProperties = new AuthenticationProperties
+                {
+                    AllowRefresh = false,
+                    IsPersistent = true,
+                };
 
-                return new Result()
+                await http.HttpContext.SignOutAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
+
+                http.HttpContext.Session.Clear();
+
+                return new ()
                 {
 
                     Message = "DesLogeo Exitoso",
-                    Success = true
+                    Success = true,
+                    Data = true
                 };
             }
             catch (Exception E)
             {
-                return new Result()
+                return new ()
                 {
 
                     Message = E.InnerException?.Message ?? E.Message,
@@ -125,6 +139,7 @@ namespace MetaMusic.Data.Services
                     };
 
 
+            
                 UsuarioRequest request = new UsuarioRequest() { Nombre = nombre, Correo = correo, FotoDePerfil = avatar ?? "https://i.pinimg.com/736x/fe/15/9f/fe159f0fa49b03c2907c0826de7ef291.jpg", Biografia = "Hablanos de ti", Rol = rol };
                 var newuser = Usuario.Crear(request);
                 await dbContext.Usuarios.AddAsync(newuser);

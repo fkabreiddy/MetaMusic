@@ -12,7 +12,7 @@ namespace MetaMusic.Data.Request
         public string? AlbumNombre { get; set; }
         public string? ArtistaSpotifyId { get; set; }
         public string? AlbumSpotifyId { get; set; }
-        public int Acumulaciones { get; set; } = 0;
+        
 
         public string? ArtistaFoto { get; set; }
 

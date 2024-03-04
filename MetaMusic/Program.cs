@@ -55,6 +55,7 @@ builder.Services.AddScoped<IReporteService, ReporteService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>(); //can be placed among other "AddScoped" - above: var app = builder.Build();   
 builder.Services.AddScoped<INotificacionService, NotificacionService>();
 
+builder.Services.AddScoped<IPeticionService, PeticionService>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddSignalR();
@@ -87,7 +88,7 @@ builder.Services.AddAuthentication().AddGoogle(option =>
     option.ClaimActions.MapJsonKey("urn:google:profile", "link");
     option.Scope.Add("profile");
   
-    option.SaveTokens = true;
+  
 
     option.Events.OnCreatingTicket = (context) =>
     {
@@ -98,6 +99,7 @@ builder.Services.AddAuthentication().AddGoogle(option =>
         return Task.CompletedTask;
     };
 
+    
 });
 
 builder.Services.Configure<CookiePolicyOptions>(options =>

@@ -17,9 +17,9 @@
             </MudChipSet>
 
             <div style="display: flex; gap: 20px; align-items: center;">
-                <MudTextField MaxLength="30" T="string" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 10px; border: dashed 1px ;  width: 100% ; border-radius:10px; height: 40px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Introduce el ID aqui'></MudTextField>
+                <MudTextField MaxLength="30" T="string" Adornment="Adornment.Start" @bind-Value="spotifyid" Style="font-size: 12px;   margin-bottom: 10px; border: dashed 1px ;  width: 100% ; border-radius:10px; height: 40px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Introduce el ID aqui'></MudTextField>
 
-                <MudIconButton Size="Size.Small" Color="Color.Error" Style="margin-top: 15px;" DisableElevation="true" Icon="@Icons.Material.Rounded.Send"></MudIconButton>
+                <MudIconButton Size="Size.Small" @onclick="Crear" Color="Color.Error" Style="margin-top: 15px;" Disabled='@(spotifyid == "" || tipodeContenido == "")' DisableElevation="true" Icon="@Icons.Material.Rounded.Send"></MudIconButton>
             </div>
        
 
@@ -27,7 +27,76 @@
 
 
 </MudCard>
+@functions{
+
+
+    private async Task Crear()
+    {
+        if(tipodeContenido == "album")
+        {
+            var r = await peticionService.CrearAlbum(spotifyid);
+
+            if(r.Success)
+            {
+                MostrarNotificacion("Peticion Hecha", r.Message);
+            }
+            else
+            {
+                MostrarNotificacion("Error", r.Message);
+            }
+        }
+        else if(tipodeContenido == "artista")
+        {
+            var r = await peticionService.CrearArtista(spotifyid);
+
+            if(r.Success)
+            {
+                MostrarNotificacion("Peticion Hecha", r.Message);
+            }
+            else
+            {
+                MostrarNotificacion("Error", r.Message);
+            }
+
+
+
+        }
+
+        StateHasChanged();
+    }
+
+    public void MostrarNotificacion(string Titulo, string Contenido)
+    {
+        SnackbarService.Add(
+
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+
+        </MudContainer>
+    </div>
+    ,
+           Severity.Normal,
+    config => { config.HideIcon = true; }
+         );
+    }
+}
 @code {
-    [Parameter] public bool UserIsAuthenticated { get; set; } = false;
     public string tipodeContenido = "album";
+    public string spotifyid = "";
+
 }

@@ -117,7 +117,7 @@
                 <div style="display: flex; gap: 10px; ">
                     <MudAvatar Style="height: 32px; width: 32px;  "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
                     <div style="display: flex; flex-direction: column;">
-                        <MudText Style="font-size: 12px; font-weight: bold; opacity : 0.7;"> @UsuarioActual?.CorreoNormalizado</MudText>
+                        <MudText Style="font-size: 12px; font-weight: bold; opacity : 0.7; width: 80px;overflow: hidden; text-overflow: ellipsis;"> @UsuarioActual?.CorreoNormalizado</MudText>
                             <MudLink Underline="Underline.Always" Href="@($"/user/{UsuarioActual.CorreoNormalizado}")" Color="Color.Error" Style="font-size: 10px;  opacity : 0.7;">Ver Perfil</MudLink>
 
 
@@ -167,7 +167,7 @@
 
 
                             <MudText Style="font-size: 12px;  opacity : 0.7;">Peticiones</MudText>
-                            <MudBadge Visible="@hayReportes" Bordered=true Color="Color.Error" Dot=true />
+                            <MudBadge Visible="@hayPeticiones" Bordered=true Color="Color.Error" Dot=true />
 
                         </div>
                     </Authorized>
@@ -256,6 +256,12 @@
             await albumService.AlbumOfTheMonthUpdate();
             await getNotificaciones();
 
+            if(UsuarioActual.Rol.Tipo == "Staff")
+            {
+                await getPeticiones();
+
+            }
+
 
 
 
@@ -329,6 +335,20 @@
         }
     }
 
+    public async Task getPeticiones()
+    {
+        var r = await peticionService.ConsultarTodo();
+
+        if(r.Data is not null)
+        {
+            if(r.Data.Count() >=1)
+            {
+                hayPeticiones = true;
+            }
+        }
+
+    }
+
     public async Task showNotificaciones()
     {
         var options = new MudBlazor.DialogOptions() { NoHeader = true, CloseButton = false };
@@ -337,6 +357,16 @@
         await dService.ShowAsync<Pages.Common_Components.NotificationsDialog>("", options);
     }
 
+
+    public async Task Logout(){
+
+
+        var logoutUrl = $"https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue={navManager.BaseUri}googlelogin/logout";
+
+        // Ejecutar JavaScript para redireccionar a la URL de cierre de sesión
+        await JSR.InvokeVoidAsync("eval", $"document.location.href = '{logoutUrl}';");
+
+    }
     
    
 }
@@ -348,6 +378,7 @@
     private string navbarclass = "navbar-container";
     public bool IsDarkMode { get; set; } = true ;
     public bool hayReportes = false;
+    public bool hayPeticiones = false;
     public string buscar = "";
     public bool opendrawer = false;
     private MudTheme ThemeCustom => new()
