@@ -62,12 +62,12 @@ namespace MetaMusic.Data.Controllers
         }
 
         
-        public async Task<IActionResult> Callback(string returnUrl = null, string remoteError = null)
+        public async Task<IActionResult> Callback(string returnUrl = "", string remoteError = "")
         {
             try
             {
                 var GoogleUser = this.User.Identities.FirstOrDefault();
-                if (GoogleUser.IsAuthenticated)
+                if (GoogleUser is not null && GoogleUser.IsAuthenticated)
                 {
 
 
@@ -87,7 +87,7 @@ namespace MetaMusic.Data.Controllers
                         var apellido = GoogleUser.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value ?? "Doe";
 
                         var avatar = GoogleUser.FindFirst(c => c.Type == "picture")?.Value;
-                        var registar = await userService.Crear(nombre + " " + apellido, email, avatar);
+                        var registar = await userService.Crear(nombre + " " + apellido, email, avatar ?? "");
 
                         if (registar.Success && registar.Data is not null)
                         {
@@ -102,19 +102,23 @@ namespace MetaMusic.Data.Controllers
                         }
                     }
 
-
-                    var claimsprincipal2 = CreateClaims(user.Data);
-                    var authenticationProperties2 = new AuthenticationProperties
+                    if(user.Data is not null)
                     {
-                        AllowRefresh = false,
-                        IsPersistent = true,
-                    };
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsprincipal2, authenticationProperties2);
-                    return LocalRedirect("/");
+                        var claimsprincipal2 = CreateClaims(user.Data);
+                        var authenticationProperties2 = new AuthenticationProperties
+                        {
+                            AllowRefresh = false,
+                            IsPersistent = true,
+                        };
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsprincipal2, authenticationProperties2);
+                        return LocalRedirect("/");
+                    }
 
-                    
 
-                   
+
+
+                    return LocalRedirect("login-error");
+
 
 
                 }
@@ -125,7 +129,7 @@ namespace MetaMusic.Data.Controllers
 
                 
             }
-            catch(Exception ex)
+            catch
             {
                 return LocalRedirect("/login-error");
             }

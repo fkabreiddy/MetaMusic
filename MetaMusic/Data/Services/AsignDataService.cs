@@ -140,7 +140,7 @@ namespace MetaMusic.Data.Services
                 }
 
             }
-            catch (Exception ex)
+            catch 
             {
                 navigationManager.NavigateTo("/login-error");
                 return new Result<LoginResponse>()

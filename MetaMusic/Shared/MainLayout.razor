@@ -48,7 +48,7 @@
 
 </style>
 <MudLayout>
-    <MudAppBar Elevation="1"  Dense="false">
+    <MudAppBar Elevation="1"  Dense="false" >
         <MudTooltip Arrow=true Color="Color.Error" Text="Ir a Inicio">
             <div @onclick='()=>{navManager.NavigateTo("/");}' style="display: flex; cursor: pointer; align-items: center; flex-direction: column;">
 
@@ -65,25 +65,22 @@
 
             </div>
         </MudTooltip>
-        <MudSpacer />
-        @if (theme.IsDark())
-        {
-            <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar"></MudTextField>
+        
+        <MudSpacer></MudSpacer>
 
-        }
-        else
-        {
+       @if(UserDataLoaded)
+       {
+           <SearchBar busquedas="@busquedas"></SearchBar>
+       }
+      
 
-            
-            <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
-
-        }
-
+        <MudSpacer></MudSpacer>
         <AuthorizeView>
             <Authorized>
                 @if (gettingUserData)
                 {
-                    <MudProgressCircular Indeterminate=true Color="Color.Error" Size="Size.Small"></MudProgressCircular>
+                  <MudSkeleton SkeletonType="SkeletonType.Circle" Width="35px" Height="35px"></MudSkeleton>
+
                 }
                 else
                 {
@@ -117,7 +114,7 @@
                 <div style="display: flex; gap: 10px; ">
                     <MudAvatar Style="height: 32px; width: 32px;  "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
                     <div style="display: flex; flex-direction: column;">
-                        <MudText Style="font-size: 12px; font-weight: bold; opacity : 0.7; width: 80px;overflow: hidden; text-overflow: ellipsis;"> @UsuarioActual?.CorreoNormalizado</MudText>
+                        <MudText Style="font-size: 12px; font-weight: bold; opacity : 0.7; width: 100px;overflow: hidden; text-overflow: ellipsis;"> @UsuarioActual?.CorreoNormalizado</MudText>
                             <MudLink Underline="Underline.Always" Href="@($"/user/{UsuarioActual.CorreoNormalizado}")" Color="Color.Error" Style="font-size: 10px;  opacity : 0.7;">Ver Perfil</MudLink>
 
 
@@ -256,6 +253,7 @@
             await albumService.AlbumOfTheMonthUpdate();
             await getNotificaciones();
 
+            await initializeBusquedas();
             if(UsuarioActual.Rol.Tipo == "Staff")
             {
                 await getPeticiones();
@@ -272,13 +270,15 @@
 
         }
     }
-
-    private void HandleKeyPress(KeyboardEventArgs e)
+    public async Task initializeBusquedas()
     {
-        if (e.Key == "Enter")
+
+
+        var r = await busquedaService.ConsultarMios();
+
+        if (r.Data is not null)
         {
-            // Llamar a tu función aquí
-            navManager.NavigateTo($"/search/{buscar}");
+            busquedas = r.Data;
         }
     }
     public async Task GetCurrentUser()
@@ -335,6 +335,8 @@
         }
     }
 
+
+  
     public async Task getPeticiones()
     {
         var r = await peticionService.ConsultarTodo();
@@ -368,7 +370,6 @@
 
     }
     
-   
 }
 @code{
 
@@ -398,7 +399,7 @@
                 Background = "#FFFFFF",
                 Tertiary = "#164863",
                 Error = "#D04848",
-                
+
                 AppbarBackground = "#ffffff",
                 DrawerBackground = "#ffffff"
 
@@ -419,10 +420,10 @@
                 Surface = "#191919",
                 AppbarBackground = "#000000",
                 DrawerBackground = "#000000",
-                
-               
-                
-                
+
+
+
+
 
 
 
@@ -466,6 +467,10 @@
     };
     public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
     public bool hayNotificaciones { get; set; } = false;
+
+    public List<BusquedaResponse> busquedas = new List<BusquedaResponse>();
+        public List<BusquedaResponse> otrasbusquedas = new List<BusquedaResponse>();
+
 
    
 }

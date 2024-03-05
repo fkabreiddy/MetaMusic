@@ -136,7 +136,7 @@
 
 
         }
-        catch (APIException e)
+        catch (APIException)
         {
             MostrarNotificacion("Album no encontrado", "No pudimos encontrar el album que estas buscando. Asegurate de poner el ID correcto.");
             
@@ -193,7 +193,7 @@
             await GetArtist();
 
         }
-        catch (APIException e)
+        catch (APIException)
         {
 
             MostrarNotificacion("Artista no encontrado", "No pudimos encontrar el artista que estas buscando. Asegurate de poner el ID correcto.");

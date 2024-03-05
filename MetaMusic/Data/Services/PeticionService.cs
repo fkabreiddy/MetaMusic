@@ -100,7 +100,7 @@ namespace MetaMusic.Data.Services
                 return new() { Message = "Peticion Creada", Success = true };
 
             }
-            catch (APIException ex)
+            catch (APIException)
             {
                 return new() { Message = "No se encontro el artista", Success = false };
 
@@ -187,7 +187,7 @@ namespace MetaMusic.Data.Services
                 return new() { Message = "Peticion Creada", Success = true };
 
             }
-            catch(APIException ex)
+            catch(APIException )
             {
                 return new() { Message = "No se encontro el album", Success = false };
 

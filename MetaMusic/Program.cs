@@ -56,6 +56,7 @@ builder.Services.AddScoped<IDbInitializer, DbInitializer>(); //can be placed amo
 builder.Services.AddScoped<INotificacionService, NotificacionService>();
 
 builder.Services.AddScoped<IPeticionService, PeticionService>();
+builder.Services.AddScoped<IBusquedaService, BusquedaService>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddSignalR();

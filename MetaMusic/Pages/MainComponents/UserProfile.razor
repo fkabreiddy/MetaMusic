@@ -712,9 +712,10 @@ else
         cargandopeticiones = false;
         StateHasChanged();
     }
+   
 }
 @code {
-    [Parameter] public string useremail { get; set; }
+    [Parameter] public string useremail { get; set; } ="";
     public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
     public UsuarioResponse Usuario { get; set; } = new UsuarioResponse();
     public List<AlbumResponse> reviews { get; set; } = new List<AlbumResponse>();
