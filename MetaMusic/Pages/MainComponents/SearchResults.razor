@@ -215,6 +215,45 @@ else
             Usuarios = r.Data;
         }
     }
+    protected override void OnInitialized()
+    {
+        navManager.LocationChanged += ParameterChanged;
+    }
+
+   
+
+    public async void ParameterChanged(object sender, LocationChangedEventArgs e)
+    {
+        buscando = true;
+
+        await getUsuarios();
+
+        await getArtistas();
+        await getAlbumes();
+        await GetCurrentUser();
+
+        if (Albumes.Count > Usuarios.Count && Albumes.Count > Artistas.Count)
+        {
+            View = "albumes";
+        }
+        else if (Usuarios.Count > Albumes.Count && Usuarios.Count > Artistas.Count)
+        {
+            View = "usuarios";
+        }
+        else if (Artistas.Count > Albumes.Count && Artistas.Count > Usuarios.Count)
+        {
+            View = "artistas";
+        }
+        else
+        {
+            View = "";
+        }
+
+
+
+        buscando = false;
+        StateHasChanged();
+    }
 
 
     public async Task getArtistas()
@@ -255,9 +294,12 @@ else
         }
 
 
-       
+
         buscando = false;
+        
     }
+
+    
     public async Task GetCurrentUser()
     {
         var x = await googleService.GetCurrentUser();
