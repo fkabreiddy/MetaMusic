@@ -248,6 +248,8 @@
 
     public async Task getResultados()
     {
+        if (topic == "")
+            return;
         buscando = true;
 
         await getUsuarios();
