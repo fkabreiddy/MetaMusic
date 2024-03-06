@@ -32,7 +32,7 @@
                 <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
 
                     <ActivatorContent>
-                        <MudTextField MaxLength="50" Immediate=true @onkeypress="HandleKeyPress" TextChanged="async ()=>{await BuscarOtras(buscar);}" OnAdornmentClick='async()=>{await Buscar();}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
+                        <MudTextField  MaxLength="50" Immediate=true @onkeyup="HandleKeyPress" TextChanged="async ()=>{await BuscarOtras(buscar);}" OnAdornmentClick='async()=>{await Buscar();}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
 
                     </ActivatorContent>
                     <ChildContent>
@@ -58,7 +58,7 @@
                                         <div  style="display: flex; justify-content: space-between; align-items: center;border-radius: 10px;padding:10px;">
                                              
 
-                                                <MudText Class="menu-item"  Style="font-size: 10px;max-width: 80px; text-overflow: ellipsis;overflow: hidden;" @onclick='async()=>{navManager.NavigateTo($"/search/{tema.Contenido}", true);}'>@tema.Contenido</MudText>
+                                                <MudText Class="menu-item"  Style="font-size: 10px;max-width: 80px; text-overflow: ellipsis;overflow: hidden;" @onclick='async()=>{navManager.NavigateTo($"/search/{tema.Contenido}");}'>@tema.Contenido</MudText>
 
                                             
                                                
@@ -148,7 +148,7 @@
         <div>
             @if (theme.IsDark())
             {
-                <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar">
+                <MudTextField MaxLength="30" Immediate=true @onkeyup="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar">
 
 
 
@@ -162,7 +162,7 @@
                 <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
 
                     <ActivatorContent>
-                        <MudTextField MaxLength="30" Immediate=true @onkeypress="HandleKeyPress2" TextChanged="async ()=>{await BuscarOtras(buscar);}" OnAdornmentClick='async()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
+                        <MudTextField MaxLength="30" Immediate=true @onkeyup="HandleKeyPress2" TextChanged="async ()=>{await BuscarOtras(buscar);}" OnAdornmentClick='async()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
 
                     </ActivatorContent>
                     <ChildContent>
@@ -186,7 +186,7 @@
 
 
                                          <div  style="display: flex; justify-content: space-between; align-items: center;border-radius: 10px;padding:10px;">
-                                                <MudText Class="menu-item"  Style="font-size: 10px;max-width: 80px; text-overflow: ellipsis; overflow: hidden;" @onclick='async()=>{navManager.NavigateTo($"/search/{tema.Contenido}", true);}'>@tema.Contenido</MudText>
+                                                <MudText Class="menu-item"  Style="font-size: 10px;max-width: 80px; text-overflow: ellipsis; overflow: hidden;" @onclick='async()=>{navManager.NavigateTo($"/search/{tema.Contenido}");}'>@tema.Contenido</MudText>
 
                                             </div>
                                      
@@ -250,7 +250,7 @@
                 return;
             await busquedaService.Crear(buscar);
             
-            navManager.NavigateTo($"/search/{buscar}", true);
+            navManager.NavigateTo($"/search/{buscar}");
             await getBusquedas();
             StateHasChanged();
         }
@@ -263,7 +263,7 @@
                 return;
 
 
-            navManager.NavigateTo($"/search/{buscar}", true);
+            navManager.NavigateTo($"/search/{buscar}");
         }
     }
     private async Task Buscar()
@@ -274,7 +274,7 @@
 
         await busquedaService.Crear(buscar);
       
-        navManager.NavigateTo($"/search/{buscar}", true);
+        navManager.NavigateTo($"/search/{buscar}");
         await getBusquedas();
         StateHasChanged();
 
@@ -287,7 +287,7 @@
             return;
 
 
-        navManager.NavigateTo($"/search/{buscar}", true);
+        navManager.NavigateTo($"/search/{buscar}");
 
     }
 
@@ -347,9 +347,16 @@
 }
 
 @code {
+   
+
+  
+  
+    
     public string buscar = "";
     [Parameter]public List<BusquedaResponse> busquedas { get; set; } = new List<BusquedaResponse>();
     public List<BusquedaResponse> otrasbusquedas = new List<BusquedaResponse>();
 
+
+    
 
 }

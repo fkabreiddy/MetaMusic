@@ -68,12 +68,8 @@
         
         <MudSpacer></MudSpacer>
 
-       @if(UserDataLoaded)
-       {
-           <SearchBar busquedas="@busquedas"></SearchBar>
-       }
-      
-
+     
+        <MudIconButton @onclick='()=>{navManager.NavigateTo($"/search");}' Icon="@Icons.Material.Rounded.Search" Color="Color.Error"></MudIconButton>
         <MudSpacer></MudSpacer>
         <AuthorizeView>
             <Authorized>

@@ -27,7 +27,7 @@ namespace MetaMusic.Data.Services
                 var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
 
                 var artist = await spotify.Artists.Get(artistsId);
-
+                
 
                 
                 ArtistaResponse artistaARetornar = new ArtistaResponse();
@@ -156,7 +156,120 @@ namespace MetaMusic.Data.Services
                     {
                         foreach (var track in album.Tracks.Items)
                         {
-                            albumARetornar.Tracks.Add(new Track() { Titulo = track.Name, Album = new Album(){Portada = album.Images[0].Url } });
+                            albumARetornar.Tracks.Add(new Track() { Titulo = track.Name, Album = new Album(){Portada = album.Images[0].Url, } });
+                        }
+                    }
+
+                return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                {
+                    Data = albumARetornar,
+                    Message = "Album Encontrado",
+                    Success = true
+                };
+            }
+            catch (APIException)
+            {
+                return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                {
+                    Message = "No se encontro el artista o ID incorrecto",
+                    Success = false
+                };
+            }
+            catch (Exception)
+            {
+                return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                {
+                    Message = "Hubo un error, intenta denuevo mas tarde",
+                    Success = false
+                };
+            }
+        }
+
+        public async Task<Result<MetaMusic.Data.Request.AlbumRequest>> GetSingle(string albumId)
+        {
+            try
+            {
+                var config = SpotifyClientConfig.CreateDefault();
+
+                var request = new ClientCredentialsRequest("be3b1a5218c449a79a3a21ddfe850a5f", "7cf1d67e3efd4690a1bd43a18903f7dc");
+                var response = await new OAuthClient(config).RequestToken(request);
+
+                var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
+
+                var album = await spotify.Albums.Get(albumId);
+                MetaMusic.Data.Request.AlbumRequest albumARetornar = new MetaMusic.Data.Request.AlbumRequest();
+                List<string> artistsIds = new List<string>();
+
+                
+
+                if (album is null)
+                    return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                    {
+                        Message = "No se encontro el album",
+                        Success = false
+                    };
+
+                
+
+
+                if(album.Type != "single")
+                    return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                    {
+                        Message = "No se encontro el single",
+                        Success = false
+                    };
+
+                var existe = await dbContext.Albumes.FirstOrDefaultAsync(a => a.IdSpotify == album.Id && a.Publicado == true);
+                if (existe is not null)
+                    return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                    {
+                        Message = "El album que quieres registrar ya existe",
+                        Success = false
+                    };
+
+
+                if (album.Artists.Count() >= 1)
+                {
+
+                    foreach (var artist in album.Artists)
+                    {
+
+                        var ar = await dbContext.Artistas.FirstOrDefaultAsync(a => a.SpotifyId == artist.Id);
+
+                        if (ar is null)
+                            return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                            { Message = $"""Uno de los artistas que estan en este album no se encuentran registrados. El id del artista es "{artist.Id}" y el nombre es "{artist.Name}".""" };
+
+                        albumARetornar.Artistas.Add(new Album_Artista() { Artista = ar });
+
+
+
+                    }
+
+
+                }
+
+
+                albumARetornar.Fecha_Publicacion = album.ReleaseDate ?? "Indefinida";
+
+
+                albumARetornar.Portada = album.Images[0].Url ?? "";
+
+                if (album.Id == null)
+                    return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                    { Message = $"No pudimos recuperar informacion importante del album. Este album no puede ser creado" };
+
+                albumARetornar.IdSpotify = album.Id;
+
+
+                albumARetornar.Nombre = album.Name ?? "Indefinido";
+
+                if (album.Tracks != null && album.Tracks.Items is not null)
+                    if (album.Tracks.Items.Count() >= 1)
+                    {
+                        foreach (var track in album.Tracks.Items)
+                        {
+                            albumARetornar.Tracks.Add(new Track() { Titulo = track.Name, Album = new Album() { Portada = album.Images[0].Url, } });
                         }
                     }
 
