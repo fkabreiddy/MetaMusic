@@ -61,7 +61,28 @@ else
             window.scrollTo(0, 0);
         }
     </script>
-    
+    <script>
+        window.focusElementById = function (id) {
+            var element = document.getElementById(id);
+            if (element) {
+                element.focus();
+            }
+        }
+
+        window.revokeGoogle = async function (token) {
+            await fetch("https://accounts.google.com/o/oauth2/revoke?token=" + token, { "method": "GET" });
+        };
+    </script>
+
+    <script>
+        window.onscroll = function () {
+            // Obtener el valor de scroll en el eje Y
+            var scrollY = window.scrollY || window.pageYOffset;
+
+            // Invocar el método de C# con el valor de scroll
+            DotNet.invokeMethodAsync('NombreDeTuAssembly', 'ManejarScroll', scrollY);
+        };
+    </script>
     
 </body>
 </html>
