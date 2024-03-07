@@ -42,7 +42,12 @@
 
                     <MudContainer Style="position: sticky;  top: 100px;z-index:1;  " Class="results-summary">
                         <div style="width: 100%; display: flex; flex-direction: column; justify-content: center;gap:10px; align-items: center;">
-                            <MudTextField MaxLength="30" Immediate=true @onkeyup="getResultados" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px;  font-weight:  bold; width: 100% ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="topic" Placeholder='Buscar en MetaMusic'></MudTextField>
+
+                            <MudCard Outlined=false Style="border-radius: 10px;  margin-bottom: 10px;padding:0px; ">
+                                 <MudTextField MaxLength="30" Immediate=true @onkeyup="getResultados" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  font-weight:  bold; width: 100% ;   border-radius:10px; height: 30px; padding: 10px;margin-top: 0;top:-4px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="topic" Placeholder='Buscar en MetaMusic'></MudTextField>
+
+                            </MudCard>
+                         
 
                             <MudText Style="font-size: 12px; font-weight: bold;">@(Albumes.Count() + Artistas.Count() + Usuarios.Count()) RESULTADOS</MudText>
                             <MudButton Style="font-size: 10px; margin-bottom: 10px; cursor: pointer;" @onclick="()=>{panel_contraido = !panel_contraido;}" Variant="Variant.Text">@(panel_contraido ? "Expandir " : "Contraer ") Resumen de Resultado</MudButton>
@@ -139,30 +144,29 @@
 
                                 @if ((Albumes.Count() + Artistas.Count() + Usuarios.Count()) <= 0)
                                 {
-                                    <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12" Style="margin-top:60px;">
-                                        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-                                            
+                                    
+                                        <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12" Style="margin-top:60px;">
+                                    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)" Style="width: 100%;   display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                               
+                                            <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%;   display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                                                @if (theme.IsDark())
+                                                {
+                                                    <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                }
+                                                else
+                                                {
 
+                                                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                }
 
-                                                <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
-                                                    @if (theme.IsDark())
-                                                    {
-                                                        <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
-                                                    }
-                                                    else
-                                                    {
+                                                <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold"><b>NO HAY RESULTADOS DE "@topic"</b></MudText>
+                                                
 
-                                                        <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
-                                                    }
-
-                                                    <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold"><b>NO HAY RESULTADOS DE</b></MudText>
-                                                    <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7;">“@topic”</MudText>
-                                                    
-
-                                                </MudItem>
-                                            
-                                        </BlazorAnimation.Animation>
-                                    </MudItem>
+                                            </MudItem>
+                               
+                                    </BlazorAnimation.Animation>
+                                </MudItem>
+                                    
                                 }
                                 else
                                 {

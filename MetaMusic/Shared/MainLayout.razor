@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
-<MudThemeProvider   IsDarkMode=@theme.IsDark() Theme="ThemeCustom"/>
-<MudDialogProvider />
-<MudSnackbarProvider />
+<MudThemeProvider    IsDarkMode=@theme.IsDark() Theme="ThemeCustom"/>
+<MudDialogProvider  />
+<MudSnackbarProvider  />
 <PageTitle>MetaMusic</PageTitle>
 <style>
      .meta-nav-button {
@@ -44,11 +44,21 @@
         background: #E74646 !important; /* make scrollbar transparent */
     }
 
- 
+    .meta-bar-link{
+       opacity:0.7;
+       cursor:pointer;
+    }
+
+    
+     .meta-bar-link:hover{
+       color: #E74646;
+    }
+
+
 
 </style>
 <MudLayout>
-    <MudAppBar Elevation="1"  Dense="false" >
+    <MudAppBar Elevation="1"  Dense="false" Style="@($"""border:{navbarclass};""")">
         <MudTooltip Arrow=true Color="Color.Error" Text="Ir a Inicio">
             <div @onclick='()=>{navManager.NavigateTo("/");}' style="display: flex; cursor: pointer; align-items: center; flex-direction: column;">
 
@@ -67,9 +77,35 @@
         </MudTooltip>
         
         <MudSpacer></MudSpacer>
+        <MudHidden Invert=true Breakpoint="Breakpoint.SmAndDown">
+            <MudIconButton @onclick='()=>{navManager.NavigateTo($"/search");}' Class="meta-bar-link" Size="Size.Small" Icon="@Icons.Material.Rounded.Search" ></MudIconButton>
+
+        </MudHidden>
+         <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudLink  @onclick='()=>{navManager.NavigateTo($"/search");}'  Class="meta-bar-link" Style="font-size:12px; font-weight: bold;">BUSCAR</MudLink>
+
+
+         </MudHidden>
+        <MudSpacer></MudSpacer>
+        <MudHidden Invert=true Breakpoint="Breakpoint.SmAndDown">
+            <MudIconButton @onclick='()=>{navManager.NavigateTo($"/all-reviews");}' Class="meta-bar-link" Size="Size.Small" Icon="@Icons.Material.Outlined.Album"></MudIconButton>
+
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudLink @onclick='()=>{navManager.NavigateTo($"/all-reviews");}' Class="meta-bar-link" Style="font-size:12px; font-weight: bold;">REVIEWS</MudLink>
+
+        </MudHidden>
+        <MudSpacer></MudSpacer>
+        <MudHidden Invert=true Breakpoint="Breakpoint.SmAndDown">
+            <MudIconButton @onclick='()=>{navManager.NavigateTo($"/all-artists");}' Class="meta-bar-link" Size="Size.Small" Icon="@Icons.Material.Outlined.MicExternalOn"></MudIconButton>
+
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudLink @onclick='()=>{navManager.NavigateTo($"/all-artists");}' Class="meta-bar-link" Style="font-size:12px; font-weight: bold;">ARTISTAS</MudLink>
+
+        </MudHidden>
 
      
-        <MudIconButton @onclick='()=>{navManager.NavigateTo($"/search");}' Icon="@Icons.Material.Rounded.Search" Color="Color.Error"></MudIconButton>
         <MudSpacer></MudSpacer>
         <AuthorizeView>
             <Authorized>
@@ -204,9 +240,9 @@
            
         </MudDrawer>
         
-    <MudMainContent Class="pt-16 px-16"> 
-       
-            @if (UserDataLoaded)
+    <MudMainContent Class="pt-16 px-16 " >
+
+        @if (UserDataLoaded)
             {
                 @Body
             }
@@ -300,7 +336,7 @@
     public void ManejarScroll(int scrollY)
     {
         // Verificar si el scrollbar está en la parte superior
-        navbarclass = (scrollY == 0) ? "navbar-container" : "mostrar";
+        navbarclass = (scrollY == 0) ? "transparent" : "#D04848";
     }
 
     public async Task GetReportes(int userid)
@@ -365,6 +401,7 @@
         await JSR.InvokeVoidAsync("eval", $"document.location.href = '{logoutUrl}';");
 
     }
+
     
 }
 @code{
@@ -372,7 +409,7 @@
     public bool gettingUserData = false;
     public bool UserDataLoaded = false;
     public bool UserIsAuthorized = false;
-    private string navbarclass = "navbar-container";
+    private string navbarclass = "transparent";
     public bool IsDarkMode { get; set; } = true ;
     public bool hayReportes = false;
     public bool hayPeticiones = false;

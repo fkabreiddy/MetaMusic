@@ -6,18 +6,7 @@
 
 
                 <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
-                    @if (theme.IsDark())
-                    {
-                        <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
-                    }
-                    else
-                    {
-
-                        <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
-                    }
-
-                    <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
-
+                    <Loader></Loader>
 
                 </MudItem>
             </div>

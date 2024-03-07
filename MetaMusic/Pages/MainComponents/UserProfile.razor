@@ -30,17 +30,7 @@
 
 
             <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
-                @if (theme.IsDark())
-                {
-                      <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
-                }
-                else
-                {
-
-                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
-                }
-           
-                <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true ></MudProgressLinear>
+               <Loader Simple=true></Loader>
            
 
             </MudItem>
@@ -291,12 +281,12 @@ else
                                                     <MudContainer Style="display: flex; justify-content: center; width: 90%;">
                                                         @if (theme.IsDark())
                                                         {
-                                                            <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+                                                            <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
 
                                                         }
                                                         else
                                                         {
-                                                            <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+                                                            <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
 
                                                         }
 
@@ -370,12 +360,12 @@ else
                                         <MudContainer Style="display: flex; justify-content: center; width: 90%;">
                                             @if (theme.IsDark())
                                             {
-                                                <MudTextField @bind-Value="filtro_artista" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+                                                <MudTextField @bind-Value="filtro_artista" MaxLength="100"  T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
 
                                             }
                                             else
                                             {
-                                                <MudTextField @bind-Value="filtro_artista" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+                                                <MudTextField @bind-Value="filtro_artista" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;  border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
 
                                             }
 
@@ -631,7 +621,7 @@ else
 
         
     }
-
+    
     public async Task GetRecentAlbums(UsuarioResponse user)
     {
         cargandoreviews = true;
