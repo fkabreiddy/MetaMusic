@@ -177,7 +177,7 @@
 
 
                                         <Virtualize Items="Albumes" TItem="AlbumResponse">
-                                            <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="12" Style="margin-bottom: 30px;">
+                                            <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="6" Style="margin-bottom: 30px;">
                                                 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
                                                     <MetaMusic.Pages.Common_Components.ReviewCard album="@context"></MetaMusic.Pages.Common_Components.ReviewCard>
                                                 </BlazorAnimation.Animation>
@@ -188,7 +188,7 @@
                                     else if (View == "artistas")
                                     {
                                         <Virtualize Items="Artistas" TItem="ArtistaResponse">
-                                            <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="12" Style="margin-bottom: 30px;">
+                                            <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="6" Style="margin-bottom: 30px;">
                                                 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
                                                     <MetaMusic.Pages.Common_Components.ArtistaCard Artista="context" UserId="currentuser_id"></MetaMusic.Pages.Common_Components.ArtistaCard>
                                                 </BlazorAnimation.Animation>
@@ -198,7 +198,7 @@
                                     else
                                     {
                                         <Virtualize Items="Usuarios" TItem="UsuarioResponse">
-                                            <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="12" Style="margin-bottom: 30px;">
+                                            <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="6" Style="margin-bottom: 30px;">
                                                 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
                                                     <MetaMusic.Pages.Common_Components.UserCardComponent Usuario="@context"></MetaMusic.Pages.Common_Components.UserCardComponent>
                                                 </BlazorAnimation.Animation>

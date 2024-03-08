@@ -1,6 +1,8 @@
 ﻿
 <style>
-
+    .must-listen {
+        border-radius: 2px;
+    }
     .album-portada-card {
        
         cursor: pointer;
@@ -94,7 +96,10 @@
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
             <MudItem md="4" xxl="4" lg="4">
                 <div class="album-portada-card">
-                    <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 150px; width: 150px;   " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+                      <MudBadge Color="Color.Error" Bordered="true"  Visible="@album.IsMustListen" Overlap=true Content="@mustlisten" Origin="Origin.BottomCenter" BadgeClass="must-listen" Style="padding: 5px; border-radius: 3px;">
+                                              <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 150px; width: 150px;   " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+
+                          </MudBadge>
 
                 </div>
             </MudItem>
@@ -105,4 +110,5 @@
 
 @code {
     [Parameter] public AlbumResponse album { get; set; } = new AlbumResponse();
+    public string mustlisten = "MUST LISTEN";
 }

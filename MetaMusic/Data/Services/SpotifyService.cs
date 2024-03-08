@@ -106,6 +106,13 @@ namespace MetaMusic.Data.Services
                         Success = false
                     };
 
+                if (album.AlbumType != "album" )
+                    return new Result<MetaMusic.Data.Request.AlbumRequest>()
+                    {
+                        Message = "No se encontro el album",
+                        Success = false
+                    };
+
                 var existe = await dbContext.Albumes.FirstOrDefaultAsync(a => a.IdSpotify ==  album.Id && a.Publicado == true);
                 if(existe is not null)
                     return new Result<MetaMusic.Data.Request.AlbumRequest>()
@@ -212,7 +219,7 @@ namespace MetaMusic.Data.Services
                 
 
 
-                if(album.Type != "single")
+                if(album.AlbumType != "single")
                     return new Result<MetaMusic.Data.Request.AlbumRequest>()
                     {
                         Message = "No se encontro el single",
@@ -264,14 +271,7 @@ namespace MetaMusic.Data.Services
 
                 albumARetornar.Nombre = album.Name ?? "Indefinido";
 
-                if (album.Tracks != null && album.Tracks.Items is not null)
-                    if (album.Tracks.Items.Count() >= 1)
-                    {
-                        foreach (var track in album.Tracks.Items)
-                        {
-                            albumARetornar.Tracks.Add(new Track() { Titulo = track.Name, Album = new Album() { Portada = album.Images[0].Url, } });
-                        }
-                    }
+               
 
                 return new Result<MetaMusic.Data.Request.AlbumRequest>()
                 {

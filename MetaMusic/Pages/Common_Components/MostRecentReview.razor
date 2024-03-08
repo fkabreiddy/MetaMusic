@@ -1,10 +1,17 @@
 ﻿
-
+<style>
+    .must-listen {
+        border-radius: 2px;
+    }
+</style>
 
 <MudGrid Justify="Justify.Center" Style="display: flex; align-items: last baseline; ">
     <MudItem md="12" sm="12" xs="12" xxl="12" lg="12" Style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center;">
         <div class="album-portada-card">
-            <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 220px; width: 220px;   " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+                                  <MudBadge Color="Color.Error" Bordered="true"  Visible="@album.IsMustListen" Overlap=true Content="@mustlisten" Origin="Origin.BottomCenter" BadgeClass="must-listen" Style="padding: 5px; border-radius: 3px;">
+                                                  <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 220px; width: 220px;   " @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+
+                                      </MudBadge>
 
         </div>
     </MudItem>
@@ -68,4 +75,5 @@
 
 @code {
     [Parameter] public AlbumResponse album { get; set; } = new AlbumResponse();
+    public string mustlisten = "MUST LISTEN";
 }

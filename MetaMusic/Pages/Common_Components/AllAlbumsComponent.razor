@@ -1,5 +1,5 @@
 ﻿
-<MudGrid Spacing="2">
+<MudGrid Spacing="2" Justify="Justify.SpaceAround">
     @if (gettingalbumes)
     {
         <BlazorAnimation.Animation style="width: 100%;   display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; " Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
@@ -18,7 +18,7 @@
         @if (albumes.Count() >= 1)
         {
             <Virtualize Items="albumes" TItem="AlbumResponse">
-                <MudItem md="4" lg="3" xl="3" xxl="3" sm="6" xs="12" Style="margin-top: 30px; margin-bottom: 30px;">
+                <MudItem md="4" lg="3" xl="3" xxl="3" sm="6" xs="6" Style="margin-top: 30px; margin-bottom: 30px;">
                     <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
                         <MetaMusic.Pages.Common_Components.ReviewCard album="@context"></MetaMusic.Pages.Common_Components.ReviewCard>
                     </BlazorAnimation.Animation>

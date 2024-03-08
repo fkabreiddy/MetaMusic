@@ -229,7 +229,7 @@ else
                                                     <MudGrid Style="margin-top: 20px;" Spacing="3">
                                                      
                                                         <Virtualize Items="peticiones" TItem="PeticionResponse">
-                                                            <MudItem md="4" lg="4" xl="3" xxl="3" sm="6" xs="12">
+                                                            <MudItem md="4" lg="4" xl="3" xxl="3" sm="6" xs="6">
                                                                 <MetaMusic.Pages.Common_Components.Peticion_Component Peticion="@context"/>
 
                                                             </MudItem>
@@ -301,18 +301,7 @@ else
 
 
                                                                     <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
-                                                                        @if (theme.IsDark())
-                                                                        {
-                                                                            <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
-                                                                        }
-                                                                        else
-                                                                        {
-
-                                                                            <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
-                                                                        }
-
-                                                                        <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
-
+                                                                       <Loader Simple="true"></Loader>
 
                                                                     </MudItem>
                                                                 </div>
@@ -342,7 +331,7 @@ else
                                         <MudGrid Style="margin-top: 20px;">
                                             @foreach (var nota in notas)
                                             {
-                                                <MudItem  md="6" lg="6" xl="6" xxl="6" sm="12" xs="12">
+                                                <MudItem  md="6" lg="6" xl="6" xxl="6" sm="12" xs="6">
                                                     <div id="@nota.Id">
                                                         <MetaMusic.Pages.Common_Components.Nota nota="@nota" Bordered="@(nota.Id == notaid)" showSource=true disableInteractivity=true deletebuttonvisible=true></MetaMusic.Pages.Common_Components.Nota>
 
@@ -379,17 +368,7 @@ else
 
 
                                                     <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
-                                                        @if (theme.IsDark())
-                                                        {
-                                                            <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
-                                                        }
-                                                        else
-                                                        {
-
-                                                            <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
-                                                        }
-
-                                                        <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+                                                        <Loader Simple=true></Loader>
 
 
                                                     </MudItem>
@@ -401,7 +380,7 @@ else
                                                 @foreach (var artista in suscripciones.Where(a => a.Nombre.ToLower().Contains(filtro_artista.ToLower())))
                                                 {
 
-                                                    <MudItem md="4" lg="4" xl="3" xxl="3" sm="6" xs="12" Style="margin-top: 30px;">
+                                                    <MudItem md="4" lg="4" xl="3" xxl="3" sm="6" xs="6" Style="margin-top: 30px;">
                                                         <MetaMusic.Pages.Common_Components.ArtistaCard Artista="artista"  VisibleSuscribeButton="true" UserId="@UsuarioActual.Id"></MetaMusic.Pages.Common_Components.ArtistaCard>
                                                     </MudItem>
                                                 }

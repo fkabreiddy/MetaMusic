@@ -85,7 +85,145 @@ namespace MetaMusic.Data.Services
                 if (r is not null)
                     dbContext.Peticiones.RemoveRange(r);
 
-                foreach(var peticion in r)
+                foreach (var peticion in r)
+                {
+                    await notificacionesService.NotificacionGenerica(peticion.Usuario.Id, $"Por que lo pediste: {newalbum.Nombre}");
+
+                }
+                return new Result<AlbumResponse>()
+                {
+                    Data = newalbum.ToResponse(),
+                    Message = "Creacion Correcta",
+                    Success = true
+
+                };
+            }
+            catch (Exception e)
+            {
+                return new Result<AlbumResponse>()
+                {
+
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = true
+
+                };
+            }
+        }
+
+        public async Task<Result<AlbumResponse>> GetSingleReferenceAlbum(int albumId)
+        {
+            try
+            {
+                var album = await dbContext.Albumes.Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).FirstOrDefaultAsync(a => a.Id == albumId);
+
+                if (album is null)
+                    return new Result<AlbumResponse>()
+                    {
+
+                        Message = "Album no encontrado",
+                        Success = false
+
+                    };
+
+                return new Result<AlbumResponse>()
+                {
+                    Data = album.ToResponse(),
+                    Message = "Album Encontrado",
+                    Success = true
+
+                };
+
+            }
+            catch (Exception e)
+            {
+                return new Result<AlbumResponse>()
+                {
+
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = true
+
+                };
+            }
+        }
+        public async Task<Result<AlbumResponse>> CrearSingle(AlbumRequest request, ReviewRequest review, bool enlazarAlbum)
+        {
+            try
+            {
+                var currenUserData = await googleAuth.GetCurrentUser();
+
+
+                if (currenUserData.Data is null)
+                    return new Result<AlbumResponse>()
+                    {
+                        Success = false,
+                        Message = "No estas logeado"
+                    };
+
+
+                var userUser = await dbContext.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Id == currenUserData.Data.Id);
+
+                if (userUser is null)
+                    return new Result<AlbumResponse>()
+                    {
+                        Success = false,
+                        Message = "No existes en nuestros registros"
+                    };
+
+                if (userUser.Rol?.Tipo != "Staff")
+                    return new Result<AlbumResponse>()
+                    {
+                        Success = false,
+                        Message = "No tienes permiso para crear esto"
+                    };
+
+
+
+
+
+
+
+                review.Creador = userUser;
+                request.Review = Review.Crear(review);
+
+                request.Creador = userUser;
+                request.IsSingle = true;
+
+                if (enlazarAlbum)
+                {
+                    var album = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Tracks.Any(t => t.Titulo == request.Nombre && a.Artistas[0].Artista.Id == request.Artistas[0].Artista.Id &&  a.Id != request.Id));
+
+
+                    if (album is null)
+                    {
+                        var otroalbum = await dbContext.Albumes.Where(a => a.Artistas[0].Artista.Id == request.Artistas[0].Artista.Id && a.Id != request.Id).OrderByDescending(a => a.Calificacion_Creador).FirstOrDefaultAsync();
+
+                        if (otroalbum is not null)
+                        {
+                            request.Reference = otroalbum.Id;
+                        }
+                    }
+                    else
+                    {
+                        request.Reference = album.Id;
+                    }
+
+
+                }
+
+                var newalbum = Album.Crear(request);
+                await dbContext.Albumes.AddAsync(newalbum);
+
+
+                await dbContext.SaveChangesAsync();
+
+
+                await notificacionesService.NotificarNuevoAlbum(newalbum.Id);
+                var r = await dbContext.Peticiones.Include(r => r.Usuario).Where(p => p.AlbumSpotifyId == newalbum.IdSpotify).ToListAsync();
+
+                if (r is not null)
+                    dbContext.Peticiones.RemoveRange(r);
+
+                foreach (var peticion in r)
                 {
                     await notificacionesService.NotificacionGenerica(peticion.Usuario.Id, $"Por que lo pediste: {newalbum.Nombre}");
 
@@ -179,6 +317,97 @@ namespace MetaMusic.Data.Services
                 };
             }
         }
+
+        public async Task<Result<AlbumResponse>> ModificarSingle(AlbumRequest request, ReviewRequest review, bool enlazarAlbum)
+        {
+            try
+            {
+                var currenUserData = await googleAuth.GetCurrentUser();
+
+
+                if (currenUserData.Data is null)
+                    return new Result<AlbumResponse>()
+                    {
+                        Success = false,
+                        Message = "No estas logeado"
+                    };
+
+
+                var userUser = await dbContext.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Id == currenUserData.Data.Id);
+
+                if (userUser is null)
+                    return new Result<AlbumResponse>()
+                    {
+                        Success = false,
+                        Message = "No existes en nuestros registros"
+                    };
+
+                if (userUser.Rol?.Tipo != "Staff")
+                    return new Result<AlbumResponse>()
+                    {
+                        Success = false,
+                        Message = "No tienes permiso para crear esto"
+                    };
+
+
+                var album = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Id == request.Id);
+
+
+                if (enlazarAlbum && request.Reference == 0)
+                {
+                    var referencia = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Tracks.Any(t => t.Titulo == request.Nombre && a.Artistas[0].Artista.Id == request.Artistas[0].Artista.Id && a.Id != request.Id));
+
+                    if (referencia is null)
+                    {
+                        var otroalbum = await dbContext.Albumes.Where(a => a.Artistas[0].Artista.Id == request.Artistas[0].Artista.Id && a.Id != request.Id).OrderByDescending(a => a.Calificacion_Creador).FirstOrDefaultAsync();
+
+                        if (otroalbum is not null)
+                        {
+                            request.Reference = otroalbum.Id;
+                        }
+                    }
+                    else
+                    {
+                        request.Reference = referencia.Id;
+                    }
+
+
+                }
+
+                if (album is not null)
+                    album.Modificar(request);
+
+
+                var re = await dbContext.Reviews.FirstOrDefaultAsync(r => r.Id == review.Id);
+
+                if (re is not null)
+                    re.Modificar(review);
+
+
+
+
+
+                await dbContext.SaveChangesAsync();
+
+                return new Result<AlbumResponse>()
+                {
+                    Data = album?.ToResponse(),
+                    Message = "Modificacion Correcta",
+                    Success = true
+
+                };
+            }
+            catch (Exception e)
+            {
+                return new Result<AlbumResponse>()
+                {
+
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = true
+
+                };
+            }
+        }
         public async Task<Result<AlbumResponse>> ConsultarUno(string spotifyId)
         {
             try
@@ -189,14 +418,14 @@ namespace MetaMusic.Data.Services
                     return new Result<AlbumResponse>()
                     { Message = "Album no encotrado", Success = false };
 
-                var album = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).FirstOrDefaultAsync(a => a.Id == album1.Id && a.Publicado == true);
+                var album = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).FirstOrDefaultAsync(a => a.Id == album1.Id && a.Publicado == true && a.IsSingle == false);
 
-                return new Result<AlbumResponse>() { Message = "Success", Success = true, Data = album?.ToResponse() ?? null};
+                return new Result<AlbumResponse>() { Message = "Success", Success = true, Data = album?.ToResponse() ?? null };
 
             }
             catch (DbUpdateException ex)
             {
-                if (ex.InnerException is SqlException sqlException && NetworkError.IsNetworkError(sqlException.Number)) 
+                if (ex.InnerException is SqlException sqlException && NetworkError.IsNetworkError(sqlException.Number))
                 {
 
                     navManager.NavigateTo("network-error");
@@ -208,7 +437,7 @@ namespace MetaMusic.Data.Services
                     return new Result<AlbumResponse>()
                     { Message = ex.InnerException?.Message ?? ex.Message, Success = false };
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -217,7 +446,33 @@ namespace MetaMusic.Data.Services
                 { Message = e.InnerException?.Message ?? e.Message, Success = false };
             }
         }
-     
+
+        public async Task<Result<AlbumResponse>> ConsultarUnSingle(string spotifyId)
+        {
+            try
+            {
+                var album1 = await dbContext.Albumes.FirstOrDefaultAsync(a => a.IdSpotify == spotifyId);
+
+                if (album1 is null)
+                    return new Result<AlbumResponse>()
+                    { Message = "Single no encotrado", Success = false };
+
+                var album = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).FirstOrDefaultAsync(a => a.Id == album1.Id && a.Publicado == true);
+
+                if (album is null)
+                    return new() { Message = "Single no encontrado" };
+
+                return new Result<AlbumResponse>() { Message = "Success", Success = true, Data = album?.ToResponse() };
+
+            }
+            catch (Exception e)
+            {
+
+                return new Result<AlbumResponse>()
+                { Message = e.InnerException?.Message ?? e.Message, Success = false };
+            }
+        }
+
         public async Task<Result<Usuario_Like_Track>> LikeTrack(Track track)
         {
             try
@@ -344,7 +599,7 @@ namespace MetaMusic.Data.Services
             }
         }
 
-       
+
         public async Task<Result<bool>> Eliminar(AlbumResponse response)
         {
             try
@@ -388,7 +643,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Take(3).Where(a => a.Publicado == true).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.IsSingle == false).OrderByDescending(a => a.Fecha_Agregado).Take(3).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -409,7 +664,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Take(cantidad).Where(a => a.Publicado == true).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Take(cantidad).Where(a => a.Publicado == true && a.IsSingle == false).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -451,7 +706,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Skip(startIndex).Take(cantidad).Where(a => a.Publicado == true).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Skip(startIndex).Take(cantidad).Where(a => a.Publicado == true && a.IsSingle == false).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -472,9 +727,9 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                
 
-                
+
+
                 var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).ThenInclude(t => t.Usuarios_Liked).ThenInclude(t => t.Usuario).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Where(a => a.Publicado == true && a.Artistas.Any(a => a.Artista.Id == artistaid)).ToListAsync();
 
                 if (albumes is null)
@@ -518,31 +773,31 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-               
-                    
-                    int previousMonth = DateTime.Now.Month == 1 ? 12 : DateTime.Now.Month - 1;
 
-                    var alreadyDone = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Fecha_Agregado.Month == previousMonth && a.IsAlbumOfTheMonth == true);
 
-                    if (alreadyDone is not null)
-                        return new Result<bool>()
-                        {
-                            Message = "Esta tarea ya se hizo",
-                            Success = false
-                        };
+                int previousMonth = DateTime.Now.Month == 1 ? 12 : DateTime.Now.Month - 1;
 
-                    var albumes = await dbContext.Albumes.Where(a => a.Fecha_Agregado.Month == previousMonth && a.IsAlbumOfTheMonth == false).OrderByDescending(a => a.Calificaciones.Count() * Math.Round(a.Calificaciones.Average(c => c.Numero), 1)).Take(3).ToListAsync();
+                var alreadyDone = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Fecha_Agregado.Month == previousMonth && a.IsAlbumOfTheMonth == true && a.IsSingle == true);
 
-                    if (albumes is not null && albumes.Any())
+                if (alreadyDone is not null)
+                    return new Result<bool>()
                     {
+                        Message = "Esta tarea ya se hizo",
+                        Success = false
+                    };
+
+                var albumes = await dbContext.Albumes.Where(a => a.Fecha_Agregado.Month == previousMonth && a.IsAlbumOfTheMonth == false).OrderByDescending(a => a.Calificaciones.Count() * Math.Round(a.Calificaciones.Average(c => c.Numero), 1)).Take(3).ToListAsync();
+
+                if (albumes is not null && albumes.Any())
+                {
 
 
-                         albumes[0].IsAlbumOfTheMonth = true;
-                        
-                    }
+                    albumes[0].IsAlbumOfTheMonth = true;
+
+                }
 
 
-                
+
 
                 await dbContext.SaveChangesAsync();
                 return new Result<bool>()
@@ -565,9 +820,9 @@ namespace MetaMusic.Data.Services
             try
             {
                 int previousMonth = DateTime.Now.Month == 1 ? 12 : DateTime.Now.Month - 1;
-                var album = await dbContext.Albumes.Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(a => a.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Calificaciones.Count() * Math.Round(a.Calificaciones.Average(c => c.Numero), 1)).FirstOrDefaultAsync(a => a.IsAlbumOfTheMonth == true && a.Fecha_Agregado.Month == previousMonth);
+                var album = await dbContext.Albumes.Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(a => a.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Calificaciones.Count() * Math.Round(a.Calificaciones.Average(c => c.Numero), 1)).FirstOrDefaultAsync(a => a.IsAlbumOfTheMonth == true && a.Fecha_Agregado.Month == previousMonth && a.IsSingle == false);
 
-                
+
                 if (album == null)
                     album = await dbContext.Albumes.Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(a => a.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Calificaciones.Count() * Math.Round(a.Calificaciones.Average(c => c.Numero), 1)).FirstOrDefaultAsync(a => a.IsAlbumOfTheMonth);
 

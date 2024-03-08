@@ -1,4 +1,5 @@
 ﻿using MetaMusic.Data.Request;
+
 using MetaMusic.Data.Responses;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace MetaMusic.Data.Entities
 {
-    public class Album
+    public class Album 
     {
         [Key]
         public int Id { get; set; }
@@ -48,13 +49,23 @@ namespace MetaMusic.Data.Entities
         public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>();
 
         
+        
+        
         public double Calificacion_Creador { get; set; } = 0.0;
         public List<Nota> Notas { get; set; } = new List<Nota>();
         public List<Track> Tracks { get; set; } = new List<Track>();
 
         public List<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
 
-        //si el album es un borrador se verifica que existe el album ya publicado
+
+        //album al cual hace referencia este single (opcional)
+        public int Reference { get; set; } = 0;
+
+        public bool IsSingle { get; set; } = false;
+
+        public bool IsMustListen { get; set; } = false;
+
+      
 
 
         public static Album Crear(AlbumRequest request) => new Album()
@@ -75,7 +86,12 @@ namespace MetaMusic.Data.Entities
             Notificaciones = request.Notificaciones,
             Calificacion_Creador = request.Calificacion_Creador,
             IsAlbumOfTheMonth = request.IsAlbumOfTheMonth,
-            Publicado = true
+            Publicado = true,
+            Reference = request.Reference,
+            IsMustListen = request.IsMustListen,
+            IsSingle = request.IsSingle,
+           
+
 
         };
 
@@ -100,7 +116,11 @@ namespace MetaMusic.Data.Entities
             FechaModificado = this.FechaModificado,
             Publicado = this.Publicado,
             Modificado = this.Modificado,
-           
+            Reference = this.Reference,
+            IsMustListen = this.IsMustListen,
+            IsSingle = this.IsSingle,
+          
+
 
         };
 
@@ -125,6 +145,22 @@ namespace MetaMusic.Data.Entities
                 Publicado = album.Publicado;
                 modificacion = true;
             }
+            if (this.Reference != album.Reference)
+            {
+                Reference = album.Reference;
+                modificacion = true;
+            }
+            if (this.IsMustListen != album.IsMustListen)
+            {
+                IsMustListen = album.IsMustListen;
+                modificacion = true;
+            }
+            if (this.IsSingle != album.IsSingle)
+            {
+                IsSingle = album.IsSingle;
+                modificacion = true;
+            }
+            
 
             if (this.Calificacion_Creador != album.Calificacion_Creador)
             {

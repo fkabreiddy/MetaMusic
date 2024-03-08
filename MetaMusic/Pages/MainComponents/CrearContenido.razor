@@ -26,7 +26,9 @@
                                 <MudChipSet Mandatory=true Style="margin-bottom: 20px; display: flex; justify-content: center; align-items: center;">
 
                                     <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "artista" ? MudBlazor.Variant.Filled : MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "artista";}' Text="Artista"></MudChip>
-                                    <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "album" ? MudBlazor.Variant.Filled : MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "album";}' Default=true Text="Album / Single"></MudChip>
+                                    <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "album" ? MudBlazor.Variant.Filled : MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "album";}' Default=true Text="Album"></MudChip>
+                                   <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "single" ? MudBlazor.Variant.Filled : MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "single";}' Text="Single"></MudChip>
+
                                 </MudChipSet>
 
                                 <div style="display: flex; flex-direction: column; justify-content: center;align-items: center;">
@@ -87,6 +89,12 @@
                             </BlazorAnimation.Animation>
 
                         }
+                        else if(tipodeContenidoEncontrado == "single")
+                        {
+                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                <MetaMusic.Pages.Common_Components.Crear_Single Request="AlbumRequest"></MetaMusic.Pages.Common_Components.Crear_Single>
+                            </BlazorAnimation.Animation>
+                        }
 
 
 
@@ -116,9 +124,9 @@
     public string url = "";
     public string tipodeContenido = "album";
     public string tipodeContenidoEncontrado = "";
-   
+
     public Track trackActual = new Track();
-   
+
     public async Task BuscarAlbum()
     {
         try
@@ -139,7 +147,7 @@
         catch (APIException)
         {
             MostrarNotificacion("Album no encontrado", "No pudimos encontrar el album que estas buscando. Asegurate de poner el ID correcto.");
-            
+
         }
         catch (Exception e)
         {
@@ -166,6 +174,22 @@
 
         }
     }
+    public async Task GetSingle()
+    {
+        var x = await spotifyService.GetSingle(url);
+
+        if (x.Success == true && x.Data is not null)
+        {
+            AlbumRequest = x.Data;
+            tipodeContenidoEncontrado = "single";
+        }
+        else
+        {
+
+            MostrarNotificacion("Error Inesperado", $"{x.Message}");
+
+        }
+    }
     public async Task GetArtist()
     {
         var x = await spotifyService.GetArtista(url);
@@ -178,8 +202,8 @@
         else
         {
             MostrarNotificacion("Error Inesperado",  $"{x.Message}");
-         
-           
+
+
         }
     }
 
@@ -197,14 +221,14 @@
         {
 
             MostrarNotificacion("Artista no encontrado", "No pudimos encontrar el artista que estas buscando. Asegurate de poner el ID correcto.");
-           
+
 
         }
         catch (Exception e)
         {
             MostrarNotificacion("Error Inesperado", "Hubo un error con su solicitud. Intente Luego.");
 
-            
+
             var excepcion = e.InnerException?.Message ?? e.Message;
 
         }
@@ -218,10 +242,15 @@
         {
             await GetArtist();
         }
+        else if(tipodeContenido =="single")
+        {
+            await GetSingle();
+        }
         else
         {
             await BuscarAlbum();
         }
+
 
         buscando = false;
     }

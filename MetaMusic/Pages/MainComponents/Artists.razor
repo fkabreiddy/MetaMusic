@@ -26,17 +26,7 @@ else
 
 
             <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
-                @if (theme.IsDark())
-                {
-                    <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
-                }
-                else
-                {
-
-                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
-                }
-
-                <MudProgressLinear Rounded=true Color="Color.Error" Indeterminate=true></MudProgressLinear>
+               <Loader></Loader>
 
 
             </MudItem>
@@ -78,16 +68,7 @@ else
         }
         else
         {
-            <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
-
-                <MudText Style="font-size: 20px; font-weight: bold;">ARTISTA</MudText>
-                <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
-
-
-
-
-
-            </div>
+           <Encabezado Title='@("ARTISTA")'></Encabezado>
             <MudItem Style="margin-top: 60px;">
       
                     <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">

@@ -25,7 +25,7 @@
     <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
         <MetaMusic.Pages.Common_Components.CrearAlbum Request="@Albumresponse.ToRequest()" IsEditing=true></MetaMusic.Pages.Common_Components.CrearAlbum>
 
-       </BlazorAnimation.Animation >
+    </BlazorAnimation.Animation >
 }
 else
 {
@@ -63,16 +63,7 @@ else
         {
             <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
                 <MudItem Style="margin-top: 60px;">
-                    <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
-
-                        <MudText Style="font-size: 20px; font-weight: bold;">ALBUM REVIEW</MudText>
-                        <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
-
-
-
-
-
-                    </div>
+                   <Encabezado Title='@("Album Review")'></Encabezado>
                     <MudGrid Justify="Justify.Center" Style="margin-top: 60px; display: flex; align-items: center; align-items: center; justify-content: center; gap: 20px;">
 
 

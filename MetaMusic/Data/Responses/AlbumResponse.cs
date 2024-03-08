@@ -48,6 +48,12 @@ namespace MetaMusic.Data.Responses
 
         public List<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
         public bool IsAlbumOfTheMonth { get; set; } = false;
+
+        public int Reference { get; set; }
+
+        public bool IsSingle { get; set; }
+
+        public bool IsMustListen { get; set; }
         public AlbumRequest ToRequest() => new AlbumRequest()
         {
             Id = this.Id,
@@ -66,7 +72,10 @@ namespace MetaMusic.Data.Responses
             Notificaciones = this.Notificaciones,
             Calificacion_Creador = this.Calificacion_Creador,
             IsAlbumOfTheMonth = this.IsAlbumOfTheMonth,
-          
+            Reference = this.Reference,
+            IsMustListen = this.IsMustListen,
+            IsSingle = this.IsSingle,
+            
             Publicado = this.Publicado
 
         };
