@@ -238,7 +238,7 @@ else
                     </div>
                 
                     <MudContainer>
-                        <MudGrid Justify="Justify.SpaceAround" Spacing="2" Style="margin-top: 60px; ">
+                        <MudGrid Justify="Justify.SpaceAround" Spacing="2" Style="margin-top: 60px; margin-bottom: 30px; ">
                             <MudItem md="5" lg="5" xxl="5" xl="5" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;white-space: pre-line; ">
 
                                 <div style="max-width: 100%; overflow: hidden; word-wrap: break-word; ">
@@ -256,6 +256,11 @@ else
                                 
                                 }
                             </MudItem>
+                            <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert=true>
+                                <MudContainer Style="width: 150px;">
+                                    <MudDivider DividerType="DividerType.Middle" Class="mt-5 mb-5"></MudDivider>
+                                </MudContainer>
+                            </MudHidden>
                             <MudItem md="4" lg="4" xxl="4" xl="4" sm="12" xs="12">
 
                                 @if(Albumresponse.Reference !=0)

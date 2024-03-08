@@ -660,11 +660,12 @@ namespace MetaMusic.Data.Services
                 { Message = e.InnerException?.Message ?? e.Message, Success = false };
             }
         }
-        public async Task<Result<List<AlbumResponse>>> ConsultarVarios(int cantidad)
+
+        public async Task<Result<List<AlbumResponse>>> ConsultarRecientesSingles()
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Take(cantidad).Where(a => a.Publicado == true && a.IsSingle == false).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.IsSingle == true).OrderByDescending(a => a.Fecha_Agregado).Take(3).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -681,11 +682,34 @@ namespace MetaMusic.Data.Services
                 { Message = e.InnerException?.Message ?? e.Message, Success = false };
             }
         }
+        public async Task<Result<List<AlbumResponse>>> ConsultarVarios(int cantidad)
+        {
+            try
+            {
+                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true ).OrderByDescending(a => a.Fecha_Agregado).Take(cantidad).ToListAsync();
+
+                if (albumes is null)
+                    return new Result<List<AlbumResponse>>()
+                    { Message = "Album no encotrado", Success = false };
+
+
+                return new Result<List<AlbumResponse>>() { Message = "Success", Success = true, Data = albumes.Select(a => a.ToResponse()).ToList() };
+
+            }
+            catch (Exception e)
+            {
+
+                return new Result<List<AlbumResponse>>()
+                { Message = e.InnerException?.Message ?? e.Message, Success = false };
+            }
+        }
+
+    
         public async Task<Result<List<AlbumResponse>>> BuscarVarios(string filtro)
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Where(a => a.Publicado == true && a.Nombre.ToLower().Contains(filtro.ToLower())).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.Nombre.ToLower().Contains(filtro.ToLower())).OrderByDescending(a => a.Fecha_Agregado).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -706,7 +730,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Skip(startIndex).Take(cantidad).Where(a => a.Publicado == true && a.IsSingle == false).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true ).OrderByDescending(a => a.Fecha_Agregado).Skip(startIndex).Take(cantidad).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -730,7 +754,7 @@ namespace MetaMusic.Data.Services
 
 
 
-                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).ThenInclude(t => t.Usuarios_Liked).ThenInclude(t => t.Usuario).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).OrderByDescending(a => a.Fecha_Agregado).Where(a => a.Publicado == true && a.Artistas.Any(a => a.Artista.Id == artistaid)).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).ThenInclude(t => t.Usuarios_Liked).ThenInclude(t => t.Usuario).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.Artistas.Any(ar => ar.Artista.Id ==artistaid)).OrderByDescending(a => a.Fecha_Agregado).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -751,7 +775,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Creador.Id == user.Id && a.Publicado == true).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Creador.Id == user.Id && a.Publicado == true).OrderByDescending(a => a.Fecha_Agregado).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()

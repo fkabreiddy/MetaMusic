@@ -268,13 +268,13 @@ else
                                                     </MudItem>
                                                 }
 
-                                                @if (Tracks.Count() >= 1)
+                                                @if (singles.Count() >= 1)
                                                 {
                                                     <MudItem xxl="12" xl="12" sm="12" xs="12" md="12" lg="12">
-                                                        <MudCard Style="padding:10px; opacity:0.7;cursor:pointer;" @onclick='()=>{View ="tracks";}'>
+                                                        <MudCard Style="padding:10px; opacity:0.7;cursor:pointer;" @onclick='()=>{View ="singles";}'>
                                                             <MudContainer Style="display: flex; gap: 15px;align-items: center; justify-content: space-between;margin-top: 10px; margin-bottom: 10px;">
-                                                                <MudText Style="font-size: 12px; font-weight: bold;" Color="@(View == "tracks" ? Color.Error : Color.Inherit)">Top Tracks</MudText>
-                                                                <MudText Style="font-size: 10px;">Top @Tracks.Count().NumeroRelativo() </MudText>
+                                                                <MudText Style="font-size: 12px; font-weight: bold;" Color="@(View == "singles" ? Color.Error : Color.Inherit)">Singles</MudText>
+                                                                <MudText Style="font-size: 10px;">singles @singles.Count().NumeroRelativo() </MudText>
                                                             </MudContainer>
 
                                                         </MudCard>
@@ -309,20 +309,18 @@ else
                                             </Virtualize>
 
                                         }
-                                        else if (View == "tracks")
+                                        else if (View == "singles")
                                         {
                                            
 
                                                
-                                                     <Virtualize Items="Tracks" TItem="Track">
-                                                      
-                                                                <MudItem md="6" lg="6" xl="6" xxl="6" sm="12" xs="12" Style="margin-bottom: 30px;">
-                                                                    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-                                                                        <MetaMusic.Pages.Common_Components.TrackComponent track="@context" currentuser="new UsuarioResponse(){Id = UserId}"></MetaMusic.Pages.Common_Components.TrackComponent>
-                                                                    </BlazorAnimation.Animation>
-                                                                </MudItem>
-                                                            
-                                                    </Virtualize>
+                                             <Virtualize Items="singles" TItem="AlbumResponse">
+                                                <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="12" Style="margin-bottom: 30px;">
+                                                    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                        <MetaMusic.Pages.Common_Components.ReviewCard album="@context"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                                    </BlazorAnimation.Animation>
+                                                </MudItem>
+                                            </Virtualize>
                                                
                                                 
                                             
@@ -361,7 +359,7 @@ else
         </YesButton>
     </MudMessageBox>
 
-    @functions{
+@functions{
 
     public async Task Suscribirse(ArtistaResponse artista)
     {
@@ -422,8 +420,8 @@ else
 
         if(r.Success == true && r.Data is not null)
         {
-            albumes = r.Data;
-            Tracks = r.Data.SelectMany(a => a.Tracks).Where(t => t.Album.Artistas.Any(a => a.Artista.Nombre == artista.Nombre)).OrderByDescending(t => t.Cantidad_Likes).Take(10).ToList();
+            albumes = r.Data.Where(a => a.IsSingle == false).OrderByDescending(A => A.Fecha_Agregado).ToList();
+            singles = r.Data.Where(a => a.IsSingle == true).OrderByDescending(A => A.Fecha_Agregado).ToList();
         }
     }
 
@@ -525,6 +523,7 @@ else
     [Parameter] public string spotifyid { get; set; }
     public ArtistaResponse Artista = new ArtistaResponse();
     public List<AlbumResponse> albumes = new List<AlbumResponse>();
+     public List<AlbumResponse> singles = new List<AlbumResponse>();
     public List<Track> Tracks = new List<Track>();
     public int UserId { get; set; }
     public bool suscribiendo = false;

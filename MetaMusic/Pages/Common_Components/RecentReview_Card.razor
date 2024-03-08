@@ -32,6 +32,11 @@
 
 
             <div style="overflow: hidden; max-width: 100%;word-wrap: break-word;">
+                @if (album.IsSingle)
+                {
+                    <MudText Style="font-size: 12px; font-family: SourceSerif4; opacity: 0.7;" Class="album-genre">SINGLE</MudText>
+
+                }
                     @try
                     {
                         @if (album.Artistas.Count() >= 2)

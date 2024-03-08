@@ -46,7 +46,22 @@
             <MudAvatar Square=true Rounded=false Style="height: 250px; width: 250px;">
                 <MudImage src="@Request.Portada" />
             </MudAvatar>
+              
+                <div Style=" display: flex; align-items: center; align-items: center; justify-content: center; gap: 15px;">
+                   
 
+                        <MudTooltip Arrow="true" Text="Se enlazará el single al album base si lo encuentra">
+
+                            <MudIconButton @onclick="()=>{enlazarAlbum = !enlazarAlbum;}" Style="font-size: 12px; font-weight: bold; " Color="@(enlazarAlbum ? Color.Error : Color.Inherit)" Icon="@(enlazarAlbum ? @Icons.Material.Rounded.InsertLink : @Icons.Material.Rounded.LinkOff)" DisableElevation=true></MudIconButton>
+
+                        </MudTooltip>
+                    
+                <MudTooltip Arrow="true" Text="Establecer single como Must Listen">
+                    <MudIconButton @onclick="()=>{Request.IsMustListen = !Request.IsMustListen;}" Style="font-size: 12px; font-weight: bold; " Color="@(Request.IsMustListen ? Color.Error : Color.Inherit)" Icon="@Icons.Material.Rounded.AutoAwesome" DisableElevation=true></MudIconButton>
+
+                </MudTooltip>
+                </div>
+              
 
 
         </MudItem>
@@ -57,25 +72,7 @@
         <MudDivider DividerType="DividerType.Middle" Style=" width: 50%; "></MudDivider>
 
     </div>
-  
 
-
-
-
-
-    
-        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Style="margin-top: 50px; margin-bottom: 20px;width: 100%; display: flex; gap: 10px; justify-content: center; align-items: center;flex-direction: column;">
-            <MudButton @onclick="()=>{Request.IsMustListen = !Request.IsMustListen;}" Style="font-size: 12px; font-weight: bold; " Color="@(Request.IsMustListen ? Color.Error : Color.Inherit)" DisableElevation=true>Must listen</MudButton>
-            <MudText Align="Align.Center" Style="font-size: 10px; opacity: 0.7; ">Al poner un album o single en "Must Listen" estas diciendo que el album o single es recomendado de tu parte y que has disfrutado escuchandolo</MudText>
-
-        </BlazorAnimation.Animation>
-    
-
-
-    <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-        <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
-
-    </div>
 
     <MudGrid Justify="Justify.SpaceAround" Spacing="2" Style="margin-top: 60px; ">
         <MudItem md="5" lg="5" xxl="5" xl="5" sm="12" xs="12" Style="display: flex; flex-direction: column;gap: 20px;">
@@ -115,25 +112,8 @@
         <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
 
     </div>
-
-    if(Request.Reference == 0)
-    {
-       <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Style="margin-top: 50px; margin-bottom: 40px;width: 100%; display: flex; gap: 10px; justify-content: center; align-items: center;flex-direction: column;">
-        <MudButton @onclick="()=>{enlazarAlbum = !enlazarAlbum;}" Style="font-size: 12px; font-weight: bold; " Color="@(enlazarAlbum ? Color.Error : Color.Inherit)" DisableElevation=true>Enlazar Album</MudButton>
-        <MudText Align="Align.Center" Style="font-size: 10px; opacity: 0.7; ">Al activar el enlace a un album este single se enlazara con su respectivo album si este se encuentra en la plataforma</MudText>
-
-       </BlazorAnimation.Animation>
-
-    }
-    else
-    {
-        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Style="margin-top: 50px; margin-bottom: 40px;width: 100%; display: flex; gap: 10px; justify-content: center; align-items: center;flex-direction: column;">
-            <MudButton @onclick="()=>{Request.Reference = 0; enlazarAlbum = false;}" Style="font-size: 12px; font-weight: bold; " Color="@(Request.Reference == 0 ? Color.Error : Color.Inherit)" DisableElevation=true>Eliminar Enlace</MudButton>
-
-        </BlazorAnimation.Animation>
-
-    }
    
+
     <MudContainer Style="  display: flex; align-items: center; justify-content: center; margin-top: 20px; flex-wrap: wrap; gap: 20px;">
         @if (IsEditing)
         {
@@ -196,7 +176,8 @@ else
     public async Task Edit()
     {
         CreandoAlbum = true;
-      
+        if (enlazarAlbum == false)
+            Request.Reference = 0;
         var r = await albumService.ModificarSingle(Request, newReview, enlazarAlbum);
 
         if (r.Success == true)
@@ -214,23 +195,26 @@ else
     }
     protected override void OnInitialized()
     {
-       
+
         newReview = Request.Review.ToRquest();
     }
 
     protected override async Task OnInitializedAsync()
     {
-      
-            await getUsuarioActual();
-            StateHasChanged();
 
-        
+        await getUsuarioActual();
+        enlazarAlbum = Request.Reference != 0;
+        StateHasChanged();
+
+
 
     }
     public async Task Crear()
     {
         CreandoAlbum = false;
-        
+
+        if (enlazarAlbum == false)
+             Request.Reference = 0;
         var r = await albumService.CrearSingle(Request, newReview, enlazarAlbum);
 
         if(r.Success == true && r.Data  is not null)
@@ -311,7 +295,7 @@ else
             </MudContainer>
 
 
-            <MudButton Variant="Variant.Text" @onclick='()=>{navManager.NavigateTo($"/album/{Album.IdSpotify}");}' Style="font-size: 10px; font-weight: bold; cursor: pointer; " Color="MudBlazor.Color.Error" DisableElevation="true">Ver</MudButton>
+            <MudButton Variant="Variant.Text" @onclick='()=>{navManager.NavigateTo($"/single/{Album.IdSpotify}");}' Style="font-size: 10px; font-weight: bold; cursor: pointer; " Color="MudBlazor.Color.Error" DisableElevation="true">Ver</MudButton>
 
 
 

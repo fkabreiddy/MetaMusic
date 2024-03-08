@@ -77,33 +77,23 @@
         </MudTooltip>
         
         <MudSpacer></MudSpacer>
-        <MudHidden Invert=true Breakpoint="Breakpoint.SmAndDown">
-            <MudIconButton @onclick='()=>{navManager.NavigateTo($"/search");}' Class="meta-bar-link" Size="Size.Small" Icon="@Icons.Material.Rounded.Search" ></MudIconButton>
+         <MudIconButton @onclick='()=>{navManager.NavigateTo($"/search");}' Class="meta-bar-link" Size="Size.Small" Icon="@Icons.Material.Rounded.Search" ></MudIconButton>
 
-        </MudHidden>
-         <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudLink  @onclick='()=>{navManager.NavigateTo($"/search");}'  Class="meta-bar-link" Style="font-size:12px; font-weight: bold;">BUSCAR</MudLink>
-
-
-         </MudHidden>
+      
         <MudSpacer></MudSpacer>
-        <MudHidden Invert=true Breakpoint="Breakpoint.SmAndDown">
+      
             <MudIconButton @onclick='()=>{navManager.NavigateTo($"/all-reviews");}' Class="meta-bar-link" Size="Size.Small" Icon="@Icons.Material.Outlined.Album"></MudIconButton>
 
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudLink @onclick='()=>{navManager.NavigateTo($"/all-reviews");}' Class="meta-bar-link" Style="font-size:12px; font-weight: bold;">REVIEWS</MudLink>
+       
 
-        </MudHidden>
+     
         <MudSpacer></MudSpacer>
-        <MudHidden Invert=true Breakpoint="Breakpoint.SmAndDown">
+     
             <MudIconButton @onclick='()=>{navManager.NavigateTo($"/all-artists");}' Class="meta-bar-link" Size="Size.Small" Icon="@Icons.Material.Outlined.MicExternalOn"></MudIconButton>
 
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudLink @onclick='()=>{navManager.NavigateTo($"/all-artists");}' Class="meta-bar-link" Style="font-size:12px; font-weight: bold;">ARTISTAS</MudLink>
+       
 
-        </MudHidden>
+     
 
      
         <MudSpacer></MudSpacer>

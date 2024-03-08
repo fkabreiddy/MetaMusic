@@ -253,7 +253,13 @@
     public async Task getResultados()
     {
         if (topic == "")
+        {
+            Albumes.Clear();
+            Usuarios.Clear();
+            Artistas.Clear();
             return;
+        }
+      
         buscando = true;
 
         await getUsuarios();
