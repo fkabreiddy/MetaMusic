@@ -11,9 +11,15 @@
                 </BlazorAnimation.Animation>
             </MudItem>
         </Virtualize>
-        
+
     }
-   
+    else
+    {
+        <div style="display: flex; align-items: center; justify-content: center; width:100%;">
+            <Loader></Loader>
+        </div>
+    }
+
     <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-top: 60px; margin-bottom: 60px; ">
 
 

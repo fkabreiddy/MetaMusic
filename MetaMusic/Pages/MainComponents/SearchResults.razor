@@ -14,20 +14,7 @@
 }
 </style>
 
-<div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center;   ">
-
-    <MudText Style="font-size: 20px; font-weight: bold;">BUSCADOR</MudText>
-    <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
-   
-
-
-
-
-
-
-
-
-</div>
+<Encabezado Title='@("BUSCADOR")'></Encabezado>
 
 
 
@@ -259,7 +246,9 @@
             Artistas.Clear();
             return;
         }
-      
+
+
+
         buscando = true;
 
         await getUsuarios();
@@ -269,6 +258,8 @@
         await GetCurrentUser();
 
         buscando = false;
+
+        
 
         if (Albumes.Count > Usuarios.Count && Albumes.Count > Artistas.Count)
         {
@@ -354,7 +345,6 @@
     public int currentuser_id = 0;
     public bool buscando = false;
     public bool panel_contraido = false;
-
 
     
 }
