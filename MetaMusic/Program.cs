@@ -57,7 +57,7 @@ builder.Services.AddScoped<INotificacionService, NotificacionService>();
 
 builder.Services.AddScoped<IPeticionService, PeticionService>();
 builder.Services.AddScoped<IBusquedaService, BusquedaService>();
-
+builder.Services.AddScoped<IStatsService, StatsService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSignalR();
 

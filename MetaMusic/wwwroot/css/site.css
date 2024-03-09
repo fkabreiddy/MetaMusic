@@ -83,3 +83,23 @@ c
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.meta-nav-button {
+}
+
+    .meta-nav-button:hover {
+        color: #E74646;
+    }
+
+body {
+    scrollbar-width: thin; /* Firefox */
+}
+
+    body::-webkit-scrollbar {
+        width: 12px; /* Ancho de la barra de desplazamiento */
+    }
+
+    body::-webkit-scrollbar-thumb {
+        background-color: #E74646; /* Color del pulgar de la barra de desplazamiento */
+        border-radius: 10px; /* Radio del borde del pulgar */
+    }
