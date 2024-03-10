@@ -553,15 +553,15 @@ else
                 return (null, null);
             }
 
-            if(Path.GetExtension(ufile.Name) != ".png" || Path.GetExtension(ufile.Name) != ".jpeg" || Path.GetExtension(ufile.Name) != ".jpg")
+            if(Path.GetExtension(ufile.Name) != ".png" && Path.GetExtension(ufile.Name) != ".jpeg" && Path.GetExtension(ufile.Name) != ".jpg")
             {
                 MostrarNotificacion("Error", "Tipo de archivo invalido, Solo se permiten .jpeg, .png o jpg");
                 return (null, null);
             }
 
             var fileName = Path.GetFileName(ufile.Name);
-            var guid = Guid.NewGuid().ToString();
-            var newFileName = $"{guid}{Path.GetExtension(ufile.Name)}";
+            
+            var newFileName = $"pfp_{UsuarioActual.CorreoNormalizado}{Path.GetExtension(ufile.Name)}";
 
             // Simular una operación que puede llevar más de 10 segundos
             return (Path.Combine("wwwroot", "UsersPFP", newFileName), newFileName);
