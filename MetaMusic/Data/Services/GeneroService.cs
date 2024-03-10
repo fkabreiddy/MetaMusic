@@ -1,7 +1,9 @@
 ﻿using MetaMusic.Data.Context;
 using MetaMusic.Data.OtherEntities;
 using MetaMusic.Data.Request;
+using MetaMusic.Data.Entities;
 using MetaMusic.Data.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -49,6 +51,51 @@ namespace MetaMusic.Data.Services
             }
         }
 
+        [Authorize(Roles = "Staff")]
+        public async Task<Result<GeneroResponse>> Crear(GeneroRequest request)
+        {
+            try
+            {
+                var genero = await dbContext.Generos.FirstOrDefaultAsync(g => g.Nombre.ToLower() == request.Nombre.ToLower()) ;
+
+                if (genero is not null)
+                    return new()
+                    {
+                        Message = "No Ese genero ya existe",
+                        Success = false
+                    };
+
+                var newgenero = Genero.Crear(request);
+
+                await dbContext.Generos.AddAsync(newgenero);
+
+                await dbContext.SaveChangesAsync();
+
+
+                var generonuevo = await dbContext.Generos.Include(g => g.Artistas).FirstOrDefaultAsync(g => g.Id == newgenero.Id);
+
+                
+
+                return new ()
+                {
+                    Data = generonuevo.ToResponse() ,
+                    Message = "Exito",
+                    Success = true
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new ()
+                {
+
+                    Message = ex.InnerException?.Message ?? ex.Message,
+                    Success = false
+                };
+            }
+        }
+
+
         public async Task<Result<GeneroResponse>> GetOne(GeneroRequest request)
         {
             try
@@ -81,11 +128,11 @@ namespace MetaMusic.Data.Services
             }
         }
 
-        public async Task<Result<bool>> Eliminar(GeneroRequest request)
+        public async Task<Result<bool>> Eliminar(int Id)
         {
             try
             {
-                var genero = await dbContext.Generos.FirstOrDefaultAsync(g => g.Id == request.Id);
+                var genero = await dbContext.Generos.FirstOrDefaultAsync(g => g.Id == Id);
 
                 if (genero is null)
                     return new Result<bool>()
@@ -101,7 +148,7 @@ namespace MetaMusic.Data.Services
                 {
                     Data = true,
                     Message = "Exito",
-                    Success = false
+                    Success = true
                 };
 
             }

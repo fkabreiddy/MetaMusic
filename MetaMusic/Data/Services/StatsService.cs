@@ -1,6 +1,7 @@
 ﻿using MetaMusic.Data.Context;
 using MetaMusic.Data.Entities;
 using MetaMusic.Data.OtherEntities;
+using MetaMusic.Data.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -89,26 +90,24 @@ namespace MetaMusic.Data.Services
 
                 }
 
-
-                var generos = await dbContext.Genero_Artistas.ToListAsync();
+                Dictionary<Genero, int> resultado = new Dictionary<Genero, int>();
+                var generos = await dbContext.Generos.Include(g => g.Artistas).ToListAsync();
 
                 if (generos is null)
                     return new() { Success = false, Message = "No hay generos" };
 
-                var resultado = generos
-                        .GroupBy(ga => ga.Genero ?? new Genero())
-                        .ToDictionary(
-                            group => group.Key,
-                            group => group.Count()
-                        );
-
+               
+                foreach(var genero in generos )
+                {
+                    resultado.Add(genero, genero.Artistas.Count());
+                }
 
 
                 return new()
                 {
                     Success = true,
                     Message = "Exito",
-                    Data = resultado
+                    Data = resultado.OrderByDescending(g => g.Value).ToDictionary()
                 };
 
             }
@@ -121,7 +120,7 @@ namespace MetaMusic.Data.Services
                 };
             }
         }
-        public async Task<Result<Dictionary<Genero, int>>> RankGenerosAlbumes()
+        public async Task<Result<List<AlbumResponse>>> AlbumesPerYear(int year)
         {
             try
             {
@@ -135,39 +134,22 @@ namespace MetaMusic.Data.Services
 
                 }
 
-
-                var generos = await dbContext.Genero_Artistas.ToListAsync();
-                var albumes = await dbContext.Albumes.ToListAsync();
-
-                if (generos is null || albumes is null)
-                    return new() { Success = false, Message = "No hay datos" };
-
-                var resultado = albumes
-     .Join(
-         generos,
-         album => album.Artistas[0].Id,  // Clave de unión con ArtistaId de Album
-         generoArtista => generoArtista.Artista.Id,
-         (album, generoArtista) => new { Genero = generoArtista.Genero, Album = album }
-     )
-     .GroupBy(ag => ag.Genero)
-     .ToDictionary(
-         group => group.Key,
-         group => group.Count()
-     );
-
-
+                var albumes = await dbContext.Albumes.Where(a => a.Fecha_Agregado.Year == year).ToListAsync();
 
                 return new()
                 {
                     Success = true,
                     Message = "Exito",
-                    Data = resultado
+                    Data = albumes.Select(a => a.ToResponse()).ToList()
+
+
+
                 };
 
             }
             catch (Exception e)
             {
-                return new()
+                return new Result<List<AlbumResponse>>()
                 {
                     Message = e.InnerException?.Message ?? e.Message,
                     Success = false
