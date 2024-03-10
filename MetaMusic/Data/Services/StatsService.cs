@@ -156,5 +156,89 @@ namespace MetaMusic.Data.Services
                 };
             }
         }
+
+        public async Task<Result<List<AlbumResponse>>> MyAlbums(int year)
+        {
+            try
+            {
+                var userContext = await googleAuth.GetCurrentUser();
+
+
+                if (userContext is null || userContext.Data is null || userContext.Data.Rol.Tipo != "Staff")
+                {
+                    return new() { Message = "No estas autorizado o no estas logeado para ver esto", Success = false };
+
+
+                }
+
+                var albumes = await dbContext.Albumes.Where(a => a.Creador.Id == userContext.Data.Id).ToListAsync();
+
+                return new()
+                {
+                    Success = true,
+                    Message = "Exito",
+                    Data = albumes.Select(a => a.ToResponse()).ToList()
+
+
+
+                };
+
+            }
+            catch (Exception e)
+            {
+                return new Result<List<AlbumResponse>>()
+                {
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = false
+                };
+            }
+        }
+
+        public async Task<Result<Dictionary<UsuarioResponse, int>>> TopMostActiveUsers(int year)
+        {
+            try
+            {
+                var userContext = await googleAuth.GetCurrentUser();
+
+                
+
+
+
+                if (userContext is null || userContext.Data is null || userContext.Data.Rol.Tipo != "Staff")
+                {
+                    return new() { Message = "No estas autorizado o no estas logeado para ver esto", Success = false };
+
+
+                }
+
+                Dictionary<UsuarioResponse, int> resultado = new Dictionary<UsuarioResponse, int>();
+
+                var usuarios = await dbContext.Usuarios.Include(u => u.Calificaciones).OrderBy(u => u.Calificaciones.Count).Take(10).ToListAsync();
+
+
+                foreach(var usuario in usuarios)
+                {
+                    resultado.Add(usuario.ToResponse(), usuario.Calificaciones.Count());
+                }
+                return new()
+                {
+                    Success = true,
+                    Message = "Exito",
+                    Data = resultado
+
+
+
+                };
+
+            }
+            catch (Exception e)
+            {
+                return new()
+                {
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = false
+                };
+            }
+        }
     }
 }

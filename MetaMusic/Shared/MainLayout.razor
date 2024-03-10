@@ -144,6 +144,18 @@
                             <MudLink Underline="Underline.Hover" @onclick='()=>{navManager.NavigateTo("/crear-contenido");}' Style="font-size: 12px;  opacity : 0.7;"> Crear Contenido</MudLink>
 
                         </div>
+                    <div style="display: flex; gap: 15px;  align-items: center; ">
+
+
+
+                        <MudIconButton @onclick='()=>{navManager.NavigateTo($"/stats");}' Class="meta-bar-link" Size="Size.Small" Icon="@Icons.Material.Outlined.AreaChart"></MudIconButton>
+
+
+
+
+                        <MudText Style="font-size: 12px;  opacity : 0.7;">Stats Generales</MudText>
+
+                    </div>
                        
                     </Authorized>
                 </AuthorizeView>
