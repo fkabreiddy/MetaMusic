@@ -218,6 +218,7 @@ else
 
                               
                                 <AuthorizeView Context="staff_options" Roles="Staff">
+                                    
                                     @if (Usuario.Id == UsuarioActual.Id && Usuario.Rol.Tipo == "Staff")
                                     {
 

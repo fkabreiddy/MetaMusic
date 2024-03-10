@@ -67,6 +67,7 @@
             {
                 GenerosAlbumes.Remove(generoAEliminar);
             }
+            newGenero = new GeneroRequest();
             StateHasChanged();
             MostrarNotificacion("Exito", r.Message);
         }
@@ -84,11 +85,13 @@
         if(r.Success && r.Data is not null)
         {
             GenerosAlbumes.Add(r.Data.ToBaseClass(), r.Data.Artistas.Count());
+            newGenero = new GeneroRequest();
             StateHasChanged();
             MostrarNotificacion("Exito", r.Message);
         }
         else
         {
+            newGenero = new GeneroRequest();
             MostrarNotificacion("Error", r.Message);
         }
     }
