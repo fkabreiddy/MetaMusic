@@ -71,8 +71,60 @@
 
             </div>
         </MudTooltip>
-        
-       
+        <MudSpacer></MudSpacer>
+
+        @if (navManager.Uri.Contains("/stats"))
+        {
+            
+                <MudIconButton Icon="@Icons.Material.Outlined.AreaChart" Color="Color.Error"></MudIconButton>
+
+               
+        }
+        else if(navManager.Uri.Contains("/search"))
+        {
+            <MudIconButton  Icon="@Icons.Material.Rounded.Search" Color="Color.Error"></MudIconButton>
+
+        }
+        else if (navManager.Uri.Contains("/all-reviews") || navManager.Uri.Contains("/album"))
+        {
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#E74646" class="bi bi-eyeglasses " viewBox="0 0 16 16">
+                <path d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4m2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A2 2 0 0 0 8 6c-.532 0-1.016.208-1.375.547M14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0" />
+            </svg>
+
+
+        }
+        else if (navManager.Uri.Contains("/all-artists") ||navManager.Uri.Contains("/artist") )
+        {
+            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Outlined.MicExternalOn"></MudIconButton>
+
+
+
+        }
+        else if (navManager.Uri.Contains("/crear-contenido"))
+        {
+            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Outlined.Add"></MudIconButton>
+
+
+
+        }
+         else if (navManager.Uri.Contains("/404"))
+        {
+            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Outlined.QuestionMark"></MudIconButton>
+
+
+
+        }
+        else if (navManager.Uri.Contains("/single"))
+        {
+            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Outlined.MusicNote"></MudIconButton>
+
+
+
+        }
+        else
+        {
+            <MudIcon Icon="@Icons.Material.Outlined.Home" Color="Color.Error" Size="Size.Small"></MudIcon>
+        }
 
      
         <MudSpacer></MudSpacer>
@@ -125,9 +177,9 @@
                
                     <MudIcon Icon="@Icons.Material.Rounded.ArrowBack"  @onclick="()=>{opendrawer = !opendrawer;}" Style="width: 15px; height: 15px;cursor:pointer;" Size="Size.Small"></MudIcon>
             </div>
-                <div class="nav-button" @onclick='()=>{navManager.NavigateTo("/");}' style="display: flex; gap: 15px;  align-items: center; cursor: pointer;">
+                <div class="nav-button" @onclick='()=>{navManager.NavigateTo("/");}'  style="display: flex; gap: 15px;  align-items: center; cursor: pointer;">
 
-                    <MudIcon Icon="@Icons.Material.Outlined.Home" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
+                <MudIcon class="nav-button" Icon="@Icons.Material.Outlined.Home" Style="width: 20px; height: 20px;cursor:pointer;" Size="Size.Small"></MudIcon>
 
                     <MudText Style="font-size: 12px; font-weight: bold; ">Home</MudText>
 
@@ -139,16 +191,16 @@
                
                         <div   class="nav-button" style="display: flex; gap: 15px;  align-items: center; ">
 
-                            <MudIcon Icon="@Icons.Material.Outlined.AddCircleOutline" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
+                            <MudIcon class="nav-button" Icon="@Icons.Material.Outlined.Add" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
 
                             <MudLink Underline="Underline.Hover" @onclick='()=>{navManager.NavigateTo("/crear-contenido");}' Style="font-size: 12px;  opacity : 0.7;"> Crear Contenido</MudLink>
 
                         </div>
-                    <div style="display: flex; gap: 15px;  align-items: center; ">
+                    <div style="display: flex; gap: 15px;  align-items: center; " @onclick='()=>{navManager.NavigateTo($"/stats");}' class="meta-bar-link">
 
 
 
-                        <MudIconButton @onclick='()=>{navManager.NavigateTo($"/stats");}' Class="meta-bar-link" Size="Size.Small" Icon="@Icons.Material.Outlined.AreaChart"></MudIconButton>
+                        <MudIconButton class="nav-button" Size="Size.Small" Icon="@Icons.Material.Outlined.AreaChart"></MudIconButton>
 
 
 
@@ -160,11 +212,11 @@
                     </Authorized>
                 </AuthorizeView>
 
-            <div style="display: flex; gap: 15px;  align-items: center; ">
+            <div style="display: flex; gap: 15px;  align-items: center; " @onclick='()=>{navManager.NavigateTo($"/search");}' class="meta-bar-link">
 
 
 
-                <MudIconButton @onclick='()=>{navManager.NavigateTo($"/search");}' Class="meta-bar-link" Size="Size.Small" Icon="@Icons.Material.Rounded.Search"></MudIconButton>
+                <MudIconButton class="nav-button" Size="Size.Small" Icon="@Icons.Material.Rounded.Search"></MudIconButton>
 
 
 
@@ -172,10 +224,10 @@
                 <MudText Style="font-size: 12px;  opacity : 0.7;">Buscar</MudText>
 
             </div>
-            <div style="display: flex; gap: 15px;  align-items: center; ">
+            <div style="display: flex; gap: 15px;  align-items: center; " @onclick='()=>{navManager.NavigateTo($"/all-reviews");}' Class="meta-bar-link">
 
 
-                <svg @onclick='()=>{navManager.NavigateTo($"/all-reviews");}' xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eyeglasses meta-bar-link" viewBox="0 0 16 16">
+                <svg  xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eyeglasses " viewBox="0 0 16 16">
                     <path d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4m2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A2 2 0 0 0 8 6c-.532 0-1.016.208-1.375.547M14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0" />
                 </svg>
 
@@ -184,11 +236,11 @@
                 <MudText Style="font-size: 12px;  opacity : 0.7;">Reviews</MudText>
 
             </div>
-            <div style="display: flex; gap: 15px;  align-items: center; ">
+            <div style="display: flex; gap: 15px;  align-items: center; " @onclick='()=>{navManager.NavigateTo($"/all-artists");}' class="meta-bar-link">
 
 
 
-                <MudIconButton @onclick='()=>{navManager.NavigateTo($"/all-artists");}' Class="meta-bar-link" Size="Size.Small" Icon="@Icons.Material.Outlined.MicExternalOn"></MudIconButton>
+                <MudIconButton class="nav-button" Size="Size.Small" Icon="@Icons.Material.Outlined.MicExternalOn"></MudIconButton>
 
 
 
@@ -200,7 +252,7 @@
 
             <div class="nav-button" @onclick="showNotificaciones" style="display: flex; gap: 15px;  align-items: center; cursor: pointer;">
 
-                    <MudIcon Icon="@Icons.Material.Outlined.Notifications" Style="width: 20px; height: 20px;cursor:pointer;" Size="Size.Small"></MudIcon>
+                <MudIcon class="nav-button" Icon="@Icons.Material.Outlined.Notifications" Style="width: 20px; height: 20px;cursor:pointer;" Size="Size.Small"></MudIcon>
 
                   <MudText Style="font-size: 12px;  opacity : 0.7;"> Notificaciones</MudText>
                                               <MudBadge Visible="@hayNotificaciones" Bordered=true Color="Color.Error" Dot=true />
@@ -406,8 +458,9 @@
     public bool IsDarkMode { get; set; } = true ;
     public bool hayReportes = false;
     public bool hayPeticiones = false;
-    public string buscar = "";
+    
     public bool opendrawer = false;
+
     private MudTheme ThemeCustom => new()
      {
 
