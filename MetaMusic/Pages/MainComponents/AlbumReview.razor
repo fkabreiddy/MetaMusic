@@ -18,6 +18,47 @@
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.125);
         }
+
+    .parent {
+        margin: 40px auto;
+
+        width: 100%;
+        display: flex;
+        gap: 40px;
+        transition: all 0.5s ease;
+        align-items: center;
+justify-content: center;
+
+    }
+
+        .parent .imageContainer {
+            position: relative;
+            width: max-content;
+        }
+
+            .parent .imageContainer .foregroundImg {
+                cursor: pointer;
+                position: relative;
+                z-index: 2;
+                pointer-events: none;
+                height: 250px; 
+                width: 250px;
+            }
+
+            .parent .imageContainer .backgroundImg {
+                position: absolute;
+                top: 2px;
+                left: 0;
+                transform: scale(1);
+                transition: all 0.5s ease;
+                opacity: 0.8;
+                filter: blur(24px);
+                z-index: 1;
+                height: 250px;
+                width: 250px;
+            }
+
+           
 </style>
 
 @if(edit)
@@ -113,9 +154,14 @@ else
 
                         <MudItem md="4" lg="4" xxl="4" Class="container" xl="4" sm="12" xs="12" Style=" display: flex; flex-direction: column; align-items: center; align-items: center; justify-content: center; gap: 15px;">
 
-                            <MudAvatar Square=true Rounded=false Style="height: 250px; width: 250px;">
-                                <MudImage src="@Albumresponse.Portada" />
-                            </MudAvatar>
+                                <div class="parent">
+	
+	                                <div class="imageContainer">
+		                                <img class="foregroundImg" src="@Albumresponse.Portada">
+		                                <img class="backgroundImg" src="@Albumresponse.Portada">
+	                                </div>
+                                </div>
+                          
 
                             <AuthorizeView>
                                 <Authorized>
