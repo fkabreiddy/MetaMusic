@@ -12,7 +12,7 @@ namespace MetaMusic.Data.Entities
         
         public string Foto_Perfil { get; set; } = null!;
 
-        [StringLength(50)]
+        [StringLength(250)]
         public string Nombre { get; set; } = null!;
 
         [StringLength(50)]

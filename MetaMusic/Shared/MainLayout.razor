@@ -259,14 +259,14 @@
 
                          
                 </div>
-            @* <div class="nav-button" style="display: flex; gap: 15px;  align-items: center; cursor:pointer; " @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}">
+             <div class="nav-button" style="display: flex; gap: 15px;  align-items: center; cursor:pointer; " @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}">
 
                     <MudIcon Icon="@(theme.IsDarkTheme ? @Icons.Material.Outlined.DarkMode : @Icons.Material.Outlined.LightMode)" Style="width: 20px; height: 20px;cursor:pointer;"  Size="Size.Small"></MudIcon>
 
                   <MudText Style="font-size: 12px;  opacity : 0.7;"> Activar Modo @(theme.IsDarkTheme ? "Claro" : "Oscuro") </MudText>
                          
                 </div>
- *@
+ 
                 <MudDivider Style="margin-top: 20px; margin-bottom: 20px;" DividerType="DividerType.FullWidth" Light=true></MudDivider>
 
                 <div style="display: flex; gap: 15px;  align-items: center; margin-bottom: 20px; ">

@@ -43,7 +43,7 @@
                         {
                             <MudText Class="album-genre" Style="font-size: 12px; font-weight: bold;" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
                         }
-                        else
+                        else if(album.Artistas.Count() >= 1)
                         {
                             <MudText Class="album-genre" Style="font-size: 12px; font-weight: bold;" Color="Color.Error">
                                 @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre)

@@ -16,10 +16,10 @@ namespace MetaMusic.Data.Entities
         public bool Publicado { get; set; } = true;
 
 
-        [StringLength(50)]
+        [StringLength(250)]
         public  string Nombre { get; set; } = null!;
 
-        [StringLength(50)]
+        [StringLength(250)]
         public string IdSpotify { get; set; } = null!;
 
         [StringLength(25)]

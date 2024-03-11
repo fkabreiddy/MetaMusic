@@ -9,6 +9,8 @@ namespace MetaMusic.Data.Entities
         [Key]
         public int Id { get; set; }
 
+
+        [StringLength(250)]
         public string Titulo { get; set; } = null!;
 
         public Album Album { get; set; } = null!;
