@@ -50,7 +50,7 @@
 
 @functions{
 
-    public async Task getAlbumes(){
+    public void getAlbumes(){
 
         buscando = true;
         if (year == 0)
@@ -170,9 +170,9 @@
         
     }
     
-    protected override async Task OnInitializedAsync()
+    protected override  void OnInitialized()
     {
-        await getAlbumes();
+         getAlbumes();
     }
 }
 @code {

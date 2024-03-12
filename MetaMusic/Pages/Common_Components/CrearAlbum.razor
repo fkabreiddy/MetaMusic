@@ -312,7 +312,7 @@ else
     {
         parteentera = (int)Request.Calificacion_Creador;
         partedecimal = Request.Calificacion_Creador - parteentera;
-        newReview = Request.Review.ToRquest();
+        newReview = Request.Review!.ToRquest()  ;
     }
 
     protected override async Task OnInitializedAsync()

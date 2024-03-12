@@ -33,6 +33,9 @@ namespace MetaMusic.Data.Services
                         Success = false
                     };
 
+                if (usuarioactual.Data is null)
+                    return new() { Message = "Error, no estas logeado", Success = false };
+
                 var userfrom = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == usuarioactual.Data.Id);
 
 
@@ -43,7 +46,7 @@ namespace MetaMusic.Data.Services
                         Success = false
                     };
 
-                var album = await dbContext.Albumes.Include(a => a.Artistas).ThenInclude(r => r.Artista).ThenInclude(a => a.Suscriptores).ThenInclude(r => r.Usuario).FirstOrDefaultAsync(a => a.Id == _albumid);
+                var album = await dbContext.Albumes.Include(a => a.Artistas).ThenInclude(r => r.Artista!).ThenInclude(a => a.Suscriptores).ThenInclude(r => r.Usuario).FirstOrDefaultAsync(a => a.Id == _albumid);
 
 
                 if (album is null)
@@ -55,7 +58,7 @@ namespace MetaMusic.Data.Services
 
 
                 var suscriptores = album.Artistas
-                                                .SelectMany(r => r.Artista.Suscriptores.Select(a => a.Usuario))
+                                                .SelectMany(r => r.Artista!.Suscriptores.Select(a => a.Usuario))
                                                 .Distinct()
                                                 .ToList();
 
@@ -104,6 +107,8 @@ namespace MetaMusic.Data.Services
                         Success = false
                     };
 
+                if (usuarioactual.Data is null)
+                    return new() { Message = "Error, no estas logeado", Success = false };
                 var userfrom = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == usuarioactual.Data.Id);
 
 
@@ -125,8 +130,8 @@ namespace MetaMusic.Data.Services
                     };
 
 
-               
-                var notificacion = Notificacion.Crear(new NotificacionRequest() { Album = album, Titulo = $"Ocultamos la review del album {album.Nombre} por tener demaciados reportes sin revisar", UserFrom = userfrom, UserTo = album.Creador });
+
+                var notificacion = Notificacion.Crear(new NotificacionRequest() { Album = album, Titulo = $"Ocultamos la review del album {album.Nombre} por tener demaciados reportes sin revisar", UserFrom = userfrom, UserTo = album.Creador ?? new Usuario() }); ;
 
 
                 await dbContext.Notificacions.AddAsync(notificacion);
@@ -174,6 +179,8 @@ namespace MetaMusic.Data.Services
                         Message = "No estas logeado",
                         Success = false
                     };
+                if (usuarioactual.Data is null)
+                    return new() { Message = "Error, no estas logeado", Success = false };
 
                 var userfrom = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == usuarioactual.Data.Id);
 
@@ -218,6 +225,8 @@ namespace MetaMusic.Data.Services
                         Message = "No estas logeado",
                         Success = false
                     };
+                if (usuarioactual.Data is null)
+                    return new() { Message = "Error, no estas logeado", Success = false };
 
                 var notificaciones = await dbContext.Notificacions.Include(n => n.Album).Where(n => n.UserTo.Id == usuarioactual.Data.Id).ToListAsync();
 
@@ -277,6 +286,54 @@ namespace MetaMusic.Data.Services
             }
         }
 
-        
+        public async Task<Result<bool>> MarcarComoLeida(List<int> notificacions)
+        {
+
+            try
+            {
+
+
+                if (notificacions is null || notificacions.Count() <= 0)
+                    return new()
+                    {
+                        Message = "No hay notificiones nuevas",
+                        Success = false
+                    };
+
+               
+
+                foreach(var id in notificacions)
+                {
+                    var n = await dbContext.Notificacions.FirstOrDefaultAsync(n => n.Id == id);
+
+
+                    if(n is not null)
+                          n.Saw = true;
+
+                }
+
+                await dbContext.SaveChangesAsync();
+
+                return new()
+                {
+                    Message = "Notificacion Eliminada",
+                    Success = true,
+
+                };
+            }
+            catch (Exception e)
+            {
+                return new()
+                {
+                    Message = e.InnerException?.Message ?? e.Message,
+                    Success = false
+                };
+
+            }
+        }
+
+
+
+
     }
 }

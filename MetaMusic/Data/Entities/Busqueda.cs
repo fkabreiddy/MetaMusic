@@ -13,7 +13,7 @@ namespace MetaMusic.Data.Entities
         [StringLength(50)]
         public string Contenido { get; set; } = null!;
 
-        public Usuario? Usuario { get; set; } = new Usuario();
+        public  Usuario? Usuario { get; set; } = new Usuario();
 
         public static Busqueda Crear(BusquedaRequest request) => new Busqueda()
         {

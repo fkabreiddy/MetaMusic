@@ -196,7 +196,7 @@ else
     protected override void OnInitialized()
     {
 
-        newReview = Request.Review.ToRquest();
+        newReview = Request.Review!.ToRquest();
     }
 
     protected override async Task OnInitializedAsync()

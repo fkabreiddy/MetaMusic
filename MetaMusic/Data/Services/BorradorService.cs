@@ -43,12 +43,26 @@ namespace MetaMusic.Data.Services
                         Message = "No existes en nuestros registros"
                     };
 
-                if (userUser.Rol.Tipo != "Staff")
+
+                if(userUser.Rol is not null)
+                {
+                    if (userUser.Rol.Tipo != "Staff")
+                        return new Result<AlbumResponse>()
+                        {
+                            Success = false,
+                            Message = "No tienes permiso para crear esto"
+                        };
+                }
+                else
+                {
                     return new Result<AlbumResponse>()
                     {
                         Success = false,
                         Message = "No tienes permiso para crear esto"
                     };
+                }
+               
+              
 
 
 
@@ -109,18 +123,30 @@ namespace MetaMusic.Data.Services
                         Message = "No existes en nuestros registros"
                     };
 
-                if (userUser.Rol.Tipo != "Staff")
+                if (userUser.Rol is not null)
+                {
+                    if (userUser.Rol.Tipo != "Staff")
+                        return new Result<AlbumResponse>()
+                        {
+                            Success = false,
+                            Message = "No tienes permiso para crear esto"
+                        };
+                }
+                else
+                {
                     return new Result<AlbumResponse>()
                     {
                         Success = false,
                         Message = "No tienes permiso para crear esto"
                     };
+                }
 
 
                 var album = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Id == request.Id);
 
 
-                if (album is not null)
+                if (album is null)
+                    return new() { Message = "Album no encontrado", Success = false };
                     album.Modificar(request);
 
                 var ca = await dbContext.Calificaciones.FirstOrDefaultAsync(c => c.Id == calificacion.Id);
@@ -173,7 +199,7 @@ namespace MetaMusic.Data.Services
 
 
 
-                var calificaciones = await dbContext.Calificaciones.Where(n => n.Album.Id == response.Id).ToListAsync();
+                var calificaciones = await dbContext.Calificaciones.Where(n => n.Album!.Id == response.Id).ToListAsync();
                 if (calificaciones is not null)
                 {
                     dbContext.Calificaciones.RemoveRange(calificaciones);
@@ -197,7 +223,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Creador.Id == user.Id && a.Publicado == true).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Creador!.Id == user.Id && a.Publicado == true).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()

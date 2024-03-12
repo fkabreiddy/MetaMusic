@@ -93,9 +93,9 @@ builder.Services.AddAuthentication().AddGoogle(option =>
 
     option.Events.OnCreatingTicket = (context) =>
     {
-        var picture = context.User.GetProperty("picture").GetString();
+        var picture = context.User.GetProperty("picture").GetString() ?? "";
 
-        context.Identity.AddClaim(new Claim("picture", picture));
+        context.Identity!.AddClaim(new Claim("picture", picture ));
 
         return Task.CompletedTask;
     };

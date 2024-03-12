@@ -16,7 +16,7 @@
                   <div style="display: flex;  justify-content: start; flex-direction: column; padding-left: 0;gap: 10px;">
                         <div style="padding-left: 0; display: flex; align-items: center; gap: 15px;">
                             <MudText Style="font-size: 10px;  opacity: 0.5;">
-                                Nueva Notificacion - @Notificacion.Fecha_Creacion.FechaRelativa()
+                               @if(Notificacion.Saw == false){ @("Nueva Notificacion - ")} @Notificacion.Fecha_Creacion.FechaRelativa()
                             </MudText>
 
 
@@ -47,7 +47,7 @@
                     <div style="display: flex;  justify-content: start; flex-direction: column; padding-left: 0;gap: 10px;">
                         <div style="padding-left: 0; display: flex; align-items: center; gap: 15px;">
                             <MudText Style="font-size: 10px;  opacity: 0.5;">
-                                Nueva Notificacion - @Notificacion.Fecha_Creacion.FechaRelativa()
+                        @if (Notificacion.Saw == false) { @("Nueva Notificacion - ")}  @Notificacion.Fecha_Creacion.FechaRelativa()
                             </MudText>
                             <MudBadge Visible="!Notificacion.Saw" Color="Color.Tertiary" Bordered=true Dot=true></MudBadge>
                         </div>

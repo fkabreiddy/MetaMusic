@@ -52,7 +52,7 @@ namespace MetaMusic.Data.Entities
             Nombre = this.Nombre,
             Correo = this.Correo,
       
-            Rol = this.Rol,
+            Rol = this.Rol ?? new(),
            
             // Agrega otras propiedades si es necesario
         };
@@ -63,7 +63,7 @@ namespace MetaMusic.Data.Entities
             Correo = this.Correo,
             FotoDePerfil = this.FotoDePerfil,
             Biografia = this.Biografia,
-            Rol = this.Rol,
+            Rol = this.Rol ?? new(),
             Artistas_Creados = this.Artistas_Creados,
             Albumes_Publicados = this.Albumes_Publicados,
             Notas_DisLikeadas = this.Notas_DisLikeadas,
@@ -145,7 +145,7 @@ namespace MetaMusic.Data.Entities
                 modificacion = true;
             }
 
-            if (!Rol.Equals(usuarioResponse.Rol))
+            if (!Rol!.Equals(usuarioResponse.Rol))
             {
                 Rol = usuarioResponse.Rol;
                 modificacion = true;

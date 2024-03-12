@@ -38,7 +38,7 @@ namespace MetaMusic.Data.Services
                 if (usuario is null)
                     return new() { Success = false, Message = "No estas registrado en al app" };
 
-                var existe = await dbContext.Busquedas.FirstOrDefaultAsync(b => b.Usuario.Id == usuario.Id && b.Contenido == tema);
+                var existe = await dbContext.Busquedas.FirstOrDefaultAsync(b => b.Usuario!.Id == usuario.Id && b.Contenido == tema);
 
                 if (existe is not null)
                     return new()
@@ -85,7 +85,7 @@ namespace MetaMusic.Data.Services
 
                 
 
-                var busquedas = await dbContext.Busquedas.Where(b => b.Usuario.Id == usuario.Id).ToListAsync();
+                var busquedas = await dbContext.Busquedas.Where(b => b.Usuario!.Id == usuario.Id).ToListAsync();
 
                 if (busquedas is null)
                     return new()
@@ -124,7 +124,7 @@ namespace MetaMusic.Data.Services
                         Success = false
                     };
 
-                return new() { Message = "Exito", Success = true, Data = busquedas.Select(b => b.ToResponse()).ToList() };
+                return new() { Message = "Exito", Success = true, Data = busquedas.Select(b => b!.ToResponse()).ToList() };
 
 
             }

@@ -92,7 +92,7 @@ namespace MetaMusic.Data.Services
                     return new Result<List<CalificacionResponse>>() { Message = "El album no existe", Success = false };
 
 
-                var calificaciones_a_devolver = await dbContext.Calificaciones.Include(c => c.Usuario).Where(c => c.Album.Id == album.Id).ToListAsync();
+                var calificaciones_a_devolver = await dbContext.Calificaciones.Include(c => c.Usuario).Where(c => c.Album!.Id == album.Id).ToListAsync();
 
                 if (calificaciones_a_devolver is null)
                     return new Result<List<CalificacionResponse>>() { Message = "Hubo un error a la hora de crear su calificacion, los cambios no se guardaron.", Success = false };
@@ -127,7 +127,7 @@ namespace MetaMusic.Data.Services
             {
 
               
-                var calificacion = await dbContext.Calificaciones.FirstOrDefaultAsync(a => a.Album.Id == albumid && a.Usuario.Id == usuarioid);
+                var calificacion = await dbContext.Calificaciones.FirstOrDefaultAsync(a => a.Album!.Id == albumid && a.Usuario!.Id == usuarioid);
 
                 if (calificacion is null)
                     return new Result<bool>() { Message = "La calificacion no existe", Success = false };

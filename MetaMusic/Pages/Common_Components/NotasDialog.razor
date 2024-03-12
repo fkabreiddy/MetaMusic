@@ -75,7 +75,7 @@
                     }
                     else if(filtro == "malo")
                     {
-                        <Virtualize Items="notas.Where(n => calificaciones.Any(c => c.Usuario.Id == n.Creador.Id && c.Numero <= 3 && c.Numero >= 1)).OrderBy(n => n.Fecha_Creacion).ToList()" TItem="NotaResponse">
+                        <Virtualize Items="notas.Where(n => calificaciones.Any(c => c.Usuario!.Id == n.Creador!.Id && c.Numero <= 3 && c.Numero >= 1)).OrderBy(n => n.Fecha_Creacion).ToList()" TItem="NotaResponse">
                             @if (context.Creador?.Id == usuarioactual.Id)
                             {
                                 <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
@@ -93,7 +93,7 @@
                     }
                     else if (filtro == "neutro")
                     {
-                        <Virtualize Items="notas.Where(n => calificaciones.Any(c => c.Usuario.Id == n.Creador.Id && c.Numero <= 6 && c.Numero >= 4)).OrderBy(n => n.Fecha_Creacion).ToList()" TItem="NotaResponse">
+                        <Virtualize Items="notas.Where(n => calificaciones.Any(c => c.Usuario!.Id == n.Creador!.Id && c.Numero <= 6 && c.Numero >= 4)).OrderBy(n => n.Fecha_Creacion).ToList()" TItem="NotaResponse">
                             @if (context.Creador?.Id == usuarioactual.Id)
                             {
                                 <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
@@ -112,7 +112,7 @@
                     else
                     {
                         
-                        <Virtualize Items="notas.Where(n => calificaciones.Any(c => c.Usuario.Id == n.Creador.Id && c.Numero <= 10 && c.Numero >= 7)).OrderBy(n => n.Fecha_Creacion).ToList()" TItem="NotaResponse">
+                        <Virtualize Items="notas.Where(n => calificaciones.Any(c => c.Usuario!.Id == n.Creador!.Id && c.Numero <= 10 && c.Numero >= 7)).OrderBy(n => n.Fecha_Creacion).ToList()" TItem="NotaResponse">
                             @if (context.Creador?.Id == usuarioactual.Id)
                             {
                                 <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
@@ -142,7 +142,7 @@
 
     [Parameter]
 
-    public MudDialogInstance MudDialog { get; set; }
+    public MudDialogInstance MudDialog { get; set; } 
 
 
     [Parameter] public List<CalificacionResponse> calificaciones { get; set; } = new List<CalificacionResponse>();

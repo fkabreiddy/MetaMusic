@@ -171,7 +171,7 @@ namespace MetaMusic.Data.Services
 
                 }
 
-                var albumes = await dbContext.Albumes.Where(a => a.Creador.Id == userContext.Data.Id).ToListAsync();
+                var albumes = await dbContext.Albumes.Where(a => a.Creador!.Id == userContext.Data.Id).ToListAsync();
 
                 return new()
                 {

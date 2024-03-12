@@ -74,7 +74,8 @@ namespace MetaMusic.Data.Services
 
                 var generonuevo = await dbContext.Generos.Include(g => g.Artistas).FirstOrDefaultAsync(g => g.Id == newgenero.Id);
 
-                
+                if (generonuevo is null)
+                    return new() { Success = false, Message = "No se pudo crear el genero" };
 
                 return new ()
                 {

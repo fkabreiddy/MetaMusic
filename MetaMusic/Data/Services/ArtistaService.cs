@@ -50,6 +50,12 @@ namespace MetaMusic.Data.Services
 
                 var creador = await dbContext.Usuarios.Include(U => U.Rol).FirstOrDefaultAsync(u => u.Id == usuarioactual.Data.Id);
 
+                if (creador is null)
+                    return new() { Message = "No estas logeado", Success = false };
+
+                if (creador.Rol is null)
+                    return new() { Success = false, Message = "Error al recuperar datos" };
+
                 if (creador is null || creador.Rol.Tipo != "Staff")
                     return new Result<ArtistaResponse>()
                     {
@@ -77,7 +83,7 @@ namespace MetaMusic.Data.Services
                 {
                     foreach (var genero in generos)
                     {
-                        var genre = await dbContext.Generos.FirstOrDefaultAsync(g => g.Id == genero.Genero.Id);
+                        var genre = await dbContext.Generos.FirstOrDefaultAsync(g => g.Id == genero.Genero!.Id);
 
                         if (genre is not null)
                             dbContext.Genero_Artistas.Add(new Genero_Artista() { Artista = artist, Genero = genre });
@@ -332,7 +338,7 @@ namespace MetaMusic.Data.Services
                 {
                     foreach (var genero in artista.GenerosMusicales)
                     {
-                        var relacion = await dbContext.Genero_Artistas.FirstOrDefaultAsync(g => g.Genero.Id == genero.Id && g.Artista.Id == artista.Id);
+                        var relacion = await dbContext.Genero_Artistas.FirstOrDefaultAsync(g => g.Genero!.Id == genero.Id && g.Artista!.Id == artista.Id);
 
                         if (relacion is not null)
                             dbContext.Genero_Artistas.Remove(relacion);
@@ -352,7 +358,7 @@ namespace MetaMusic.Data.Services
                     
                         foreach (var genero in generosaAgregar)
                         {
-                            var genre = await dbContext.Generos.FirstOrDefaultAsync(g => g.Id == genero.Genero.Id);
+                            var genre = await dbContext.Generos.FirstOrDefaultAsync(g => g.Id == genero.Genero!.Id);
 
                             if (genre is not null)
                                  request.GenerosMusicales.Add(new Genero_Artista() { Artista = artista, Genero = genre });

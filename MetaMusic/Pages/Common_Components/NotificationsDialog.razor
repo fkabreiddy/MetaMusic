@@ -77,6 +77,26 @@
             StateHasChanged();
         }
     }
+
+    public async Task MarcarComoLeidas(){
+
+
+        try
+        {
+            if (Notificaciones.Where(n => n.Saw == false).Count() <= 0)
+                return;
+
+            var r = await notificacionesService.MarcarComoLeida(Notificaciones.Where(n => n.Saw == false).Select(n => n.Id).ToList());
+
+
+        }
+        catch
+        {
+
+        }
+
+
+    }
     public async Task EliminarTodas()
     {
         if(Notificaciones.Count()>=1)
@@ -94,11 +114,12 @@
             Notificaciones.Clear();
             StateHasChanged();
 
-         }
-     }
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
         await getNotificaciones();
+        await MarcarComoLeidas();
     }
 }
 @code {

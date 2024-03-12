@@ -90,10 +90,10 @@ namespace MetaMusic.Data.Services
                     IsPersistent = true,
                 };
 
-                await http.HttpContext.SignOutAsync(
+                await http.HttpContext!.SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
 
-                http.HttpContext.Session.Clear();
+                http.HttpContext!.Session.Clear();
 
                 return new ()
                 {
@@ -177,6 +177,8 @@ namespace MetaMusic.Data.Services
             {
 
                 var currentuserRole = await currentUserServices.GetCurrentUser();
+                if (currentuserRole.Data is null || currentuserRole.Data.Rol is null)
+                    return new() { Message = "No estas logeado", Success = false };
 
                 if (currentuserRole.Data.Rol.Tipo == "Normal")
                     return new Result<bool>()

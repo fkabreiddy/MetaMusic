@@ -125,7 +125,7 @@ namespace MetaMusic.Data.Services
             {
 
 
-                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(n => n.Album).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).Where(a => a.Album.Id == albumid).ToListAsync();
+                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(n => n.Album).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).Where(a => a.Album!.Id == albumid).ToListAsync();
 
                 if (notas is null)
                     return new Result<List<NotaResponse>>() { Message = "El album no tiene notas", Success = false };
@@ -161,7 +161,7 @@ namespace MetaMusic.Data.Services
             {
 
 
-                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).Include(n => n.Album).Where(a => a.Creador.Id == userid).ToListAsync();
+                var notas = await dbContext.Notas.Include(n => n.Creador).Include(n => n.Usuarios_Liked).ThenInclude(l => l.Usuario).Include(l => l.Usuarios_DisLiked).ThenInclude(r => r.Usuario).Include(n => n.Album).Where(a => a.Creador!.Id == userid).ToListAsync();
 
                 if (notas is null)
                     return new Result<List<NotaResponse>>() { Message = "El album no tiene notas", Success = false };
@@ -207,7 +207,7 @@ namespace MetaMusic.Data.Services
                     return new Result<NotaResponse>() { Message = "No estas logeado", Success = false };
 
 
-                var existe = await dbContext.Usuario_Like_Notas.FirstOrDefaultAsync(r => r.Nota.Id == notaid && r.Usuario.Id == userid);
+                var existe = await dbContext.Usuario_Like_Notas.FirstOrDefaultAsync(r => r.Nota!.Id == notaid && r.Usuario!.Id == userid);
 
                 if (existe is not null)
                 {
@@ -216,7 +216,7 @@ namespace MetaMusic.Data.Services
                 }
                 else
                 {
-                    var hay_dislike = await dbContext.Usuario_Dislike_Notas.FirstOrDefaultAsync(r => r.Nota.Id == notaid && r.Usuario.Id == userid);
+                    var hay_dislike = await dbContext.Usuario_Dislike_Notas.FirstOrDefaultAsync(r => r.Nota!.Id == notaid && r.Usuario!.Id == userid);
 
                     if (hay_dislike is not null)
                     {
@@ -271,7 +271,7 @@ namespace MetaMusic.Data.Services
                 if (usuario is null)
                     return new Result<NotaResponse>() { Message = "No estas logeado", Success = false };
 
-                var existe = await dbContext.Usuario_Dislike_Notas.FirstOrDefaultAsync(r => r.Nota.Id == notaid && r.Usuario.Id == userid);
+                var existe = await dbContext.Usuario_Dislike_Notas.FirstOrDefaultAsync(r => r.Nota!.Id == notaid && r.Usuario!.Id == userid);
 
                 if (existe is not null)
                 {
@@ -280,7 +280,7 @@ namespace MetaMusic.Data.Services
                 }
                 else
                 {
-                    var hay_like = await dbContext.Usuario_Like_Notas.FirstOrDefaultAsync(r => r.Nota.Id == notaid && r.Usuario.Id == userid);
+                    var hay_like = await dbContext.Usuario_Like_Notas.FirstOrDefaultAsync(r => r.Nota!.Id == notaid && r.Usuario!.Id == userid);
 
                     if (hay_like is not null)
                     {

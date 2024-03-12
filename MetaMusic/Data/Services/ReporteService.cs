@@ -51,7 +51,7 @@ namespace MetaMusic.Data.Services
 
                 }
 
-                var existe = await dbContext.Reportes.FirstOrDefaultAsync(r => r.Review.Id == review && r.Usuario.Id == usuarioResponse.Id);
+                var existe = await dbContext.Reportes.FirstOrDefaultAsync(r => r.Review!.Id == review && r.Usuario!.Id == usuarioResponse.Id);
 
                 if (existe is not null)
                 {
@@ -175,7 +175,7 @@ namespace MetaMusic.Data.Services
             {
 
 
-                var reportes = await dbContext.Reportes.Include(r => r.Usuario).Include(r => r.Review).ThenInclude(re => re.Album).Include(r => r.Review).ThenInclude(re => re.Creador).Include(r => r.Nota).ThenInclude(n => n.Creador).Where(r => r.Review.Album.Creador.Id  == currentuserId || r.Nota.Id != 0 ).ToListAsync();
+                var reportes = await dbContext.Reportes.Include(r => r.Usuario).Include(r => r.Review).ThenInclude(re => re!.Album).Include(r => r.Review).ThenInclude(re => re!.Creador).Include(r => r.Nota).ThenInclude(n => n!.Creador).Where(r => r.Review!.Album!.Creador!.Id  == currentuserId || r.Nota!.Id != 0 ).ToListAsync();
 
                 if (reportes is null)
                 {
