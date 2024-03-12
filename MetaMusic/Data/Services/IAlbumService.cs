@@ -7,7 +7,7 @@ namespace MetaMusic.Data.Services
 {
     public interface IAlbumService
     {
-        Task<Result<bool>> AlbumOfTheMonthUpdate();
+      
         Task<Result<List<AlbumResponse>>> BuscarVarios(string filtro);
         Task<Result<List<AlbumResponse>>> ConsultarMisAlbumes(UsuarioResponse user);
         Task<Result<List<AlbumResponse>>> ConsultarPorArtista(int artistaid);

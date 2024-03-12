@@ -113,7 +113,7 @@ else
                                 {
                                     @(Albumresponse.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + Albumresponse.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)
                                 }
-                                else
+                                else if ((Albumresponse.Artistas.Count() == 1))
                                 {
                                      @(Albumresponse.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + Albumresponse.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre)
                                 }
@@ -127,12 +127,12 @@ else
                             else if ((Albumresponse.Artistas.Count() == 2))
                             {
                                 <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;" > 
-                                    <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{Albumresponse.Artistas[0].Artista?.Nombre}");}' Style="font-size: 30px; font-family: SourceSerif4;  ">@Albumresponse.Artistas[0].Artista?.Nombre</MudLink> 
+                                    <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{Albumresponse.Artistas[0].Artista?.Nombre}");}' Style="font-size: 30px; font-family: SourceSerif4;  ">@Albumresponse.Artistas[0].Artista?.Nombre,</MudLink> 
                                     <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{Albumresponse.Artistas[1].Artista?.Nombre}");}' Style="font-size: 30px; font-family: SourceSerif4;  ">@Albumresponse.Artistas[1].Artista?.Nombre</MudLink>
                                 </div>
 
                             }
-                            else
+                            else  if ((Albumresponse.Artistas.Count() == 1))
                             {
                                 <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;" >
                                     <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{Albumresponse.Artistas[0].Artista?.SpotifyId}");}' Style="font-size: 30px; font-family: SourceSerif4;  ">@Albumresponse.Artistas[0].Artista?.Nombre</MudLink>
@@ -309,7 +309,7 @@ else
                                 {
                                     <MudContainer Style="display: flex; flex-direction: column; gap: 20px; overflow: hidden; height: auto; position: sticky; top: 100px;">
                                         <div style="display: flex; gap: 20px;align-items: center; justify-content: center; height: auto; flex-direction: column; ">
-                                            <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8; " Align="Align.Center" Color="Color.Secondary">CONOCE MAS</MudText>
+                                            <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8; " Align="Align.Center" Color="Color.Secondary">CONOCE MÁS</MudText>
 
 
 
@@ -320,6 +320,27 @@ else
 
 
                                     </MudContainer>
+                                }
+                                else
+                                {
+                                    if(Albumresponse.Artistas.Count() >= 1)
+                                    {
+                                        <MudContainer Style="display: flex; flex-direction: column; gap: 20px; overflow: hidden; height: auto; position: sticky; top: 100px;">
+                                            <div style="display: flex; gap: 20px;align-items: center; justify-content: center; height: auto; flex-direction: column; ">
+                                                <MudText Style="font-size: 12px; font-weight: bold;  opacity: 0.8; " Align="Align.Center" Color="Color.Secondary">CONOCE MÁS</MudText>
+
+
+
+                                               <ArtistaCard UserId="@UsuarioActual.Id" Artista="Albumresponse.Artistas[0].Artista?.ToResponse()" VisibleSuscribeButton=true></ArtistaCard>
+
+                                            </div>
+
+
+
+                                        </MudContainer>
+                                    }
+                                   
+
                                 }
                                
 

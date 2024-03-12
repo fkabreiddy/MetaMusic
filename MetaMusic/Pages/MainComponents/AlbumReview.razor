@@ -117,7 +117,7 @@ else
                                 {
                                     @(Albumresponse.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + Albumresponse.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)
                                 }
-                                else
+                                else if(Albumresponse.Artistas.Count() == 1)
                                 {
                                      @(Albumresponse.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + Albumresponse.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre)
                                 }
@@ -131,12 +131,12 @@ else
                             else if ((Albumresponse.Artistas.Count() == 2))
                             {
                                 <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;" > 
-                                    <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{Albumresponse.Artistas[0].Artista?.Nombre}");}' Style="font-size: 30px; font-family: SourceSerif4;  ">@Albumresponse.Artistas[0].Artista?.Nombre</MudLink> 
+                                    <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{Albumresponse.Artistas[0].Artista?.Nombre}");}' Style="font-size: 30px; font-family: SourceSerif4;  ">@Albumresponse.Artistas[0].Artista?.Nombre,</MudLink> 
                                     <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{Albumresponse.Artistas[1].Artista?.Nombre}");}' Style="font-size: 30px; font-family: SourceSerif4;  ">@Albumresponse.Artistas[1].Artista?.Nombre</MudLink>
                                 </div>
 
                             }
-                            else
+                            else if ((Albumresponse.Artistas.Count() == 1))
                             {
                                 <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;" >
                                     <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{Albumresponse.Artistas[0].Artista?.SpotifyId}");}' Style="font-size: 30px; font-family: SourceSerif4;  ">@Albumresponse.Artistas[0].Artista?.Nombre</MudLink>
@@ -622,11 +622,6 @@ else
 
                                         </MudContainer>
 
-                                        <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;">Tu Calificacion</MudText>
-                                        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster">
-                                            <MudText Align="Align.Center" Style="font-size: 70px; font-weight: bold;  margin-top: 20px; margin-bottom: 20px;" Color="Color.Error">@Math.Round((double)(parteentera + partedecimal), 1)</MudText>
-
-                                            </BlazorAnimation.Animation>
                                         <MudContainer Style="margin-top: 20px; width: 70vw;">
                                             <MudTextField HelperText="Al crear una nota procura no emitir comentarios de odio ni formentar al acoso o hacer spam. Procura siempre mantener el respeto siempre." AutoGrow=true T="string" @bind-Value="notaRequest.Contenido" OnAdornmentClick="async()=>{await CrearCalificacion();}" Immediate=true MaxLength="400" Counter="400" Variant="MudBlazor.Variant.Text" Style="font-size: 15px;" Placeholder="Escribe una nota (opcional)" DisableUnderLine=true AdornmentIcon="@Icons.Material.Rounded.Send" Adornment="Adornment.End"></MudTextField>
                                         </MudContainer>
@@ -642,7 +637,7 @@ else
                         <NotAuthorized >
                             <div style="display: flex; gap: 20px; flex-direction: column; align-items: center; justify-content: center;">
                             <MudText Align="Align.Center" Style="font-size: 25px; font-weight: bold; opacity: 0.7; margin-top: 20px; margin-bottom: 20px;">Inicia sesion para emitir una critica a este album.</MudText>
-                            <MudChip Color="Color.Error" Target="_top" Style="font-size: 12px; font-weight: bold;" Href="/google-login" Text="Iniciar Sesion"></MudChip>
+                            <MudButton Color="Color.Error" Target="_top" Style="font-size: 12px; Variant="Variant.Text" font-weight: bold;" Href="/google-login" Text="Iniciar Sesion"></MudButton>
                             </div>
                         
                         </NotAuthorized>

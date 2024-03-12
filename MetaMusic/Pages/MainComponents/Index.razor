@@ -18,7 +18,7 @@
         
     }
 </style>
-<MudItem>
+
 
 
     @if (recentAlbumsLoaded)
@@ -47,49 +47,13 @@
    
     
     
-</MudItem>
 
-<BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-    
-    @if (recentAlbumsLoaded && AlbumReviewOfTheMontLoaded)
-    {
-
-        if(!notReviewOfTheMonth)
-        {
-            <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 40px; margin-bottom: 40px;">
-                <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
-
-            </div>
-            <ReviewOfTheMonth album="@reviewOfTheMont"></ReviewOfTheMonth>
-
-        }
-        else
-        {
-
-            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
-                <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
-
-
-                    <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
-
-
-                        <Loader></Loader>
-
-
-                    </MudItem>
-                </div>
-            </BlazorAnimation.Animation>
-        }
-    }
-
-
-</BlazorAnimation.Animation>
 
 
 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(2)">
    
 
-    @if (recentAlbumsLoaded && AlbumReviewOfTheMontLoaded)
+    @if (recentAlbumsLoaded)
     {
         <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 40px; margin-bottom: 40px;">
             <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
@@ -128,7 +92,7 @@
         <Authorized>
 
             <MudGrid Justify="Justify.Center">
-                @if (AlbumReviewOfTheMontLoaded)
+                @if (SinglesLoaded)
                 {
                     <MudItem md="6" lg="6" sm="12" xs="12" xxl="12" xl="12">
                         <NuevaPeticion></NuevaPeticion>
@@ -168,19 +132,7 @@
 
 
     }
-    public async Task GetReviewOfTheMont()
-    {
-        var r = await albumService.GetBestReview();
-
-        if(r.Success && r.Data is not null)
-        {
-            reviewOfTheMont = r.Data;
-        }
-        else
-        {
-        }
-
-    }
+   
     public async Task VerifyUserAuth(){
         var state = await authstate.GetAuthenticationStateAsync();
         var user = state.User;
@@ -225,10 +177,7 @@
 
         await VerifyUserAuth();
 
-        if (reviewOfTheMont.Id == 0)
-        {
-            await GetReviewOfTheMont();
-        }
+       
 
         if(singles.Count()<=1)
         {
@@ -242,13 +191,10 @@
     }
 
     public bool recentAlbumsLoaded => albumesrecientes.Count() >= 1;
-    public bool AlbumReviewOfTheMontLoaded => reviewOfTheMont.Id != 0;
     public bool notRecentAlbumes => albumesrecientes.Count() <= 0;
-    public bool notReviewOfTheMonth => reviewOfTheMont.Id == 0;
     public List<AlbumResponse> albumesrecientes = new List<AlbumResponse>();
     public List<AlbumResponse> singles = new List<AlbumResponse>();
 
-    public AlbumResponse reviewOfTheMont = new AlbumResponse();
     public bool getting_data = true;
     public bool SinglesLoaded => singles.Count() >= 1;
 }
