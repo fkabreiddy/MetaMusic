@@ -86,7 +86,7 @@ namespace MetaMusic.Data.Services
                     }
                 }
 
-                    
+
                 return new Result<AlbumResponse>()
                 {
                     Data = newalbum.ToResponse(),
@@ -187,12 +187,12 @@ namespace MetaMusic.Data.Services
 
                 if (enlazarAlbum)
                 {
-                    var album = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Tracks.Any(t => t.Titulo == request.Nombre && a.Artistas.FirstOrDefault()!.Artista!.Id == request.Artistas.FirstOrDefault()!.Artista!.Id &&  a.Id != request.Id));
+                    var album = await dbContext.Albumes.FirstOrDefaultAsync(a => a.Tracks.Any(t => t.Titulo == request.Nombre && a.Artistas.FirstOrDefault()!.Artista!.Id == request.Artistas.FirstOrDefault()!.Artista!.Id && a.Id != request.Id));
 
 
-                    if(album is not null)
+                    if (album is not null)
                         request.Reference = album.Id;
-                    
+
 
 
                 }
@@ -217,7 +217,7 @@ namespace MetaMusic.Data.Services
 
                     }
                 }
-                    
+
                 return new Result<AlbumResponse>()
                 {
                     Data = newalbum.ToResponse(),
@@ -349,13 +349,13 @@ namespace MetaMusic.Data.Services
 
                     if (referencia is not null)
                     {
-                         request.Reference = referencia.Id;
+                        request.Reference = referencia.Id;
                     }
-                    
+
 
 
                 }
-                else if(enlazarAlbum == false && request.Reference != 0)
+                else if (enlazarAlbum == false && request.Reference != 0)
                 {
                     request.Reference = 0;
                 }
@@ -593,7 +593,6 @@ namespace MetaMusic.Data.Services
             }
         }
 
-
         public async Task<Result<bool>> Eliminar(AlbumResponse response)
         {
             try
@@ -621,10 +620,10 @@ namespace MetaMusic.Data.Services
 
                 var singles = await dbContext.Albumes.Where(a => a.Reference == response.Id).ToListAsync();
 
-                if(singles is not null)
+                if (singles is not null)
 
                 {
-                    foreach(var single in singles)
+                    foreach (var single in singles)
                     {
                         single.Reference = 0;
                     }
@@ -670,7 +669,7 @@ namespace MetaMusic.Data.Services
             try
             {
                 var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.IsSingle == true).OrderByDescending(a => a.Fecha_Agregado).Take(4).ToListAsync();
-                
+
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
                     { Message = "Album no encotrado", Success = false };
@@ -690,7 +689,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true ).OrderByDescending(a => a.Fecha_Agregado).Take(cantidad).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true).OrderByDescending(a => a.Fecha_Agregado).Take(cantidad).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -708,12 +707,21 @@ namespace MetaMusic.Data.Services
             }
         }
 
-    
-        public async Task<Result<List<AlbumResponse>>> BuscarVarios(string filtro)
+
+        public async Task<Result<List<AlbumResponse>>> BuscarVarios(string filtro, bool just8PlusReviews = false, bool justMustListen = false)
         {
             try
             {
+
+                
+
                 var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.Nombre.ToLower().Contains(filtro.ToLower())).OrderByDescending(a => a.Fecha_Agregado).ToListAsync();
+
+                if (albumes is not null && justMustListen)
+                    albumes = albumes.Where(a => a.IsMustListen == true).ToList();
+
+                if (albumes is not null && just8PlusReviews)
+                    albumes = albumes.Where(a => a.Calificacion_Creador >= 8.0).ToList();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -734,7 +742,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true ).OrderByDescending(a => a.Fecha_Agregado).Skip(startIndex).Take(cantidad).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true).OrderByDescending(a => a.Fecha_Agregado).Skip(startIndex).Take(cantidad).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -758,7 +766,7 @@ namespace MetaMusic.Data.Services
 
 
 
-                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).ThenInclude(t => t.Usuarios_Liked).ThenInclude(t => t.Usuario).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.Artistas.Any(ar => ar.Artista!.Id ==artistaid)).OrderByDescending(a => a.Fecha_Agregado).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).ThenInclude(t => t.Usuarios_Liked).ThenInclude(t => t.Usuario).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.Artistas.Any(ar => ar.Artista!.Id == artistaid)).OrderByDescending(a => a.Fecha_Agregado).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -797,7 +805,7 @@ namespace MetaMusic.Data.Services
             }
         }
 
-      
-       
+
+
     }
 }
