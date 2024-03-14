@@ -141,7 +141,7 @@
         {
             if (reporte.Usuario is not null)
             {
-                string titulo = $"""Hemos revisado tu reporte a una {(reporte.Nota is null ? "nota" : $"review: {reporte.Review?.Album.Nombre}")} Y no vimos ningún problema.""";
+                string titulo = $"""Hemos revisado tu reporte a una {(reporte.Nota is not null ? "nota" : $"review: {reporte.Review?.Album.Nombre}")} Y no vimos ningún problema.""";
                 var x = await notificacionesService.NotificacionGenerica(reporte.Usuario.Id, titulo);
 
             }

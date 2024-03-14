@@ -70,7 +70,11 @@
         if(r.Data is not null )
         {
             if (r.Data.Count() <= 0)
+            {
+                buscando = false;
                 return;
+            }
+           
             AlbumesChartObject albumes = new AlbumesChartObject();
             SinglesChartObject singles = new SinglesChartObject();
             foreach(var album in r.Data)
@@ -168,8 +172,14 @@
                          0,
                         }
                 });
+
+            buscando = false;
         }
+        
+            
         buscando = false;
+
+       
 
         StateHasChanged();
     }
