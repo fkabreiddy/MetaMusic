@@ -25,5 +25,7 @@ namespace MetaMusic.Data.Services
         Task<Result<Usuario_Like_Track>> LikeTrack(Track track);
         Task<Result<AlbumResponse>> Modificar(AlbumRequest request, ReviewRequest review);
         Task<Result<AlbumResponse>> ModificarSingle(AlbumRequest request, ReviewRequest review, bool enlazarAlbum);
+
+        Task<Result<List<AlbumResponse>>> ConsultarPorGenero(string genero);
     }
 }

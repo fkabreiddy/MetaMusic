@@ -3,6 +3,7 @@ using MetaMusic.Data.Entities;
 using MetaMusic.Data.OtherEntities;
 using MetaMusic.Data.Request;
 using MetaMusic.Data.Responses;
+using MetaMusic.Pages.Common_Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -646,7 +647,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.IsSingle == false).OrderByDescending(a => a.Fecha_Agregado).Take(3).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.IsSingle == false).OrderByDescending(a => a.Fecha_Agregado).Take(3).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -668,7 +669,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.IsSingle == true).OrderByDescending(a => a.Fecha_Agregado).Take(4).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.IsSingle == true).OrderByDescending(a => a.Fecha_Agregado).Take(4).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -689,7 +690,7 @@ namespace MetaMusic.Data.Services
         {
             try
             {
-                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true).OrderByDescending(a => a.Fecha_Agregado).Take(cantidad).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true).OrderByDescending(a => a.Fecha_Agregado).Take(cantidad).ToListAsync();
 
                 if (albumes is null)
                     return new Result<List<AlbumResponse>>()
@@ -715,7 +716,7 @@ namespace MetaMusic.Data.Services
 
                 
 
-                var albumes = await dbContext.Albumes.Include(a => a.Calificaciones).ThenInclude(c => c.Usuario).Include(a => a.Review).Include(a => a.Tracks).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.Nombre.ToLower().Contains(filtro.ToLower())).OrderByDescending(a => a.Fecha_Agregado).ToListAsync();
+                var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.Nombre.ToLower().Contains(filtro.ToLower())).OrderByDescending(a => a.Fecha_Agregado).ToListAsync();
 
                 if (albumes is not null && justMustListen)
                     albumes = albumes.Where(a => a.IsMustListen == true).ToList();
@@ -738,6 +739,54 @@ namespace MetaMusic.Data.Services
                 { Message = e.InnerException?.Message ?? e.Message, Success = false };
             }
         }
+
+
+        public async Task<Result<List<AlbumResponse>>> ConsultarPorGenero(string genero)
+        {
+            try
+            {
+
+               
+
+                if(genero != "")
+                {
+                   var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true && a.Artistas.SelectMany(ar => ar.Artista!.GenerosMusicales).Any(g => g.Genero!.Nombre == genero) && a.IsMustListen ==true).OrderByDescending(a => a.Fecha_Agregado).ToListAsync();
+
+                    if (albumes is null)
+                        return new Result<List<AlbumResponse>>()
+                        { Message = "Album no encotrado", Success = false };
+
+                    return new Result<List<AlbumResponse>>() { Message = "Success", Success = true, Data = albumes.Select(a => a.ToResponse()).ToList() };
+
+
+                }
+                else
+                {
+                    var albumes = await dbContext.Albumes.Include(a => a.Review).Include(a => a.Creador).Include(a => a.Artistas).ThenInclude(x => x.Artista!).ThenInclude(a => a.GenerosMusicales).ThenInclude(g => g.Genero).Where(a => a.Publicado == true &&  a.IsMustListen == true).OrderByDescending(a => a.Fecha_Agregado).ToListAsync();
+
+                    if (albumes is null)
+                        return new Result<List<AlbumResponse>>()
+                        { Message = "Album no encotrado", Success = false };
+
+                    return new Result<List<AlbumResponse>>() { Message = "Success", Success = true, Data = albumes.Select(a => a.ToResponse()).ToList() };
+
+                }
+
+
+
+
+
+
+
+            }
+            catch (Exception e)
+            {
+
+                return new Result<List<AlbumResponse>>()
+                { Message = e.InnerException?.Message ?? e.Message, Success = false };
+            }
+        }
+
         public async Task<Result<List<AlbumResponse>>> GetMore(int startIndex, int cantidad)
         {
             try
