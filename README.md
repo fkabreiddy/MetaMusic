@@ -1,3 +1,26 @@
-Metamusic is a web platform for reviewing music. Using the Spotify API to recolect necessary data for albums/singles and artist for the content creation. Not a commercial software just a personal project. 
+# 🎵 MetaMusic
 
-Made with love on Blazor.
+**MetaMusic** is a web platform for reviewing music.  
+It uses the **Spotify API** to collect necessary data for albums, singles, and artists to create content.  
+
+> This is not commercial software, just a personal project.  
+
+Made with ❤️ using **Blazor**.
+
+---
+
+## 🚀 Features
+
+- Browse albums, singles, and artists.  
+- Collects real-time data from the Spotify API.  
+- Personal music reviews and notes.  
+- Clean and modern UI built with Blazor.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend / Fullstack:** Blazor  
+- **API:** Spotify API  
+- **Backend:** ASP.NET Core  
+- **Database:** SQLServer
