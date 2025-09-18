@@ -1,0 +1,96 @@
+﻿<MudGrid Style="display: flex; align-items: center; justify-content: center;" Justify="Justify.Center">
+    <MudItem md="12" sm="12" xl="12" xxl="12" xs="12" lg="12" Style="display: flex; align-items: center; justify-content: center;">
+        <MudAvatar Style="height: 120px; width: 120px;">
+            <MudImage src="@Artista.Foto_Perfil"></MudImage>
+        </MudAvatar>
+    </MudItem>
+    <MudItem md="12" sm="12" xl="12" xxl="12" xs="12" lg="12">
+        <MudContainer Style="display: flex; flex-direction: column; display: flex; align-items: center; justify-content: center;">
+            <MudText Align="Align.Center">
+                <MudLink Href="@($"/artist/{@Artista.SpotifyId}")" Style="font-size: 15px; font-weight: bold;">@Artista.Nombre </MudLink>
+           </MudText> 
+
+            @if(Artista.GenerosMusicales.Count() >= 2)
+            {
+                  <MudText Style="font-size: 10px; font-weight: bold;" Color="Color.Error">@Artista.GenerosMusicales[0].Genero?.Nombre / </MudText>
+                <MudText Style="font-size: 10px; font-weight: bold;" Color="Color.Error">@Artista.GenerosMusicales[1].Genero?.Nombre </MudText>
+            }
+
+
+            <MudText Align="Align.Center" Style="font-size: 10px; margin-top: 10px; margin-bottom: 10px;">@Artista.Suscriptores.Count().NumeroRelativo() Suscriptores  </MudText>
+
+                <AuthorizeView>
+                    <Authorized>
+
+                        @if(VisibleSuscribeButton)
+                        {
+                            @if (Artista.Suscriptores.Any(r => r.Usuario.Id == UserId))
+                            {
+                                <MudChip @onclick="async ()=>{await DeSuscribirse(Artista);}" Style="font-size: 10px;  width: 50%; font-weight: bold;cursor: pointer;" Size="Size.Small" Variant="Variant.Filled">
+                                    @if (suscribiendo)
+                                    {
+                                        <MudProgressCircular Style="width: 10px; height: 10px" Color="Color.Error" Indeterminate=true></MudProgressCircular>
+                                    }
+                                    else
+                                    {
+                                        @("Suscrito")
+                                    }
+
+                                </MudChip>
+                            }
+                            else
+                            {
+                                <MudChip @onclick="async ()=>{await Suscribirse(Artista);}" Style="font-size: 10px;  border: dashed 1px red; width: 50%; font-weight: bold;cursor: pointer; " Size="Size.Small" Variant="Variant.Text" Color="Color.Error">
+                                    @if (suscribiendo)
+                                    {
+                                        <MudProgressCircular Style="width: 10px; height: 10px" Color="Color.Error" Indeterminate=true></MudProgressCircular>
+                                    }
+                                    else
+                                    {
+                                        @("Suscribirse")
+                                    }
+
+                                </MudChip>
+                            }
+                        }
+                   
+                        
+
+                    </Authorized>
+                </AuthorizeView>
+        </MudContainer>
+    </MudItem>
+</MudGrid>
+@functions{
+
+    public async Task Suscribirse(ArtistaResponse artista){
+        suscribiendo = true;
+        var x = await artistaService.Suscribirse(artista);
+
+        if(x.Data is not null)
+        {
+            Artista = x.Data;
+            StateHasChanged();
+        }
+        suscribiendo = false;
+    }
+
+    public async Task DeSuscribirse(ArtistaResponse artista)
+    {
+        suscribiendo = true;
+        var x = await artistaService.DesSuscribirse(artista);
+
+        if (x.Data is not null)
+        {
+            Artista = x.Data;
+            StateHasChanged();
+        }
+        suscribiendo = false;
+    }
+}
+@code {
+    [Parameter] public ArtistaResponse Artista { get; set; } = new ArtistaResponse();
+    [Parameter] public int UserId { get; set; }
+    public bool suscribiendo = false;
+    [Parameter] public bool VisibleSuscribeButton { get; set; } = true;
+}

@@ -1,0 +1,198 @@
+﻿@page "/"
+<style>
+    .review-text-card{
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+       
+    }
+
+    .review-card{
+        cursor: pointer;
+    }
+
+    .review-card:hover{
+            border: thin 1px #E74646;
+        
+    }
+</style>
+
+
+
+    @if (recentAlbumsLoaded)
+    {
+            <LoMasReciente albumes="@albumesrecientes"></LoMasReciente>
+
+    }
+    else if(notRecentAlbumes)
+    {
+
+            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                    <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+
+                        <Loader></Loader>
+
+                    </MudItem>
+                </div>
+            </BlazorAnimation.Animation>
+        
+    }
+   
+    
+    
+
+
+
+<BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(2)">
+   
+
+    @if (recentAlbumsLoaded)
+    {
+        <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 40px; margin-bottom: 40px;">
+            <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
+
+        </div>
+        <SinglesRecientes singles="@singles"></SinglesRecientes>
+    }
+
+
+
+</BlazorAnimation.Animation>
+
+<BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(2)">
+    
+   
+    @if(SinglesLoaded)
+    {
+        <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 40px; margin-bottom: 40px;">
+            <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
+
+        </div>
+        
+        <ArtistasNuevos ></ArtistasNuevos>
+    }
+   
+    
+
+</BlazorAnimation.Animation>
+
+
+
+<BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(3)">
+   
+    
+    <AuthorizeView Roles="Normal">
+        <Authorized>
+
+            <MudGrid Justify="Justify.Center">
+                @if (SinglesLoaded)
+                {
+                    <MudItem md="6" lg="6" sm="12" xs="12" xxl="12" xl="12">
+                        <NuevaPeticion></NuevaPeticion>
+                    </MudItem>
+                    
+                }
+            </MudGrid>
+           
+
+        </Authorized>
+        <NotAuthorized>
+
+        </NotAuthorized>
+    </AuthorizeView>
+
+   
+
+
+</BlazorAnimation.Animation>
+@functions{
+
+    public async Task GetRecentAlbums()
+    {
+
+
+        var r = await albumService.ConsultarRecientes();
+
+        if(r.Data is not null)
+        {
+            albumesrecientes = r.Data;
+
+        }
+        else
+        {
+            
+        }
+
+
+    }
+   
+    public async Task VerifyUserAuth(){
+        var state = await authstate.GetAuthenticationStateAsync();
+        var user = state.User;
+        if (user.Identity is null || user.Identity.IsAuthenticated)
+        {
+
+
+
+            IsAuthenticated = true;
+
+            StateHasChanged();
+
+
+        }
+        else
+        {
+            IsAuthenticated = false;
+
+        }
+    }
+
+
+    public async Task getSingles(){
+
+        var  r= await albumService.ConsultarRecientesSingles();
+
+        if (r.Data is not null)
+        {
+            singles = r.Data;
+        }
+    }
+}
+ @code{
+    public bool IsAuthenticated = false;
+    protected override async Task OnInitializedAsync()
+    {
+        getting_data = true;
+        if(albumesrecientes.Count()<=0)
+        {
+            await GetRecentAlbums();
+        }
+
+        await VerifyUserAuth();
+
+       
+
+        if(singles.Count()<=1)
+        {
+            await getSingles();
+        }
+      
+            
+
+        
+        getting_data = false;
+    }
+
+    public bool recentAlbumsLoaded => albumesrecientes.Count() >= 1;
+    public bool notRecentAlbumes => albumesrecientes.Count() <= 0;
+    public List<AlbumResponse> albumesrecientes = new List<AlbumResponse>();
+    public List<AlbumResponse> singles = new List<AlbumResponse>();
+
+    public bool getting_data = true;
+    public bool SinglesLoaded => singles.Count() >= 1;
+}

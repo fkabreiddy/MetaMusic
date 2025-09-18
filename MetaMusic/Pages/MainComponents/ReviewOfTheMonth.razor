@@ -1,0 +1,104 @@
+﻿<style>
+    .review-song-otm-text-card {
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+ 
+
+    .portada {
+        transition: transform 0.3s ease-out;
+        cursor: pointer;
+    }
+
+    .portada:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+<div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
+
+    <MudText Style="font-size: 20px; font-weight: bold;">REVIEW DEL MES</MudText>
+    <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
+
+
+
+
+
+</div>
+    <MudGrid Justify="Justify.Center" Style="margin-top: 60px; display: flex; align-items: center; align-items: center; justify-content: center; gap: 20px;">
+
+
+          <MudItem md="5" lg="5" xxl="5"  xl="5" sm="12" xs="12">
+
+
+            @try
+            {
+                @if (album.Artistas.Count() >= 2)
+                {
+                    <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre)</MudText>
+                }
+                else
+                {
+                    <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold;" Color="Color.Error">
+                        @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre + " / " + album.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre)
+                    </MudText>
+
+                }
+            }
+            catch
+            {
+
+            }
+       
+
+       
+            <MudText  Style="font-size: 50px; font-family: SourceSerif4;  " Align="Align.Center">“@album.Nombre”</MudText>
+            <MudText Align="Align.Center" Style=" font-weight: bold; font-size: 30px; font-family: SourceSerif4;">
+
+
+                @if (album.Artistas.Count() >= 3)
+            {
+                @("Varios Artistas")
+            }
+            else if ((album.Artistas.Count() == 2))
+            {
+                <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+                    <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[0].Artista?.Nombre}");}' Style="font-weight: bold; font-size: 30px; font-family: SourceSerif4;opacity: 0.7; ">@album.Artistas[0].Artista?.Nombre</MudLink>
+                        <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[1].Artista?.Nombre}");}' Style="font-weight: bold; font-size: 30px; font-family: SourceSerif4;opacity: 0.7;">@album.Artistas[1].Artista?.Nombre</MudLink>
+                    </div>
+
+            }
+            else
+            {
+                <div Style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+                    <MudLink @onclick='()=>{navManager.NavigateTo($"/artist/{album.Artistas[0].Artista?.SpotifyId}");}' Style="font-weight: bold; font-size: 30px; font-family: SourceSerif4;opacity: 0.7;">@album.Artistas[0].Artista?.Nombre</MudLink>
+
+                    </div>
+
+            }
+
+
+        </MudText>
+          
+         <MudText Style="font-size: 12px; margin-top: 15px;  font-family: SourceSerif4;" Align="Align.Center"><b>Reviewer: </b> @album.Creador?.Nombre</MudText>
+        </MudItem>
+        <MudItem md="4" lg="4" xxl="4" Class="container" xl="4" sm="12" xs="12"  Style=" display: flex; align-items: center; align-items: center; justify-content: center; gap: 50px;">
+
+            <MudAvatar Class="portada" @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}' Square=true Rounded=false Style="height: 250px; width: 250px;">
+            <MudImage src="@album.Portada" />
+            </MudAvatar>
+           
+          
+
+
+        </MudItem>
+    </MudGrid>
+
+
+@code {
+    [Parameter] public AlbumResponse album { get; set; } = new AlbumResponse();
+}

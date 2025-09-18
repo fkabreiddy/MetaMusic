@@ -1,0 +1,209 @@
+﻿@using MetaMusic.Data.Entities
+<MudItem Style="margin-top: 60px;">
+    <MudGrid>
+        <MudItem md="12" sm="12" xs="12" xl="12" xxl="12" lg="12">
+            <MudContainer>
+                <MudGrid Justify="Justify.Center" Style="display: flex; align-items: center;">
+                    <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
+                        <MudContainer Style="display: flex; align-items: center; justify-content: center;">
+                            <MudAvatar Style="height: 250px; width: 250px;">
+                                <MudImage src="@newArtista.Foto_Perfil"></MudImage>
+                            </MudAvatar>
+                        </MudContainer>
+
+
+                    </MudItem>
+                    <MudItem md="5" sm="12" xs="12" xl="5" xxl="5" lg="5">
+                        <MudContainer Style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+
+                            <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">@(IsEditing ?  "EDITAR ARTISTA" : "ARTISTA" )</MudText>
+                            <MudText Style="font-size: 35px; font-family: SourceSerif4;">“@newArtista.Nombre”</MudText>
+
+
+
+                         <MudText Style="font-size: 12px; opacity: 0.7; margin-bottom: 15px; margin-top: 15px;">Elije el genero musical que maneja @newArtista.Nombre. Selecciona 2.</MudText>
+                                <MudChipSet MultiSelection=true Mandatory=true Style="margin-bottom: 20px; margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; ">
+                                @foreach (var genero in generosMusicales)
+                                {
+                                    <MudChip Variant="MudBlazor.Variant.Outlined" Color="@( newArtista.GenerosMusicales.Any(r => r.Genero?.Id == genero.Id)  ? MudBlazor.Color.Error : MudBlazor.Color.Inherit)" Style="font-size: 12px; border: dashed 1px;" @onclick='()=>{AsignarQuitarGenero(genero);}' Text="@genero.Nombre"></MudChip>
+
+                                }
+                          </MudChipSet>
+
+                               
+                            </MudContainer>
+
+
+                    </MudItem>
+                </MudGrid>
+
+
+            </MudContainer>
+
+
+        </MudItem>
+
+
+
+        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+            <MudDivider Style="margin-top: 20px; margin-bottom: 20px; width: 50%;" DividerType="DividerType.Middle"></MudDivider>
+
+        </div>
+
+            <MudContainer Style="  display: flex; align-items: center; justify-content: center; margin-top: 20px; flex-wrap: wrap; gap: 20px;">
+
+                
+                @if(IsEditing)
+                {
+                    <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Edit();}" Disabled="@(newArtista.GenerosMusicales.Count() <= 1)">
+                        @if (CreandoArtista)
+                        {
+                            <MudProgressCircular Size="Size.Small"></MudProgressCircular>
+                        }
+                        else
+                        {
+                            <MudText Style="font-size: 13px;font-weight: bold;">Guardar Cambios</MudText>
+                        }
+                    </MudButton>
+                <MudButton Variant="MudBlazor.Variant.Text" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo($"/artist/{newArtista.SpotifyId}", true);}'> Cancelar</MudButton>
+
+                }
+                else
+                {
+                <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Error" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick="async ()=>{await Crear();}" Disabled="@(newArtista.GenerosMusicales.Count() <= 1)">
+                    @if (CreandoArtista)
+                    {
+                        <MudProgressCircular Size="Size.Small"></MudProgressCircular>
+                    }
+                    else
+                    {
+                        <MudText Style="font-size: 13px;font-weight: bold;">Guardar Artista</MudText>
+                    }
+                </MudButton>
+                <MudButton Variant="MudBlazor.Variant.Text" Style="font-size: 13px;font-weight: bold; margin-bottom: 15px; cursor: pointer; " @onclick='()=>{navManager.NavigateTo("/crear-contenido", true);}'> Cancelar</MudButton>
+
+                }
+
+
+            </MudContainer>
+
+      
+       
+        
+        
+
+       
+    </MudGrid>
+</MudItem>
+@functions{
+    public async Task Crear()
+    {
+        CreandoArtista = true;
+        var r = await artistaService.CrearArtista(newArtista);
+
+        if(r.Success == true && r.Data is not null)
+        {
+            CreandoArtista = false;
+
+
+            navManager.NavigateTo("/");
+            MostrarNotificacion(r.Data, "Se ha creado el artista", $"Se ha creado el artista {r.Data.Nombre} correctamente");
+        }
+    }
+    public async Task GetGeneros()
+    {
+        var r = await generoService.GetGeneros();
+
+        if(r.Data is not null && r.Success == true)
+        {
+            generosMusicales = r.Data;
+            StateHasChanged();
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await GetGeneros();
+        StateHasChanged();
+    }
+    public void AsignarQuitarGenero(GeneroResponse genero)
+    {
+        if (newArtista.GenerosMusicales.Any(r => r.Genero?.Id == genero.Id))
+        {
+            var g = newArtista.GenerosMusicales.FirstOrDefault(r => r.Genero?.Id == genero.Id);
+
+            if(g is not null)
+                newArtista.GenerosMusicales.Remove(g);
+        }
+        else
+        {
+            if (newArtista.GenerosMusicales.Count() >= 2)
+            {
+                newArtista.GenerosMusicales.Remove(newArtista.GenerosMusicales[0]);
+            }
+            newArtista.GenerosMusicales.Add(new Genero_Artista() { Genero = genero.ToBaseClass() });
+        }
+    }
+
+    public async Task Edit(){
+        CreandoArtista = true;
+        var r = await artistaService.ModificarArtista(newArtista);
+
+        if(r.Success && r.Data is not null)
+        {
+            navManager.NavigateTo($"/artist/{r.Data.SpotifyId}", true);
+            MostrarNotificacion(r.Data, "Se ha modificad el artista", $"Se ha modificado el artista {r.Data.Nombre} correctamente");
+        }
+        CreandoArtista = false;
+    }
+}
+@code {
+    public List<GeneroResponse> generosMusicales = new List<GeneroResponse>();
+
+    [Parameter] public ArtistaRequest newArtista { get; set; } = new ArtistaRequest();
+    [Parameter] public bool IsEditing { get; set; } = false;
+    public bool CreandoArtista = false;
+    public void MostrarNotificacion(ArtistaResponse Artista, string Titulo, string Contenido )
+    {
+        SnackbarService.Add(
+
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+            <MudAvatar Style="height: 40px; width: 40px; font-size:8px;padding-left:0; cursor: pointer; border-radius: 5px;" Square="true" Rounded=false Color="MudBlazor.Color.Primary"><MudImage src="@Artista.Foto_Perfil"></MudImage></MudAvatar>
+
+
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+            <MudButton Variant="Variant.Text" @onclick='()=>{navManager.NavigateTo($"/artist/{Artista.SpotifyId}");}' Style="font-size: 10px; font-weight: bold; cursor: pointer; " Color="MudBlazor.Color.Tertiary" DisableElevation="true">Ver</MudButton>
+
+
+
+
+
+
+
+
+        </MudContainer>
+    </div>,
+       Severity.Normal,
+        config => { config.HideIcon = true; }
+     );
+    }
+}
+
+    
+

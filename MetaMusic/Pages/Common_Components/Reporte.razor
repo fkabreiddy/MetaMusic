@@ -1,0 +1,221 @@
+﻿@if(reporte.Id != 0)
+{
+    @if (reporte.Review is not null && reporte.Review?.Id != 0)
+    {
+        <MudCard Style="padding: 10px;">
+            <MudContainer Style="display: flex; align-items: center; gap: 20px;">
+
+
+                @if (reporte.Severidad == 1)
+                {
+                    <MudIcon Icon="@Icons.Material.Rounded.Report" Size="Size.Large" Color="Color.Tertiary"></MudIcon>
+
+
+                }
+                else if (reporte.Severidad == 2)
+                {
+                    <MudIcon Icon="@Icons.Material.Rounded.ReportProblem" Size="Size.Large" Color="Color.Error"></MudIcon>
+
+
+                }
+
+
+
+                <div style="display: flex; flex-direction: column; ">
+                    <MudText Style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">@reporte.Titulo</MudText>
+                    <MudText Style="font-size: 12px;  opacity: 0.7;">Una de tus reviews ha sido reportada por "@reporte.Contenido". Por favor, resuelve el problema lo antes posible. </MudText>
+                    <div style="display: flex; gap: 10px; align-items: center; justify-content: space-between;  margin-top: 10px; flex-wrap: wrap;">
+
+                        <div style="display: flex; gap: 10px; align-items: center;   margin-top: 10px; flex-wrap: wrap;">
+                            <MudTooltip Arrow=true Color="Color.Error" Text="Fecha relativa del reporte">
+
+                                <MudChip Style="font-size: 10px; font-weight: bold;" Size="Size.Small">@reporte.Fecha_Creacion.FechaRelativa()</MudChip>
+                            </MudTooltip>
+                            <MudTooltip Arrow=true Color="Color.Error" Text="Ver la review">
+
+                                <MudChip Style="font-size: 10px; font-weight: bold;" Size="Size.Small" @onclick='()=>{navManager.NavigateTo($"/album/{reporte.Review?.Album.IdSpotify}");}'>Ver La Review</MudChip>
+                            </MudTooltip>
+                        </div>
+
+                        <div style="display: flex; gap: 20px; align-items: center;   margin-top: 10px; flex-wrap: wrap;">
+                            <MudTooltip Arrow=true Color="Color.Error" Text="Marcar como resulto">
+                                <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" Size="Size.Small" Color="Color.Error" @onclick="async()=>{await marcarComoResulto();}" Icon="@Icons.Material.Rounded.Check"></MudIcon>
+
+                            </MudTooltip>
+
+                            <MudTooltip Arrow=true Color="Color.Error" Text="Eliminar">
+                                <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" Size="Size.Small" Color="Color.Error " @onclick="async()=>{await BorrarReporte();}" Icon="@Icons.Material.Rounded.Delete"></MudIcon>
+
+                            </MudTooltip>
+                        </div>
+
+
+                    </div>
+                </div>
+            </MudContainer>
+        </MudCard>
+    }
+    else if (reporte.Nota is not null && reporte.Nota?.Id != 0)
+    {
+        <MudCard Style="padding: 10px;">
+            <MudContainer Style="display: flex; align-items: center; gap: 20px;">
+               
+                    @if (reporte.Severidad == 1)
+                    {
+                        <MudIcon Icon="@Icons.Material.Rounded.Report" Size="Size.Large" Color="Color.Tertiary"></MudIcon>
+
+
+                    }
+                    else if (reporte.Severidad == 2)
+                    {
+                        <MudIcon Icon="@Icons.Material.Rounded.ReportProblem" Size="Size.Large" Color="Color.Error"></MudIcon>
+
+
+                    }
+               
+                <div style="display: flex; flex-direction: column; ">
+                    <MudText Style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">@reporte.Titulo</MudText>
+                    <MudText Style="font-size: 12px;  opacity: 0.7;">Alguien ha reportado una nota por @reporte.Contenido. Por favor, revisa dicha nota y toma acción.</MudText>
+                    <div style="display: flex; gap: 10px; align-items: center;  margin-top: 10px; flex-wrap: wrap;">
+
+                        <div style="display: flex; gap: 10px; align-items: center;   flex-wrap: wrap;">
+                            <MudTooltip Arrow=true Color="Color.Error" Text="Fecha relativa del reporte">
+
+                                <MudChip Style="font-size: 10px; font-weight: bold;" Size="Size.Small">@reporte.Fecha_Creacion.FechaRelativa()</MudChip>
+                            </MudTooltip>
+                            <MudTooltip Arrow=true Color="Color.Error" Text="Ver la nota">
+
+                                <MudChip Style="font-size: 10px; font-weight: bold;" Size="Size.Small" @onclick='()=>{navManager.NavigateTo($"user/{reporte.Nota?.Creador?.CorreoNormalizado}/note/{reporte.Nota?.Id}", true);}'>Ver La Nota</MudChip>
+                            </MudTooltip>
+                        </div>
+
+
+                      
+                        <MudTooltip Arrow=true Color="Color.Error" Text="Eliminar">
+                            <MudIcon Style="height: 18px;width: 18px; cursor: pointer;" Size="Size.Small" Color="Color.Error" @onclick="async()=>{await BorrarReporte();}" Icon="@Icons.Material.Rounded.Delete"></MudIcon>
+
+                        </MudTooltip>
+                    </div>
+                </div>
+            </MudContainer>
+        </MudCard>
+    }
+}
+
+
+@functions{
+    public void MostrarNotificacion(string Titulo, string Contenido)
+    {
+        SnackbarService.Add(
+
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+
+        </MudContainer>
+    </div>
+    ,
+           Severity.Normal,
+    config => { config.HideIcon = true; }
+         );
+    }
+    public async Task BorrarReporte()
+    {
+        var desicion = await MessageBox("Eliminar Reporte", "¿Deseas eliminar este reporte? Esta acción no se puede deshacer.", "Eliminar", "Cancelar");
+
+        if(desicion == true)
+        {
+            if (reporte.Usuario is not null)
+            {
+                string titulo = $"""Hemos revisado tu reporte a una {(reporte.Nota is not null ? "nota" : $"review: {reporte.Review?.Album.Nombre}")} Y no vimos ningún problema.""";
+                var x = await notificacionesService.NotificacionGenerica(reporte.Usuario.Id, titulo);
+
+            }
+
+            var r = await reporteService.Eliminar(reporte.Id);
+
+            if (r.Success)
+            {
+
+                MostrarNotificacion("Reporte Eliminado", "Se ha eliminado el reporte correctamente");
+
+                reporte = new ReporteResponse();
+
+               
+                StateHasChanged();
+            }
+            else
+            {
+                MostrarNotificacion("Error", r.Message);
+            }
+        }
+       
+        
+    }
+    public async Task marcarComoResulto()
+    {
+        var desicion = await MessageBox("Eliminar Reporte", "¿Deseas eliminar este reporte? Esta acción no se puede deshacer.", "Eliminar", "Cancelar");
+
+        if (desicion == true)
+        {
+            if (reporte.Usuario is not null)
+            {
+                string titulo = $"""Hemos revisado tu reporte a una {(reporte.Nota is null ? "nota" : $"review: {reporte.Review?.Album.Nombre}")} y ya resolvimos el problema. Agradecemos tu feedback.""";
+                var x = await notificacionesService.NotificacionGenerica(reporte.Usuario.Id, titulo);
+
+            }
+
+            var r = await reporteService.Eliminar(reporte.Id);
+
+            if (r.Success)
+            {
+
+                MostrarNotificacion("Reporte Eliminado", "Se ha eliminado el reporte correctamente");
+
+                reporte = new ReporteResponse();
+
+
+                StateHasChanged();
+            }
+            else
+            {
+                MostrarNotificacion("Error", r.Message);
+            }
+        }
+
+
+    }
+}
+
+@code {
+    public string mbTitle { get; set; } = "";
+    public string mbContent { get; set; } = "";
+    public string mbYesButton { get; set; } = "";
+    public string mbNoButton { get; set; } = "";
+    public MudMessageBox mudMessageBox { get; set; } = new MudMessageBox();
+    [Parameter] public ReporteResponse reporte { get; set; } = new ReporteResponse();
+    private async Task<bool?> MessageBox(string Titulo, string Descripcion, string si, string No)
+    {
+        bool? result = await dService.ShowMessageBox(
+            Titulo,
+            Descripcion,
+            yesText: si, noText: No);
+        StateHasChanged();
+        return result;
+
+    }
+}

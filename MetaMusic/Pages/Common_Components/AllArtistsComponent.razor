@@ -1,0 +1,154 @@
+﻿<MudGrid Spacing="2">
+    @if (gettingartistas)
+    {
+        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+            <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+              
+                    <Loader></Loader>
+
+               
+            </div>
+        </BlazorAnimation.Animation>
+    }
+    else
+    {
+        @if (Artistas.Count() >= 1)
+        {
+            <Virtualize Items="Artistas" TItem="ArtistaResponse">
+                <MudItem md="4" lg="3" xl="3" xxl="3" sm="6" xs="6" Style="margin-top: 30px;">
+                    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                        <MetaMusic.Pages.Common_Components.ArtistaCard Artista="context" UserId="currentuser_id"></MetaMusic.Pages.Common_Components.ArtistaCard>
+                    </BlazorAnimation.Animation>
+                </MudItem>
+            </Virtualize>
+
+            @if (canGetMore && !gettingMore)
+            {
+                <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-top: 60px; margin-bottom: 60px; ">
+
+
+
+
+
+                    <MudLink Style="opacity: 0.7; font-size: 12px; margin-top: 10px; font-weight: bold; cursor: pointer;" @onclick='async ()=>{await GetMore();}' Underline="Underline.Hover"> VER MAS</MudLink>
+
+                </div>
+            }
+            else if (gettingMore)
+            {
+                <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-top: 60px; margin-bottom: 60px; ">
+
+
+
+
+
+                   <Loader></Loader>
+                </div>
+            }
+
+        }
+        else
+        {
+            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                    <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                        @if (theme.IsDark())
+                        {
+                            <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                        }
+                        else
+                        {
+
+                            <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                        }
+
+                        <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold">No pudimos encontrar artistas</MudText>
+                        <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7;">Puede que sea error nuestro o no hayan artistas registrados aun. Si consideras que es lo primero, recarga la pagina.</MudText>
+                        <MudTooltip Arrow="true" Color="Color.Error" Text="Intentar Denuevo">
+                            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Rounded.Update" Size="Size.Small" @onclick='()=>{navManager.NavigateTo($"/all-artists", true) ;}'></MudIconButton>
+
+                        </MudTooltip>
+
+                    </MudItem>
+                </div>
+            </BlazorAnimation.Animation>
+        }
+
+
+    }
+
+
+</MudGrid>
+@functions {
+    protected override async Task OnParametersSetAsync()
+    {
+        await GetArtistas();
+        await GetCurrentUser();
+    }
+    public async Task GetCurrentUser()
+    {
+        var x = await googleService.GetCurrentUser();
+
+
+
+        if (x.Data is not null)
+        {
+            currentuser_id = x.Data.Id;
+            StateHasChanged();
+        }
+
+
+
+
+    }
+
+    public async Task GetArtistas()
+    {
+        gettingartistas = true;
+        var r = await artistaService.ConsultarTodosLosArtistas(4);
+
+        if (r.Data is not null)
+        {
+            Artistas = r.Data;
+            StateHasChanged();
+        }
+        gettingartistas = false;
+    }
+
+    public async Task GetMore()
+    {
+        gettingMore = true;
+        var r = await artistaService.ConsultarMas(Artistas.Count());
+
+        if (r.Data is not null && r.Success && r.Data.Count() >= 1)
+        {
+            Artistas.AddRange(r.Data);
+            StateHasChanged();
+        }
+        else
+        {
+            canGetMore = false;
+        }
+        gettingMore = false;
+        StateHasChanged();
+    }
+
+   
+ }
+
+
+
+@code {
+    public bool vertodo = false;
+   
+    public int currentuser_id;
+    public List<ArtistaResponse> Artistas = new List<ArtistaResponse>();
+    public int vista = 4;
+    public bool gettingartistas = true;
+    public bool canGetMore = true;
+    public bool gettingMore = false;
+}

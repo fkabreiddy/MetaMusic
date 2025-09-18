@@ -1,0 +1,102 @@
+﻿<MudCard>
+
+    <MudContainer Style="height: auto; width: 100%; display: flex; border-radius: 9px; flex-direction: column; gap: 10px;">
+
+
+        <MudText Style="font-size: 15px; font-weight: bold;  margin-top: 20px;">HAS UNA PETICION</MudText>
+
+        <MudText Style="font-size: 12px;   opacity: 0.7; ">Ve a <MudLink Style="font-size: 12px;    " Href="https://open.spotify.com/" Underline="Underline.Always">Spotify.com</MudLink> busca el artista o album que quieras  y copia su identificador. En el recuadro de abajo. Una persona del staff podria acceder a tu petición.</MudText>
+
+        <MudText Style="font-size: 12px; opacity: 0.7; ">El ID son los caracteres finales en la url cuando buscas un artista, album o cancion en Spotify. Por ejemplo: "https://open.spotify.com/intl-es/album/<b style="text-decoration: underline;">123456789abcdefg"</b></MudText>
+
+       
+            <MudChipSet Mandatory=true>
+
+                <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "artista" ? MudBlazor.Variant.Filled: MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "artista";}' Text="Artista"></MudChip>
+                <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "album" ? MudBlazor.Variant.Filled: MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "album";}' Default=true Text="Album / Single"></MudChip>
+            </MudChipSet>
+
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <MudTextField MaxLength="30" T="string" Adornment="Adornment.Start" @bind-Value="spotifyid" Style="font-size: 12px;   margin-bottom: 10px; border: dashed 1px ;  width: 100% ; border-radius:10px; height: 40px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Introduce el ID aqui'></MudTextField>
+
+                <MudIconButton Size="Size.Small" @onclick="Crear" Color="Color.Error" Style="margin-top: 15px;" Disabled='@(spotifyid == "" || tipodeContenido == "")' DisableElevation="true" Icon="@Icons.Material.Rounded.Send"></MudIconButton>
+            </div>
+       
+
+    </MudContainer>
+
+
+</MudCard>
+@functions{
+
+
+    private async Task Crear()
+    {
+        if(tipodeContenido == "album")
+        {
+            var r = await peticionService.CrearAlbum(spotifyid);
+
+            if(r.Success)
+            {
+                MostrarNotificacion("Peticion Hecha", r.Message);
+            }
+            else
+            {
+                MostrarNotificacion("Error", r.Message);
+            }
+        }
+        else if(tipodeContenido == "artista")
+        {
+            var r = await peticionService.CrearArtista(spotifyid);
+
+            if(r.Success)
+            {
+                MostrarNotificacion("Peticion Hecha", r.Message);
+            }
+            else
+            {
+                MostrarNotificacion("Error", r.Message);
+            }
+
+
+
+        }
+
+        StateHasChanged();
+    }
+
+    public void MostrarNotificacion(string Titulo, string Contenido)
+    {
+        SnackbarService.Add(
+
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+
+        </MudContainer>
+    </div>
+    ,
+           Severity.Normal,
+    config => { config.HideIcon = true; }
+         );
+    }
+}
+@code {
+    public string tipodeContenido = "album";
+    public string spotifyid = "";
+
+}

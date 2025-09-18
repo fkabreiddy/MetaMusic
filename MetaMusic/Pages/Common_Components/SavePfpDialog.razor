@@ -1,0 +1,50 @@
+﻿<MudDialog Style="height: 90vh; width: 90vw; overflow: hidden">
+    <DialogContent>
+
+
+
+        <MudContainer Style="display: flex; flex-direction: column; gap : 10px;margin-bottom: 10px; position: sticky;">
+            <div style="height: auto;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 20px; ">
+
+                <MudText Style="font-size: 20px; font-weight: bold;">Nueva Foto de Perfil</MudText>
+                <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
+
+
+
+
+
+            </div>
+           
+
+
+
+            <div style="display: flex; flex-direction: column; gap: 20px;justify-content: center;">
+
+              
+                @if(ProfilePicture is not null)
+                {
+                    <MudAvatar Style="height: 150px; width: 150px;border: dashed 2px;margin: 10px;"><MudImage src="@ProfilePicture"></MudImage></MudAvatar>
+                }
+
+                <div style="display: flex; gap: 20px; align-items: center; justify-content: center;">
+                    <MudButton Style="font-size: 10px;" Color="Color.Error" Variant="Variant.Text">Guardar</MudButton>
+
+                    <MudButton Style="font-size: 10px;" Color="Color.Error" Variant="Variant.Text">Cancelar</MudButton>
+
+                </div>
+
+            </div>
+        </MudContainer>
+
+
+    </DialogContent>
+</MudDialog>
+
+@functions{
+
+    
+}
+@code {
+    [Parameter] public MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string ProfilePicture { get; set; } = "";
+}

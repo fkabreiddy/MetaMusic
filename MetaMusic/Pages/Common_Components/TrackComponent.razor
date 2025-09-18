@@ -1,0 +1,119 @@
+﻿
+<style>
+    .track-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+   
+
+<MudCard Class="track-card" >
+    <MudContainer Style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
+        <MudItem Style="width: auto;display: flex; gap: 15px; align-items: center; margin-top: 10px; margin-bottom: 10px; height: 50px;" class="track-title">
+            <MudAvatar Square=true Style="border-radius: 5px;">
+                <MudImage src="@track.Album.Portada"></MudImage>
+            </MudAvatar>
+            <MudText Style="font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@track.Titulo</MudText>
+        </MudItem>
+      <div style="display: flex; gap: 10px; align-items: center;">
+                <MudText Style="font-size: 12px; font-weight: bold; " >@track.Cantidad_Likes.NumeroRelativo()</MudText>
+
+                @if(userliked)
+                {
+
+                <MudIconButton Color="Color.Error" @onclick="async()=>{await DislikeTrack();}" Disabled=DisableLikeButton Icon="@Icons.Material.Rounded.Favorite" Size="Size.Small"></MudIconButton>
+
+                }
+                else
+                {
+                <MudIconButton Color="Color.Error" @onclick="async()=>{await LikeTrack();}" Disabled=DisableLikeButton Icon="@Icons.Material.Rounded.FavoriteBorder" Size="Size.Small"></MudIconButton>
+
+                }
+      </div>
+    </MudContainer>
+</MudCard>
+
+@functions{
+    protected override void OnInitialized()
+    {
+        userliked = track.Usuarios_Liked.Any(c => c.Usuario?.Id == currentuser.Id);
+    }
+    public void MostrarNotificacion(string Titulo, string Contenido)
+    {
+        SnackbarService.Add(
+
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+
+        </MudContainer>
+    </div>
+    ,
+           Severity.Normal,
+    config => { config.HideIcon = true; }
+         );
+    }
+    public async Task LikeTrack()
+    {
+        userliked = true;
+        var x = await albumService.LikeTrack(track);
+        
+        if(x.Success )
+        {
+            
+            StateHasChanged();
+        }
+        else
+        {
+            userliked = false;
+            MostrarNotificacion("Error", "Hubo un error al intentar likear el track, intenta denuevo más tarde.");
+        }
+    }
+    public async Task DislikeTrack()
+    {
+        userliked = false;
+        var x = await albumService.DisLikeTrack(track);
+
+        if (x.Success)
+        {
+            
+            StateHasChanged();
+        }
+        else
+        {
+            userliked = true;
+            MostrarNotificacion("Error", "Hubo un error al intentar dislikear el track, intenta denuevo más tarde.");
+        }
+
+    }
+}
+    @code {
+    [Parameter]  public Track track { get; set; } = new Track();
+
+    [Parameter] public bool DisableLikeButton { get; set; } = false;
+
+    [Parameter] public UsuarioResponse currentuser { get; set; } = new UsuarioResponse();
+
+    public Usuario_Like_Track interaccion { get; set; } = new Usuario_Like_Track();
+
+    public bool userliked;
+
+   
+}

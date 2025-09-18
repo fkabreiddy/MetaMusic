@@ -1,0 +1,27 @@
+﻿
+<MudGrid Style="display: flex; align-items: center; justify-content: center;" Justify="Justify.Center">
+    <MudItem md="12" sm="12" xl="12" xxl="12" xs="12" lg="12" Style="display: flex; align-items: center; justify-content: center;">
+        <MudBadge Color="Color.Error" Overlap=true Style="font-size: 10px;" Origin="Origin.BottomCenter" Bordered=true Visible="@(Usuario.Rol.Tipo == "Staff")" Content="Staff">
+            <MudAvatar Style="height: 120px; width: 120px;">
+                <MudImage src="@Usuario.FotoDePerfil"></MudImage>
+            </MudAvatar>
+        </MudBadge>
+      
+    </MudItem>
+    <MudItem md="12" sm="12" xl="12" xxl="12" xs="12" lg="12">
+        <MudContainer Style="display: flex; flex-direction: column; display: flex; align-items: center; justify-content: center;">
+            <MudLink Href="@($"/user/{Usuario.CorreoNormalizado}")" Style="font-size: 15px; font-weight: bold;">@Usuario.Nombre </MudLink>
+                
+
+           
+           
+            <MudText Style="font-size: 10px; margin-top: 10px; margin-bottom: 10px;">@("@" + Usuario.CorreoNormalizado)  </MudText>
+
+           
+        </MudContainer>
+    </MudItem>
+</MudGrid>
+@code {
+    [Parameter] public UsuarioResponse Usuario { get; set; } = new UsuarioResponse();
+    public string Staff = "STAFF";
+}

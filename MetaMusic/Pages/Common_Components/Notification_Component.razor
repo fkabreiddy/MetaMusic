@@ -1,0 +1,91 @@
+﻿@page "/notificacion"
+
+@if(Notificacion.Id != 0)
+{
+    
+        <MudCard Outlined=true style="display: flex; gap: 20px; justify-content: space-around; align-items: center;  padding: 20px; margin-bottom: 20px;">
+
+                @if (Notificacion.Album is not null && Notificacion.Album?.Id != 0)
+                {
+                     <div style="display: flex; align-items: center; justify-content: center; ">
+
+                <MudAvatar Style="height: 35px; width: 35px;  border-radius: 5px;" Square=true><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@Notificacion.Album?.Portada" Style="height:100%;border-radius: 5px; width: 100%;  " /></MudAvatar>
+
+
+            </div>
+                  <div style="display: flex;  justify-content: start; flex-direction: column; padding-left: 0;gap: 10px;">
+                        <div style="padding-left: 0; display: flex; align-items: center; gap: 15px;">
+                            <MudText Style="font-size: 10px;  opacity: 0.5;">
+                               @if(Notificacion.Saw == false){ @("Nueva Notificacion - ")} @Notificacion.Fecha_Creacion.FechaRelativa()
+                            </MudText>
+
+
+                            <MudBadge Visible="!Notificacion.Saw" Color="Color.Tertiary" Bordered=true Dot=true></MudBadge>
+                        </div>
+                        <div>
+                            <MudText Style="font-size: 12px;  opacity: 0.7;">
+                                Un artista que sigue tiene un nuevo album llamado  <b>@Notificacion.Album?.Nombre</b>. Lea la review y dinos que tal. <MudLink Style="font-size: 12px;  opacity: 0.7;cursor: pointer; margin-left: 10px;" Color="Color.Error" @onclick='()=>{navManager.NavigateTo($"album/{Notificacion.Album?.IdSpotify}");}' Underline="Underline.Hover"> Ver Review</MudLink>
+                            </MudText>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <MudIcon Icon="@Icons.Material.Rounded.Close" Style="height: 15px; width: 15px; cursor: pointer;" @onclick="async()=>{await Eliminar(Notificacion.Id);}">
+
+                        </MudIcon>
+                    </div>            
+                }
+                else
+                {
+
+                    <div style="display: flex; align-items: center; justify-content: center; ">
+
+                        <MudIcon Icon="@Icons.Material.Rounded.Info" Color="Color.Tertiary" Size="Size.Large" Style="opacity: 0.5;">
+
+                        </MudIcon>
+
+                    </div>
+                    <div style="display: flex;  justify-content: start; flex-direction: column; padding-left: 0;gap: 10px;">
+                        <div style="padding-left: 0; display: flex; align-items: center; gap: 15px;">
+                            <MudText Style="font-size: 10px;  opacity: 0.5;">
+                        @if (Notificacion.Saw == false) { @("Nueva Notificacion - ")}  @Notificacion.Fecha_Creacion.FechaRelativa()
+                            </MudText>
+                            <MudBadge Visible="!Notificacion.Saw" Color="Color.Tertiary" Bordered=true Dot=true></MudBadge>
+                        </div>
+                        <div>
+                            <MudText Style="font-size: 12px;  opacity: 0.7;">
+                                @Notificacion.Titulo
+                            </MudText>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <MudIcon Icon="@Icons.Material.Rounded.Close" Style="height: 15px; width: 15px; cursor:pointer;" @onclick="async()=>{await Eliminar(Notificacion.Id);}">
+
+                        </MudIcon>
+                    </div>
+
+                }
+             
+
+
+        </MudCard>
+
+   
+}
+
+@functions{
+
+    public async Task Eliminar(int id)
+    {
+        var r= await notificacionesService.Eliminar(id);
+
+        if(r.Success)
+        {
+            Notificacion = new NotificacionResponse();
+            StateHasChanged();
+        }
+    }
+   }
+
+@code {
+    [Parameter] public NotificacionResponse Notificacion { get; set; } = new NotificacionResponse();
+}

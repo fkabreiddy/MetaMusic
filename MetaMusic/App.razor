@@ -1,0 +1,90 @@
+﻿@inject IHostEnvironment Env
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <base href="/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="MetaMusic.styles.css" rel="stylesheet" />
+
+    <link rel="icon" type="image/png" href="/meta-logo.png"/>
+   
+
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+   <HeadOutlet @rendermode="InteractiveServer" />
+</head>
+<body>
+   <Routes @rendermode="InteractiveServer" />
+
+    <div id="blazor-error-ui">
+        @if (Env.IsDevelopment())
+{
+    <text>
+        An unhandled exception has occurred. See browser dev tools for details.
+    </text>
+}
+else
+{
+    <text>
+        An error has occurred. This app may no longer respond until reloaded.
+    </text>
+}
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+     <script src="_framework/blazor.web.js"></script>
+  
+  
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="_content/BlazorAnimation/blazorAnimationInterop.js"></script>
+    <script src="_content/BlazorContentEditable/BlazorContentEditable.js"></script>
+    <script src="https://kit.fontawesome.com/51db8b839a.js" crossorigin="anonymous"></script>
+    <script>
+       
+
+        window.clipboardCopy = {
+            copyText: function (text) {
+                try {
+                    navigator.clipboard.writeText(text);
+                    return true;
+                } catch (error) {
+                    alert(error);
+                    return false;
+                }
+            }
+        };
+
+        function scrollHaciaInicio()
+        {
+            window.scrollTo(0, 0);
+        }
+    </script>
+    <script>
+        window.focusElementById = function (id) {
+            var element = document.getElementById(id);
+            if (element) {
+                element.focus();
+            }
+        }
+
+        window.revokeGoogle = async function (token) {
+            await fetch("https://accounts.google.com/o/oauth2/revoke?token=" + token, { "method": "GET" });
+        };
+    </script>
+
+    <script>
+        window.onscroll = function () {
+            // Obtener el valor de scroll en el eje Y
+            var scrollY = window.scrollY || window.pageYOffset;
+
+            // Invocar el método de C# con el valor de scroll
+            DotNet.invokeMethodAsync('NombreDeTuAssembly', 'ManejarScroll', scrollY);
+        };
+    </script>
+    
+</body>
+</html>
+

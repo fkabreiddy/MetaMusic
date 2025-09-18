@@ -1,0 +1,17 @@
+﻿<style>
+    .album-title{
+
+
+        font-size: calc(0.75em + 1vw);
+        font-family: "SourceSerif4";
+        font-weight: bold;
+        
+    }
+</style>
+
+<MudText Align="@Align" Typo="Typo.h6"  Class="album-title">@AlbumName</MudText>
+@code {
+    [Parameter] public string AlbumName { get; set; } = "";
+    [Parameter] public Align Align { get; set; } = Align.Center;
+
+}

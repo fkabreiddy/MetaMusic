@@ -1,0 +1,34 @@
+﻿@page "/404"
+<MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+        <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+            <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                @if (theme.IsDark())
+                {
+                    <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                }
+                else
+                {
+
+                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                }
+
+                <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold"><b>Error 404</b></MudText>
+                <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7;">la direccion que estas ingresando no existe</MudText>
+                <MudTooltip Arrow="true" Color="Color.Error" Text="Volver">
+                    <MudIconButton Color="Color.Error" Icon="@Icons.Material.Rounded.ArrowBack" Size="Size.Small" @onclick='()=>{navManager.NavigateTo($"/" );}'></MudIconButton>
+
+                </MudTooltip>
+
+            </MudItem>
+        </div>
+    </BlazorAnimation.Animation>
+</MudItem>
+
+
+
+@code {
+
+}

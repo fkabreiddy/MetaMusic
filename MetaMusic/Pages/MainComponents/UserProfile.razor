@@ -1,0 +1,754 @@
+﻿@page "/user/{useremail}"
+@page "/user/{useremail}/note/{notaid:int}"
+
+<style>
+
+    .staff-option
+    {
+      
+        border: dashed 2px lightgray;
+    }
+
+    .staff-option:hover{
+
+        border: dashed 2px red;
+            
+    }
+
+    .focused_note{
+
+        border: dashed 1px red;
+    }
+
+   
+</style>
+@if(!userDataLoaded)
+{
+
+    
+        <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+            <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+               <Loader Simple=true></Loader>
+           
+
+            </MudItem>
+        </div>
+
+  
+
+}
+else
+{
+
+    if(UsuarioNoEncontrado)
+    {
+                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                        <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                             <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                                @if (theme.IsDark())
+                                {
+                                    <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                                }
+                                else
+                                {
+
+                                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                                }
+
+                                <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold">No pudimos encontrar el usuario <b>@useremail</b></MudText>
+                                 <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7;">Puede que sea error nuestro o que el usuario no exista. Si consideras que es lo primero, recarga la pagina.</MudText>
+                                 <MudTooltip Arrow="true" Color="Color.Error" Text="Intentar Denuevo">
+                                         <MudIconButton Color="Color.Error" Icon="@Icons.Material.Rounded.Update" Size="Size.Small" @onclick='()=>{navManager.NavigateTo($"/user/{useremail}", true) ;}'></MudIconButton>
+
+                                 </MudTooltip>
+
+                            </MudItem>
+                        </div>
+                </BlazorAnimation.Animation>
+    }
+    else
+    {
+        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+            <MudItem Style="margin-top: 60px;margin-bottom: 60px;">
+                <MudGrid>
+                    <MudItem md="4" xxl="4" xl="4" lg=4 xs=12 sm="12" Style=" border-radius: 10px;">
+                        <MudContainer Style="display: flex; flex-direction: column; gap:20px; justify-content:center; align-items: center; ">
+                            <MudText Style="font-size: 25px; font-weight: bold" Color="Color.Error">Usuario</MudText>
+                            <MudText Style="font-size: 35px;   overflow: hidden; font-family: SourceSerif4;">“@Usuario.Nombre”</MudText>
+                            <MudText Style="font-size: 15px;white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-family: SourceSerif4;">@Usuario.CorreoNormalizado</MudText>
+                               <AuthorizeView Roles="Staff">
+                                   <Authorized>
+                                    <MudText Style="font-size: 12px; font-weight: bold" Color="Color.Error">@Usuario.Rol.Tipo</MudText>
+
+                                   </Authorized>
+                               </AuthorizeView>
+
+                               
+                            <MudAvatar Style="height: 150px; width: 150px;border: dashed 2px;margin: 10px;"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@Usuario.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+                            <AuthorizeView Context="picture">
+                                <Authorized>
+                                    @if (UsuarioActual.Id == Usuario.Id)
+                                {
+                                    <MudFileUpload T="IBrowserFile" Accept=".png, .jpg, .jpeg"  FilesChanged="ModificarMiFoto" MaximumFileCount="1">
+                                        <ButtonTemplate>
+                                            <MudButton HtmlTag="label"
+                                                       Variant="Variant.Text"
+                                                       Color="Color.Error"
+                                                       DisableElevation="true"
+                                                       Style="font-size: 12px;"
+                                                       for="@context.Id">
+
+                                                       @if(editandofoto)
+                                                       {
+                                                           <MudProgressCircular Indeterminate=true Color="Color.Error" Style="height: 20px; width: 20px;"> </MudProgressCircular>
+                                                       }
+                                                       else
+                                                       {
+                                                        @("Editar Foto")
+                                                       }
+                                                
+                                            </MudButton>
+                                        </ButtonTemplate>
+                                    </MudFileUpload>
+                                }
+                                </Authorized>
+                            </AuthorizeView>
+                           
+
+
+                                <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+                                <MudText Style="font-size: 13px; font-weight: bold" Color="Color.Error">Biografia</MudText>
+                               
+                                                                    <MudText  Align="Align.Center" Style="font-size: 12px; ">@Usuario.Biografia</MudText>
+
+                                
+
+                                <AuthorizeView>
+                                    <Authorized>
+                                        @if (UsuarioActual.Id == Usuario.Id)
+                                    {
+                                        <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+                                        <MudCard>
+
+                                            <MudContainer Style="height: auto; width: 100%; display: flex; border-radius: 9px; flex-direction: column; ">
+
+
+                                                <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold; margin-bottom: 10px; margin-top: 20px; ">EDITA TU PERFIL</MudText>
+
+                                                <MudTextField AutoGrow=true Required=true @bind-Value="UsuarioActual.Nombre"  MaxLength="30" Immediate=true HelperText="Evite los espacios en blanco al final" T="string" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px; border: dashed 1px;   width: 100% ; border-radius:10px; min-height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Tu nuevo nombre aqui'></MudTextField>
+
+
+                                                <MudTextField AutoGrow=true  Required=true @bind-Value="UsuarioActual.Biografia" MaxLength="100" Immediate=true T="string" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 21px; border: dashed 1px ;   width: 100% ; border-radius:10px; min-height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Biografia'></MudTextField>
+
+                                                <div style="display: flex; justify-content: center; align-items: center;">
+                                                    <MudChip Variant="MudBlazor.Variant.Filled" Color="Color.Surface" @onclick="ModificarUsuario" Disabled='@(Usuario.Nombre == "" || Usuario.FotoDePerfil == "" || Usuario.Biografia == "" || Char.IsWhiteSpace( Usuario.Nombre[Usuario.Nombre.Length - 1] )  )' Style="font-size: 12px; margin-bottom: 15px; cursor: pointer;">
+                                                        @if (GuardandoCambios)
+                                                        {
+
+                                                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Error"></MudProgressCircular>
+
+
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudText Style="font-size: 12px;  cursor: pointer;">Guardar Cambios</MudText>
+
+                                                        }
+                                                    </MudChip>
+
+                                                </div>
+
+
+                                            </MudContainer>
+
+
+                                        </MudCard>
+                                    }
+                                    </Authorized>
+                                </AuthorizeView>
+                     
+
+                            <AuthorizeView Roles="Staff">
+                                <Authorized>
+
+                                    @if(UsuarioActual.Id == Usuario.Id)
+                                    {
+                                        <MudDivider Style="margin-top: 20px; margin-bottom: 20px;"></MudDivider>
+                                        <MudContainer Style="display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center;">
+                                            <MudText Style="font-size: 13px;  font-weight: bold;" Color="Color.Error">Opciones del Staff</MudText>
+                                            <div class="staff-option" style="padding: 15px; display: flex; justify-content: space-between; align-items: center; gap: 21px; cursor: pointer; border-radius: 10px;  margin-bottom: 15px; flex-wrap: wrap;">
+                                                <MudText Style="font-size: 12px;" Color="Color.Primary"> Actualizar Portadas de Artistas </MudText>
+                                                <MudIconButton Icon="@Icons.Material.Rounded.Update" Size="Size.Small"></MudIconButton>
+                                            </div>
+                                            <div class="staff-option" style="padding: 15px;display: flex; justify-content: space-between; align-items: center; gap: 21px; cursor: pointer; margin-bottom: 15px; flex-wrap: wrap; border-radius: 10px;">
+                                                <MudText Style="font-size: 12px;" Color="Color.Primary">Actualizar Portadas de Albumes </MudText>
+                                                <MudIconButton Icon="@Icons.Material.Rounded.Update" Size="Size.Small"></MudIconButton>
+                                            </div>
+
+                                        </MudContainer>
+                                    }
+                                  
+                                </Authorized>
+                            </AuthorizeView>
+                            <AuthorizeView Roles="Normal">
+                                <ColaboradorPeticion></ColaboradorPeticion>
+                            </AuthorizeView>
+                                
+                            
+                           
+                              
+
+                        </MudContainer>
+                    </MudItem>
+
+
+                    <MudItem md="8" xxl="8" xl="8" lg="8" xs=12 sm="12">
+
+                        <MudContainer Style="display: flex; gap: 10px; flex-direction: column; justify-content: space-between; align-items: center; width: 100%;">
+
+
+
+
+                            <MudTabs DisableRipple=true Color="Color.Transparent" Rounded="true" HideSlider="true" AlwaysShowScrollButtons="false" MinimumTabWidth="100" Elevation="0" IconColor="Color.Secondary" ScrollIconColor="Color.Secondary" Centered="true" Style="font-size: 10px; width: 100%;  height: 100%; margin-bottom: 15px;margin-top: 30px; padding:0; " SliderColor="Color.Secondary">
+
+                              
+                                <AuthorizeView Context="staff_options" Roles="Staff">
+                                    
+                                    @if (Usuario.Id == UsuarioActual.Id && Usuario.Rol.Tipo == "Staff")
+                                    {
+
+                                        <MudTabPanel style="@($"""{(view == "Peticiones" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Peticiones";}' Text="Peticiones">
+
+                                            @if(peticiones.Count() >= 1){
+                                                 <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                    <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Las Peticiones se eliminan  automaticamente cuando se agregue el contenido.</MudText>
+                                                    <MudGrid Style="margin-top: 20px;" Spacing="3">
+                                                     
+                                                        <Virtualize Items="peticiones" TItem="PeticionResponse">
+                                                            <MudItem md="4" lg="4" xl="3" xxl="3" sm="6" xs="6">
+                                                                <MetaMusic.Pages.Common_Components.Peticion_Component Peticion="@context"/>
+
+                                                            </MudItem>
+                                                        </Virtualize>
+                                                            
+                                                        
+                                                    </MudGrid>
+                                                </BlazorAnimation.Animation>
+                                            }
+                                            else
+                                            {
+
+                                                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                    <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                                                        <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                                                           
+                                                            <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold">No hay Peticiones</MudText>
+                                                            
+
+                                                        </MudItem>
+                                                    </div>
+                                                </BlazorAnimation.Animation>
+                                            }
+                                           
+                                            
+                                        </MudTabPanel>
+
+                                        <MudTabPanel style="@($"""{(view == "Reportes" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reportes";}' Text="Reportes">
+                                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                        <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Las reviews que tengan mas de 3 reportes serán ocultadas. Mantente al tanto de el feedback que hacen los usuarios.</MudText>
+
+                                                        <MudGrid Style="margin-top: 20px;" Spacing="3">
+
+                                                            <Virtualize Items="reportes.ToList()" TItem="ReporteResponse">
+                                                                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12">
+                                                                    <MetaMusic.Pages.Common_Components.Reporte reporte="@context"></MetaMusic.Pages.Common_Components.Reporte>
+
+                                                                </MudItem>
+                                                            </Virtualize>
+
+                                                        </MudGrid>
+                                                </BlazorAnimation.Animation>
+                                           
+                                        </MudTabPanel>
+                                         <MudTabPanel style="@($"""{(view == "Stats" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Stats";}' Text="Stats">
+                                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+
+                                                        <MudGrid Style="margin-top: 20px;" Spacing="3">
+
+                                                           <MyStats ListaAlbumes="@reviews" ></MyStats>
+
+                                                        </MudGrid>
+                                                </BlazorAnimation.Animation>
+                                           
+                                        </MudTabPanel>
+                                        <MudTabPanel style="@($"""{(view == "Generos" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Generos";}' Text="Generos">
+                                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                        <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Aqui estan los generos que se encuentran en la plataforma. Para crear uno nuevo escribe su nombre en el cuadro de texto rojo y dale al boton en forma de cruz</MudText>
+
+                                                        @if(dataloaded)
+                                                        {
+                                                            <Generos></Generos>
+                                                        }
+                                                        else
+                                                        {
+                                                            <Loader></Loader>
+                                                        }
+
+                                                </BlazorAnimation.Animation>
+                                           
+                                        </MudTabPanel>
+                                        <MudTabPanel style="@($"""{(view == "Reviews" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Reviews";}' Text="Reviews">
+                                           
+                                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                    <MudContainer Style="display: flex; justify-content: center; width: 90%;">
+                                                        @if (theme.IsDark())
+                                                        {
+                                                            <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudTextField @bind-Value="filtro_review" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                                                        }
+
+                                                    </MudContainer>
+                                                    <MudGrid Style="margin-top: 20px;">
+                                                        @foreach (var review in reviews.Where(r => r.Nombre.ToLower().Contains(filtro_review.ToLower())))
+                                                        {
+                                                            @if (cargandoreviews)
+                                                            {
+
+                                                                <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                                                                    <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+                                                                       <Loader Simple="true"></Loader>
+
+                                                                    </MudItem>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <MudItem md="4" lg="4" xl="4" xxl="3" sm="6" xs="6">
+                                                                    <MetaMusic.Pages.Common_Components.ReviewCard album="review"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                                                </MudItem>
+                                                            }
+
+                                                        }
+                                                    </MudGrid>
+                                                </BlazorAnimation.Animation>
+                                          
+                                        </MudTabPanel>
+
+
+                                    }
+                               </AuthorizeView>
+                            
+                                  
+                                <MudTabPanel style="@($"""{(view == "Notas" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Notas";}' Text="Notas">
+                                   
+                                    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                        <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Las notas que hagas se registrarán aquí. Puedes borrarlas y presiona "Ver Album" para ver la review donde hiciste la nota.</MudText>
+                                        <MudGrid Style="margin-top: 20px;">
+                                            @foreach (var nota in notas)
+                                            {
+                                                <MudItem  md="6" lg="6" xl="6" xxl="6" sm="12" xs="6">
+                                                    <div id="@nota.Id">
+                                                        <MetaMusic.Pages.Common_Components.Nota nota="@nota" Bordered="@(nota.Id == notaid)" showSource=true disableInteractivity=true deletebuttonvisible=true></MetaMusic.Pages.Common_Components.Nota>
+
+                                                    </div>
+                                                </MudItem>
+                                            }
+                                        </MudGrid>
+                                    </BlazorAnimation.Animation>
+                                    
+                                   
+                                </MudTabPanel>
+                           
+                                <MudTabPanel style="@($"""{(view == "Siguiendo" ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{view = "Siguiendo";}' Text="Siguiendo">
+                                        <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                        <MudContainer Style="display: flex; justify-content: center; width: 90%;">
+                                            @if (theme.IsDark())
+                                            {
+                                                <MudTextField @bind-Value="filtro_artista" MaxLength="100"  T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                                            }
+                                            else
+                                            {
+                                                <MudTextField @bind-Value="filtro_artista" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold;  border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                                            }
+
+                                        </MudContainer>
+                                        <MudGrid Style="margin-top: 20px;" Spacing="2">
+
+                                            @if (cargandosuscripciones)
+                                            {
+
+                                                <div style="width: 100%; min-height: 80vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                                                    <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6">
+                                                        <Loader Simple=true></Loader>
+
+
+                                                    </MudItem>
+                                                </div>
+                                            }
+                                            else
+                                            {
+
+                                                @foreach (var artista in suscripciones.Where(a => a.Nombre.ToLower().Contains(filtro_artista.ToLower())))
+                                                {
+
+                                                    <MudItem md="4" lg="4" xl="3" xxl="3" sm="6" xs="6" Style="margin-top: 30px;">
+                                                        <MetaMusic.Pages.Common_Components.ArtistaCard Artista="artista"  VisibleSuscribeButton="true" UserId="@UsuarioActual.Id"></MetaMusic.Pages.Common_Components.ArtistaCard>
+                                                    </MudItem>
+                                                }
+                                            }
+
+                                        </MudGrid>
+                                        </BlazorAnimation.Animation>
+
+                                   
+                                </MudTabPanel>
+
+                            </MudTabs>
+
+
+
+
+
+
+
+                        </MudContainer>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        </BlazorAnimation.Animation>
+    }
+  
+}
+
+
+@functions{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Assuming you have a property named 'desiredId' that specifies the id of the note you want to focus on
+            await JSR.InvokeVoidAsync("focusElementById", notaid);
+        }
+    }
+
+    public async Task GetReportes(int userid){
+
+        var r = await reporteService.Consultar(userid);
+
+        if(r.Data is not null && r.Success)
+        {
+            reportes = r.Data;
+            StateHasChanged();
+        }
+    }
+    public async Task ModificarUsuario()
+    {
+        UsuarioActual.Biografia = Usuario.Biografia;
+        UsuarioActual.Nombre = Usuario.Nombre;
+        GuardandoCambios = true;
+        var r = await userService.Modificar(UsuarioActual.ToRequest());
+
+        if(r.Success && r.Data is not null)
+        {
+            UsuarioActual = r.Data;
+            Usuario = r.Data;
+
+            GuardandoCambios = false;
+            StateHasChanged();
+            await JSR.InvokeVoidAsync("scrollHaciaInicio");
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+        dataloaded = false;
+        if(Usuario.Id == 0)
+        {
+            await GetUser();
+
+            if(Usuario.Rol.Tipo == "Staff")
+            {
+
+                await GetRecentAlbums(Usuario);
+                await GetReportes(Usuario.Id);
+                await getPeticiones();
+            }
+
+            await ConsultarSuscripciones(Usuario);
+            await GetNotas(Usuario.Id);
+        }
+        dataloaded = true;
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+    public async Task GetUser()
+    {
+
+        UsuarioNoEncontrado = true;
+        var r = await userService.ConsultarUsuario(useremail);
+        if (r.Success == true && r.Data is not null)
+        {
+
+            Usuario = r.Data;
+
+            UsuarioNoEncontrado = false;
+
+
+
+        }
+        else
+        {
+            UsuarioNoEncontrado = true;
+        }
+        var x = await userService.ConsultarUsuarioActual();
+
+        if(x.Success && x.Data is not null)
+        {
+            UsuarioActual = x.Data;
+
+        }
+        userDataLoaded = true;
+        StateHasChanged();
+
+    }
+
+    public async Task<(string?, string?)> GetFilePath(IBrowserFile ufile, CancellationToken cancellationToken)
+    {
+        if (ufile != null && ufile.Size > 0)
+        {
+            if (ufile.Size > 3 * 1024 * 1024)
+            {
+                MostrarNotificacion("Error", "Las imágenes no pueden superar los 3 MB");
+                return (null, null);
+            }
+
+            if(Path.GetExtension(ufile.Name) != ".png" && Path.GetExtension(ufile.Name) != ".jpeg" && Path.GetExtension(ufile.Name) != ".jpg")
+            {
+                MostrarNotificacion("Error", "Tipo de archivo invalido, Solo se permiten .jpeg, .png o jpg");
+                return (null, null);
+            }
+
+            var fileName = Path.GetFileName(ufile.Name);
+            
+            var newFileName = $"pfp_{UsuarioActual.CorreoNormalizado}{Path.GetExtension(ufile.Name)}";
+
+            // Simular una operación que puede llevar más de 10 segundos
+            return (Path.Combine("wwwroot", "UsersPFP", newFileName), newFileName);
+        }
+        else
+        {
+            return (null, null);
+        }
+    }
+
+    public async Task ModificarMiFoto(IBrowserFile ufile)
+    {
+        editandofoto = true;
+
+        using (var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
+        {
+            var cancellationToken = cancellationTokenSource.Token;
+
+            try
+            {
+                var items = await GetFilePath(ufile, cancellationToken);
+
+                if (items.Item1 is null || items.Item2 is null)
+                {
+                    editandofoto = false;
+                    return;
+                }
+
+                var fotoactual = Path.Combine("wwwroot", UsuarioActual.FotoDePerfil).ToString();
+
+                UsuarioActual.FotoDePerfil = Path.Combine("UsersPFP", items.Item2);
+
+                var r = await userService.Modificar(UsuarioActual.ToRequest());
+
+                if (r.Success && r.Data is not null)
+                {
+                    if (File.Exists(fotoactual))
+                    {
+                        try
+                        {
+                            File.Delete(fotoactual);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Manejar cualquier excepción al eliminar el archivo
+                            MostrarNotificacion($"Error al eliminar la foto existente", ex.Message);
+                            return;
+                        }
+                    }
+                    // Copiar el nuevo archivo
+                    using (var fileStream = new FileStream(items.Item1, FileMode.Create))
+                    {
+                        await ufile.OpenReadStream().CopyToAsync(fileStream, cancellationToken);
+                    }
+
+                    // Eliminar la foto existente solo después de la copia exitosa
+                   
+
+                    UsuarioActual = r.Data;
+                    MostrarNotificacion("Listo", "Se modificó la foto correctamente, vuelve a recargar la página.");
+
+                    StateHasChanged();
+                }
+                else
+                {
+                    MostrarNotificacion("Error", "Error al modificar la foto, intenta más tarde.");
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // La operación fue cancelada debido a que se agotó el tiempo o el usuario la canceló
+                MostrarNotificacion("Error", "La operación fue cancelada debido a que se agotó el tiempo o el usuario la canceló");
+            }
+            finally
+            {
+                editandofoto = false;
+            }
+        }
+    }
+    
+    public async Task GetRecentAlbums(UsuarioResponse user)
+    {
+        cargandoreviews = true;
+        var r = await albumService.ConsultarMisAlbumes(user);
+
+        if (r.Data is not null)
+        {
+            reviews = r.Data;
+            cargandoreviews = false;
+        }
+    }
+
+    public async Task ConsultarSuscripciones(UsuarioResponse user)
+    {
+        cargandosuscripciones = true;
+        var r = await artistaService.ArtstasSuscrito(user);
+
+        if (r.Data is not null)
+        {
+            suscripciones = r.Data;
+            cargandosuscripciones = false;
+        }
+    }
+
+    public async Task GetNotas(int userid)
+    {
+        var r = await notaService.ConsulatNotasDelUsuario(userid);
+
+        if(r.Data is not null && r.Success)
+        {
+            notas = r.Data;
+        }
+    }
+
+    public void MostrarNotificacion(string Titulo, string Contenido)
+    {
+        SnackbarService.Add(
+
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+
+        </MudContainer>
+    </div>
+    ,
+           Severity.Normal,
+    config => { config.HideIcon = true; }
+         );
+    }
+
+
+    public async Task getPeticiones()
+    {
+        cargandopeticiones = true;
+        var r  = await peticionService.ConsultarTodo();
+
+        if(r.Success && r.Data is not null)
+        {
+            peticiones = r.Data.OrderByDescending(p => p.Acumulaciones).ToList();
+           
+            
+
+        }
+        cargandopeticiones = false;
+        StateHasChanged();
+    }
+   
+}
+@code {
+    [Parameter] public string useremail { get; set; } ="";
+    public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
+    public UsuarioResponse Usuario { get; set; } = new UsuarioResponse();
+    public List<AlbumResponse> reviews { get; set; } = new List<AlbumResponse>();
+    public List<NotaResponse> notas { get; set; } = new List<NotaResponse>();
+
+    public bool userDataLoaded = false;
+    public bool GuardandoCambios = false;
+    public bool UsuarioNoEncontrado = true;
+
+    public List<ArtistaResponse> suscripciones { get; set; } = new List<ArtistaResponse>();
+    public string IdToCopy = "";
+    public string filtro_artista = "";
+    public string filtro_review = "";
+
+    public List<ReporteResponse> reportes {get; set;} = new List<ReporteResponse>();
+
+    public List<PeticionResponse> peticiones = new List<PeticionResponse>() ;
+    [Parameter] public int notaid {get; set;} 
+    public bool cargandoreviews = true;
+    public bool cargandosuscripciones = true;
+    public string view = "Notas";
+    public string focused_note = "";
+    public bool editandofoto=false;
+    public bool cargandopeticiones = false;
+    public bool dataloaded = true;
+}

@@ -1,0 +1,386 @@
+﻿@page "/search/{topic}"
+@page "/search"
+
+<style>
+    .results-summary {
+    backdrop-filter: blur(6px) saturate(43%);
+    -webkit-backdrop-filter: blur(6px) saturate(43%);
+    background-color: transparent;
+    border-radius: 12px;
+  
+    border-radius: 10px; 
+    padding: 15px;
+
+}
+</style>
+
+<Encabezado Title='@("BUSCADOR")'></Encabezado>
+
+
+
+   
+   
+       
+            <MudGrid Justify="Justify.SpaceBetween" Style="margin-top: 60px;">
+                <MudItem xxl="3" xl="3" lg="3" md="3" sm="5" xs="12" Style="position: sticky;  top: 67px;z-index:1;">
+
+
+
+
+                    <MudContainer Style="position: sticky;  top: 100px;z-index:1; display: flex; flex-direction: column; gap: 10px; align-items: center; justfy-content: center;  " Class="results-summary">
+                        <div style="width: 100%; display: flex; flex-direction: column; justify-content: center;gap:10px; align-items: center;">
+
+                            <MudCard Outlined=false Style="border-radius: 10px;  margin-bottom: 10px;padding:0px; ">
+                                 <MudTextField MaxLength="30" Immediate=true OnAdornmentClick="getResultados" T="string"  IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.End" AdornmentColor="Color.Error" Style="font-size: 12px;  font-weight:  bold; width: 100% ;   border-radius:10px; height: 30px; padding: 10px;margin-top: 0;top:-4px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="topic" Placeholder='Buscar en MetaMusic'></MudTextField>
+
+                            </MudCard>
+                         
+
+                            <MudText Style="font-size: 12px; font-weight: bold;">@(Albumes.Count() + Artistas.Count() + Usuarios.Count()) RESULTADOS</MudText>
+                            <MudButton Style="font-size: 10px; margin-bottom: 10px; cursor: pointer;" @onclick="()=>{panel_contraido = !panel_contraido;}" Variant="Variant.Text">@(panel_contraido ? "Expandir " : "Contraer ") Resumen de Resultado</MudButton>
+
+                        </div>
+                        <MudCollapse Expanded="@(!panel_contraido)">
+                            <MudGrid Spacing="2" Style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;">
+                                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                </BlazorAnimation.Animation>
+                                
+                                
+                                @if (Albumes.Count() >= 1)
+                                {
+                                         <MudItem xxl="12" xl="12" sm="12" xs="12" md="12" lg="12" Style="width: 100%;">
+                                            <MudCard Style="padding:10px; opacity:0.7; cursor:pointer;" @onclick='()=>{View ="albumes";}'>
+                                                <MudContainer Style="display: flex; gap: 15px;align-items: center; justify-content: space-between;margin-top: 10px; margin-bottom: 10px;">
+                                                    <MudText Style="font-size: 12px; font-weight: bold;" Color="@(View == "albumes" ? Color.Error : Color.Inherit)">Albumes</MudText>
+                                                    <MudText Style="font-size: 10px;">@Albumes.Count().NumeroRelativo() Resultados</MudText>
+                                                </MudContainer>
+
+                                            </MudCard>
+                                        </MudItem>
+                                    
+                                }
+                                 @if (Singles.Count() >= 1)
+                                {
+                                           <MudItem xxl="12" xl="12" sm="12" xs="12" md="12" lg="12" Style="width: 100%;">
+                                                <MudCard Style="padding:10px; opacity:0.7;cursor:pointer;" @onclick='()=>{View ="singles";}'>
+                                                    <MudContainer Style="display: flex; gap: 15px;align-items: center; justify-content: space-between;margin-top: 10px; margin-bottom: 10px;">
+                                                        <MudText Style="font-size: 12px; font-weight: bold;" Color="@(View == "singles" ? Color.Error : Color.Inherit)">Singles</MudText>
+                                                        <MudText Style="font-size: 10px;">@Singles.Count().NumeroRelativo() Resultados</MudText>
+                                                    </MudContainer>
+
+                                                </MudCard>
+                                            </MudItem>
+                                    
+                                }
+                                @if (Artistas.Count() >= 1)
+                                {
+
+                                       <MudItem xxl="12" xl="12" sm="12" xs="12" md="12" lg="12" Style="width: 100%;">
+                                             <MudCard Style="padding:10px; opacity:0.7;cursor:pointer;" @onclick='()=>{View ="artistas";}'>
+                                            <MudContainer Style="display: flex; gap: 15px;align-items: center; justify-content: space-between;margin-top: 10px; margin-bottom: 10px;">
+                                                <MudText Style="font-size: 12px; font-weight: bold;" Color="@(View == "artistas" ? Color.Error : Color.Inherit)">Artistas</MudText>
+                                                <MudText Style="font-size: 10px;">@Artistas.Count().NumeroRelativo() Resultados</MudText>
+                                            </MudContainer>
+
+                                        </MudCard>
+                                        </MudItem>
+                                    
+                                }
+
+
+
+                                @if (Usuarios.Count() >= 1)
+                                {
+
+                                      <MudItem xxl="12" xl="12" sm="12" xs="12" md="12" lg="12" Style="width: 100%;">
+                                        <MudCard Style="padding:10px; opacity:0.7;cursor:pointer;" @onclick='()=>{View ="usuarios";}'>
+                                            <MudContainer Style="display: flex; gap: 15px;align-items: center; justify-content: space-between;margin-top: 10px; margin-bottom: 10px;">
+                                                <MudText Style="font-size: 12px; font-weight: bold;" Color="@(View == "usuarios" ? Color.Error : Color.Inherit)">Usuarios</MudText>
+                                                <MudText Style="font-size: 10px;">@Usuarios.Count().NumeroRelativo() Resultados</MudText>
+                                            </MudContainer>
+
+                                        </MudCard>
+                                    </MudItem>
+                                }
+
+                               <MudItem xxl="12" xl="12" sm="12" xs="12" md="12" lg="12" Style="margin-top: 20px;display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;">
+                        <MudText Style="font-size: 12px; font-weight: bold;">FILTROS</MudText>
+
+                        @if (Just8PlusAlbums == true)
+                        {
+                            <MudChip @onclick="()=>{Just8PlusAlbums = !Just8PlusAlbums;}" Variant="MudBlazor.Variant.Outlined" Color="Color.Error" Style="font-size: 12px; border: dashed 1px;" Text="Reviews de 8.0 +"></MudChip>
+
+                        }
+                        else
+                        {
+                            <MudChip @onclick="()=>{Just8PlusAlbums = !Just8PlusAlbums;}" Variant="MudBlazor.Variant.Outlined" Style="font-size: 12px; border: dashed 1px;" Text="Reviews de 8.0 +"></MudChip>
+
+                        }
+
+
+                        @if (JustMustListen == true)
+                        {
+                            <MudChip @onclick="()=>{JustMustListen = !JustMustListen;}" Variant="MudBlazor.Variant.Outlined" Color="Color.Error" Style="font-size: 12px; border: dashed 1px;" Text="Solo Must Listen"></MudChip>
+
+                        }
+                        else
+                        {
+                            <MudChip @onclick="()=>{JustMustListen = !JustMustListen;}" Variant="MudBlazor.Variant.Outlined" Style="font-size: 12px; border: dashed 1px;" Text="Solo Must Listen"></MudChip>
+
+                        }
+                    </MudItem>
+
+
+                            </MudGrid>
+
+               
+                        </MudCollapse>
+
+                       
+                    </MudContainer>
+
+
+
+
+
+                </MudItem>
+                  <MudItem xxl="8" xl="8" lg="8" md="8" sm="7" xs="12">
+                        <MudGrid >
+                           
+                            
+
+                                @if ((Albumes.Count() + Artistas.Count() + Usuarios.Count()) <= 0 && topic == "")
+                                {
+                                    
+                                        <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12" Style="margin-top:60px;">
+                                    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)" Style="width: 100%;   display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                               
+                                            <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%;   display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                                                @if (theme.IsDark())
+                                                {
+                                                    <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                }
+                                                else
+                                                {
+
+                                                    <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                                                }
+
+                                                <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold"><b>NO HAY RESULTADOS DE "@topic"</b></MudText>
+                                                
+
+                                            </MudItem>
+                               
+                                    </BlazorAnimation.Animation>
+                                 </MudItem>
+                                    
+                                }
+                                else if(buscando)
+                                {
+                                    <MudContainer Style="display: flex; flex-direction: column; align-items: center; justify-content: center;height: 50vh; " >
+                                        <Loader Simple=true></Loader>
+                                    </MudContainer>
+                                    
+                                }
+                                else
+                                {
+
+
+                                    @if (View == "albumes")
+                                    {
+
+
+                                        <Virtualize Items="Albumes" TItem="AlbumResponse">
+                                            <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="6" Style="margin-bottom: 30px;">
+                                                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                    <MetaMusic.Pages.Common_Components.ReviewCard album="@context"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                                </BlazorAnimation.Animation>
+                                            </MudItem>
+                                        </Virtualize>
+
+                                    }
+                                    else if (View == "artistas")
+                                    {
+                                        <Virtualize Items="Artistas" TItem="ArtistaResponse">
+                                            <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="6" Style="margin-bottom: 30px;">
+                                                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                    <MetaMusic.Pages.Common_Components.ArtistaCard Artista="context" UserId="currentuser_id"></MetaMusic.Pages.Common_Components.ArtistaCard>
+                                                </BlazorAnimation.Animation>
+                                            </MudItem>
+                                        </Virtualize>
+                                    }
+                                    else if (View == "singles")
+                                    {
+
+
+                                        <Virtualize Items="Singles" TItem="AlbumResponse">
+                                            <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="6" Style="margin-bottom: 30px;">
+                                                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                    <MetaMusic.Pages.Common_Components.ReviewCard album="@context"></MetaMusic.Pages.Common_Components.ReviewCard>
+                                                </BlazorAnimation.Animation>
+                                            </MudItem>
+                                        </Virtualize>
+
+                                    }
+                                    else
+                                    {
+                                        <Virtualize Items="Usuarios" TItem="UsuarioResponse">
+                                            <MudItem md="4" lg="4" xl="4" xxl="4" sm="6" xs="6" Style="margin-bottom: 30px;">
+                                                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                                    <MetaMusic.Pages.Common_Components.UserCardComponent Usuario="@context"></MetaMusic.Pages.Common_Components.UserCardComponent>
+                                                </BlazorAnimation.Animation>
+                                            </MudItem>
+                                        </Virtualize>
+                                    }
+                                }
+                            
+
+                           
+                        </MudGrid>
+
+                    </MudItem>
+                    
+
+              
+               
+            </MudGrid>
+        
+    
+   
+
+
+
+
+
+@functions{
+
+    public async Task getAlbumes()
+    {
+        var r = await albumService.BuscarVarios(topic, Just8PlusAlbums, JustMustListen);
+
+        if(r.Success && r.Data is not null)
+        {
+            View = "albumes";
+            Albumes = r.Data.Where(a => a.IsSingle == false).ToList();
+            Singles = r.Data.Where(a => a.IsSingle == true).ToList();
+
+        }
+    }
+
+    public async Task getUsuarios()
+    {
+        var r = await userService.BuscarUsuario(topic);
+
+        if (r.Success && r.Data is not null)
+        {
+            View = "usuarios";
+            Usuarios = r.Data;
+        }
+    }
+
+
+    public async Task getResultados()
+    {
+
+        Albumes.Clear();
+        Usuarios.Clear();
+        Artistas.Clear();
+
+
+
+        if (topic == "")
+               return;
+
+        buscando = true;
+
+        await getUsuarios();
+
+        await getArtistas();
+        await getAlbumes();
+        await GetCurrentUser();
+
+        buscando = false;
+
+        
+
+        if (Albumes.Count > Usuarios.Count && Albumes.Count > Artistas.Count )
+        {
+            View = "albumes";
+        }
+        else if (Usuarios.Count > Albumes.Count && Usuarios.Count > Artistas.Count)
+        {
+            View = "usuarios";
+        }
+        else if (Artistas.Count > Albumes.Count && Artistas.Count > Usuarios.Count)
+        {
+            View = "artistas";
+        }
+        else if(Artistas.Count() == Albumes.Count() && Artistas.Count() == Usuarios.Count())
+        {
+            View = "artistas";
+        }
+         else if(Albumes.Count() == Artistas.Count() && Albumes.Count() == Usuarios.Count())
+        {
+            View = "albumes";
+        }
+        else if (Usuarios.Count() == Artistas.Count() && Usuarios.Count() == Albumes.Count())
+        {
+            View = "usuarios";
+        }
+        else 
+        {
+            View = "";
+        }
+
+        StateHasChanged();
+
+    }
+  
+
+
+    public async Task getArtistas()
+    {
+        var r = await artistaService.BuscarVarios(topic);
+
+        if (r.Success && r.Data is not null)
+        {
+            View = "artistas";
+            Artistas = r.Data;
+        }
+    }
+
+   
+
+    
+    public async Task GetCurrentUser()
+    {
+        var x = await googleService.GetCurrentUser();
+
+
+
+        if (x.Data is not null)
+        {
+            currentuser_id = x.Data.Id;
+            StateHasChanged();
+        }
+
+
+
+
+    }
+}
+@code {
+    public string View = string.Empty;
+    [Parameter] public string topic { get; set; } = string.Empty;
+    public List<UsuarioResponse> Usuarios { get; set; } = new List<UsuarioResponse>();
+    public List<ArtistaResponse> Artistas { get; set; } = new List<ArtistaResponse>();
+    public List<AlbumResponse> Albumes { get; set; } = new List<AlbumResponse>();
+        public List<AlbumResponse> Singles { get; set; } = new List<AlbumResponse>();
+
+    public int currentuser_id = 0;
+    public bool buscando = false;
+    public bool panel_contraido = false;
+    public bool Just8PlusAlbums = false;
+    public bool JustMustListen = false;
+    
+}

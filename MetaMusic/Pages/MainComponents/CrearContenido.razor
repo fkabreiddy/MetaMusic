@@ -1,0 +1,308 @@
+﻿@page "/crear-contenido"
+<AuthorizeView Roles="Staff">
+    <Authorized>
+      
+            <MudItem Style="margin-top: 60px;margin-bottom: 60px;">
+                
+                    <MudGrid Justify="Justify.Center">
+
+                        @if (tipodeContenidoEncontrado == "")
+                        {
+
+                            
+                            <MudItem md="8" sm="8" lg="8" xxl="8" xl="8" xs="8">
+
+
+                                      <MudContainer Style="height: auto; width: 100%;  display: flex; border-radius: 9px; flex-direction: column; justify-content: center; align-items: center;">
+
+
+                                <MudText Align="Align.Center" Style="font-size: 20px; font-weight: bold;  margin-top: 20px; ">PRIMERO</MudText>
+                                <MudText Align="Align.Center" Style="font-size: 12px; margin-bottom: 10px; margin-top: 15px; ">Ve a <MudLink Style="font-size: 12px; margin-bottom: 10px; margin-top: 15px; " Href="https://open.spotify.com/" Underline="Underline.Always">Spotify.com</MudLink> busca el artista o album que quieras agregar y copia su identificador. En el recuadro de abajo.</MudText>
+
+                                <MudText Align="Align.Center" Style="font-size: 12px; margin-bottom: 10px;  ">El idenificador de un artista / album en Spotify, son los caracteres finales en la url cuando buscas uno. Por ejemplo: "https://open.spotify.com/intl-es/album/<b style="text-decoration: underline;">123456789abcdefg"</b></MudText>
+
+                                <MudDivider></MudDivider>
+                                <MudText Align="Align.Center" Style="font-size: 12px; margin-bottom: 20px;margin-top: 10px; font-weight: bold; opacity: 0.7;  ">¿Qué vas a buscar?</MudText>
+                                <MudChipSet Mandatory=true Style="margin-bottom: 20px; display: flex; justify-content: center; align-items: center;">
+
+                                    <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "artista" ? MudBlazor.Variant.Filled : MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "artista";}' Text="Artista"></MudChip>
+                                    <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "album" ? MudBlazor.Variant.Filled : MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "album";}' Default=true Text="Album"></MudChip>
+                                   <MudChip SelectedColor="Color.Error" Variant="@( tipodeContenido == "single" ? MudBlazor.Variant.Filled : MudBlazor.Variant.Outlined)" Style="font-size: 12px;" @onclick='()=>{tipodeContenido = "single";}' Text="Single"></MudChip>
+
+                                </MudChipSet>
+
+                                <div style="display: flex; flex-direction: column; justify-content: center;align-items: center;">
+                                    <MudTextField T="string" @bind-Value="url" Adornment="Adornment.Start" Style="font-size: 12px;   margin-bottom: 10px; border: dashed 1px;   ; border-radius:10px; height: 50px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='@($"""ID del {tipodeContenido} a buscar""")'></MudTextField>
+
+
+
+
+
+                                    @if (buscando)
+                                    {
+                                        <div style=" display: flex; justify-content: center; margin-bottom: 15px;  width: 100px;  align-items: center; position: relative;">
+                                            <MudProgressLinear Rounded="true" Indeterminate="true" Color="Color.Error"> </MudProgressLinear>
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+
+                                        <MudChip @onclick="async()=>{await BuscarEnSpotify();}" Variant="MudBlazor.Variant.Filled" Disabled="@(buscando || string.IsNullOrEmpty(url) || string.IsNullOrWhiteSpace(url))" Color="Color.Error" Style="font-size: 12px; margin-bottom: 15px; margin-top: 30px; width: 100px; cursor: pointer;">
+                                            Buscar
+                                        </MudChip>
+                                    }
+                                </div>
+
+
+
+
+
+
+                            </MudContainer>
+    
+
+
+                               </MudItem>
+                           
+                            
+                        }
+
+
+
+                    </MudGrid>
+                    <MudItem>
+
+                        @if (tipodeContenidoEncontrado == "artista")
+                        {
+                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                             
+                                <MetaMusic.Pages.Common_Components.CrearArtista newArtista="artistaRequest"></MetaMusic.Pages.Common_Components.CrearArtista>
+                            </BlazorAnimation.Animation>
+
+                        }
+                        else if (tipodeContenidoEncontrado == "album")
+                        {
+
+                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                <MetaMusic.Pages.Common_Components.CrearAlbum Request="AlbumRequest"></MetaMusic.Pages.Common_Components.CrearAlbum>
+                            </BlazorAnimation.Animation>
+
+                        }
+                        else if(tipodeContenidoEncontrado == "single")
+                        {
+                            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                                <MetaMusic.Pages.Common_Components.Crear_Single Request="AlbumRequest"></MetaMusic.Pages.Common_Components.Crear_Single>
+                            </BlazorAnimation.Animation>
+                        }
+
+
+
+                    </MudItem>
+               
+              
+            </MudItem>
+        
+      
+    </Authorized>
+    <NotAuthorized>
+        <MudText Align="Align.Center" Style="font-weight:bold;">NO ESTÁS AUTOIZADO PARA ESTAR AQUÍ</MudText>
+    </NotAuthorized>
+</AuthorizeView>
+
+@functions{
+    
+}
+@code {
+
+    public bool Autorizado = false;
+    public UsuarioResponse UsuarioActual = new UsuarioResponse();
+    public bool buscando = false;
+    public ArtistaRequest artistaRequest = new ArtistaRequest();
+    public MetaMusic.Data.Request.AlbumRequest AlbumRequest = new MetaMusic.Data.Request.AlbumRequest();
+    public Track TrackResponse = new Track();
+    public string url = "";
+    public string tipodeContenido = "album";
+    public string tipodeContenidoEncontrado = "";
+
+    public Track trackActual = new Track();
+
+    public async Task BuscarAlbum()
+    {
+        try
+        {
+
+            await GetAlbum();
+
+
+
+
+
+
+
+
+
+
+        }
+        catch (APIException)
+        {
+            MostrarNotificacion("Album no encontrado", "No pudimos encontrar el album que estas buscando. Asegurate de poner el ID correcto.");
+
+        }
+        catch (Exception e)
+        {
+            var excepcion = e.InnerException?.Message ?? e.Message;
+            MostrarNotificacion("Error Inesperado", "Hubo un error con su solicitud. Intente Luego.");
+
+        }
+
+    }
+
+    public async Task GetAlbum()
+    {
+        var x = await spotifyService.GetAlbum(url);
+
+        if (x.Success == true && x.Data is not null)
+        {
+            AlbumRequest = x.Data;
+            tipodeContenidoEncontrado = "album";
+        }
+        else
+        {
+
+            MostrarNotificacion("Error Inesperado", $"{x.Message}");
+
+        }
+    }
+    public async Task GetSingle()
+    {
+        var x = await spotifyService.GetSingle(url);
+
+        if (x.Success == true && x.Data is not null)
+        {
+            AlbumRequest = x.Data;
+            tipodeContenidoEncontrado = "single";
+        }
+        else
+        {
+
+            MostrarNotificacion("Error Inesperado", $"{x.Message}");
+
+        }
+    }
+    public async Task GetArtist()
+    {
+        var x = await spotifyService.GetArtista(url);
+
+        if(x.Success == true && x.Data is not null)
+        {
+            artistaRequest = x.Data.ToRequest();
+            tipodeContenidoEncontrado = "artista";
+        }
+        else
+        {
+            MostrarNotificacion("Error Inesperado",  $"{x.Message}");
+
+
+        }
+    }
+
+    public async Task BuscarArtista()
+    {
+        try
+        {
+
+
+
+            await GetArtist();
+
+        }
+        catch (APIException)
+        {
+
+            MostrarNotificacion("Artista no encontrado", "No pudimos encontrar el artista que estas buscando. Asegurate de poner el ID correcto.");
+
+
+        }
+        catch (Exception e)
+        {
+            MostrarNotificacion("Error Inesperado", "Hubo un error con su solicitud. Intente Luego.");
+
+
+            var excepcion = e.InnerException?.Message ?? e.Message;
+
+        }
+    }
+    public async Task BuscarEnSpotify()
+    {
+        buscando = true;
+
+        tipodeContenidoEncontrado = "";
+        if(tipodeContenido == "artista")
+        {
+            await GetArtist();
+        }
+        else if(tipodeContenido =="single")
+        {
+            await GetSingle();
+        }
+        else
+        {
+            await BuscarAlbum();
+        }
+
+
+        buscando = false;
+    }
+
+    private async Task<bool?> MessageBox(string Titulo, string Descripcion, string si, string no)
+    {
+        bool? result = await dService.ShowMessageBox(
+            Titulo,
+            Descripcion,
+            yesText: si, cancelText: no);
+        StateHasChanged();
+        return result;
+
+    }
+    private async Task<bool?> MessageBoxOk(string Titulo, string Descripcion, string si)
+    {
+        bool? result = await dService.ShowMessageBox(
+            Titulo,
+            Descripcion,
+            yesText: si);
+        StateHasChanged();
+        return result;
+
+    }
+
+     public void MostrarNotificacion(string Titulo, string Contenido )
+    {
+        SnackbarService.Add(
+
+        @<div>
+            <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+                <MudContainer Style="display: flex; flex-direction: column;">
+
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                    <div style="display: flex; gap:10px;align-items: center;">
+                        <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                    </div>
+                </MudContainer>
+
+
+
+            </MudContainer>
+        </div>,
+           Severity.Normal,
+            config => { config.HideIcon = true; }
+         );
+    }
+    
+}

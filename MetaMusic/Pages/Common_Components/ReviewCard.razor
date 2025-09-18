@@ -1,0 +1,209 @@
+﻿<style>
+    .review-title{
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: calc(0.50em + 0.3vw);
+        font-family: HeadlandOne;
+        font-weight: 500;
+        
+    }
+
+    .album-genre {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    
+</style>
+
+@if(Horizontal)
+{
+    <MudGrid Justify="Justify.SpaceEvenly" >
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+            <MudItem md="5" sm="6" xs="6" xxl="5" lg="5" xl="5" Style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center;">
+
+
+                <MudBadge Color="Color.Error" Bordered="true"  Visible="@album.IsMustListen" Overlap=true Content="@mustlisten" Origin="Origin.BottomCenter" BadgeClass="must-listen" Style="padding: 5px; border-radius: 3px;">
+
+                    @if(album.IsSingle)
+                    {
+                    <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 100%; width: 100%;" @onclick='()=>{navManager.NavigateTo($"/single/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Contain" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+
+                    }
+                    else
+                    {
+                    <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 100%; width: 100%;" @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Contain" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+
+                    }
+
+
+                </MudBadge>
+
+
+
+            </MudItem>
+
+        </MudHidden>
+        <MudItem  md="6" sm="6" xs="6" xxl="6" lg="6" xl="6">
+            <MudContainer Style="display: flex; flex-direction: column; gap: 10px;  width: 100%;  max-width: 100%; word-wrap: break-word;">
+
+                @if(album.IsSingle)
+                {
+                    <MudText Style="font-size: 12px; font-family: Inter; " Class="album-genre">SINGLE</MudText>
+                    
+                }
+                @try
+                {
+
+                    <div style="overflow: hidden; max-width: 100%;word-wrap: break-word;">
+                        <div style="overflow: hidden; max-width: 100%;word-wrap: break-word;">
+                            @if (album.Artistas.Count() >= 2)
+                            {
+                                <MudText Style="font-size: 12px; font-weight: bold;" Class="album-genre" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre.ToUpper() + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre.ToUpper())</MudText>
+                            }
+                            else if (album.Artistas.Count() == 1)
+                            {
+                                <MudText Style="font-size: 12px; font-weight: bold;" Class="review-text-card" Color="Color.Error">
+                                    @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre.ToUpper() + " / " + album.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre.ToUpper())
+                                </MudText>
+
+                            }
+                        </div>
+
+                    </div>
+                    
+                    
+                }
+                catch
+                {
+
+                }
+               
+                <div style="overflow: hidden; max-width: 100%;word-wrap: break-word;">
+                    <AlbumTitle Align="@MudBlazor.Align.Start" AlbumName="@album.Nombre"></AlbumTitle>
+                    <AlbumArtistas Align="@MudBlazor.Align.Start" Artists="@album.Artistas.Select(a=> a.Artista.ToResponse()).ToList()"></AlbumArtistas>
+                </div>
+             
+
+                <div style="overflow: hidden; max-width: 100%;word-wrap: break-word;">
+                    <MudText Align="Align.Start" Class="review-title">@album.Review?.Titulo</MudText>
+
+                </div>
+
+            </MudContainer>
+        </MudItem>
+        
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudItem md="5" sm="5" xs="5" xxl="5" lg="5" xl="5" Style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center;">
+
+
+                <MudBadge Color="Color.Error" Bordered="true"  Visible="@album.IsMustListen" Overlap=true Content="@mustlisten" Origin="Origin.BottomCenter" BadgeClass="must-listen" Style="padding: 5px; border-radius: 3px;">
+
+                    @if(album.IsSingle)
+                    {
+                    <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 100%; width: 100%;" @onclick='()=>{navManager.NavigateTo($"/single/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Contain" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+
+                    }
+                    else
+                    {
+                    <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 100%; width: 100%;" @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Contain" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+
+                    }
+
+
+                </MudBadge>
+
+
+
+            </MudItem>
+
+        </MudHidden>
+
+    </MudGrid>
+   
+}
+else
+{
+    <MudGrid Justify="Justify.Center" >
+        <MudItem md="12" sm="12" xs="12" xxl="12" lg="12" xl="12" Style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center;">
+          
+               
+                <MudBadge Color="Color.Error" Bordered="true"  Visible="@album.IsMustListen" Overlap=true Content="@mustlisten" Origin="Origin.BottomCenter" BadgeClass="must-listen" Style="padding: 5px; border-radius: 1px;">
+
+                    @if(album.IsSingle)
+                    {
+                         <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 100%; width: 100%;" @onclick='()=>{navManager.NavigateTo($"/single/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Contain" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+
+                    }
+                    else 
+                    {
+                    <MudAvatar Class="portada" Square="true" Rounded="false" Style="height: 100%; width: 100%;" @onclick='()=>{navManager.NavigateTo($"/album/{album.IdSpotify}");}'><MudImage Fluid="true" ObjectFit="ObjectFit.Contain" src="@album.Portada" Style="height:100%; width: 100%;   " /></MudAvatar>
+
+                    }
+
+
+                </MudBadge>
+                
+
+         
+        </MudItem>
+        <MudItem md="12" sm="12" xs="12" xxl="12" lg="12" xl="12">
+            <MudContainer Style="display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; justify-content: center; max-width: 100%; word-wrap: break-word;">
+
+                @if(album.IsSingle)
+                {
+                                            <MudText Style="font-size: 12px; font-family: Inter; " Class="album-genre">SINGLE</MudText>
+                    
+                }
+                
+
+                    <div style="overflow: hidden; max-width: 100%;word-wrap: break-word;">
+                        @if (album.Artistas.Count() >= 2)
+                        {
+                            <MudText Style="font-size: 12px; font-weight: bold;" Class="album-genre" Color="Color.Error"> @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre.ToUpper() + " / " + album.Artistas[1].Artista?.GenerosMusicales[0].Genero?.Nombre.ToUpper())</MudText>
+                        }
+                        else if (album.Artistas.Count() == 1)
+                        {
+                            <MudText Style="font-size: 12px; font-weight: bold;" Class="review-text-card" Color="Color.Error">
+                                @(album.Artistas[0].Artista?.GenerosMusicales[0].Genero?.Nombre.ToUpper() + " / " + album.Artistas[0].Artista?.GenerosMusicales[1].Genero?.Nombre.ToUpper())
+                            </MudText>
+
+                        }
+                    </div>
+                    
+                    
+               
+               
+                <div style="overflow: hidden; max-width: 100%;word-wrap: break-word;">
+                    <AlbumTitle AlbumName="@album.Nombre"></AlbumTitle>
+                    <AlbumArtistas Artists="@album.Artistas.Select(a=> a.Artista.ToResponse()).ToList()"></AlbumArtistas>
+                </div>
+             
+
+                <div style="overflow: hidden; max-width: 100%;word-wrap: break-word;">
+                    <MudText Align="Align.Center" Class="review-title">@album.Review?.Titulo</MudText>
+
+                </div>
+
+                </MudContainer>
+            </MudItem>
+    </MudGrid>
+   
+}
+
+ 
+
+@code {
+
+
+    [Parameter] public bool Horizontal { get; set; } = false;
+    [Parameter]
+    public AlbumResponse album { get; set; } = new AlbumResponse();
+    public string mustlisten = "MUST LISTEN";
+}

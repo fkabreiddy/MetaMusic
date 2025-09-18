@@ -1,0 +1,65 @@
+﻿
+
+<MudText Align="Align.Center" Color="Color.Primary" Style="margin-bottom: 30px;margin-top: 30px;font-size: 30px; font-weight: bold; cursor: pointer;">LO MEJOR DEL <span style="color: #E74646">@genre.ToUpper()</span> </MudText>
+  
+
+<MudGrid>
+
+    <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
+            <MudText Align="Align.Center" Color="Color.Error" Style="font-size: 18px; font-weight: bold; cursor: pointer; margin-bottom: 20px;">ALBUMES</MudText>
+        <MudGrid Style="margin-top: 20px;">
+               
+            @foreach(var album in albumesRock.AsEnumerable().Take(2))
+            {
+                 <MudItem md="6" lg="6" xxl="6" xl="6" sm="6" xs="6">
+                    <ReviewCard album="album"></ReviewCard>
+
+                 </MudItem>
+               
+               
+            }
+        </MudGrid>
+    </MudItem>
+    <MudItem md="6" lg="6" xxl="6" xl="6" sm="12" xs="12">
+        <MudText Align="Align.Center" Color="Color.Error" Style="font-size: 18px; font-weight: bold; cursor: pointer; margin-bottom: 20px;">TRACKS</MudText>
+        <MudGrid Style="margin-top: 20px;">
+            <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+                <MudGrid Spacing="4">
+                    @foreach(var track in Tracks)
+                    {
+                        <MudItem md="6" lg="6" xxl="6" xl="6" sm="6" xs="12">
+
+                            <TrackComponent track="@track" ></TrackComponent>
+                        </MudItem>
+                    }
+                   
+                </MudGrid>
+            </MudItem>
+            <MudItem md="12" lg="12" xxl="12" xl="12" sm="12" xs="12">
+
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+</MudGrid>
+
+@code {
+    [Parameter]
+
+    public string genre { get; set; } = "Rock";
+
+
+   
+    public static List<AlbumResponse> albumesRock = new List<AlbumResponse>(){
+      
+    };
+   
+    public List<Track> Tracks = new List<Track>(){
+
+       
+    };
+    
+    
+
+
+
+}

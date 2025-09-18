@@ -1,0 +1,129 @@
+﻿<MudDialog Style="height: 90vh; width: 90vw; overflow: hidden">
+    <DialogContent>
+
+
+
+        <MudContainer Style="display: flex; flex-direction: column; gap : 10px;margin-bottom: 10px; position: sticky;">
+            <div style="height: auto;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 20px; ">
+
+                <MudText Style="font-size: 20px; font-weight: bold;">NOTIFICACIONES</MudText>
+                <div Style="border: solid 1px red; height: 2px; width: 40px;"></div>
+
+
+
+
+
+            </div>
+            <div style="background-color:@backgroundTitleColor ;display: flex; position: sticky; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 20px; top: 0; z-index: 1; ">
+                <MudText Style="font-size: 12px;  opacity: 0.7;">
+                    <b>@Notificaciones.Count().NumeroRelativo()</b>  Notificaciones
+                </MudText>
+                <MudButton @onclick="EliminarTodas" Variant="Variant.Text" Color="Color.Error" Style="font-size: 10px;  opacity: 0.7;">
+                    Eliminar Todas
+                </MudButton>
+            </div>
+
+
+            
+            <div style="display: flex; flex-direction: column; gap: 20px;justify-content: center;">
+
+                @if (Notificaciones.Count() <= 0)
+                {
+                    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                        <div style="width: 100%; min-height: 50vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+
+
+                            <MudItem md="6" lg="6" xl="6" xxl="6" sm="6" xs="6" Style="width: 100%; min-height: 50vh;  display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                                <MudIcon Size="Size.Large" Style="opacity:inherit.7" Color="Color.Error" Icon="@Icons.Material.Filled.Inbox"></MudIcon>
+
+                                <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold">No tienes notificaciones</MudText>
+                                <MudTooltip Arrow="true" Color="Color.Error" Text="Intentar Denuevo">
+                                    <MudIconButton Color="Color.Error" Icon="@Icons.Material.Rounded.Update" Size="Size.Small" @onclick='getNotificaciones'></MudIconButton>
+
+                                </MudTooltip>
+
+                            </MudItem>
+                        </div>
+                    </BlazorAnimation.Animation>
+                }
+                else
+                {
+                      <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                        <Virtualize Items="Notificaciones.OrderByDescending(n => n.Fecha_Creacion).ToList()" TItem="NotificacionResponse">
+                            <Notification_Component Notificacion="@context"></Notification_Component>
+                        </Virtualize>
+                          </BlazorAnimation.Animation>
+                    
+                }
+
+                
+
+
+            </div>
+        </MudContainer>
+
+
+    </DialogContent>
+</MudDialog>
+@functions {
+
+    public async Task getNotificaciones()
+    {
+        var r = await notificacionesService.Consultar();
+
+        if (r.Data is not null && r.Success)
+        {
+            Notificaciones = r.Data;
+            StateHasChanged();
+        }
+    }
+
+    public async Task MarcarComoLeidas(){
+
+
+        try
+        {
+            if (Notificaciones.Where(n => n.Saw == false).Count() <= 0)
+                return;
+
+            var r = await notificacionesService.MarcarComoLeida(Notificaciones.Where(n => n.Saw == false).Select(n => n.Id).ToList());
+
+
+        }
+        catch
+        {
+
+        }
+
+
+    }
+    public async Task EliminarTodas()
+    {
+        if(Notificaciones.Count()>=1)
+        {
+            foreach(var notificacion in Notificaciones)
+            {
+                var r =  await notificacionesService.Eliminar(notificacion.Id);
+
+                if(r.Success)
+                {
+
+                }
+            }
+
+            Notificaciones.Clear();
+            StateHasChanged();
+
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await getNotificaciones();
+        await MarcarComoLeidas();
+    }
+}
+@code {
+    [CascadingParameter] public MudDialogInstance MudDialog { get; set; } = new MudDialogInstance();
+    public List<NotificacionResponse> Notificaciones = new List<NotificacionResponse>();
+    public string backgroundTitleColor => (theme.IsDark() ? "#191919" : "#F5F7F8");
+}

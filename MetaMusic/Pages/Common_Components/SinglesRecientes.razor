@@ -1,0 +1,24 @@
+﻿<Encabezado Title="@("SINGLES RECIENTES")"></Encabezado>
+
+@if(singles.Count() >= 1)
+{
+    <MudGrid Spacing="2" Justify="Justify.Center">
+        <Virtualize Items="singles" TItem="AlbumResponse">
+            <MudItem md="4" lg="3" xl="3" xxl="3" sm="6" xs="6" Style="margin-top: 30px; margin-bottom: 30px;">
+                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                    <MetaMusic.Pages.Common_Components.ReviewCard album="@context"></MetaMusic.Pages.Common_Components.ReviewCard>
+                </BlazorAnimation.Animation>
+            </MudItem>
+        </Virtualize>
+    </MudGrid>
+}
+else
+{
+    <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+        <Loader></Loader>
+    </div>
+}
+
+@code {
+    [Parameter]public List<AlbumResponse> singles { get; set; } = new List<AlbumResponse>();
+}

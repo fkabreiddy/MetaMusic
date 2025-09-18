@@ -1,0 +1,152 @@
+﻿
+<MudGrid Spacing="2" >
+    @if (gettingalbumes)
+    {
+        <BlazorAnimation.Animation style="width: 100%;   display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; " Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+
+
+
+           
+               <Loader></Loader>
+
+         
+
+        </BlazorAnimation.Animation>
+    }
+    else
+    {
+        @if (albumes.Count() >= 1)
+        {
+            <Virtualize Items="albumes" TItem="AlbumResponse">
+                <MudItem md="4" lg="3" xl="3" xxl="3" sm="6" xs="6" Style="margin-top: 30px; margin-bottom: 30px;">
+                    <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                        <MetaMusic.Pages.Common_Components.ReviewCard album="@context"></MetaMusic.Pages.Common_Components.ReviewCard>
+                    </BlazorAnimation.Animation>
+                </MudItem>
+            </Virtualize>
+
+            @if (canGetMore && !gettingMore)
+            {
+                <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-top: 60px; margin-bottom: 60px; ">
+
+
+
+
+
+                    <MudLink Style="opacity: 0.7; font-size: 12px; margin-top: 10px; font-weight: bold; cursor: pointer;" @onclick='async ()=>{await GetMore();}' Underline="Underline.Hover"> VER MAS</MudLink>
+
+                </div>
+            }
+            else if (gettingMore)
+            {
+                <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-top: 60px; margin-bottom: 60px; ">
+
+
+
+
+
+                   <Loader></Loader>
+                </div>
+            }
+
+        }
+        else
+        {
+            <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" style="width: 100%;   display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; " Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+
+
+                <MudItem md="12" lg="12" xl="12" xxl="12" sm="12" xs="12" Style="width: 100%;   display:flex; gap: 10px; align-items: center; flex-direction: column; justify-content: center; ">
+                    @if (theme.IsDark())
+                    {
+                        <MudImage Src="/meta-logo-white.png" Style="width: 80px; width: 80px;"></MudImage>
+                    }
+                    else
+                    {
+
+                        <MudImage Src="/meta-logo.png" Style="width: 80px; width: 80px;"></MudImage>
+                    }
+
+                    <MudText Align="Align.Center" Style="font-size: 15px; font-weight: bold">No pudimos encontrar albumes</MudText>
+                    <MudText Align="Align.Center" Style="font-size: 12px; font-weight: bold; opacity: 0.7;">Puede que sea error nuestro o no hayan albumes ni reviews registrados aun. Si consideras que es lo primero, recarga la pagina.</MudText>
+                    <MudTooltip Arrow="true" Color="Color.Error" Text="Intentar Denuevo">
+                        <MudIconButton Color="Color.Error" Icon="@Icons.Material.Rounded.Update" Size="Size.Small" @onclick='()=>{navManager.NavigateTo($"/all-reviews", true) ;}'></MudIconButton>
+
+                    </MudTooltip>
+
+                </MudItem>
+
+            </BlazorAnimation.Animation>
+        }
+
+
+    }
+
+
+</MudGrid>
+@functions {
+    protected override async Task OnParametersSetAsync()
+    {
+        await GetAlbumes();
+        await GetCurrentUser();
+    }
+    public async Task GetCurrentUser()
+    {
+        var x = await googleService.GetCurrentUser();
+
+
+
+        if (x.Data is not null)
+        {
+            currentuser_id = x.Data.Id;
+            StateHasChanged();
+        }
+
+
+
+
+    }
+    
+    public async Task GetAlbumes()
+    {
+        gettingalbumes = true;
+        var r = await albumService.ConsultarVarios(8);
+
+        if (r.Data is not null)
+        {
+            albumes = r.Data;
+            StateHasChanged();
+        }
+        gettingalbumes = false;
+    }
+
+    public async Task GetMore()
+    {
+        gettingMore = true;
+        var r = await albumService.GetMore(albumes.Count(), 8);
+
+        if (r.Data is not null && r.Success && r.Data.Count() >= 1)
+        {
+            albumes.AddRange(r.Data);
+            StateHasChanged();
+        }
+        else
+        {
+            canGetMore = false;
+        }
+        gettingMore = false;
+        StateHasChanged();
+    }
+}
+
+
+
+@code {
+    public bool vertodo = false;
+   
+    public int currentuser_id;
+    public List<AlbumResponse> albumes = new List<AlbumResponse>();
+    public bool buscando = false;
+    public bool gettingalbumes = true;
+    public bool canGetMore = true;
+    public bool gettingMore = false;
+}

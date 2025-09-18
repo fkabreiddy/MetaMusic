@@ -1,0 +1,126 @@
+﻿
+
+
+    <MudGrid Style="display: flex; align-items: center; justify-content: center;" Justify="Justify.Center">
+        <MudItem md="12" sm="12" xl="12" xxl="12" xs="12" lg="12" Style="display: flex; align-items: center; justify-content: center;">
+            @if(Peticion.isAlbum)
+            {
+                <MudAvatar Square=true Style="height: 120px; width: 120px; border-radius: 10px;">
+                    <MudImage src="@Peticion.AlbumPortada"></MudImage>
+                </MudAvatar>
+            }
+            else{
+                 <MudAvatar Style="height: 120px; width: 120px;">
+                <MudImage src="@Peticion.ArtistaFoto"></MudImage>
+            </MudAvatar>
+            }
+           
+        </MudItem>
+        <MudItem md="12" sm="12" xl="12" xxl="12" xs="12" lg="12">
+            <MudContainer Style="display: flex; flex-direction: column; display: flex; align-items: center; justify-content: center;">
+
+                @if(Peticion.isAlbum)
+                {
+                    <MudText Style="font-size: 15px; font-weight: bold;" Align="Align.Center" >@Peticion.AlbumNombre </MudText>
+                    <MudText Align="Align.Center" Style="font-size: 10px; font-weight: bold;" Color="Color.Error">Acumulaciones @Peticion.Acumulaciones.NumeroRelativo()</MudText>
+
+                      <MudText Align="Align.Center" Style="font-size: 10px; margin-top: 10px; margin-bottom: 10px;">Peticion de Album </MudText>
+
+                }
+                else{
+                     <MudText Style="font-size: 15px; font-weight: bold;" Align="Align.Center">@Peticion.ArtistaNombre </MudText>
+                <MudText Align="Align.Center" Style="font-size: 10px; font-weight: bold;" Color="Color.Error">Acumulaciones @Peticion.Acumulaciones.NumeroRelativo()</MudText>
+
+                <MudText Align="Align.Center" Style="font-size: 10px; margin-top: 10px; margin-bottom: 10px;">Peticion de Artista </MudText>
+
+                }
+               
+           
+
+                @if(Peticion.isAlbum)
+                {
+                    <MudChip @onclick='async()=>{ await CopiarAlPortapapeles(Peticion.AlbumSpotifyId ?? "");}' Style="font-size: 10px;  width: 50%; font-weight: bold;cursor: pointer;" Size="Size.Small" Variant="Variant.Filled">
+                                   
+                                      Copiar ID
+                                    
+
+                                </MudChip>
+                }
+                else
+                {
+                    <MudChip @onclick='async()=>{ await CopiarAlPortapapeles(Peticion.ArtistaSpotifyId ?? "");}' Style="font-size: 10px;  width: 50%; font-weight: bold;cursor: pointer;" Size="Size.Small" Variant="Variant.Filled">
+
+                        Copiar ID
+
+
+                    </MudChip>
+                }
+
+                                
+                          
+                        
+
+
+
+                  
+            </MudContainer>
+        </MudItem>
+    </MudGrid>
+
+
+@functions{
+    public void MostrarNotificacion(string Titulo, string Contenido)
+    {
+        SnackbarService.Add(
+
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+
+        </MudContainer>
+    </div>
+    ,
+           Severity.Normal,
+    config => { config.HideIcon = true; }
+         );
+    }
+
+    private async Task CopiarAlPortapapeles(string Id)
+    {
+        bool resultado;
+        // Llama a la función JavaScript y espera el resultado
+        resultado = await JSR.InvokeAsync<bool>("clipboardCopy.copyText", Id);
+
+        // Aquí puedes usar el valor booleano (resultado) como desees
+        if (resultado)
+        {
+            MostrarNotificacion("ID Copiado", $"ID {Id} Copiado a Portapapeles.");
+        }
+        else
+        {
+            // Hubo un error al copiar
+        }
+    }
+}
+
+@code {
+    [Parameter] public PeticionResponse Peticion { get; set; } = new PeticionResponse();
+    
+   
+
+    
+}

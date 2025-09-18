@@ -1,0 +1,331 @@
+﻿@page "/stats"
+
+<AuthorizeView Roles="Staff">
+    <Authorized>
+
+        @if (buscando)
+        {
+            <Loader></Loader>
+        }
+        else
+        {
+            <Encabezado Title="@("ESTADÍSTICAS")"></Encabezado>
+            
+            <MudGrid Spacing="2">
+
+                <MudItem md="12" sm="12" xs="12" lg="12" xxl="12" xl="12">
+                    <MudGrid Justify="Justify.Center">
+                        <MudItem md="6" xs="12" sm=12 xl="6" xxl="6" lg="6">
+                            <MudCard Outlined=false Style="border-radius: 10px;  margin-bottom: 10px;padding:0px; ">
+                                <MudTextField @bind-Value="year" MaxLength="100" T="int" OnAdornmentClick="getAlbumes" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.End" AdornmentColor="Color.Error" Style="font-size: 12px;  top:-4; margin-top: 0;  font-weight:  bold;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                            </MudCard>
+                            <MudText Align="Align.Center" Style="font-size: 12px; margin-top: 20px; opacity: 0.7; margin-bottom: 5px;">Estas estadisticas son solo visibles para los miembros del staff. Aqui se muestran la cantidad de albumes y singles agregados por mes. Usa la barra de busqueda para filtrar por año.</MudText>
+
+                        </MudItem>
+                    </MudGrid>
+                    <MudChart ChartType="ChartType.Line" ChartOptions=chartOptions ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="350"></MudChart>
+
+                </MudItem>
+                
+
+            </MudGrid>
+            
+
+
+
+           
+
+        }
+    </Authorized>
+    <NotAuthorized>
+        <MudText Align="Align.Center" Style="font-weight:bold;">NO ESTÁS AUTOIZADO PARA ESTAR AQUÍ</MudText>
+
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+
+
+
+@functions{
+
+    public async Task getAlbumes(){
+
+        buscando = true;
+        if (year == 0)
+        {
+            buscando = false;
+            return;
+        }
+
+        cant_singles = 0;
+        cant_albumes = 0;
+        Series.Clear();
+        var r = await statsService.AlbumesPerYear(year);
+
+        if(r.Data is not null )
+        {
+            if (r.Data.Count() <= 0)
+            {
+                buscando = false;
+                return;
+            }
+           
+            AlbumesChartObject albumes = new AlbumesChartObject();
+            SinglesChartObject singles = new SinglesChartObject();
+            foreach(var album in r.Data)
+            {
+                if(album.IsSingle)
+                {
+                    singles.Actualizar(album);
+                    cant_singles += 1;
+                }
+                else
+                {
+                    albumes.Actualizar(album);
+                    cant_albumes += 1;
+                }
+            }
+
+            Series.Add(new ChartSeries()
+                {
+                    Name = $"{cant_singles} Singles",
+                    Data = new double[]
+                    {
+                         singles.Enero,
+                         singles.Febrero,
+                         singles.Marzo,
+                         singles.Abril,
+                         singles.Mayo,
+                         singles.Junio,
+                         singles.Julio,
+                         singles.Agosto,
+                         singles.Septiembre,
+                         singles.Octubre,
+                         singles.Noviembre,
+                         singles.Diciembre
+                    }
+                });
+
+            Series.Add(new ChartSeries()
+                {
+                    Name = $"{cant_albumes} Albumes",
+                    Data = new double[]
+                    {
+                         albumes.Enero,
+                         albumes.Febrero,
+                         albumes.Marzo,
+                         albumes.Abril,
+                         albumes.Mayo,
+                         albumes.Junio,
+                         albumes.Julio,
+                         albumes.Agosto,
+                         albumes.Septiembre,
+                         albumes.Octubre,
+                         albumes.Noviembre,
+                         albumes.Diciembre
+                    }
+                });
+        }
+        else
+        {
+            Series.Add(new ChartSeries()
+                {
+                    Name = "Singles",
+                    Data = new double[]
+                        {
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                        }
+                });
+
+            Series.Add(new ChartSeries()
+                {
+                    Name = "Albumes",
+                    Data = new double[]
+                        {
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                        }
+                });
+
+            buscando = false;
+        }
+        
+            
+        buscando = false;
+
+       
+
+        StateHasChanged();
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await getAlbumes();
+    }
+}
+@code {
+    public List<ChartSeries> Series = new List<ChartSeries>();
+    public int year = DateTime.Now.Year;
+
+    public class AlbumesChartObject
+    {
+        public int Enero { get; set; } = 0;
+        public int Febrero { get; set; } = 0;
+        public int Marzo { get; set; } = 0;
+        public int Abril { get; set; } = 0;
+        public int Mayo { get; set; } = 0;
+        public int Junio { get; set; } = 0;
+        public int Julio { get; set; } = 0;
+        public int Agosto { get; set; } = 0;
+        public int Septiembre { get; set; } = 0;
+        public int Octubre { get; set; } = 0;
+        public int Noviembre { get; set; } = 0;
+        public int Diciembre { get; set; } = 0;
+
+
+        public void Actualizar(AlbumResponse response)
+        {
+            switch (response.Fecha_Agregado.Month)
+            {
+                case 1:
+                    Enero += 1;
+                    break;
+                case 2:
+                    Febrero += 1;
+                    break;
+                case 3:
+                    Marzo += 1;
+                    break;
+                case 4:
+                    Abril += 1;
+                    break;
+                case 5:
+                    Mayo += 1;
+                    break;
+                case 6:
+                    Junio += 1;
+                    break;
+                case 7:
+                    Julio += 1;
+                    break;
+                case 8:
+                    Agosto += 1;
+                    break;
+                case 9:
+                    Septiembre += 1;
+                    break;
+                case 10:
+                    Octubre += 1;
+                    break;
+                case 11:
+                    Noviembre += 1;
+                    break;
+                case 12:
+                    Diciembre += 1;
+                    break;
+            }
+        }
+
+    }
+    public class SinglesChartObject
+    {
+        public int Enero { get; set; } = 0;
+        public int Febrero { get; set; } = 0;
+        public int Marzo { get; set; } = 0;
+        public int Abril { get; set; } = 0;
+        public int Mayo { get; set; } = 0;
+        public int Junio { get; set; } = 0;
+        public int Julio { get; set; } = 0;
+        public int Agosto { get; set; } = 0;
+        public int Septiembre { get; set; } = 0;
+        public int Octubre { get; set; } = 0;
+        public int Noviembre { get; set; } = 0;
+        public int Diciembre { get; set; } = 0;
+
+
+
+
+        public void Actualizar(AlbumResponse response)
+        {
+            switch (response.Fecha_Agregado.Month)
+            {
+                case 1:
+                    Enero += 1;
+                    break;
+                case 2:
+                    Febrero += 1;
+                    break;
+                case 3:
+                    Marzo += 1;
+                    break;
+                case 4:
+                    Abril += 1;
+                    break;
+                case 5:
+                    Mayo += 1;
+                    break;
+                case 6:
+                    Junio += 1;
+                    break;
+                case 7:
+                    Julio += 1;
+                    break;
+                case 8:
+                    Agosto += 1;
+                    break;
+                case 9:
+                    Septiembre += 1;
+                    break;
+                case 10:
+                    Octubre += 1;
+                    break;
+                case 11:
+                    Noviembre += 1;
+                    break;
+                case 12:
+                    Diciembre += 1;
+                    break;
+            }
+        }
+
+    }
+    public ChartOptions chartOptions = new ChartOptions() { YAxisTicks = 1, ChartPalette = colores.ToArray()};
+    public string[] XAxisLabels = { "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic" };
+    public static List<string> colores = new List<string>()
+    {
+        "#D04848",
+        "#2E4053"
+    };
+    public bool buscando = false;
+  
+    public int cant_albumes;
+    public int cant_singles;
+
+
+}

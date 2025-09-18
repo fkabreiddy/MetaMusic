@@ -1,0 +1,56 @@
+﻿@using System.Net.Http
+@using MetaMusic.Data
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using MetaMusic
+@using MetaMusic.Shared
+@using MudBlazor
+@using MetaMusic.Pages.Common_Components
+@using MetaMusic.Pages.MainComponents
+@using MetaMusic.Pages
+@using MetaMusic.Data.Extensiones
+@using MetaMusic.Authentication
+
+@using SpotifyAPI.Web
+@using MetaMusic.Data.ThemeManagement
+@using MetaMusic.Data.Entities
+@using MetaMusic.Data.Responses
+@using MetaMusic.Data.Request
+@using MetaMusic.Data.OtherEntities
+@inject AuthenticationStateProvider authstate
+@inject NavigationManager navManager
+@inject IHttpContextAccessor _httpContextAccessor
+@inject HttpClient Http
+@using MetaMusic.Data.Services
+@using TinyMCE.Blazor
+@using BlazorContentEditable
+@using MetaMusic.Data.Context
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@inject IJSRuntime JSR
+
+@inject IDialogService dService
+@inject ITheme theme
+@inject IMetaMusicDbContext dbContext 
+@inject IGoogleAuthService googleService
+@inject ISpotifyService spotifyService
+@inject IUserService userService
+@inject IGeneroService generoService
+@inject IArtistaService artistaService
+@inject ICurrentUser currentUser
+@inject IAlbumService albumService
+@inject NavigationManager navManager;
+@inject ISnackbar SnackbarService
+@inject ICalificacionService calificacionService
+@inject INotaService notaService
+@inject IReporteService reporteService
+@inject INotificacionService notificacionesService
+@inject ICustomAuthenticationStateProvider customAuthState
+@inject IPeticionService peticionService
+@inject IBusquedaService busquedaService
+@inject IStatsService statsService
+@inject IHttpClientFactory ClientFactory

@@ -1,0 +1,155 @@
+﻿
+
+
+
+                                <MudCard Outlined=false Style="border-radius: 10px;  margin-bottom: 10px;padding:0px; ">
+                                    <MudTextField  @bind-Value="filtro" MaxLength="100" T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.End" Style="font-size: 12px;  top:-4; margin-top: 0;  font-weight:  bold;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar'></MudTextField>
+
+                                 </MudCard>
+
+    <MudChipSet MultiSelection=true AllClosable="true"  Mandatory=true Style="margin-bottom: 20px; margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; ">
+
+        <MudChip Variant="MudBlazor.Variant.Outlined" OnClose="crearGenero"  CloseIcon="@Icons.Material.Rounded.Add" Color="MudBlazor.Color.Error" Style="font-size: 12px; border: dashed 1px;">
+           <ChildContent>
+                <MudTextField   @bind-Value="newGenero.Nombre" MaxLength="19" Immediate=true T="string"  Style="font-size: 12px;margin-bottom:21px;     width: 100% ; border-radius:10px;  padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Nuevo Genero'></MudTextField>
+
+           </ChildContent>
+
+        </MudChip>
+       
+        @foreach (var registro in GenerosAlbumes.Where(r => r.Key.Nombre.ToLower().Contains(filtro.ToLower())))
+        {
+            if(registro.Value <= 0)
+            {
+                <MudChip OnClose="async ()=>{await eliminarGenero(registro.Key.Id);}"   Variant="MudBlazor.Variant.Outlined"   CloseIcon="@Icons.Material.Rounded.Close" Style="font-size: 12px; border: dashed 1px;"  Text="@($"{registro.Key.Nombre}: {registro.Value.NumeroRelativo()}" )"></MudChip>
+
+            }
+            else
+            {
+                <MudChip Variant="MudBlazor.Variant.Outlined" CloseIcon="@Icons.Material.Rounded.Close" Style="font-size: 12px; border: dashed 1px;"  Text="@($"{registro.Key.Nombre}: {registro.Value.NumeroRelativo()}" )"></MudChip>
+                
+            }
+
+        }
+    </MudChipSet>
+
+
+
+
+
+@functions{
+
+
+
+    public async Task getGenerosAlbumes()
+    {
+
+        var r = await statsService.RankGenerosArtistas();
+
+        if (r.Success && r.Data is not null)
+        {
+
+            GenerosAlbumes = r.Data;
+        }
+
+    }
+
+    public async Task eliminarGenero(int Id)
+    {
+
+        var r = await generoService.Eliminar(Id);
+
+        if (r.Success)
+        {
+            var generoAEliminar = GenerosAlbumes.FirstOrDefault(g => g.Key.Id == Id).Key;
+
+            if(generoAEliminar is not null)
+            {
+                GenerosAlbumes.Remove(generoAEliminar);
+            }
+            newGenero = new GeneroRequest();
+            StateHasChanged();
+            MostrarNotificacion("Exito", r.Message);
+        }
+        else
+        {
+            MostrarNotificacion("Error", r.Message);
+        }
+    }
+    public async Task crearGenero()
+    {
+        if (string.IsNullOrEmpty(newGenero.Nombre) || string.IsNullOrWhiteSpace(newGenero.Nombre))
+            return;
+        var r = await generoService.Crear(newGenero);
+
+        if(r.Success && r.Data is not null)
+        {
+            GenerosAlbumes.Add(r.Data.ToBaseClass(), r.Data.Artistas.Count());
+            newGenero = new GeneroRequest();
+            StateHasChanged();
+            MostrarNotificacion("Exito", r.Message);
+        }
+        else
+        {
+            newGenero = new GeneroRequest();
+            MostrarNotificacion("Error", r.Message);
+        }
+    }
+
+    public void MostrarNotificacion( string Titulo, string Contenido)
+    {
+        SnackbarService.Add(
+
+    @<div>
+        <MudContainer Style=" padding-left:0; display: flex; gap: 10px; align-items: center; justify-content: space-between;  ">
+
+
+
+
+
+
+
+            <MudContainer Style="display: flex; flex-direction: column;">
+
+                <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0; font-weight:bold; font-size: 12px;     ">@Titulo</MudText>
+
+                <div style="display: flex; gap:10px;align-items: center;">
+                    <MudText GutterBottom="true" Color="MudBlazor.Color.Secondary" Style="padding-left:0;  font-size: 10px;  opacity: 0.7;    ">@Contenido</MudText>
+
+
+                </div>
+            </MudContainer>
+
+
+
+
+
+
+
+
+
+
+        </MudContainer>
+    </div>,
+       Severity.Normal,
+        config => { config.HideIcon = true; }
+     );
+    }
+}
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+       
+        await getGenerosAlbumes();
+
+    }
+
+   
+    public Dictionary<Genero, int> GenerosAlbumes = new Dictionary<Genero, int>();
+  
+    public GeneroRequest newGenero = new GeneroRequest();
+    public string filtro = "";
+
+
+}

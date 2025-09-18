@@ -1,0 +1,73 @@
+﻿<Encabezado Title='@("ARTISTAS")'></Encabezado>
+
+<MudGrid Spacing="2"  >
+
+    @if(Artistas.Count()>=1)
+    {
+        <Virtualize Items="Artistas.OrderByDescending(a => a.Id).Take(4).ToList()" TItem="ArtistaResponse">
+            <MudItem md="4" lg="3" xl="3" xxl="3" sm="6" xs="12" Style="margin-top: 30px;">
+                <BlazorAnimation.Animation Effect="BlazorAnimation.Effect.FadeIn" Speed="BlazorAnimation.Speed.Faster" Delay="TimeSpan.FromSeconds(1)">
+                    <MetaMusic.Pages.Common_Components.ArtistaCard Artista="context" UserId="currentuser_id"></MetaMusic.Pages.Common_Components.ArtistaCard>
+                </BlazorAnimation.Animation>
+            </MudItem>
+        </Virtualize>
+
+    }
+    else
+    {
+        <div style="display: flex; align-items: center; justify-content: center; width:100%;">
+            <Loader></Loader>
+        </div>
+    }
+
+    <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-top: 60px; margin-bottom: 60px; ">
+
+
+
+
+
+        <MudLink Style="opacity: 0.7; font-size: 12px; margin-top: 10px; font-weight: bold; cursor: pointer;" @onclick='()=>{navManager.NavigateTo("/all-artists");}' Underline="Underline.Hover"> VER MÁS</MudLink>
+
+    </div>
+</MudGrid>
+@functions{
+    protected override async Task OnInitializedAsync()
+    {
+        await GetArtistas();
+        await GetCurrentUser();
+    }
+    public async Task GetCurrentUser()
+    {
+        var x = await googleService.GetCurrentUser();
+
+
+
+        if(x.Data is not null)
+        {
+            currentuser_id = x.Data.Id;
+            StateHasChanged();
+        }
+      
+
+
+
+    }
+
+    public async Task GetArtistas()
+    {
+        var r = await artistaService.ConsultarTodosLosArtistas(4);
+
+        if(r.Data is not null)
+        {
+            Artistas = r.Data;
+            StateHasChanged();
+        }
+    }
+}
+@code {
+    public bool vertodo = false;
+    public string filtro_artista = "";
+    public int currentuser_id;
+    public List<ArtistaResponse> Artistas = new List<ArtistaResponse>();
+    
+}

@@ -1,0 +1,567 @@
+﻿@inherits LayoutComponentBase
+<MudThemeProvider    IsDarkMode=@theme.IsDark() Theme="ThemeCustom"/>
+<MudDialogProvider  />
+<MudSnackbarProvider  />
+<PageTitle>MetaMusic</PageTitle>
+<style>
+     .meta-nav-button {
+    }
+
+       .meta-nav-button:hover {
+            color: #E74646;
+        }
+
+        ::-webkit-scrollbar {
+            width: 1px !important;
+        border-radius: 10px !important;
+        }
+
+    .navbar-container {
+        
+    }
+
+    .mostrar {
+        border-bottom: 1px solid #E74646 !important;
+    }
+
+    .theme-button{
+
+    }
+
+    
+    .nav-button{
+        border-radius:10px;
+    }
+
+    .nav-button:hover{
+            color: #E74646;
+
+    }
+   
+
+    
+    .meta-bar-link{
+       opacity:0.7;
+       cursor:pointer;
+    }
+
+    
+     .meta-bar-link:hover{
+       color: #E74646;
+    }
+
+
+
+</style>
+<MudLayout>
+    <MudAppBar Elevation="1"  Dense="false" Style="@($"""border:{navbarclass};""")">
+        <MudTooltip Arrow=true Color="Color.Error" Text="Ir a Inicio">
+            <div @onclick='()=>{navManager.NavigateTo("/");}' style="display: flex; cursor: pointer; align-items: center; flex-direction: column;">
+
+                @if (theme.IsDark())
+                {
+                    <MudImage Src="/meta-logo-white.png" Style="width: 50px; width: 50px;"></MudImage>
+                }
+                else
+                {
+                    <MudImage Src="/meta-logo.png" Style="width: 50px; width: 50px;"></MudImage>
+                }
+
+                
+
+            </div>
+        </MudTooltip>
+        <MudSpacer></MudSpacer>
+
+        @if (navManager.Uri.Contains("/stats"))
+        {
+            
+                <MudIconButton Icon="@Icons.Material.Outlined.AreaChart" Color="Color.Error"></MudIconButton>
+
+               
+        }
+        else if(navManager.Uri.Contains("/search"))
+        {
+            <MudIconButton  Icon="@Icons.Material.Rounded.Search" Color="Color.Error"></MudIconButton>
+
+        }
+        else if (navManager.Uri.Contains("/all-reviews") || navManager.Uri.Contains("/album"))
+        {
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#E74646" class="bi bi-eyeglasses " viewBox="0 0 16 16">
+                <path d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4m2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A2 2 0 0 0 8 6c-.532 0-1.016.208-1.375.547M14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0" />
+            </svg>
+
+
+        }
+        else if (navManager.Uri.Contains("/all-artists") ||navManager.Uri.Contains("/artist") )
+        {
+            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Outlined.MicExternalOn"></MudIconButton>
+
+
+
+        }
+        else if (navManager.Uri.Contains("/crear-contenido"))
+        {
+            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Outlined.Add"></MudIconButton>
+
+
+
+        }
+         else if (navManager.Uri.Contains("/404"))
+        {
+            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Outlined.QuestionMark"></MudIconButton>
+
+
+
+        }
+        else if (navManager.Uri.Contains("/single"))
+        {
+            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Outlined.MusicNote"></MudIconButton>
+
+
+
+        }
+        else
+        {
+            <MudIcon Icon="@Icons.Material.Outlined.Home" Color="Color.Error" Size="Size.Small"></MudIcon>
+        }
+
+     
+        <MudSpacer></MudSpacer>
+        <AuthorizeView>
+            <Authorized>
+                @if (gettingUserData)
+                {
+                  <MudSkeleton SkeletonType="SkeletonType.Circle" Width="35px" Height="35px"></MudSkeleton>
+
+                }
+                else
+                {
+
+                    @if(!opendrawer)
+                    {
+                        <MudAvatar Style="height: 35px; width: 35px;  margin-right: 20px;" @onclick="()=>{opendrawer = !opendrawer;}"><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+
+                    }
+
+
+
+
+                }
+            </Authorized>
+            <NotAuthorized>
+                <MudButton Color="Color.Error" Variant="Variant.Text" Style="font-size: 12px; font-weight: bold;" Target="_top" Href='auth/googlelogin/signin-google'>Iniciar Sesion</MudButton>
+
+                <MudIconButton class="nav-button" Size="Size.Small" Icon="@Icons.Material.Rounded.Search" @onclick='()=>{navManager.NavigateTo($"/search");}'></MudIconButton>
+
+
+
+            </NotAuthorized>
+
+        </AuthorizeView>
+    </MudAppBar>
+    
+        <MudDrawer @bind-Open="@opendrawer" Anchor="Anchor.Right" ClipMode="clipMode" Style="margin-bottom: 60px;"  PreserveOpenState="false" Elevation="1"  Variant="@DrawerVariant.Responsive">
+           <MudContainer Style="margin-top: 30px; display: flex; flex-direction: column;gap: 15px;margin-bottom: 20px;">
+
+            
+
+
+
+            <div  style="display: flex; gap: 35px;  align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <div style="display: flex; gap: 10px; ">
+                    <MudAvatar Style="height: 32px; width: 32px;  "><MudImage Fluid="true" ObjectFit="ObjectFit.Cover" src="@UsuarioActual.FotoDePerfil" Style="height:100%;border-radius: 10px; width: 100%;  " /></MudAvatar>
+                    <div style="display: flex; flex-direction: column;">
+                        <MudText Style="font-size: 12px; font-weight: bold; opacity : 0.7; width: 100px;overflow: hidden; text-overflow: ellipsis;"> @UsuarioActual?.CorreoNormalizado</MudText>
+                            <MudLink Underline="Underline.Always" Href="@($"/user/{UsuarioActual.CorreoNormalizado}")" Color="Color.Error" Style="font-size: 10px;  opacity : 0.7;">Ver Perfil</MudLink>
+
+
+                        </div>
+                </div>
+
+               
+                    <MudIcon Icon="@Icons.Material.Rounded.ArrowBack"  @onclick="()=>{opendrawer = !opendrawer;}" Style="width: 15px; height: 15px;cursor:pointer;" Size="Size.Small"></MudIcon>
+            </div>
+                <div class="nav-button" @onclick='()=>{navManager.NavigateTo("/");}'  style="display: flex; gap: 15px;  align-items: center; cursor: pointer;">
+
+                <MudIcon class="nav-button" Icon="@Icons.Material.Outlined.Home" Style="width: 20px; height: 20px;cursor:pointer;" Size="Size.Small"></MudIcon>
+
+                    <MudText Style="font-size: 12px; font-weight: bold; ">Home</MudText>
+
+                </div>
+
+                <AuthorizeView Roles="Staff" >
+                    <Authorized >
+                         <MudDivider Style="margin-top: 20px; margin-bottom: 20px;" DividerType="DividerType.FullWidth" Light=true></MudDivider>
+               
+                        <div   class="nav-button" style="display: flex; gap: 15px;  align-items: center; ">
+
+                            <MudIcon class="nav-button" Icon="@Icons.Material.Outlined.Add" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
+
+                            <MudLink Underline="Underline.Hover" @onclick='()=>{navManager.NavigateTo("/crear-contenido");}' Style="font-size: 12px;  opacity : 0.7;"> Crear Contenido</MudLink>
+
+                        </div>
+                    <div style="display: flex; gap: 15px;  align-items: center; " @onclick='()=>{navManager.NavigateTo($"/stats");}' class="meta-bar-link">
+
+
+
+                        <MudIconButton class="nav-button" Size="Size.Small" Icon="@Icons.Material.Outlined.AreaChart"></MudIconButton>
+
+
+
+
+                        <MudText Style="font-size: 12px;  opacity : 0.7;">Stats Generales</MudText>
+
+                    </div>
+                       
+                    </Authorized>
+                </AuthorizeView>
+
+            <div style="display: flex; gap: 15px;  align-items: center; " @onclick='()=>{navManager.NavigateTo($"/search");}' class="meta-bar-link">
+
+
+
+                <MudIconButton class="nav-button" Size="Size.Small" Icon="@Icons.Material.Rounded.Search"></MudIconButton>
+
+
+
+
+                <MudText Style="font-size: 12px;  opacity : 0.7;">Buscar</MudText>
+
+            </div>
+            <div style="display: flex; gap: 15px;  align-items: center; " @onclick='()=>{navManager.NavigateTo($"/all-reviews");}' Class="meta-bar-link">
+
+
+                <svg  xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eyeglasses " viewBox="0 0 16 16">
+                    <path d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4m2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A2 2 0 0 0 8 6c-.532 0-1.016.208-1.375.547M14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0" />
+                </svg>
+
+
+
+                <MudText Style="font-size: 12px;  opacity : 0.7;">Reviews</MudText>
+
+            </div>
+            <div style="display: flex; gap: 15px;  align-items: center; " @onclick='()=>{navManager.NavigateTo($"/all-artists");}' class="meta-bar-link">
+
+
+
+                <MudIconButton class="nav-button" Size="Size.Small" Icon="@Icons.Material.Outlined.MicExternalOn"></MudIconButton>
+
+
+
+
+                <MudText Style="font-size: 12px;  opacity : 0.7;">Artistas</MudText>
+
+            </div>
+               <MudDivider Style="margin-top: 20px; margin-bottom: 20px;" DividerType="DividerType.FullWidth"  Light=true></MudDivider>
+
+            <div class="nav-button" @onclick="showNotificaciones" style="display: flex; gap: 15px;  align-items: center; cursor: pointer;">
+
+                <MudIcon class="nav-button" Icon="@Icons.Material.Outlined.Notifications" Style="width: 20px; height: 20px;cursor:pointer;" Size="Size.Small"></MudIcon>
+
+                  <MudText Style="font-size: 12px;  opacity : 0.7;"> Notificaciones</MudText>
+                                              <MudBadge Visible="@hayNotificaciones" Bordered=true Color="Color.Error" Dot=true />
+
+                         
+                </div>
+             <div class="nav-button" style="display: flex; gap: 15px;  align-items: center; cursor:pointer; " @onclick="()=>{theme.IsDarkTheme = !theme.IsDarkTheme;}">
+
+                    <MudIcon Icon="@(theme.IsDarkTheme ? @Icons.Material.Outlined.DarkMode : @Icons.Material.Outlined.LightMode)" Style="width: 20px; height: 20px;cursor:pointer;"  Size="Size.Small"></MudIcon>
+
+                  <MudText Style="font-size: 12px;  opacity : 0.7;"> Activar Modo @(theme.IsDarkTheme ? "Claro" : "Oscuro") </MudText>
+                         
+                </div>
+ 
+                <MudDivider Style="margin-top: 20px; margin-bottom: 20px;" DividerType="DividerType.FullWidth" Light=true></MudDivider>
+
+                <div style="display: flex; gap: 15px;  align-items: center; margin-bottom: 20px; ">
+
+                    <MudIcon  Icon="@Icons.Material.Outlined.ArrowBack" Style="width: 20px; height: 20px;cursor:pointer;" Color="Color.Error" Size="Size.Small"></MudIcon>
+
+                    <MudLink Href="auth/googlelogin/logout" Target="_top" Style="font-size: 12px;  opacity : 0.7;">Cerrar Sesión</MudLink>
+
+                </div>
+
+               
+                
+            </MudContainer>
+          
+            
+           
+        </MudDrawer>
+        
+    <MudMainContent Class="pt-16 px-3 " >
+
+        @if (UserDataLoaded)
+        {
+                @Body
+        }
+      
+    </MudMainContent>
+</MudLayout>
+
+
+
+
+   
+
+
+   
+
+      
+
+
+
+@functions{
+
+    DrawerClipMode clipMode = DrawerClipMode.Never;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserDataLoaded = false;
+        UserIsAuthorized = false;
+        var state = await authstate.GetAuthenticationStateAsync();
+        var user = state.User;
+
+        if (user.Identity is null || user.Identity.IsAuthenticated)
+        {
+
+            await GetCurrentUser();
+
+
+            UserIsAuthorized = true;
+            UserDataLoaded = true;
+
+            await getNotificaciones();
+
+            await initializeBusquedas();
+            if(UsuarioActual.Rol.Tipo == "Staff")
+            {
+                await getPeticiones();
+
+            }
+
+
+
+
+        }
+        else
+        {
+            UserDataLoaded = true;
+
+        }
+    }
+    public async Task initializeBusquedas()
+    {
+
+
+        var r = await busquedaService.ConsultarMios();
+
+        if (r.Data is not null)
+        {
+            busquedas = r.Data;
+        }
+    }
+    public async Task GetCurrentUser()
+    {
+        gettingUserData = true;
+        var r = await userService.ConsultarUsuarioActual();
+        if (r.Success == true && r.Data is not null)
+        {
+            UsuarioActual = r.Data;
+            gettingUserData = false;
+            await GetReportes(UsuarioActual.Id);
+            StateHasChanged();
+        }
+
+
+
+
+    }
+
+
+
+    [JSInvokable]
+    public void ManejarScroll(int scrollY)
+    {
+        // Verificar si el scrollbar está en la parte superior
+        navbarclass = (scrollY == 0) ? "transparent" : "#D04848";
+    }
+
+    public async Task GetReportes(int userid)
+    {
+
+        var r = await reporteService.Consultar(userid);
+
+        if (r.Data is not null && r.Success)
+        {
+            hayReportes = true;
+        }
+    }
+
+    public async Task getNotificaciones()
+    {
+        var r= await notificacionesService.Consultar();
+
+        if(r.Success && r.Data is not null)
+        {
+            if(r.Data.Any(n => n.Saw == false))
+            {
+                hayNotificaciones = true;
+            }
+        }
+        else
+        {
+            hayNotificaciones = false;            
+        }
+    }
+
+
+
+    public async Task getPeticiones()
+    {
+        var r = await peticionService.ConsultarTodo();
+
+        if(r.Data is not null)
+        {
+            if(r.Data.Count() >=1)
+            {
+                hayPeticiones = true;
+            }
+        }
+
+    }
+
+    public async Task showNotificaciones()
+    {
+        var options = new MudBlazor.DialogOptions() { NoHeader = true, CloseButton = false };
+
+
+        await dService.ShowAsync<Pages.Common_Components.NotificationsDialog>("", options);
+    }
+
+    public async Task LoginAsync()
+    {
+        var clientlocal = ClientFactory.CreateClient("GoogleAuth");
+        var res = await clientlocal.GetStringAsync("auth/googlelogin/login");        
+    }
+
+    public async Task Logout(){
+
+
+        var logoutUrl = $"https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue={navManager.BaseUri}googlelogin/logout";
+
+        // Ejecutar JavaScript para redireccionar a la URL de cierre de sesión
+        await JSR.InvokeVoidAsync("eval", $"document.location.href = '{logoutUrl}';");
+
+    }
+    
+    
+}
+@code{
+
+    public bool gettingUserData = false;
+    public bool UserDataLoaded = false;
+    public bool UserIsAuthorized = false;
+    private string navbarclass = "transparent";
+    public bool IsDarkMode { get; set; } = true ;
+    public bool hayReportes = false;
+    public bool hayPeticiones = false;
+    
+    public bool opendrawer = false;
+
+    private MudTheme ThemeCustom => new()
+     {
+
+
+            Shadows = new Shadow()
+            {
+
+                Elevation = Enumerable.Repeat("0px", 30).ToArray()
+            },
+            Palette = new PaletteLight
+            {
+                Primary = "#1D1A31",
+                Secondary = "#393E46",
+                Surface = "#F5F7F8 ",
+                Background = "#FFFFFF",
+                Tertiary = "#164863",
+                Error = "#D04848",
+                TextPrimary = "#000000",
+
+                AppbarBackground = "#ffffff",
+                DrawerBackground = "#ffffff"
+
+
+
+
+
+
+            },
+            PaletteDark = new PaletteDark
+            {
+
+                Primary = "#f8f7f4",
+                Secondary = "#f1f2f2",
+                Tertiary = "#164863",
+                Background = "#000000",
+                Error = "#D04848",
+                Surface = "#191919",
+                TextPrimary = "#ffffff",
+                AppbarBackground = "#000000",
+                DrawerBackground = "#000000",
+
+
+
+
+
+
+
+
+
+
+            },
+
+            LayoutProperties = new LayoutProperties()
+            {
+
+                DefaultBorderRadius = "10px",
+
+
+            },
+
+            Typography = new Typography()
+            {
+
+
+                Default = new Default()
+                {
+                    FontFamily = new string[] { "Inter" },
+
+
+
+                },
+                Caption = new Caption()
+                {
+                    FontFamily = new string[]{"SourceSerif4"}
+                }
+
+
+
+
+
+
+            }
+
+
+    };
+    public UsuarioResponse UsuarioActual { get; set; } = new UsuarioResponse();
+    public bool hayNotificaciones { get; set; } = false;
+
+    public List<BusquedaResponse> busquedas = new List<BusquedaResponse>();
+        public List<BusquedaResponse> otrasbusquedas = new List<BusquedaResponse>();
+
+
+   
+}

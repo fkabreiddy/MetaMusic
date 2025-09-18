@@ -1,0 +1,362 @@
+﻿<style>
+    .menu-item{
+
+        cursor: pointer;
+        
+
+    }
+
+    .menu-item:hover{
+
+        color:red;
+    }
+</style>
+
+<AuthorizeView>
+    <Authorized>
+
+        <div>
+            @if (theme.IsDark())
+            {
+                <MudTextField MaxLength="50" Immediate=true @onkeypress="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar">
+
+
+
+                </MudTextField>
+
+            }
+            else
+            {
+
+
+                <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+
+                    <ActivatorContent>
+                        <MudTextField  MaxLength="50" Immediate=true @onkeyup="HandleKeyPress" TextChanged="async ()=>{await BuscarOtras(buscar);}" OnAdornmentClick='async()=>{await Buscar();}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
+
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudPaper Class="" Outlined="true" style="padding: 10px; overflow: hidden; width: 250px; max-height: 80vh; overflow: auto;">
+
+                            @if (string.IsNullOrEmpty(buscar))
+                            {
+                                if (busquedas.Count() >= 1)
+                                {
+
+
+
+                                    
+                                        <div style="display: flex; justify-content: space-between; align-items: center;border-radius: 10px; padding: 10px;">
+                                            <MudText Style="font-size: 10px;font-weight: bold;">Historial</MudText>
+
+                                            <MudButton @onclick="async()=>{await BorrarTodo();}" Style="font-size: 8px; " Variant="Variant.Text" DisableElevation=true Color="Color.Error">Borrar Todo</MudButton>
+
+                                        </div>
+                                  
+                                    @foreach (var tema in busquedas)
+                                    {
+                                        <div  style="display: flex; justify-content: space-between; align-items: center;border-radius: 10px;padding:10px;">
+                                             
+
+                                                <MudText Class="menu-item"  Style="font-size: 10px;max-width: 80px; text-overflow: ellipsis;overflow: hidden;" @onclick='async()=>{navManager.NavigateTo($"/search/{tema.Contenido}");}'>@tema.Contenido</MudText>
+
+                                            
+                                               
+                                            <MudIcon @onclick="async()=>{await deleteBusqueda(tema);}" Icon="@Icons.Material.Rounded.Close" Style="width: 15px; height: 15px;cursor:pointer;" Size="Size.Small"></MudIcon>
+
+                                           </div>
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    <div style="display:flex; align-items: center; justify- content: center; flex-direction: column;">
+                                        <MudIcon Size="Size.Small" Style="opacity:inherit.7" Color="Color.Error" Icon="@Icons.Material.Filled.Search"></MudIcon>
+
+                                        <MudText Align="Align.Center" Style="font-size: 10px; font-weight: bold; opacity: 0.7;">No tienes busquedas</MudText>
+
+                                    </div>
+
+                                }
+
+
+
+
+
+
+                            }
+                            else
+                            {
+
+
+                                if (otrasbusquedas.Count() >= 1)
+                                {
+
+                                    <div style="display: flex; justify-content: space-between; align-items: center;border-radius: 10px;padding:10px;">
+                                            <MudText Style="font-size: 10px; font-weight: bold;">Busquedas</MudText>
+
+
+                                        </div>
+                                   
+                                    <MudDivider Style="margin-top: 10px; margin-bottom: 10px;"></MudDivider>
+                                    @foreach (var tema in otrasbusquedas)
+                                    {
+
+
+                                        <div  style="display: flex; justify-content: space-between; align-items: center;border-radius: 10px;padding:10px;">
+                                            <MudText Class="menu-item" Style="font-size: 10px;max-width: 80px; text-overflow: ellipsis;overflow: hidden;" @onclick="async()=>{await Buscar();}">@tema.Contenido</MudText>
+
+                                            </div>
+                                        
+
+                                    }
+                                }
+                                else
+                                {
+                                    <div style="display:flex; align-items: center; justify-content: center; flex-direction: column;">
+                                        <MudIcon Size="Size.Small" Style="opacity:inherit.7" Color="Color.Error" Icon="@Icons.Material.Filled.Search"></MudIcon>
+
+                                        <MudText Align="Align.Center" Style="font-size: 10px; font-weight: bold; opacity: 0.7;">No hay busquedas similares</MudText>
+
+                                    </div>
+
+                                }
+
+
+
+
+
+                            }
+
+
+
+                        </MudPaper>
+
+                    </ChildContent>
+
+
+
+
+                </MudMenu>
+
+            }
+        </div>
+
+    </Authorized>
+    <NotAuthorized>
+        <div>
+            @if (theme.IsDark())
+            {
+                <MudTextField MaxLength="30" Immediate=true @onkeyup="HandleKeyPress" OnAdornmentClick='()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 20px;  font-weight:  bold; width: 25vw ;background-color: #191919;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" Placeholder='Buscar' @bind-Value="buscar">
+
+
+
+                </MudTextField>
+
+            }
+            else
+            {
+
+
+                <MudMenu ListClass="pa-0 menu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+
+                    <ActivatorContent>
+                        <MudTextField MaxLength="30" Immediate=true @onkeyup="HandleKeyPress2" TextChanged="async ()=>{await BuscarOtras(buscar);}" OnAdornmentClick='async()=>{navManager.NavigateTo($"/search/{buscar}");}' T="string" IconSize="Size.Small" AdornmentIcon="@Icons.Material.Rounded.Search" Adornment="Adornment.Start" Style="font-size: 12px;  margin-bottom: 10px;  font-weight:  bold; width: 25vw ;background-color: #EEEEEE;   border-radius:10px; height: 30px; padding: 10px;" Variant="MudBlazor.Variant.Text" DisableUnderLine="true" @bind-Value="buscar" Placeholder='Buscar'></MudTextField>
+
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudPaper Class="" Outlined="true" style="padding: 10px; overflow: hidden; width: 250px; max-height: 80vh; overflow: auto;">
+
+                           
+
+
+                                @if (otrasbusquedas.Count() >= 1 && !string.IsNullOrEmpty(buscar) )
+                                {
+
+                                        <div style="display: flex; justify-content: space-between; align-items: center;border-radius: 10px;padding:10px;">
+                                                    <MudText Style="font-size: 10px; font-weight: bold;">Busquedas</MudText>
+
+
+                                         </div>
+                                   
+                                    <MudDivider Style="margin-top: 10px; margin-bottom: 10px;"></MudDivider>
+                                    @foreach (var tema in otrasbusquedas)
+                                    {
+
+
+                                         <div  style="display: flex; justify-content: space-between; align-items: center;border-radius: 10px;padding:10px;">
+                                                <MudText Class="menu-item"  Style="font-size: 10px;max-width: 80px; text-overflow: ellipsis; overflow: hidden;" @onclick='async()=>{navManager.NavigateTo($"/search/{tema.Contenido}");}'>@tema.Contenido</MudText>
+
+                                            </div>
+                                     
+
+                                    }
+                                }
+                                else
+                                {
+                                    <div style="display:flex; align-items: center; justify-content: center; flex-direction: column;">
+                                        <MudIcon Size="Size.Small" Style="opacity:inherit.7" Color="Color.Error" Icon="@Icons.Material.Filled.Search"></MudIcon>
+
+                                        <MudText Align="Align.Center" Style="font-size: 10px; font-weight: bold; opacity: 0.7;">No ha coincidencias</MudText>
+
+                                    </div>
+
+                                }
+
+
+
+
+
+                            
+
+
+
+                        </MudPaper>
+
+                    </ChildContent>
+
+
+
+
+                </MudMenu>
+
+            }
+        </div>
+
+    </NotAuthorized>
+</AuthorizeView>
+@functions{
+   
+
+    
+    public async Task ConultarMasBusquedas()
+    {
+
+        var r = await busquedaService.Consultar(buscar);
+
+        if (r.Data is not null)
+        {
+            otrasbusquedas = r.Data;
+            StateHasChanged();
+        }
+
+    }
+    private async void HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            if (string.IsNullOrEmpty(buscar))
+                return;
+            await busquedaService.Crear(buscar);
+            
+            navManager.NavigateTo($"/search/{buscar}");
+            await getBusquedas();
+            StateHasChanged();
+        }
+    }
+    private void HandleKeyPress2(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            if (string.IsNullOrEmpty(buscar))
+                return;
+
+
+            navManager.NavigateTo($"/search/{buscar}");
+        }
+    }
+    private async Task Buscar()
+    {
+
+        if (string.IsNullOrEmpty(buscar))
+            return;
+
+        await busquedaService.Crear(buscar);
+      
+        navManager.NavigateTo($"/search/{buscar}");
+        await getBusquedas();
+        StateHasChanged();
+
+    }
+
+    private void Buscar2()
+    {
+
+        if (string.IsNullOrEmpty(buscar))
+            return;
+
+
+        navManager.NavigateTo($"/search/{buscar}");
+
+    }
+
+    private async Task<IEnumerable<string>> BuscarOtras(string buscar)
+    {
+
+
+
+
+
+        if (string.IsNullOrEmpty(buscar))
+            return busquedas.Select(b => b.Contenido);
+
+        await ConultarMasBusquedas();
+        return otrasbusquedas.Where(x => x.Contenido.ToLower().Contains(buscar.ToLower(), StringComparison.InvariantCultureIgnoreCase)).Select(b => b.Contenido);
+    }
+
+
+
+
+    public async Task getBusquedas(){
+
+        var r = await busquedaService.ConsultarMios();
+
+        if(r.Data is not null)
+        {
+            busquedas = r.Data;
+
+        }
+    }
+
+    public async Task deleteBusqueda(BusquedaResponse busqueda){
+
+        var r = await busquedaService.Eliminar(busqueda.Id);
+
+        if(r.Success)
+        {
+            busquedas.Remove(busqueda);
+            StateHasChanged();
+        }
+    }
+
+    public async Task BorrarTodo()
+    {
+
+        if(busquedas.Count() >= 1)
+        {
+            foreach(var busqueda in busquedas)
+            {
+                await busquedaService.Eliminar(busqueda.Id);
+            }
+
+            busquedas.Clear();
+            StateHasChanged();
+        }
+    }
+}
+
+@code {
+   
+
+  
+  
+    
+    public string buscar = "";
+    [Parameter]public List<BusquedaResponse> busquedas { get; set; } = new List<BusquedaResponse>();
+    public List<BusquedaResponse> otrasbusquedas = new List<BusquedaResponse>();
+
+
+    
+
+}

@@ -1,0 +1,91 @@
+﻿
+<style>
+    .bar {
+        width: 115px;
+        height: 7px;
+        border-radius: 10px;
+        background-color: #b3b3b3;
+        color: white;
+        text-align: center;
+        
+    }
+
+    .fifty {
+        width: @(calificaciones_buenas + 5)px;
+        height: 100%;
+        background-color: #4E9F3D;
+        float: left;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        
+    }
+
+    .twentyfive {
+        width:@(calificaciones_neutrales + 5)px;
+        height: 100%;
+        background-color: #E2703A;
+        float: left;
+    }
+
+    .ten {
+        width: @(calificaciones_negativas + 5)px;
+        height: 100%;
+        background-color: #BE3144;
+        float: left;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+</style>
+<div style="display: flex; flex-direction: column;  gap: 20px; align-items: center; justify-content: center; margin-bottom: 20px;margin-top: 10px;">
+    
+            <MudAvatar Class="calification-card" Size="Size.Large" Variant="Variant.Outlined" Style="font-weight: bold; width: 100px; height: 100px; font-size: 20px;">
+                @promedio
+            </MudAvatar>
+        
+       
+        <div class="bar">
+
+
+            <div class="fifty">
+               
+            </div>
+            <div class="twentyfive">
+               
+            </div>
+            <div class="ten">
+               
+            </div>
+        </div>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; flex-direction: column;">
+            <div style="display: flex; gap:5px; align-items: center;">
+            <MudAvatar Style="width: 10px; height: 10px; background-color:#4E9F3D "></MudAvatar>
+            <MudText Style="font-size: 10px; opacity: 0.8;">@(calificaciones_buenas)% positivas</MudText>
+            </div>
+        <div style="display: flex; gap :5px;align-items: center;">
+            <MudAvatar Style="width: 10px; height: 10px; background-color:#E2703A "></MudAvatar>
+            <MudText Style="font-size: 10px;  opacity: 0.8;">@(calificaciones_neutrales)% netrales</MudText>
+        </div>
+        <div style="display: flex; gap: 5px;align-items: center;">
+            <MudAvatar Style="width: 10px; height: 10px; background-color:#BE3144 "></MudAvatar>
+            <MudText Style="font-size: 10px; opacity: 0.8;">@(calificaciones_negativas)% negativas</MudText>
+        </div>
+        </div>
+        
+          
+
+    
+       
+
+       
+    </div>
+
+
+@code {
+
+    [Parameter] public List<CalificacionResponse> calificaciones { get; set; } = new List<CalificacionResponse>();
+    [Parameter] public double promedio { get; set; } = 0.0;
+    public double calificaciones_buenas => calificaciones.Where(c => c.Numero <= 10 && c.Numero >= 7).Count() >= 1 ? ((calificaciones.Where(c => c.Numero <= 10 && c.Numero >= 7).Count() * 100) / calificaciones.Count()) : 0;
+    public double calificaciones_neutrales => calificaciones.Where(c => c.Numero <= 6.9 && c.Numero >= 4).Count() >= 1 ? ((calificaciones.Where(c => c.Numero <= 6.9 && c.Numero >= 4).Count() * 100) / calificaciones.Count()) : 0;
+    public double calificaciones_negativas => calificaciones.Where(c => c.Numero <= 3.9 && c.Numero >= 0).Count() >= 1 ? ((calificaciones.Where(c => c.Numero <= 3.9 && c.Numero >= 0).Count() * 100) / calificaciones.Count()) : 0;
+
+}

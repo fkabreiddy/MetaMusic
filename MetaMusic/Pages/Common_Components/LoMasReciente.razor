@@ -1,0 +1,61 @@
+﻿
+   <Encabezado Title='@("LO MAS RECIENTE EN METAMUSIC")'></Encabezado>
+    
+   
+   
+        @if(albumes.Count() >= 1)
+        {
+
+            <MudGrid Justify="Justify.Center ">
+                <MudItem md="5" sm="12" xl="5" lg="5" xxl="5" xs="12">
+                    <ReviewCard album="@albumes.First()"></ReviewCard>
+                </MudItem>
+
+                <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert=true>
+                    <MudContainer Style="width: 150px;">
+                        <MudDivider DividerType="DividerType.Middle" Class="mt-5 mb-5"></MudDivider>
+                    </MudContainer>
+                </MudHidden>
+
+                <MudItem md="6" sm="12" xl="6" lg="6" xxl="6" xs="12" Style="display: flex; flex-direction: column; gap; 20px; position: sticky; gap: 40px;">
+                    @foreach (var album in albumes.Skip(1))
+                    {
+                        
+                        <MudItem md="12" sm="12" xl="12" lg="12" xxl="12" xs="12">
+                            <ReviewCard Horizontal="true" Album="@album"/>
+
+                            <MudContainer Style="width: 150px;">
+                                <MudDivider DividerType="DividerType.Middle" Class="mt-5 mb-5"></MudDivider>
+                            </MudContainer>
+                        </MudItem>
+                    }
+
+                </MudItem>
+            </MudGrid>
+
+            
+        }
+     
+
+
+        
+
+     
+       
+
+
+    <div style="height: 50px;display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; justify-content: center; margin-bottom: 60px; ">
+
+        <MudLink Style="opacity: 0.7; font-size: 12px; margin-top: 20px; font-weight: bold; cursor: pointer;"  @onclick='()=>{navManager.NavigateTo("/all-reviews");}' Underline="Underline.Hover"> VER TODO</MudLink>
+
+
+
+
+
+    </div>
+
+@code {
+    [Parameter] public List<AlbumResponse> albumes { get; set; } = new List<AlbumResponse>();
+    public List<int> prueba = new List<int>() { 1, 2, 3, };
+   
+}

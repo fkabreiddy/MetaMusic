@@ -1,0 +1,58 @@
+﻿
+<MudContainer Style="display: flex; align-items: center; justify-content: center; width: 100%; flex-direction:column; margin-top: 60px;">
+    
+</MudContainer>
+<MudTabs Color="Color.Surface" Rounded="true" HideSlider="true" AlwaysShowScrollButtons="true" MinimumTabWidth="100" Elevation="0" IconColor="Color.Secondary" ScrollIconColor="Color.Secondary" Style="font-size: 10px; width: 100%;  height: 100%; margin-bottom: 15px;margin-top: 30px; padding:0; " SliderColor="Color.Secondary">
+    
+    @foreach (var genero in generosMusicales)
+    {
+        <MudTabPanel style="@($"""{(generomusicalSeleccionado == genero ? "color:#E74646;" : "")}font-size: 12px; border-radius: 10px; font-weight: bold;""")" ShowCloseIcon=false @onclick='()=>{generomusicalSeleccionado = genero;}' Text="@genero">
+            <MetaMusic.Pages.Common_Components.TopByGenre genre="@genero"></MetaMusic.Pages.Common_Components.TopByGenre>
+        </MudTabPanel>
+
+    }
+
+</MudTabs>
+@code {
+    List<string> generosMusicales = new List<string>
+        {
+            "Rock",
+            "Pop",
+            "Hip-Hop",
+            "R&B",
+            "Jazz",
+            "Blues",
+            "Reggae",
+            "Country",
+            "Electronic",
+            "Classical",
+            "Folk",
+            "Indie",
+            "Metal",
+            "Punk",
+            "Soul",
+            "Funk",
+            "Disco",
+            "Rap",
+           
+            "Alternative",
+          
+            "Latin",
+           
+            "Techno",
+            "House",
+           
+           
+            "Trap",
+            "Reggaeton",
+            "Salsa",
+          
+            "K-Pop",
+           
+            // Puedes agregar más géneros según sea necesario
+    };
+        public string generomusicalSeleccionado = "Rock";
+      
+
+        
+}

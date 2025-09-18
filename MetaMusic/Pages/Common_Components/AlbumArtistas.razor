@@ -1,0 +1,68 @@
+﻿
+<style>
+    .album-artists{
+        
+        font-family: Inter;
+        font-size: calc(0.70em + 1vw);
+        cursor: pointer;
+     
+   
+        
+    }
+
+    .album-artists-non-hover{
+
+        font-family: Inter;
+        font-size: calc(0.70em + 1vw);
+        cursor: pointer;
+
+    }
+    
+    .album-artists:hover{
+
+        color: var(--red-color);
+        text-decoration: underline;
+    }
+    
+   
+</style>
+
+
+
+    @if (Artists.Count() >= 3)
+    {
+
+        <MudText Align="@Align" Class="album-artists">
+            Varios Artistas
+        </MudText>
+    }
+    else
+    {
+
+
+
+    @foreach (var artist in Artists)
+    {
+        <MudText Align="@Align"  Class="album-artists">
+            @artist.Nombre
+        </MudText>
+        @if (!(artist == Artists.Last()))
+        {
+            <MudText Align="@Align"  Class="album-artists-non-hover">
+                @(" & ")
+            </MudText>
+           
+        }
+    }
+
+    }
+
+
+
+@code {
+
+    [Parameter] 
+    public Align Align { get; set; } = MudBlazor.Align.Center;
+    [Parameter] 
+    public List<ArtistaResponse> Artists { get; set; } = new();
+}
